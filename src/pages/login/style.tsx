@@ -6,10 +6,10 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100vh;
-  padding : 102px 0px
 `;
 export const LoginTitle = styled.h1`
   position: relative;
+  top : 15vh;
   ${theme.fontSize.title_1};
 `;
 export const BtnBox = styled.div`
