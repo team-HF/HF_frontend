@@ -14,7 +14,7 @@ export const Container = styled.div`
 export const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 0.625rem;
+  margin-top: 0.25rem;
   gap: 0.5rem;
 `;
 export const InformationContainer = styled.div<{ title: string }>`
@@ -25,6 +25,7 @@ export const InformationContainer = styled.div<{ title: string }>`
   width: 18rem;
   height: 4.375rem;
   border-radius: 0.625rem;
+  margin-top: 0.125rem;
 `;
 
 export const TitleContainer = styled.div<{ title: string }>`
