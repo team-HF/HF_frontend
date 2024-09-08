@@ -9,21 +9,21 @@ export default function LevelSelector() {
   return (
     <s.Container>
       <s.StyleP>나의 운동 레벨은 어느 정도인가요?</s.StyleP>
-      <s.StyleLevelSelectorContainer>
+      <s.LevelSelectorContainer>
         {options.map((option) => (
-          <s.StyleLevelSelectorButton
+          <s.LevelSelectorButton
             key={option.label}
             selected={levelSelected === option.label}
             onClick={() => setLevelSelected(option.label)}
           >
             {option.label}
-          </s.StyleLevelSelectorButton>
+          </s.LevelSelectorButton>
         ))}
-        <s.StyleInformationIcon
+        <s.InformationIcon
           src="/svg/information-icon.svg"
           alt="information icon"
         />
-      </s.StyleLevelSelectorContainer>
+      </s.LevelSelectorContainer>
     </s.Container>
   );
 }

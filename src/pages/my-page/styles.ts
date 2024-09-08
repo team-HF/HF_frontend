@@ -10,10 +10,10 @@ export const Container = styled.div`
   overflow-y: auto;
 `;
 
-export const StyleSelectorContainer = styled.div`
+export const SelectorContainer = styled.div`
   margin-bottom: 2.25rem;
 `;
-export const StyleProfileContainer = styled.div`
+export const ProfileContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;

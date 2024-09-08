@@ -3,6 +3,7 @@ import LevelSelector from './components/LevelSelector';
 import StyleSelector from './components/StyleSelector';
 import * as s from './styles';
 import { useOptionStore } from '../../features/my-page/store/option-store';
+import InformationModal from './components/InformationModal';
 
 export default function MyPage() {
   const {
@@ -26,14 +27,13 @@ export default function MyPage() {
 
   return (
     <s.Container>
-      <s.StyleProfileContainer>
+      <InformationModal />
+      <s.ProfileContainer>
         <s.StyleH1>프로필 입력</s.StyleH1>
-      </s.StyleProfileContainer>
-
+      </s.ProfileContainer>
       <LevelSelector />
-
       <s.StyleH1>나의 운동 스타일을 골라주세요</s.StyleH1>
-      <s.StyleSelectorContainer>
+      <s.SelectorContainer>
         <StyleSelector
           title="운동할 때 주로 누구랑?"
           options={[
@@ -73,7 +73,7 @@ export default function MyPage() {
           selectedOption={exerciseSelected}
           setSelectedOption={setExerciseSelected}
         />
-      </s.StyleSelectorContainer>
+      </s.SelectorContainer>
 
       <Button color="main" text="다음" disabled={!allSelected} />
     </s.Container>

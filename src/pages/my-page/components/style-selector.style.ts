@@ -4,13 +4,13 @@ export const Container = styled.div`
   width: 18.25rem;
   height: 8.5rem;
 `;
-export const StyleCategoryTitleContainer = styled.div`
+export const CategoryTitleContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 0.375rem;
   align-items: center;
 `;
-export const StyleCategoryTitle = styled.p`
+export const CategoryTitle = styled.p`
   font-size: 0.8125rem;
   font-weight: bold;
   line-height: 2.5rem;
@@ -26,13 +26,13 @@ export const StyleSpan = styled.span`
   margin-bottom: 0.1rem;
 `;
 
-export const StyleCategoryContainer = styled.div`
+export const CategoryContainer = styled.div`
   display: flex;
   gap: 1rem;
   margin-bottom: 0.625rem;
 `;
 
-export const StyleOptionCard = styled.div<{ selected: boolean }>`
+export const OptionCard = styled.div<{ selected: boolean }>`
   background-color: ${({ selected, theme }) =>
     selected ? theme.colors.sub : '#FFFFFF'};
   border-radius: 0.625rem;

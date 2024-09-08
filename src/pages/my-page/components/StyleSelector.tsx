@@ -20,22 +20,22 @@ export default function StyleSelector({
 }: CategoryProps) {
   return (
     <s.Container>
-      <s.StyleCategoryTitleContainer>
+      <s.CategoryTitleContainer>
         <s.StyleSpan>&#9654;</s.StyleSpan>
-        <s.StyleCategoryTitle>{title}</s.StyleCategoryTitle>
-      </s.StyleCategoryTitleContainer>
-      <s.StyleCategoryContainer>
+        <s.CategoryTitle>{title}</s.CategoryTitle>
+      </s.CategoryTitleContainer>
+      <s.CategoryContainer>
         {options.map((option) => (
-          <s.StyleOptionCard
+          <s.OptionCard
             key={option.label}
             selected={selectedOption === option.label}
             onClick={() => setSelectedOption(option.label)}
           >
             <span>{option.emoji}</span>
             <p>{option.label}</p>
-          </s.StyleOptionCard>
+          </s.OptionCard>
         ))}
-      </s.StyleCategoryContainer>
+      </s.CategoryContainer>
     </s.Container>
   );
 }

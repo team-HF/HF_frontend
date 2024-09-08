@@ -5,7 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   margin-bottom: 2.0625rem;
 `;
-export const StyleLevelSelectorContainer = styled.div`
+export const LevelSelectorContainer = styled.div`
   display: flex;
   gap: 1.125rem;
   justify-content: center;
@@ -20,11 +20,11 @@ export const StyleLevelSelectorContainer = styled.div`
   }
 `;
 
-export const StyleInformationIcon = styled.img`
+export const InformationIcon = styled.img`
   width: 0.5rem;
   height: 0.5rem;
 `;
-export const StyleLevelSelectorButton = styled.button<{ selected: boolean }>`
+export const LevelSelectorButton = styled.button<{ selected: boolean }>`
   background-color: ${({ selected, theme, children }) =>
     selected && children === '고수'
       ? theme.colors.main
