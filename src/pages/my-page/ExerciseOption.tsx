@@ -4,8 +4,41 @@ import StyleSelector from './components/StyleSelector';
 import * as s from './styles';
 import { useOptionStore } from '../../features/my-page/store/option-store';
 import InformationModal from './components/InformationModal';
+import { useEffect, useState } from 'react';
 
 export default function MyPage() {
+  const [isShowModal, setIsShowModal] = useState(false);
+  const handleModalOpen = () => {
+    setIsShowModal(true);
+  };
+  const handleModalClose = () => {
+    setIsShowModal(false);
+  };
+  const handleModalClickOutside = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      setIsShowModal(false);
+    }
+  };
+
+  //모달 오픈 시 외부 스크롤 방지
+  useEffect(() => {
+    const body = document.body;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    if (isShowModal) {
+      body.style.overflow = 'hidden';
+      body.style.paddingRight = `${scrollbarWidth}px`;
+    } else {
+      body.style.overflow = 'auto';
+      body.style.paddingRight = '0px';
+    }
+    return () => {
+      body.style.overflow = 'auto';
+      body.style.paddingRight = '0px';
+    };
+  }, [isShowModal]);
+
   const {
     levelSelected,
     styleSelected,
@@ -27,11 +60,10 @@ export default function MyPage() {
 
   return (
     <s.Container>
-      <InformationModal />
       <s.ProfileContainer>
         <s.StyleH1>프로필 입력</s.StyleH1>
       </s.ProfileContainer>
-      <LevelSelector />
+      <LevelSelector onOpen={handleModalOpen} />
       <s.StyleH1>나의 운동 스타일을 골라주세요</s.StyleH1>
       <s.SelectorContainer>
         <StyleSelector
@@ -76,6 +108,11 @@ export default function MyPage() {
       </s.SelectorContainer>
 
       <Button color="main" text="다음" disabled={!allSelected} />
+      {isShowModal && (
+        <s.ModalContainer onClick={handleModalClickOutside}>
+          <InformationModal onClose={handleModalClose} />
+        </s.ModalContainer>
+      )}
     </s.Container>
   );
 }

@@ -9,6 +9,9 @@ export const Container = styled.div`
   border-radius: 0.625rem;
   padding: 0.625rem;
   box-shadow: 0px 0px 10px 0px #00000040;
+  position: fixed;
+  top: 20.5rem;
+  background-color: #ffffff;
 `;
 
 export const InnerContainer = styled.div`

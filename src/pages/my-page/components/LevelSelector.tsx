@@ -1,9 +1,11 @@
 import * as s from './level-selector.style';
 import { useOptionStore } from '../../../features/my-page/store/option-store';
 
-export default function LevelSelector() {
+type modalProps = {
+  onOpen: () => void;
+};
+export default function LevelSelector({ onOpen }: modalProps) {
   const { levelSelected, setLevelSelected } = useOptionStore();
-
   const options = [{ label: '고수' }, { label: '새싹' }];
 
   return (
@@ -22,6 +24,7 @@ export default function LevelSelector() {
         <s.InformationIcon
           src="/svg/information-icon.svg"
           alt="information icon"
+          onClick={onOpen}
         />
       </s.LevelSelectorContainer>
     </s.Container>

@@ -1,11 +1,14 @@
 import * as s from './information-modal.style';
 
-export default function InformationModal() {
+type modalTypes = {
+  onClose: () => void;
+};
+export default function InformationModal({ onClose }: modalTypes) {
   return (
     <s.Container>
       <s.InnerContainer>
         <s.IconContainer>
-          <s.XIcon src="/svg/x-icon.svg" alt="x icon" />
+          <s.XIcon src="/svg/x-icon.svg" alt="x icon" onClick={onClose} />
         </s.IconContainer>
         <s.InformationContainer title="고수">
           <s.TitleContainer title="고수">고수</s.TitleContainer>

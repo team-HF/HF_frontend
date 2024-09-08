@@ -8,6 +8,7 @@ export const Container = styled.div`
   min-height: 100vh;
   margin-top: 0.6875rem;
   overflow-y: auto;
+  position: relative;
 `;
 
 export const SelectorContainer = styled.div`
@@ -25,4 +26,18 @@ export const StyleH1 = styled.h1`
   line-height: 1.5rem;
   margin-bottom: 0.625rem;
   color: #000000;
+`;
+
+export const ModalContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  background: #00000033;
+  z-index: 1000;
 `;

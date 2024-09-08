@@ -23,6 +23,7 @@ export const LevelSelectorContainer = styled.div`
 export const InformationIcon = styled.img`
   width: 0.5rem;
   height: 0.5rem;
+  cursor: pointer;
 `;
 export const LevelSelectorButton = styled.button<{ selected: boolean }>`
   background-color: ${({ selected, theme, children }) =>
