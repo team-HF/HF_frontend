@@ -2,7 +2,7 @@ import Button from '../../shared/ui/button/Button';
 import LevelSelector from './components/LevelSelector';
 import StyleSelector from './components/StyleSelector';
 import * as s from './styles';
-import { useOptionStore } from '../../features/my-page/store/option-store';
+import { useOptionStore } from '../../features/exercise-option/store/option-store';
 import InformationModal from './components/InformationModal';
 import { useEffect, useState } from 'react';
 
