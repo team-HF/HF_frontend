@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { theme } from './app/theme';
 import { ThemeProvider } from 'styled-components';
-import ExerciseOption from './pages/my-page/ExerciseOption';
+import ExerciseOption from './pages/exercise-option/ExerciseOption';
 
 function App() {
   return (
