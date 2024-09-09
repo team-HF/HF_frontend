@@ -1,14 +1,18 @@
-import { theme } from "./app/theme";
-import styled from "styled-components";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { theme } from './app/theme';
+import { ThemeProvider } from 'styled-components';
+import ExerciseOption from './pages/exercise-option/ExerciseOption';
 
 function App() {
   return (
-      <Box>HF</Box>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="exercise-option" element={<ExerciseOption />} />
+        </Routes>
+      </ThemeProvider>
+    </Router>
   );
 }
-
-const Box = styled.div`
-  ${theme.fontSize.title_1}
-`
 
 export default App;
