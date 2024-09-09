@@ -5,6 +5,8 @@ type ButtonProps = {
   text: string;
   onClick?: () => void;
   disabled?: boolean;
+  width: string;
+  height: string;
 };
 
 export default function Button({
@@ -12,9 +14,17 @@ export default function Button({
   text,
   onClick,
   disabled,
+  width,
+  height,
 }: ButtonProps) {
   return (
-    <s.StyledButton color={color} onClick={onClick} disabled={disabled}>
+    <s.StyledButton
+      color={color}
+      width={width}
+      height={height}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {text}
     </s.StyledButton>
   );

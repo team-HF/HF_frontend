@@ -10,7 +10,7 @@ export const Container = styled.div`
   padding: 0.625rem;
   box-shadow: 0px 0px 10px 0px #00000040;
   position: fixed;
-  top: 20.5rem;
+  top: 20rem;
   background-color: #ffffff;
 `;
 
