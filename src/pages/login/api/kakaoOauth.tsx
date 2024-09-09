@@ -3,11 +3,11 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BASE_RUL;
 const CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
 const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
-const AUTH_BASE_URL = import.meta.env.VITE_KAKAO_BASE_URL;
+const KAKAO_BASE_URL = import.meta.env.VITE_KAKAO_BASE_URL;
 const grantType = "authorization_code";
 
 const kakaoOauth = async (code: string) => {
-  const AUTH_URL = `${AUTH_BASE_URL}/token?grant_type=${grantType}&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&code=${code}`;
+  const AUTH_URL = `${KAKAO_BASE_URL}/token?grant_type=${grantType}&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&code=${code}`;
   return await axios
     .post(AUTH_URL, null, {
       headers: {
