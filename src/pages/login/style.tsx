@@ -39,8 +39,8 @@ export const OauthBtn = styled.button`
     background-color: #fae100;
   }
 `;
-export const LogoIcon = styled.div<{ path: string }>`
-  background-image: url(${props => props.path});
+export const LogoIcon = styled.div<{ src: string }>`
+  background-image: url(${props => props.src});
   width: 19px;
   height: 18px;
   background-size: contain;
