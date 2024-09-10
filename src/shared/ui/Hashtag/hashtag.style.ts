@@ -6,6 +6,7 @@ export const HashtagBox = styled.div`
   height: 1.125rem;
   border-radius: 0.5625rem;
   background-color: #99999999;
+  color: #ffffff;
   font-size: 0.625rem;
   line-height: 0.625rem;
   align-items: center;
