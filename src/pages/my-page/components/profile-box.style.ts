@@ -7,7 +7,7 @@ export const Container = styled.div`
   width: 100vw;
   margin-top: 0.75rem;
   padding: 0 2rem;
-  border: 1px solid #000000;
+  max-width: 24.375rem;
 `;
 export const HeaderContainer = styled.div`
   display: flex;

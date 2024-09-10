@@ -1,6 +1,6 @@
 import Button from '../../../shared/ui/button/Button';
 import Hashtag from '../../../shared/ui/Hashtag/Hashtag';
-import * as s from './header.style';
+import * as s from './profile-box.style';
 
 export default function ProfileBox() {
   return (
