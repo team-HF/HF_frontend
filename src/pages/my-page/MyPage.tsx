@@ -1,6 +1,6 @@
-import MatchingBox from './components/MatchingBox';
-import ProfileBox from './components/ProfileBox';
-import Tab from './components/Tab';
+import MatchingBox from '../../entities/my-page/ui/MatchingBox';
+import ProfileBox from '../../entities/my-page/ui/ProfileBox';
+import Tab from '../../entities/my-page/ui/Tab';
 import * as s from './styles';
 import { useState } from 'react';
 
