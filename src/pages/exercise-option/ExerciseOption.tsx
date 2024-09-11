@@ -1,9 +1,9 @@
 import Button from '../../shared/ui/button/Button';
-import LevelSelector from './components/LevelSelector';
-import StyleSelector from './components/StyleSelector';
+import LevelSelector from '../../entities/exercise-option/ui/LevelSelector';
+import StyleSelector from '../../entities/exercise-option/ui/StyleSelector';
 import * as s from './styles';
 import { useOptionStore } from '../../features/exercise-option/store/option-store';
-import InformationModal from './components/InformationModal';
+import InformationModal from '../../entities/exercise-option/ui/InformationModal';
 import { useEffect, useState } from 'react';
 
 export default function MyPage() {
