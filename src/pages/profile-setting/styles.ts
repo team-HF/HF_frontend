@@ -78,3 +78,9 @@ export const Input = styled.input`
     border-color: #000000;
   }
 `;
+
+export const ButtonContainer = styled.div`
+  margin-top: 0.75rem;
+  margin-left: auto;
+  margin-right: auto;
+`;

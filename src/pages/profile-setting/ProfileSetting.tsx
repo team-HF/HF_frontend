@@ -1,3 +1,4 @@
+import Button from '../../shared/ui/button/Button';
 import * as s from './styles';
 
 export default function ProfileSetting() {
@@ -42,6 +43,9 @@ export default function ProfileSetting() {
           <s.Input />
         </s.Field>
       </s.FieldContainer>
+      <s.ButtonContainer>
+        <Button width="20.125rem" height="2.8125rem" color="main" text="저장" />
+      </s.ButtonContainer>
     </s.Container>
   );
 }
