@@ -107,7 +107,13 @@ export default function MyPage() {
         />
       </s.SelectorContainer>
 
-      <Button color="main" text="다음" disabled={!allSelected} />
+      <Button
+        color="main"
+        width="20.125rem"
+        height="2.8125rem"
+        text="다음"
+        disabled={!allSelected}
+      />
       {isShowModal && (
         <s.ModalContainer onClick={handleModalClickOutside}>
           <InformationModal onClose={handleModalClose} />
