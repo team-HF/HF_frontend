@@ -3,47 +3,46 @@ import { styled } from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   max-width: 24.375rem;
+  min-height: 100vh;
+  margin-top: 0.6875rem;
+  overflow-y: auto;
+  position: relative;
 `;
 
-export const TitleContainer = styled.div`
+export const ProfileContainer = styled.div`
   display: flex;
+  justify-content: center;
+  width: 100vw;
   height: 3.125rem;
+`;
+
+export const StyleH1 = styled.h1`
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.5rem;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.6875rem;
+  margin-bottom: 0.625rem;
+  color: #000000;
 `;
 
-export const ProfileIconContainer = styled.div`
+export const ImageContainer = styled.div`
   display: flex;
-  width: 6.5625rem;
-  position: relative;
+  width: 6.5rem;
   height: 6.5rem;
   background-color: #f6f6f6;
-  border-radius: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0.6875rem;
+  border-radius: 50%;
 `;
 
 export const ProfileImage = styled.img`
-  width: 6.5rem;
-  height: 6.5rem;
+  display: flex;
+  align-self: center;
+  margin-right: auto;
+  margin-left: auto;
+  width: 2.5625rem;
+  height: 2.0625rem;
 `;
-export const ProfileChangeButton = styled.div`
-  position: absolute;
-  width: 2rem;
-  height: 2rem;
-  top: 4.5rem;
-  left: 4.5rem;
-  background-color: #ffffff;
-  border: 3px solid #f6f6f6;
-  border-radius: 50%;
-  cursor: pointer;
-`;
+
 export const FieldContainer = styled.div`
   margin-left: auto;
   margin-right: auto;
@@ -63,6 +62,11 @@ export const Label = styled.label`
   color: #999999;
 `;
 
+export const SexContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  position: relative;
+`;
 export const Input = styled.input`
   width: 20.125rem;
   height: 2.125rem;
@@ -76,15 +80,35 @@ export const Input = styled.input`
   &:focus {
     outline: none;
     border-color: #000000;
-    &::placeholder {
-      color: #aaaaaa;
-      font-size: 0.75rem;
-      line-height: 1.125rem;
-      color: #999999;
-      letter-spacing: -0.03rem;
-      text-align: left;
-      font-weight: 400;
-    }
+  }
+`;
+
+export const Arrow = styled.span`
+  position: absolute;
+  right: 0.8rem;
+  top: 30%;
+  font-size: 0.6875rem;
+  color: #d9d9d9;
+  cursor: pointer;
+`;
+
+export const Dropdown = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border: 0.5px solid #999999;
+  border-radius: 0.5rem;
+  z-index: 1000;
+`;
+
+export const DropdownItem = styled.div`
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
   }
 `;
 

@@ -13,5 +13,4 @@ export const StyledButton = styled.button<{
   height: ${({ height }) => height};
   border: none;
   border-radius: 0.3125rem;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `;

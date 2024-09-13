@@ -12,7 +12,6 @@ export default function ProfileSetting() {
     clearErrors,
     trigger,
   } = useForm({ mode: 'onChange' });
-
   const watchPhoneNumber = watch('phonenumber', '');
   const [formattedNumber, setFormattedNumber] = useState('');
 
