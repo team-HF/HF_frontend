@@ -4,9 +4,9 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
-  min-height: 100vh;
+  max-width: 24.375rem;
   margin-top: 0.6875rem;
+  overflow-x: hidden;
   overflow-y: auto;
   position: relative;
 `;
@@ -31,7 +31,7 @@ export const StyleH1 = styled.h1`
 export const ModalContainer = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
+  max-width: 25.375rem;
   width: 100vw;
   height: 100vh;
   display: flex;

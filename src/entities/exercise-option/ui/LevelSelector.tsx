@@ -1,5 +1,5 @@
 import * as s from './level-selector.style';
-import { useOptionStore } from '../../../features/exercise-option/store/option-store';
+import { useOptionStore } from '../../../features/exercise-option/store/exercise-option-store';
 
 type modalProps = {
   onOpen: () => void;
