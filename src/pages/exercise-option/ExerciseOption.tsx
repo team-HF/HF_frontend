@@ -1,10 +1,10 @@
-import Button from '../../shared/ui/button/Button';
-import LevelSelector from './components/LevelSelector';
-import StyleSelector from './components/StyleSelector';
+import LevelSelector from '../../entities/exercise-option/ui/LevelSelector';
+import StyleSelector from '../../entities/exercise-option/ui/StyleSelector';
 import * as s from './styles';
-import { useOptionStore } from '../../features/exercise-option/store/option-store';
-import InformationModal from './components/InformationModal';
+import { useOptionStore } from '../../features/exercise-option/store/exercise-option-store';
+import InformationModal from '../../entities/exercise-option/ui/InformationModal';
 import { useEffect, useState } from 'react';
+import NextButton from '../../features/exercise-option/button/NextButton';
 
 export default function MyPage() {
   const [isShowModal, setIsShowModal] = useState(false);
@@ -107,13 +107,7 @@ export default function MyPage() {
         />
       </s.SelectorContainer>
 
-      <Button
-        color="main"
-        width="20.125rem"
-        height="2.8125rem"
-        text="다음"
-        disabled={!allSelected}
-      />
+      <NextButton disabled={!allSelected} />
       {isShowModal && (
         <s.ModalContainer onClick={handleModalClickOutside}>
           <InformationModal onClose={handleModalClose} />
