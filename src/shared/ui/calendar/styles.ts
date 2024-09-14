@@ -2,8 +2,31 @@ import { styled } from 'styled-components';
 
 export const CalendarContainer = styled.div`
   width: 122px;
-  height: 48px;
   position: relative;
+
+  .react-datepicker__header {
+    border-radius: 20px 20px 0 0;
+    background-color: ${({ theme }) => theme.colors.main};
+  }
+  .react-datepicker {
+    background-color: white;
+    border-color: #000000;
+    border-radius: 20px;
+  }
+
+  .react-datepicker__header .react-datepicker__current-month {
+    color: #ffffff;
+  }
+  .react-datepicker__header .react-datepicker__day-name {
+    color: #ffffff;
+  }
+
+  .react-datepicker__day--weekend {
+    color: #ff0000;
+  }
+  .react-datepicker__day--disabled.react-datepicker__day--weekend {
+    color: #ccc;
+  }
 
   .react-datepicker__input-container input {
     width: 20.125rem;
