@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import Button from '../../shared/ui/button/Button';
 import * as s from './styles';
 import { useForm } from 'react-hook-form';
+import { usePhoneNumberFormatter } from '../../shared/utils/usePhoneNumberFormatter';
+import Calendar from '../../shared/ui/calendar/Calendar';
 
 export default function ProfileSetting() {
   const {
@@ -10,31 +12,23 @@ export default function ProfileSetting() {
     setValue,
     watch,
     clearErrors,
-    trigger,
   } = useForm({ mode: 'onChange' });
   const watchPhoneNumber = watch('phonenumber', '');
   const [formattedNumber, setFormattedNumber] = useState('');
-
-  //하이픈 추가 로직
-  const formatHypenAddNumber = (value: string) => {
-    const cleaned = value.replace(/[^0-9]/g, '');
-    if (cleaned.length <= 3) return cleaned;
-    if (cleaned.length <= 7)
-      return `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
-    return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 7)}-${cleaned.slice(
-      7,
-      11
-    )}`;
-  };
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const formatPhoneNumber = usePhoneNumberFormatter(watchPhoneNumber);
 
   // 전화번호를 입력할 때 마다 하이픈을 추가
   useEffect(() => {
-    const formatted = formatHypenAddNumber(watchPhoneNumber);
-    setFormattedNumber(formatted);
-    setValue('phonenumber', formatted);
-    trigger('phonenumber');
-  }, [watchPhoneNumber, setValue, trigger]);
+    setFormattedNumber(formatPhoneNumber);
+    setValue('phonenumber', formatPhoneNumber);
+  }, [formatPhoneNumber, setValue]);
 
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+    setValue('birth', date);
+    clearErrors('birth');
+  };
   return (
     <s.Container>
       <s.TitleContainer>프로필 설정</s.TitleContainer>
@@ -110,16 +104,8 @@ export default function ProfileSetting() {
         </s.Field>
 
         <s.Field>
-          <s.Label>내 정보</s.Label>
-          <s.Input
-            {...register('birth', {
-              required: {
-                value: true,
-                message: '생년월일을 입력해주세요.',
-              },
-            })}
-            onBlur={() => clearErrors('birth')}
-          />
+          <s.Label>생년 월일</s.Label>
+          <Calendar selectedDate={selectedDate} onChange={handleDateChange} />
         </s.Field>
 
         <s.Field>

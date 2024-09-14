@@ -21,7 +21,7 @@ export default function ProfileBox() {
             <Hashtag text="#귀차니즘형" />
             <Hashtag text="#기능성피트니스위주" />
           </s.ProfileHashtagContainer>
-          <s.ProfileIntroduction>한줄 자기소개</s.ProfileIntroduction>
+          <s.ProfileIntroduction>한줄 소개</s.ProfileIntroduction>
         </s.ProfileTextContainer>
       </s.ProfileContainer>
       <Button
