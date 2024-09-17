@@ -12,10 +12,13 @@ const Calendar = ({ selectedDate, onChange }: CalenderTypes) => {
     <s.CalendarContainer>
       <DatePicker
         locale={ko}
-        dateFormat="yyyy.MM.dd" // 날짜 형태
-        shouldCloseOnSelect // 날짜를 선택하면 datepicker가 자동으로 닫힘
-        maxDate={new Date()} // maxDate 이후 날짜 선택 불가
+        dateFormat="yyyy-MM-dd"
+        shouldCloseOnSelect // 날짜를 선택하면 datepicker가 자동으로 닫히는 설정
+        maxDate={new Date()} // 현재날짜 기준으로 이 후 날짜 선택불가
         placeholderText="YYYY-MM-DD"
+        showYearDropdown //년도 선택 드롭다운
+        showMonthDropdown //월 선택 드롭다운
+        dropdownMode="select"
         selected={selectedDate}
         onChange={onChange}
       />
