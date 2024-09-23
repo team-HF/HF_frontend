@@ -1,5 +1,5 @@
 import * as s from './matching-box.style';
-import Hashtag from '../../../shared/ui/Hashtag/Hashtag';
+import Hashtag from '../../../shared/ui/hashtag/Hashtag';
 import Button from '../../../shared/ui/button/Button';
 
 export default function MatchingBox() {
