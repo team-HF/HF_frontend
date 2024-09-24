@@ -12,7 +12,6 @@ export const Container = styled.div`
 `;
 
 export const UpperContainer = styled.div`
-  display: flex;
   align-items: flex-start;
   gap: 0.875rem;
 `;

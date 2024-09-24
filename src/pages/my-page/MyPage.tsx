@@ -1,7 +1,6 @@
 import MatchingBox from '../../entities/my-page/ui/MatchingBox';
 import ProfileBox from '../../entities/my-page/ui/ProfileBox';
 import Tab from '../../entities/my-page/ui/Tab';
-import FooterNav from '../../shared/ui/footer-nav/FooterNav';
 import * as s from './styles';
 import { useState } from 'react';
 
@@ -24,9 +23,6 @@ export default function MyPage() {
       ) : (
         <div>저장된 List</div>
       )}
-      <s.FooterContainer>
-        <FooterNav />
-      </s.FooterContainer>
     </s.Container>
   );
 }
