@@ -1,4 +1,4 @@
-import * as s from './styles';
+import * as s from './style';
 
 export default function FooterNav() {
   return (

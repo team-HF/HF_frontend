@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Button from '../../shared/ui/button/Button';
-import * as s from './styles';
+import * as s from './style';
 import { useForm } from 'react-hook-form';
 import { usePhoneNumberFormatter } from '../../shared/utils/usePhoneNumberFormatter';
 import Calendar from '../../shared/ui/calendar/Calendar';

@@ -12,7 +12,7 @@ export default function MatchingBox() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await fetch(`/api/matching-users?page=${page}&limit=5`);
+      const response = await fetch(`/api/matching-users?page=${page}&limit=1`);
       if (!response.ok) {
         throw new Error('에러');
       }
@@ -49,30 +49,33 @@ export default function MatchingBox() {
   return (
     <s.Container>
       {users.map((user, index) => (
-        <s.UpperContainer key={index}>
-          <s.ProfileIconContainer>
-            <s.ProfileIcon src={user.profileImage} alt={`${user.nickname}`} />
-          </s.ProfileIconContainer>
-          <s.ProfileTextContainer>
-            <s.UserName>{user.nickname}</s.UserName>
-            <span>{user.matchCount}회 매칭됨</span>
-            <span>{user.location}</span>
-          </s.ProfileTextContainer>
-          <s.UnderContainer>
-            <s.HashtagContainer>
-              {user.hashtags.map((tag, idx) => (
-                <Hashtag key={idx} text={tag} />
-              ))}
-            </s.HashtagContainer>
-            <Button
-              width="9rem"
-              height="2.4375rem"
-              color="main"
-              text="1:1 채팅하기"
-            />
-          </s.UnderContainer>
-        </s.UpperContainer>
+        <s.CardContainer>
+          <s.UpperContainer key={index + Math.random()}>
+            <s.ProfileIconContainer>
+              <s.ProfileIcon src={user.profileImage} alt={`${user.nickname}`} />
+            </s.ProfileIconContainer>
+            <s.ProfileTextContainer>
+              <s.UserName>{user.nickname}</s.UserName>
+              <span>{user.matchCount}회 매칭됨</span>
+              <span>{user.location}</span>
+            </s.ProfileTextContainer>
+            <s.UnderContainer>
+              <s.HashtagContainer>
+                {user.hashtags.map((tag, idx) => (
+                  <Hashtag key={idx} text={tag} />
+                ))}
+              </s.HashtagContainer>
+              <Button
+                width="9rem"
+                height="2.4375rem"
+                color="main"
+                text="1:1 채팅하기"
+              />
+            </s.UnderContainer>
+          </s.UpperContainer>
+        </s.CardContainer>
       ))}
+
       <div ref={target} style={{ height: '1px' }}></div>
     </s.Container>
   );

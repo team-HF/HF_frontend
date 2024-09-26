@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import * as s from './styles';
+import * as s from './style';
 import { useForm } from 'react-hook-form';
 import SaveButton from '../../features/profile/button/SaveButton';
 import { useProfileStore } from '../../features/profile/store/profile-store';
