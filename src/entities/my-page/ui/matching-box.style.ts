@@ -5,14 +5,16 @@ export const Container = styled.div`
   flex-direction: column;
   width: 20.125rem;
   height: auto;
-  border: 1px solid #99999999;
-  border-radius: 0.3125rem;
-  padding: 0.5rem;
   gap: 1rem;
 `;
 
+export const CardContainer = styled.div`
+  padding: 0.5rem;
+  border: 1px solid #99999999;
+  border-radius: 0.3125rem;
+  gap: 1rem;
+`;
 export const UpperContainer = styled.div`
-  display: flex;
   align-items: flex-start;
   gap: 0.875rem;
 `;
