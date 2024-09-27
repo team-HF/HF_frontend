@@ -10,7 +10,8 @@ export const SearchTabContainer = styled.div`
   padding: 0.625rem;
   top: 1.25rem;
   left: 1.25rem;
-  gap: 10px;
+  gap: 0.625rem;
+  letter-spacing: -0.0031rem;
   cursor: pointer;
 
   &:hover {
