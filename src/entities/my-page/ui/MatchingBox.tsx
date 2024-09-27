@@ -49,8 +49,8 @@ export default function MatchingBox() {
   return (
     <s.Container>
       {users.map((user, index) => (
-        <s.CardContainer>
-          <s.UpperContainer key={index + Math.random()}>
+        <s.CardContainer key={index + Math.random()}>
+          <s.UpperContainer>
             <s.ProfileIconContainer>
               <s.ProfileIcon src={user.profileImage} alt={`${user.nickname}`} />
             </s.ProfileIconContainer>

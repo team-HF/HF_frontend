@@ -1,7 +1,7 @@
 import * as s from './style';
 
 type ButtonProps = {
-  color: 'main' | 'sub' | 'point';
+  color: string;
   text: string;
   onClick?: () => void;
   disabled?: boolean;
