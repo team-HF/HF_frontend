@@ -1,9 +1,9 @@
 import * as s from './matching-box.style';
 import Hashtag from '../../../shared/ui/hashtag/Hashtag';
-import Button from '../../../shared/ui/button/Button';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { MatchingUserCard } from '../model/matching-user-card.interface';
 import { useIntersectionObserver } from '../../../shared/utils/useIntersectionObserver';
+import MediumButton from '../../../shared/ui/medium-button/MediumButton';
 
 export default function MatchingBox() {
   const [users, setUsers] = useState<MatchingUserCard[]>([]);
@@ -65,11 +65,11 @@ export default function MatchingBox() {
                   <Hashtag key={idx} text={tag} />
                 ))}
               </s.HashtagContainer>
-              <Button
-                width="9rem"
-                height="2.4375rem"
-                color="main"
-                text="1:1 채팅하기"
+              <MediumButton
+                text="임시 버튼"
+                color="black"
+                backgroundColor="gray"
+                border="1px solid black"
               />
             </s.UnderContainer>
           </s.UpperContainer>
