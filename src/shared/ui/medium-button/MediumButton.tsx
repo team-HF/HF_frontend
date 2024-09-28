@@ -8,6 +8,8 @@ type MediumButtonProps = {
   border: string;
   disabled?: boolean;
 };
+
+//disabled 속성 적용 시 스타일 고정
 export default function MediumButton({
   backgroundColor,
   text,

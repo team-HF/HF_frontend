@@ -1,6 +1,7 @@
 import MatchingBox from '../../entities/my-page/ui/MatchingBox';
 import ProfileBox from '../../entities/my-page/ui/ProfileBox';
 import Tab from '../../entities/my-page/ui/Tab';
+import Item from '../../shared/ui/item/Item';
 import * as s from './style';
 import { useState } from 'react';
 
@@ -8,6 +9,7 @@ export default function MyPage() {
   const [tab, setTab] = useState('내 운동 매칭 List');
   return (
     <s.Container>
+      <Item />
       <ProfileBox />
       <Tab currentTab={tab} setTab={setTab} />
       {tab === '내 운동 매칭 List' ? (
