@@ -12,7 +12,7 @@ export default function MatchingBox() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await fetch(`/api/matching-users?page=${page}&limit=1`);
+      const response = await fetch(`/api/matching-users?page=${page}&limit=10`);
       if (!response.ok) {
         throw new Error('에러');
       }

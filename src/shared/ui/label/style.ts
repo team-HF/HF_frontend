@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface LabelContainerProps {
-  borderColor?: string;
+  borderColor: string;
   backgroundColor?: string;
   radius: '24px' | '4px';
 }
@@ -19,7 +19,7 @@ export const LabelContainer = styled.div<LabelContainerProps>`
   border-radius: ${(props) => props.radius};
   padding: 0.375rem;
   gap: 0.625rem;
-  border: 1px solid ${(props) => props.borderColor || '#000'};
+  border: 1px solid ${(props) => props.borderColor};
   background-color: ${(props) => props.backgroundColor || '#fff'};
 `;
 
