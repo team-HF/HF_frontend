@@ -9,7 +9,6 @@ type MediumButtonProps = {
   disabled?: boolean;
 };
 
-//disabled 속성 적용 시 스타일 고정
 export default function MediumButton({
   backgroundColor,
   text,
@@ -20,12 +19,12 @@ export default function MediumButton({
 }: MediumButtonProps) {
   return (
     <s.StyledMediumButton
-      backgroundColor={backgroundColor}
-      border={border}
+      $backgroundColor={backgroundColor}
+      $border={border}
       onClick={onClick}
       disabled={disabled}
     >
-      <s.StyledText color={color} disabled={disabled}>
+      <s.StyledText $color={color} disabled={disabled}>
         {text}
       </s.StyledText>
     </s.StyledMediumButton>

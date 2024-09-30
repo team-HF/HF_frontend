@@ -58,8 +58,8 @@ export const TimeStampText = styled.p`
 `;
 
 export const DescriptionContainer = styled.div`
-  display: -webkit-box; /* 플렉스 박스처럼 사용 */
-  -webkit-line-clamp: 2; /* 최대 2줄까지 표시 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical; /* 수직 방향으로 정렬 */
   overflow: hidden;
   text-overflow: ellipsis;

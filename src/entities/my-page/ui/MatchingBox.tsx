@@ -75,8 +75,6 @@ export default function MatchingBox() {
           </s.UpperContainer>
         </s.CardContainer>
       ))}
-
-      <div ref={target} style={{ height: '1px' }}></div>
     </s.Container>
   );
 }
