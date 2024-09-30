@@ -1,9 +1,19 @@
-import React from 'react'
+import * as S from "./style";
 
-const StandardInput = () => {
-  return (
-    <div>StandardInput</div>
-  )
+interface InputProps {
+  placeholder: string;
+  error: boolean;
 }
 
-export default StandardInput
+const StandardInput = ({ placeholder, error } : InputProps) => {
+  return (
+    <>
+      <S.Container error={error}>
+        <S.Value placeholder={placeholder}/>
+      </S.Container>
+      <S.FormMessage>text~~!!~!</S.FormMessage>
+    </>
+  );
+};
+
+export default StandardInput;
