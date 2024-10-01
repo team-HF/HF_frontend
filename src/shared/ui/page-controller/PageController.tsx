@@ -12,18 +12,19 @@ const PageController = ({totalPage, onClick }: ControllerProps) => {
     setCurrentPage(selectedPage);
     onClick(/*selectedPage*/);
   };
+  const pageCircles = Array.from({ length: totalPage }, (_, index) => (
+    <S.Circle
+      key={index + 1}
+      $current_page={currentPage}
+      value={index + 1}
+      onClick={() => {
+        changePage(index + 1);
+      }}
+    />
+  ))
   return (
     <S.Container>
-      {Array.from({ length: totalPage }, (_, index) => (
-        <S.Circle
-          key={index + 1}
-          $current_page={currentPage}
-          value={index + 1}
-          onClick={() => {
-            changePage(index + 1);
-          }}
-        />
-      ))}
+      {pageCircles}
     </S.Container>
   );
 };
