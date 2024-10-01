@@ -1,8 +1,9 @@
 import styled, { css } from "styled-components";
 import { minButtonProps } from "./MinButton";
-type ShapeAndStyle = Pick<minButtonProps, "button_shape" | "button_style">;
 
-export const Container = styled.button<ShapeAndStyle>`
+type buttonProps = Pick<minButtonProps, "button_shape" | "button_style">;
+
+export const Container = styled.button<buttonProps>`
   padding: 10px;
   font-size: 14px;
   font-weight: 600;
