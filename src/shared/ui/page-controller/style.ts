@@ -2,9 +2,6 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  background-color: black;
-  width: 100vw;
-  height: 100vh;
 `;
 export const Circle = styled.div<{
     $current_page: number;
@@ -16,5 +13,5 @@ export const Circle = styled.div<{
   margin: 0px 4px;
   border-radius: 50%;
   background-color: ${({ $current_page, value }) =>
-    $current_page === value ? "white" : "rgba(255, 255, 255, 0.3)"};
+    $current_page === value ? "white" : "rgba(0, 0, 0, 0.3)"};
 `;
