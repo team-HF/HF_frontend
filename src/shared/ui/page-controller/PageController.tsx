@@ -3,14 +3,14 @@ import * as S from "./style";
 
 interface ControllerProps {
   totalPage : number
-  onClick: () => void;
+  onClick: (currentPage : number) => void;
 }
 
 const PageController = ({totalPage, onClick }: ControllerProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const changePage = (selectedPage: number) => {
     setCurrentPage(selectedPage);
-    onClick(/*selectedPage*/);
+    onClick(selectedPage);
   };
   const pageCircles = Array.from({ length: totalPage }, (_, index) => (
     <S.Circle
