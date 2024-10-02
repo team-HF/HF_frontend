@@ -1,5 +1,5 @@
-import Button from '../../../shared/ui/button/Button';
 import Hashtag from '../../../shared/ui/hashtag/Hashtag';
+import MediumButton from '../../../shared/ui/medium-button/MediumButton';
 import * as s from './profile-box.style';
 
 export default function ProfileBox() {
@@ -24,11 +24,11 @@ export default function ProfileBox() {
           <s.ProfileIntroduction>한줄 소개</s.ProfileIntroduction>
         </s.ProfileTextContainer>
       </s.ProfileContainer>
-      <Button
-        width="20.125rem"
-        height="2.8125rem"
-        color="main"
-        text="프로필설정"
+      <MediumButton
+        text="임시 버튼"
+        color="black"
+        backgroundColor="gray"
+        border="1px solid black"
       />
     </s.Container>
   );
