@@ -1,18 +1,19 @@
 import * as s from './matching-box.style';
 import Hashtag from '../../../shared/ui/hashtag/Hashtag';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { MatchingUserCard } from '../model/matching-user-card.interface';
-import { useIntersectionObserver } from '../../../shared/utils/useIntersectionObserver';
 import MediumButton from '../../../shared/ui/medium-button/MediumButton';
 
 export default function MatchingBox() {
   const [users, setUsers] = useState<MatchingUserCard[]>([]);
   const [page, setPage] = useState<number>(1);
-  const target = useRef<HTMLDivElement | null>(null);
+  const limit = 5;
 
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await fetch(`/api/matching-users?page=${page}&limit=10`);
+      const response = await fetch(
+        `/api/matching-users?page=${page}&limit=${limit}`
+      );
       if (!response.ok) {
         throw new Error('에러');
       }
@@ -24,22 +25,6 @@ export default function MatchingBox() {
       console.log('에러');
     }
   }, [page]);
-
-  const [observe, unobserve] = useIntersectionObserver(() => {
-    fetchUsers();
-  });
-
-  useEffect(() => {
-    const currentTarget = target.current;
-    if (currentTarget) {
-      observe(currentTarget);
-    }
-    return () => {
-      if (currentTarget) {
-        unobserve(currentTarget);
-      }
-    };
-  }, [observe, unobserve]);
 
   useEffect(() => {
     fetchUsers();
