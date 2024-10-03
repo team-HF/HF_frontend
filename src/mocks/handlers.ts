@@ -3,6 +3,7 @@ import { MatchingUserCard } from '../entities/my-page/model/matching-user-card.i
 
 // 더미 데이터 생성
 const dummyUsers: MatchingUserCard[] = Array.from({ length: 30 }, (_, i) => ({
+  id: i + 1,
   profileImage: '/svg/default-profile-icon.svg',
   nickname: `유저 ${i + 1}`,
   matchCount: Math.floor(Math.random() * 10) + 1,
@@ -15,15 +16,6 @@ const dummyUsers: MatchingUserCard[] = Array.from({ length: 30 }, (_, i) => ({
   ],
 }));
 
-const shuffleArray = (array: MatchingUserCard[]) => {
-  const arr = [...array];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-};
-
 // API 핸들러
 export const handlers = [
   http.get('/api/matching-users', ({ request }) => {
@@ -32,14 +24,14 @@ export const handlers = [
     const pageParam = url.searchParams.get('page');
     const limitParam = url.searchParams.get('limit');
     const page = parseInt(pageParam || '1', 10);
-    const limit = parseInt(limitParam || '1', 10);
+    const limit = parseInt(limitParam || '5', 10);
 
     const start = (page - 1) * limit;
     const end = start + limit;
 
     const totalPages = Math.ceil(dummyUsers.length / limit);
 
-    const paginatedUsers = shuffleArray(dummyUsers).slice(start, end);
+    const paginatedUsers = dummyUsers.slice(start, end);
     const responseData = {
       data: paginatedUsers,
       page,
