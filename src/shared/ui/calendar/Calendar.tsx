@@ -1,7 +1,7 @@
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
-import * as s from './style';
+import * as S from './style';
 
 type CalenderTypes = {
   selectedDate: Date | null;
@@ -9,7 +9,7 @@ type CalenderTypes = {
 };
 const Calendar = ({ selectedDate, onChange }: CalenderTypes) => {
   return (
-    <s.CalendarContainer>
+    <S.CalendarContainer>
       <DatePicker
         locale={ko}
         dateFormat="yyyy-MM-dd"
@@ -22,7 +22,7 @@ const Calendar = ({ selectedDate, onChange }: CalenderTypes) => {
         selected={selectedDate}
         onChange={onChange}
       />
-    </s.CalendarContainer>
+    </S.CalendarContainer>
   );
 };
 

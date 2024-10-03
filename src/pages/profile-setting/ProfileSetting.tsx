@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import * as s from './style';
+import * as S from './style';
 import { useForm } from 'react-hook-form';
 import { usePhoneNumberFormatter } from '../../shared/utils/usePhoneNumberFormatter';
 import Calendar from '../../shared/ui/calendar/Calendar';
@@ -30,19 +30,19 @@ export default function ProfileSetting() {
     clearErrors('birth');
   };
   return (
-    <s.Container>
-      <s.TitleContainer>프로필 설정</s.TitleContainer>
-      <s.ProfileIconContainer>
-        <s.ProfileImage
+    <S.Container>
+      <S.TitleContainer>프로필 설정</S.TitleContainer>
+      <S.ProfileIconContainer>
+        <S.ProfileImage
           src="/svg/default-profile-icon.svg"
           alt="default-profile"
         />
-        <s.ProfileChangeButton />
-      </s.ProfileIconContainer>
-      <s.FieldContainer>
-        <s.Field>
-          <s.Label>이름</s.Label>
-          <s.Input
+        <S.ProfileChangeButton />
+      </S.ProfileIconContainer>
+      <S.FieldContainer>
+        <S.Field>
+          <S.Label>이름</S.Label>
+          <S.Input
             type="text"
             {...register('name', {
               required: { value: true, message: '이름을 입력해주세요' },
@@ -54,13 +54,13 @@ export default function ProfileSetting() {
             onBlur={() => clearErrors('name')}
           />
           {errors.name?.message && typeof errors.name.message === 'string' && (
-            <s.ErrorMessage>{errors.name.message}</s.ErrorMessage>
+            <S.ErrorMessage>{errors.name.message}</S.ErrorMessage>
           )}
-        </s.Field>
+        </S.Field>
 
-        <s.Field>
-          <s.Label>닉네임</s.Label>
-          <s.Input
+        <S.Field>
+          <S.Label>닉네임</S.Label>
+          <S.Input
             type="text"
             placeholder="영문, 숫자, 한글만 입력 가능합니다 (최대 8글자)"
             {...register('nickname', {
@@ -78,13 +78,13 @@ export default function ProfileSetting() {
           />
           {errors.nickname?.message &&
             typeof errors.nickname.message === 'string' && (
-              <s.ErrorMessage>{errors.nickname.message}</s.ErrorMessage>
+              <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
             )}
-        </s.Field>
+        </S.Field>
 
-        <s.Field>
-          <s.Label>휴대폰 번호</s.Label>
-          <s.Input
+        <S.Field>
+          <S.Label>휴대폰 번호</S.Label>
+          <S.Input
             type="text"
             value={formattedNumber}
             placeholder="-을 제외하고 입력해주세요"
@@ -99,18 +99,18 @@ export default function ProfileSetting() {
           />
           {errors.phonenumber?.message &&
             typeof errors.phonenumber?.message === 'string' && (
-              <s.ErrorMessage>{errors.phonenumber.message}</s.ErrorMessage>
+              <S.ErrorMessage>{errors.phonenumber.message}</S.ErrorMessage>
             )}
-        </s.Field>
+        </S.Field>
 
-        <s.Field>
-          <s.Label>생년 월일</s.Label>
+        <S.Field>
+          <S.Label>생년 월일</S.Label>
           <Calendar selectedDate={selectedDate} onChange={handleDateChange} />
-        </s.Field>
+        </S.Field>
 
-        <s.Field>
-          <s.Label>한줄 소개</s.Label>
-          <s.Input
+        <S.Field>
+          <S.Label>한줄 소개</S.Label>
+          <S.Input
             type="text"
             {...register('introduction', {
               required: {
@@ -120,21 +120,21 @@ export default function ProfileSetting() {
             })}
             onBlur={() => clearErrors('introduction')}
           />
-        </s.Field>
+        </S.Field>
 
-        <s.Field>
-          <s.Label>운동 스타일 변경</s.Label>
-          <s.Input />
-        </s.Field>
-      </s.FieldContainer>
-      <s.ButtonContainer>
+        <S.Field>
+          <S.Label>운동 스타일 변경</S.Label>
+          <S.Input />
+        </S.Field>
+      </S.FieldContainer>
+      <S.ButtonContainer>
         <MediumButton
           text="임시 버튼"
           color="black"
           backgroundColor="gray"
           border="1px solid black"
         />
-      </s.ButtonContainer>
-    </s.Container>
+      </S.ButtonContainer>
+    </S.Container>
   );
 }

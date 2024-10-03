@@ -37,7 +37,22 @@ export const handlers = [
     const start = (page - 1) * limit;
     const end = start + limit;
 
+    const totalPages = Math.ceil(dummyUsers.length / limit);
+
     const paginatedUsers = shuffleArray(dummyUsers).slice(start, end);
-    return HttpResponse.json(paginatedUsers);
+    const responseData = {
+      data: paginatedUsers,
+      page,
+      limit,
+      totalPages,
+      totalUsers: dummyUsers.length,
+    };
+
+    if (page > totalPages) {
+      return HttpResponse.json({
+        message: '페이지 수를 초과했습니다.',
+      });
+    }
+    return HttpResponse.json(responseData);
   }),
 ];

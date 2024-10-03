@@ -1,9 +1,9 @@
-import * as s from './hashtag.style';
+import * as S from './hashtag.style';
 
 type HashtagProps = {
   text: string;
 };
 
 export default function Hashtag({ text }: HashtagProps) {
-  return <s.HashtagBox>{text}</s.HashtagBox>;
+  return <S.HashtagBox>{text}</S.HashtagBox>;
 }

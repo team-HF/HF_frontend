@@ -1,7 +1,7 @@
-import * as S from "./style";
-import { useEffect } from "react";
-import kakaoOauth from "./api/kakaoOauth";
-import googleOauth from "./api/googleOauth";
+import * as S from './style';
+import { useEffect } from 'react';
+import kakaoOauth from './api/kakaoOauth';
+import googleOauth from './api/googleOauth';
 
 const KAKAO_BASE_URL = import.meta.env.VITE_KAKAO_BASE_URL;
 const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
@@ -13,12 +13,12 @@ const GOOGLE_REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
 const GOOGLE_AUTH_URL = `${GOOGLE_OAUTH_URL}&redirect_uri=${GOOGLE_REDIRECT_URI}&client_id=${GOOGLE_CLIENT_ID}`;
 
 const Login = () => {
-  const code = new URL(window.location.href).searchParams.get("code") || "";
+  const code = new URL(window.location.href).searchParams.get('code') || '';
   const path = window.location.pathname;
   useEffect(() => {
     if (code) {
       (async () => {
-        if (path === "/oauth/kakao") {
+        if (path === '/oauth/kakao') {
           await kakaoOauth(code);
         } else {
           await googleOauth(code);
