@@ -20,6 +20,7 @@ export default function ProfileBox() {
             <Hashtag text="#소규모형" />
             <Hashtag text="#귀차니즘형" />
             <Hashtag text="#기능성피트니스위주" />
+            <Hashtag text="#헬스헬스고강도헬스" />
           </s.ProfileHashtagContainer>
           <s.ProfileIntroduction>한줄 소개</s.ProfileIntroduction>
         </s.ProfileTextContainer>
