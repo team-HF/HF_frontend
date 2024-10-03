@@ -28,3 +28,7 @@ export const MatchingTitle = styled.div`
   font-weight: 700;
   margin-bottom: -0.0625rem;
 `;
+
+export const FooterContainer = styled.div`
+  max-width: 24.375rem;
+`;
