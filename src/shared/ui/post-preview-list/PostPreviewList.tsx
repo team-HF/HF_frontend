@@ -1,17 +1,18 @@
-import * as s from './style';
+import * as s from "./style";
 
-export default function PostPreviewList() {
-  const data = {
-    category: '카테고리',
-    title: '대제목',
-    description:
-      '최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄',
-    timestamp: '1시간 전',
-    view: '12',
-    heart: '14',
-    comment: '13',
+interface PostPreviewListProps {
+  data: {
+    category: string;
+    title: string;
+    description: string;
+    timestamp: string;
+    view: string;
+    heart: string;
+    comment: string;
   };
+}
 
+export default function PostPreviewList({ data }: PostPreviewListProps) {
   return (
     <s.PostPreviewContainer>
       <s.CategoryWrapper>
