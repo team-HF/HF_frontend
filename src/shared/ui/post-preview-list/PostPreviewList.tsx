@@ -1,20 +1,25 @@
 import * as s from "./style";
+import { useNavigate } from "react-router-dom";
 
 interface PostPreviewListProps {
   data: {
+    id: number;
     category: string;
     title: string;
     description: string;
     timestamp: string;
-    view: string;
-    heart: string;
-    comment: string;
+    view: number;
+    heart: number;
+    comment: number;
   };
 }
 
 export default function PostPreviewList({ data }: PostPreviewListProps) {
+  const navigate = useNavigate();
   return (
-    <s.PostPreviewContainer>
+    <s.PostPreviewContainer
+      onClick={() => navigate(`/community/post-detail/${data.id}`)}
+    >
       <s.CategoryWrapper>
         <s.CategoryText>{data.category}</s.CategoryText>
       </s.CategoryWrapper>

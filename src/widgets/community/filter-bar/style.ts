@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { theme } from "../../../app/theme";
 
 export const Container = styled.div`
   display: flex;
@@ -13,4 +14,28 @@ export const Container = styled.div`
   }
 `;
 export const LabelContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+export const LabelBtn = styled.button<{ checked: boolean }>`
+  display: flex;
+  box-sizing: border-box;
+  padding: 0.625rem;
+  border-radius: 2.125rem;
+
+  font-size: 14px;
+  line-height: 1rem;
+  letter-spacing: -0.01rem;
+  ${({ checked }) =>
+    checked
+      ? css`
+          border: 0;
+          background-color: ${theme.colors.main};
+          color: ${theme.colors.white};
+        `
+      : css`
+          border: 1px solid #cfc4fb;
+          background-color: ${theme.colors.white};
+          color: ${theme.colors.main};
+        `}
 `;

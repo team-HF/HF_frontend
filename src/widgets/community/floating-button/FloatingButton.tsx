@@ -4,7 +4,7 @@ import * as S from "./style";
 const FloatingButton = () => {
   const navigate = useNavigate();
   const moveToRegister = () => {
-    navigate("/community/register");
+    navigate("/community/post-register");
   };
   return (
     <S.Container onClick={moveToRegister}>

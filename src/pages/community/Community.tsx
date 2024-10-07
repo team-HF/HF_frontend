@@ -7,58 +7,17 @@ import CommunityHeader from "../../widgets/community/community-header/CommunityH
 import PostPreviewList from "../../shared/ui/post-preview-list/PostPreviewList";
 import FloatingButton from "../../widgets/community/floating-button/FloatingButton";
 
-const dummy = [
-  {
-    category: "카테고리",
-    title: "대제목",
-    description:
-      "최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄",
-    timestamp: "1시간 전",
-    view: "12",
-    heart: "14",
-    comment: "13",
-  },
-  {
-    category: "카테고리",
-    title: "대제목",
-    description:
-      "최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄",
-    timestamp: "1시간 전",
-    view: "12",
-    heart: "14",
-    comment: "13",
-  },
-  {
-    category: "카테고리",
-    title: "대제목",
-    description:
-      "최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄",
-    timestamp: "1시간 전",
-    view: "12",
-    heart: "14",
-    comment: "13",
-  },
-  {
-    category: "카테고리",
-    title: "대제목",
-    description:
-      "최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄",
-    timestamp: "1시간 전",
-    view: "12",
-    heart: "14",
-    comment: "13",
-  },
-  {
-    category: "카테고리",
-    title: "대제목",
-    description:
-      "최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄",
-    timestamp: "1시간 전",
-    view: "12",
-    heart: "14",
-    comment: "13",
-  },
-];
+const dummy = Array(5).fill({
+  id: 1,
+  category: "카테고리",
+  title: "대제목",
+  description:
+    "최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄최대 2줄",
+  timestamp: "1시간 전",
+  view: 12,
+  heart: 14,
+  comment: 13,
+});
 
 const Community = () => {
   const [contentType, setContentType] = useState<string>(
@@ -70,7 +29,12 @@ const Community = () => {
     );
     return findObject ? findObject.filterType : "dropdown";
   };
-  const contentsList = dummy.map((data) => <PostPreviewList data={data} />);
+  const contentsList = dummy.map((data, idx) => (
+    <PostPreviewList
+      key={`community_post_${idx}`}
+      data={data}
+    />
+  ));
   return (
     <S.Container>
       <CommunityHeader />
