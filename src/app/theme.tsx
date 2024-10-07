@@ -16,7 +16,7 @@ export const theme = {
       letterSpacing: '-0.027em',
     },
     title_2: {
-      fontSize: '28x',
+      fontSize: '28px',
       lineHeight: 'normal',
       letterSpacing: '-0.0236em',
     },
