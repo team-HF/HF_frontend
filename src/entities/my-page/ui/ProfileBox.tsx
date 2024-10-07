@@ -5,11 +5,6 @@ import * as S from './profile-box.style';
 export default function ProfileBox() {
   return (
     <S.Container>
-      <S.HeaderContainer>
-        <S.HeaderText>프로필 입력</S.HeaderText>
-        <S.BellIcon src="/svg/bell-icon.svg" alt="bell-icon"></S.BellIcon>
-        <S.MenuIcon src="/svg/menu-icon.svg" alt="menu-icon"></S.MenuIcon>
-      </S.HeaderContainer>
       <S.ProfileContainer>
         <S.ProfileIconContainer>
           <img src="/svg/default-profile-icon.svg" alt="default-profile" />
