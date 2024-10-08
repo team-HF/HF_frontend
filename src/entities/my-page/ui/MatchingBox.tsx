@@ -1,4 +1,3 @@
-// src/components/MatchingBox.tsx
 import * as S from './matching-box.style';
 import Hashtag from '../../../shared/ui/hashtag/Hashtag';
 import { useEffect, useState, useCallback } from 'react';
