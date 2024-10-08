@@ -6,8 +6,8 @@ type LargeButtonProps = {
 };
 export default function LargeButton({ text, onClick }: LargeButtonProps) {
   return (
-    <S.Container>
-      <S.StyledText onClick={onClick}>{text}</S.StyledText>
+    <S.Container onClick={onClick}>
+      <S.StyledText>{text}</S.StyledText>
     </S.Container>
   );
 }

@@ -10,6 +10,7 @@ export const Container = styled.div`
   gap: 4px;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const StyledText = styled.span`
