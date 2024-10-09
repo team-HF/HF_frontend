@@ -1,4 +1,4 @@
-import * as s from './style';
+import * as S from './style';
 
 type MediumButtonProps = {
   text: string;
@@ -18,15 +18,15 @@ export default function MediumButton({
   disabled,
 }: MediumButtonProps) {
   return (
-    <s.StyledMediumButton
+    <S.StyledMediumButton
       $backgroundColor={backgroundColor}
       $border={border}
       onClick={onClick}
       disabled={disabled}
     >
-      <s.StyledText $color={color} disabled={disabled}>
+      <S.StyledText $color={color} disabled={disabled}>
         {text}
-      </s.StyledText>
-    </s.StyledMediumButton>
+      </S.StyledText>
+    </S.StyledMediumButton>
   );
 }

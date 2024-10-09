@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { theme } from "../../app/theme";
+import styled from 'styled-components';
+import { theme } from '../../app/theme';
 
 export const Container = styled.div`
   display: flex;
@@ -9,7 +9,7 @@ export const Container = styled.div`
 `;
 export const LoginTitle = styled.h1`
   position: relative;
-  top : 15vh;
+  top: 15vh;
   ${theme.fontSize.title_1};
 `;
 export const BtnBox = styled.div`
@@ -28,19 +28,19 @@ export const OauthBtn = styled.button`
   height: 44px;
   border: 0px;
   border-radius: 10px;
-  color: ${theme.font.colors.black};
-  ${theme.fontSize.body_2_bold}
+  color: ${theme.colors.black};
+  ${theme.fontSize.heading_1}
   &.button_login_google {
     border: 1px solid #c7c7c7;
-    background-color: ${theme.font.colors.white};
+    background-color: ${theme.colors.white};
     margin-bottom: 20px;
   }
   &.button_login_kakao {
     background-color: #fae100;
   }
 `;
-export const LogoIcon = styled.div<{ path: string }>`
-  background-image: url(${props => props.path});
+export const LogoIcon = styled.div<{ src: string }>`
+  background-image: url(${(props) => props.src});
   width: 19px;
   height: 18px;
   background-size: contain;

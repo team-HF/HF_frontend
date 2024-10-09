@@ -1,12 +1,12 @@
-import * as s from './style';
+import * as S from './style';
 
 type SearchTabIconProps = {
   text: string;
 };
 export default function SearchTabItem({ text }: SearchTabIconProps) {
   return (
-    <s.SearchTabContainer>
-      <s.TabText>{text}</s.TabText>
-    </s.SearchTabContainer>
+    <S.SearchTabContainer>
+      <S.TabText>{text}</S.TabText>
+    </S.SearchTabContainer>
   );
 }
