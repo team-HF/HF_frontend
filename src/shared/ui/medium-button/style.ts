@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-// Styled Components with Transient Props
 export const StyledMediumButton = styled.button<{
   $backgroundColor: string;
   $border: string;

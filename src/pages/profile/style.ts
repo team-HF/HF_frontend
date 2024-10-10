@@ -76,7 +76,6 @@ export const Input = styled.input`
   font-size: 0.75rem;
   line-height: 1.125rem;
   color: #000000;
-
   &:focus {
     outline: none;
     border-color: #000000;
