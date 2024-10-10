@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 
 interface PostPreviewListProps {
   data: {
-    id: number;
+    postId: number;
     category: string;
     title: string;
-    description: string;
-    timestamp: string;
-    view: number;
-    heart: number;
-    comment: number;
+    content_part: string;
+    creation_time: string;
+    view_count: number;
+    like_count: number;
+    comment_count: number;
+    fitnessLevel: string;
   };
 }
 
@@ -18,28 +19,28 @@ export default function PostPreviewList({ data }: PostPreviewListProps) {
   const navigate = useNavigate();
   return (
     <s.PostPreviewContainer
-      onClick={() => navigate(`/community/post-detail/${data.id}`)}
+      onClick={() => navigate(`/community/post-detail/${data.postId}`)}
     >
       <s.CategoryWrapper>
         <s.CategoryText>{data.category}</s.CategoryText>
       </s.CategoryWrapper>
       <s.TitleContainer>
         <s.TitleText>{data.title}</s.TitleText>
-        <s.TimeStampText>{data.timestamp}</s.TimeStampText>
+        <s.TimeStampText>{data.creation_time}</s.TimeStampText>
       </s.TitleContainer>
-      <s.DescriptionContainer>{data.description}</s.DescriptionContainer>
+      <s.DescriptionContainer>{data.content_part}</s.DescriptionContainer>
       <s.IconContainer>
         <s.ViewWrapper>
           <s.StyledIcon src="/svg/view-icon.svg" alt="view-icon" />
-          <s.StyledIconText>{data.view}</s.StyledIconText>
+          <s.StyledIconText>{data.view_count}</s.StyledIconText>
         </s.ViewWrapper>
         <s.HeartWrapper>
           <s.StyledIcon src="/svg/heart-icon.svg" alt="heart-icon" />
-          <s.StyledIconText>{data.heart}</s.StyledIconText>
+          <s.StyledIconText>{data.like_count}</s.StyledIconText>
         </s.HeartWrapper>
         <s.CommentWrapper>
           <s.StyledIcon src="svg/comment-icon.svg" alt="comment-icon" />
-          <s.StyledIconText>{data.comment}</s.StyledIconText>
+          <s.StyledIconText>{data.comment_count}</s.StyledIconText>
         </s.CommentWrapper>
       </s.IconContainer>
     </s.PostPreviewContainer>

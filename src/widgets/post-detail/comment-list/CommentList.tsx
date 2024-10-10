@@ -1,18 +1,40 @@
-import CommentCard from "../comment-card/CommentCard";
 import * as S from "./style";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import getComment from "./api/useGetComment";
+import CommentCard from "../comment-card/CommentCard";
 
-const commentData = Array(5).fill({
-  commentId: 1,
-  displayName: "닉네임",
-  comment:
-    "내용 내용 내용 내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용내용 내용 내용",
-  timeStamp: "2024.01.11",
-});
+export interface Comment {
+  commentId: number;
+  postId: number;
+  writerId: number;
+  content: string;
+  creationTime: Date;
+  lastModified: Date;
+}
 
 const CommentList = () => {
-  const commentList = commentData.map((data, idx) => (
-    <CommentCard key={`post_comment_${idx}`} commentData={data} />
+  const { id } = useParams();
+  const postId = Number(id);
+  const [commentDataList, setCommentDataList] = useState<Comment[]>([]);
+  const commentList = commentDataList.map((data, idx) => (
+    <CommentCard key={`post_comment_${idx}`} data={data} />
   ));
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getComment({
+          postId: postId,
+          sortType: "LATEST",
+        });
+        if (Array.isArray(response)) {
+          setCommentDataList([...response]);
+        }
+      } catch (error) {
+        console.error("Error Getting community post", error);
+      }
+    })();
+  }, []);
   return <S.Container>{commentList}</S.Container>;
 };
 

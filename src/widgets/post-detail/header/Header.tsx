@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <S.Container>
       <S.BackIcon
-        src={"public/svg/arrow-down.svg"}
+        src={"/svg/arrow-down.svg"}
         onClick={() => navigate(-1)}
       />
       <S.Title>커뮤니티</S.Title>
