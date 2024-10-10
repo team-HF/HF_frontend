@@ -9,7 +9,7 @@ export const Container = styled.div`
 `;
 export const LoginTitle = styled.h1`
   position: relative;
-  top : 15vh;
+  top: 15vh;
   ${theme.fontSize.title_1};
 `;
 export const BtnBox = styled.div`
@@ -26,13 +26,16 @@ export const OauthBtn = styled.button`
   align-items: center;
   width: 342px;
   height: 44px;
-  border: 0px;
+  border: none;
   border-radius: 10px;
-  color: ${theme.font.colors.black};
-  ${theme.fontSize.body_2_bold}
+  color: ${theme.colors.black};
+  font-size: 0.938rem;
+  font-weight: 700;
+  line-height: 1.467rem;
+  letter-spacing: -0.01rem;
   &.button_login_google {
     border: 1px solid #c7c7c7;
-    background-color: ${theme.font.colors.white};
+    background-color: ${theme.colors.white};
     margin-bottom: 20px;
   }
   &.button_login_kakao {
@@ -40,7 +43,7 @@ export const OauthBtn = styled.button`
   }
 `;
 export const LogoIcon = styled.div<{ src: string }>`
-  background-image: url(${props => props.src});
+  background-image: url(${(props) => props.src});
   width: 19px;
   height: 18px;
   background-size: contain;

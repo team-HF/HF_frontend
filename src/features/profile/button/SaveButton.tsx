@@ -1,4 +1,4 @@
-import Button from '../../../shared/ui/button/Button';
+import MediumButton from '../../../shared/ui/medium-button/MediumButton';
 
 type SaveButtonProps = {
   disabled: boolean;
@@ -6,11 +6,11 @@ type SaveButtonProps = {
 export default function SaveButton({ disabled }: SaveButtonProps) {
   return (
     <div>
-      <Button
-        width="20.125rem"
-        height="2.8125rem"
-        color="main"
-        text="저장"
+      <MediumButton
+        text="임시 버튼"
+        color="black"
+        backgroundColor="gray"
+        border="1px solid black"
         disabled={disabled}
       />
     </div>

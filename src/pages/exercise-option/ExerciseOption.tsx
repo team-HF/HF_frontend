@@ -1,6 +1,6 @@
 import LevelSelector from '../../entities/exercise-option/ui/LevelSelector';
 import StyleSelector from '../../entities/exercise-option/ui/StyleSelector';
-import * as s from './styles';
+import * as s from './style';
 import { useOptionStore } from '../../features/exercise-option/store/exercise-option-store';
 import InformationModal from '../../entities/exercise-option/ui/InformationModal';
 import { useEffect, useState } from 'react';

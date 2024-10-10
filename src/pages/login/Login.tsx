@@ -16,6 +16,7 @@ const Login = () => {
   const code = new URL(window.location.href).searchParams.get("code") || "";
   const path = window.location.pathname;
   useEffect(() => {
+    console.log(code)
     if (code) {
       (async () => {
         if (path === "/oauth/kakao") {
