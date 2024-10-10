@@ -4,12 +4,15 @@ export const CalendarContainer = styled.div`
   width: 122px;
   position: relative;
 
+  .react-datepicker__input-container input::placeholder {
+    color: #999999;
+  }
   .react-datepicker__header {
     border-radius: 20px 20px 0 0;
-    background-color: ${({ theme }) => theme.colors.main};
+    background-color: #000000;
   }
   .react-datepicker {
-    background-color: white;
+    background-color: #ffffff;
     border-color: #000000;
     border-radius: 20px;
   }
@@ -31,8 +34,8 @@ export const CalendarContainer = styled.div`
   .react-datepicker__input-container input {
     width: 20.125rem;
     height: 2.125rem;
-    border: 1px solid #cccccc;
-    border-radius: 0.5rem;
+    border: none;
+    border-bottom: 1px solid #ededed;
     padding: 0.5rem;
     font-size: 0.75rem;
     line-height: 1.125rem;
@@ -41,6 +44,28 @@ export const CalendarContainer = styled.div`
     &:focus {
       outline: none;
       border: 1px solid #000000;
+    }
+  }
+
+  .react-datepicker__triangle {
+    display: none;
+  }
+
+  .react-datepicker__month-dropdown-container,
+  .react-datepicker__year-dropdown-container {
+    select {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 4px;
+      font-size: 1rem;
+      color: #333;
+      cursor: pointer;
+      appearance: none;
+    }
+
+    select::-ms-expand {
+      display: none;
     }
   }
 `;
