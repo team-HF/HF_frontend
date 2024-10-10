@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import * as S from './style';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Calendar from '../../shared/ui/calendar/Calendar';
 import MediumButton from '../../shared/ui/medium-button/MediumButton';
 import GenderDropdown from '../../shared/ui/gender-select-dropdown/GenderSelectDropdown';
 import BackHeader from '../../shared/ui/back-header/BackHeader';
+import { User } from '../../shared/types/user';
 
 export default function ProfileSetting() {
   const {
@@ -12,8 +13,10 @@ export default function ProfileSetting() {
     formState: { errors },
     setValue,
     clearErrors,
-  } = useForm({ mode: 'onChange' });
+    handleSubmit,
+  } = useForm<User>({ mode: 'onChange' });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [formattedBirthDate, setFormattedBirthDate] = useState<string>('');
   const [selectedGender, setSelectedGender] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -22,6 +25,7 @@ export default function ProfileSetting() {
       setImageFile(event.target.files[0]);
     }
   };
+
   const handleGenderChange = (gender: string) => {
     setSelectedGender(gender);
     setValue('gender', gender);
@@ -30,12 +34,38 @@ export default function ProfileSetting() {
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
-    setValue('birth', date);
+    if (date) {
+      const formattedDate = `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      setFormattedBirthDate(formattedDate);
+      setValue('birth', formattedDate);
+    } else {
+      setFormattedBirthDate('');
+      setValue('birth', '');
+    }
     clearErrors('birth');
   };
 
+  const onSubmit: SubmitHandler<User> = (data: User) => {
+    const formData = new FormData();
+    formData.append('nickname', data.nickname);
+    formData.append('gender', data.gender);
+    formData.append('introduction', data.introduction);
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+    if (formattedBirthDate) {
+      formData.append('birth', formattedBirthDate);
+    }
+
+    for (const value of formData.values()) {
+      console.log(value);
+    }
+  };
+
   return (
-    <S.Container>
+    <S.Container as="form" onSubmit={handleSubmit(onSubmit)}>
       <BackHeader text="프로필 입력" />
       <S.ProfileIconContainer>
         {imageFile ? (
@@ -49,6 +79,7 @@ export default function ProfileSetting() {
 
         <S.ProfileChangeButton>
           <input
+            {...register('image')}
             type="file"
             accept="image/*"
             hidden
@@ -117,6 +148,7 @@ export default function ProfileSetting() {
           color="black"
           backgroundColor="gray"
           border="1px solid black"
+          type="submit"
         />
       </S.ButtonContainer>
     </S.Container>

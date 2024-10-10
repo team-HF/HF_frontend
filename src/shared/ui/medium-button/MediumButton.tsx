@@ -7,6 +7,8 @@ type MediumButtonProps = {
   onClick?: () => void;
   border: string;
   disabled?: boolean;
+  // eslint-disable-next-line
+  type?: any;
 };
 
 export default function MediumButton({

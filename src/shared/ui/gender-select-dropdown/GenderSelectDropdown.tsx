@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import * as S from './style';
-import {
-  UseFormRegister,
-  UseFormClearErrors,
-  FieldValues,
-} from 'react-hook-form';
+import { UseFormRegister, UseFormClearErrors } from 'react-hook-form';
+import { User } from '../../types/user';
 
 type GenderDropdownProps = {
   selectedGender: string;
   onGenderSelect: (gender: string) => void;
-  register: UseFormRegister<FieldValues>;
-  clearErrors: UseFormClearErrors<FieldValues>;
+  register: UseFormRegister<User>;
+  clearErrors: UseFormClearErrors<User>;
 };
 
 export default function GenderDropdown({
