@@ -1,63 +1,63 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as S from './style';
 import { useForm } from 'react-hook-form';
-import { usePhoneNumberFormatter } from '../../shared/utils/usePhoneNumberFormatter';
 import Calendar from '../../shared/ui/calendar/Calendar';
 import MediumButton from '../../shared/ui/medium-button/MediumButton';
+import GenderDropdown from '../../shared/ui/gender-select-dropdown/GenderSelectDropdown';
+import BackHeader from '../../shared/ui/back-header/BackHeader';
 
 export default function ProfileSetting() {
   const {
     register,
     formState: { errors },
     setValue,
-    watch,
     clearErrors,
   } = useForm({ mode: 'onChange' });
-  const watchPhoneNumber = watch('phonenumber', '');
-  const [formattedNumber, setFormattedNumber] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const formatPhoneNumber = usePhoneNumberFormatter(watchPhoneNumber);
+  const [selectedGender, setSelectedGender] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
-  // 전화번호를 입력할 때 마다 하이픈을 추가
-  useEffect(() => {
-    setFormattedNumber(formatPhoneNumber);
-    setValue('phonenumber', formatPhoneNumber);
-  }, [formatPhoneNumber, setValue]);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setImageFile(event.target.files[0]);
+    }
+  };
+  const handleGenderChange = (gender: string) => {
+    setSelectedGender(gender);
+    setValue('gender', gender);
+    clearErrors('gender');
+  };
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
     setValue('birth', date);
     clearErrors('birth');
   };
+
   return (
     <S.Container>
-      <S.TitleContainer>프로필 설정</S.TitleContainer>
+      <BackHeader text="프로필 입력" />
       <S.ProfileIconContainer>
-        <S.ProfileImage
-          src="/svg/default-profile-icon.svg"
-          alt="default-profile"
-        />
-        <S.ProfileChangeButton />
+        {imageFile ? (
+          <S.ProfileUploadImage
+            src={URL.createObjectURL(imageFile)}
+            alt="profile-image"
+          />
+        ) : (
+          <S.ProfileDefaultIcon />
+        )}
+
+        <S.ProfileChangeButton>
+          <input
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={handleImageChange}
+          />
+          <S.ProfileChangeImage src="/svg/camera-icon.svg" alt="camera-icon" />
+        </S.ProfileChangeButton>
       </S.ProfileIconContainer>
       <S.FieldContainer>
-        <S.Field>
-          <S.Label>이름</S.Label>
-          <S.Input
-            type="text"
-            {...register('name', {
-              required: { value: true, message: '이름을 입력해주세요' },
-              pattern: {
-                value: /^[가-힣]{1,20}$/,
-                message: '올바른 이름을 입력해주세요.',
-              },
-            })}
-            onBlur={() => clearErrors('name')}
-          />
-          {errors.name?.message && typeof errors.name.message === 'string' && (
-            <S.ErrorMessage>{errors.name.message}</S.ErrorMessage>
-          )}
-        </S.Field>
-
         <S.Field>
           <S.Label>닉네임</S.Label>
           <S.Input
@@ -83,35 +83,24 @@ export default function ProfileSetting() {
         </S.Field>
 
         <S.Field>
-          <S.Label>휴대폰 번호</S.Label>
-          <S.Input
-            type="text"
-            value={formattedNumber}
-            placeholder="-을 제외하고 입력해주세요"
-            {...register('phonenumber', {
-              required: '휴대폰 번호를 입력해주세요.',
-              pattern: {
-                value: /^01([0])-([0-9]{4})-([0-9]{4})$/,
-                message: '번호 형식이 올바르지 않습니다',
-              },
-            })}
-            onBlur={() => clearErrors('phonenumber')}
-          />
-          {errors.phonenumber?.message &&
-            typeof errors.phonenumber?.message === 'string' && (
-              <S.ErrorMessage>{errors.phonenumber.message}</S.ErrorMessage>
-            )}
-        </S.Field>
-
-        <S.Field>
           <S.Label>생년 월일</S.Label>
           <Calendar selectedDate={selectedDate} onChange={handleDateChange} />
         </S.Field>
 
         <S.Field>
+          <S.Label>성별</S.Label>
+          <GenderDropdown
+            selectedGender={selectedGender}
+            onGenderSelect={handleGenderChange}
+            register={register}
+            clearErrors={clearErrors}
+          />
+        </S.Field>
+        <S.Field>
           <S.Label>한줄 소개</S.Label>
           <S.Input
             type="text"
+            placeholder="나를 소개할 한 줄을 작성해주세요."
             {...register('introduction', {
               required: {
                 value: true,
@@ -120,11 +109,6 @@ export default function ProfileSetting() {
             })}
             onBlur={() => clearErrors('introduction')}
           />
-        </S.Field>
-
-        <S.Field>
-          <S.Label>운동 스타일 변경</S.Label>
-          <S.Input />
         </S.Field>
       </S.FieldContainer>
       <S.ButtonContainer>
