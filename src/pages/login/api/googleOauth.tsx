@@ -9,11 +9,11 @@ const REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
 const googleOauth = async(code: string) => {
   return await axios
     .post(APIS_URL, {
-      code: code,
       client_id: CLIENT_ID,
       client_secret: CLIENT_PASSWORD,
-      redirect_uri: REDIRECT_URI,
+      code: code,
       grant_type: "authorization_code",
+      redirect_uri: REDIRECT_URI,
     })
     .then((res) => {
       const { access_token } = res.data;
