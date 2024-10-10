@@ -1,11 +1,11 @@
-import * as s from './style';
+import * as S from './style';
 
 export default function CancelButton() {
   return (
-    <s.Container>
-      <s.CancelButtonContainer>
-        <s.CancelSVG src="/svg/cancel-icon.svg" alt="cancel-icon" />
-      </s.CancelButtonContainer>
-    </s.Container>
+    <S.Container>
+      <S.CancelButtonContainer>
+        <S.CancelSVG src="/svg/cancel-icon.svg" alt="cancel-icon" />
+      </S.CancelButtonContainer>
+    </S.Container>
   );
 }

@@ -16,7 +16,7 @@ export const theme = {
       letterSpacing: '-0.027em',
     },
     title_2: {
-      fontSize: '28x',
+      fontSize: '28px',
       lineHeight: 'normal',
       letterSpacing: '-0.0236em',
     },
@@ -85,7 +85,7 @@ export const theme = {
     gray4: '#ADB5BD', // 플레이스 홀더, 중요도 낮은
     gray5: '#868E96', // 제목, 분문들의 한단계 낮은
     gray6: '#212529', // 제목, 헤더
-    linear: 'linear-gradient(91.3deg, #6441F2 -17.11%, #CDFB7C 138.78%)', // 그라데이션 색상
+    linear: 'linear-gradient(91.14deg, #6441F2 -39.38%, #1E90FF 100%)', // 그라데이션 색상
   },
   shadows: {
     shadow1: `

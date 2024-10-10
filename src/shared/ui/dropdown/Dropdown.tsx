@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import * as s from './style';
+import * as S from './style';
 
 export default function Dropdown() {
   const dropdownData = ['5개', '10개', '15개', '20개'];
@@ -14,20 +14,20 @@ export default function Dropdown() {
   };
 
   return (
-    <s.DropdownContainer isOpen={isOpen}>
-      <s.SelectedItem onClick={toggleDropdown}>
+    <S.DropdownContainer isOpen={isOpen}>
+      <S.SelectedItem onClick={toggleDropdown}>
         {selectedItem}
-        <s.ArrowWrapper>
-          <s.ArrowIcon isOpen={isOpen}>▼</s.ArrowIcon>
-        </s.ArrowWrapper>
-      </s.SelectedItem>
-      <s.DropdownList isOpen={isOpen}>
+        <S.ArrowWrapper>
+          <S.ArrowIcon isOpen={isOpen}>▼</S.ArrowIcon>
+        </S.ArrowWrapper>
+      </S.SelectedItem>
+      <S.DropdownList isOpen={isOpen}>
         {dropdownData.map((item, index) => (
-          <s.DropdownItem key={index} onClick={() => handleItemClick(item)}>
+          <S.DropdownItem key={index} onClick={() => handleItemClick(item)}>
             {item}
-          </s.DropdownItem>
+          </S.DropdownItem>
         ))}
-      </s.DropdownList>
-    </s.DropdownContainer>
+      </S.DropdownList>
+    </S.DropdownContainer>
   );
 }
