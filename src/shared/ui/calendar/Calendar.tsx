@@ -1,29 +1,83 @@
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
-import * as s from './style';
+import * as S from './style';
 
-type CalenderTypes = {
+type CalendarTypes = {
   selectedDate: Date | null;
   onChange: (date: Date | null) => void;
 };
-const Calendar = ({ selectedDate, onChange }: CalenderTypes) => {
+
+export default function Calendar({ selectedDate, onChange }: CalendarTypes) {
+  const [date, setDate] = useState<Date | null>(selectedDate);
+
+  const handleDateChange = (date: Date | null) => {
+    setDate(date);
+    onChange(date);
+  };
+
   return (
-    <s.CalendarContainer>
+    <S.CalendarContainer>
       <DatePicker
         locale={ko}
         dateFormat="yyyy-MM-dd"
-        shouldCloseOnSelect // 날짜를 선택하면 datepicker가 자동으로 닫히는 설정
-        maxDate={new Date()} // 현재날짜 기준으로 이 후 날짜 선택불가
+        shouldCloseOnSelect
+        maxDate={new Date()}
         placeholderText="YYYY-MM-DD"
-        showYearDropdown //년도 선택 드롭다운
-        showMonthDropdown //월 선택 드롭다운
-        dropdownMode="select"
-        selected={selectedDate}
-        onChange={onChange}
+        selected={date}
+        onChange={handleDateChange}
+        renderCustomHeader={({
+          date,
+          changeYear,
+          changeMonth,
+          decreaseMonth,
+          increaseMonth,
+          prevMonthButtonDisabled,
+          nextMonthButtonDisabled,
+        }) => (
+          <div>
+            <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+              &lt;
+            </button>
+            <span>
+              <select
+                value={date.getFullYear()}
+                onChange={({ target: { value } }) =>
+                  changeYear(parseInt(value))
+                }
+              >
+                {Array.from(
+                  { length: new Date().getFullYear() - 1940 + 1 },
+                  (_, i) => {
+                    const year = 1940 + i;
+                    return (
+                      <option key={year} value={year}>
+                        {year}년
+                      </option>
+                    );
+                  }
+                )}
+              </select>
+              <select
+                value={date.getMonth()}
+                onChange={({ target: { value } }) =>
+                  changeMonth(parseInt(value))
+                }
+              >
+                {Array.from({ length: 12 }, (_, i) => (
+                  <option key={i} value={i}>
+                    {i + 1}월
+                  </option>
+                ))}
+              </select>
+            </span>
+            <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+              &gt;
+            </button>
+          </div>
+        )}
       />
-    </s.CalendarContainer>
+    </S.CalendarContainer>
   );
-};
-
-export default Calendar;
+}

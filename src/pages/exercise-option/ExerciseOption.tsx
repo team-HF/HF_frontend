@@ -1,6 +1,6 @@
 import LevelSelector from '../../entities/exercise-option/ui/LevelSelector';
 import StyleSelector from '../../entities/exercise-option/ui/StyleSelector';
-import * as s from './style';
+import * as S from './style';
 import { useOptionStore } from '../../features/exercise-option/store/exercise-option-store';
 import InformationModal from '../../entities/exercise-option/ui/InformationModal';
 import { useEffect, useState } from 'react';
@@ -59,13 +59,13 @@ export default function MyPage() {
     exerciseSelected;
 
   return (
-    <s.Container>
-      <s.ProfileContainer>
-        <s.StyleH1>프로필 입력</s.StyleH1>
-      </s.ProfileContainer>
+    <S.Container>
+      <S.ProfileContainer>
+        <S.StyleH1>프로필 입력</S.StyleH1>
+      </S.ProfileContainer>
       <LevelSelector onOpen={handleModalOpen} />
-      <s.StyleH1>나의 운동 스타일을 골라주세요</s.StyleH1>
-      <s.SelectorContainer>
+      <S.StyleH1>나의 운동 스타일을 골라주세요</S.StyleH1>
+      <S.SelectorContainer>
         <StyleSelector
           title="운동할 때 주로 누구랑?"
           options={[
@@ -105,14 +105,14 @@ export default function MyPage() {
           selectedOption={exerciseSelected}
           setSelectedOption={setExerciseSelected}
         />
-      </s.SelectorContainer>
+      </S.SelectorContainer>
 
       <NextButton disabled={!allSelected} />
       {isShowModal && (
-        <s.ModalContainer onClick={handleModalClickOutside}>
+        <S.ModalContainer onClick={handleModalClickOutside}>
           <InformationModal onClose={handleModalClose} />
-        </s.ModalContainer>
+        </S.ModalContainer>
       )}
-    </s.Container>
+    </S.Container>
   );
 }

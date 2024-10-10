@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import * as s from './style';
+import * as S from './style';
 import { useForm } from 'react-hook-form';
 import SaveButton from '../../features/profile/button/SaveButton';
 import { useProfileStore } from '../../features/profile/store/profile-store';
@@ -57,17 +57,17 @@ export default function Profile() {
   };
 
   return (
-    <s.Container>
-      <s.ProfileContainer>
-        <s.StyleH1>프로필 입력</s.StyleH1>
-      </s.ProfileContainer>
-      <s.ImageContainer>
-        <s.ProfileImage src="/svg/camera-icon.svg" />
-      </s.ImageContainer>
-      <s.FieldContainer>
-        <s.Field>
-          <s.Label>닉네임</s.Label>
-          <s.Input
+    <S.Container>
+      <S.ProfileContainer>
+        <S.StyleH1>프로필 입력</S.StyleH1>
+      </S.ProfileContainer>
+      <S.ImageContainer>
+        <S.ProfileImage src="/svg/camera-icon.svg" />
+      </S.ImageContainer>
+      <S.FieldContainer>
+        <S.Field>
+          <S.Label>닉네임</S.Label>
+          <S.Input
             type="text"
             placeholder="영문, 숫자, 한글만 입력 가능합니다 (최대 8글자)"
             {...register('nickname', {
@@ -88,13 +88,13 @@ export default function Profile() {
           />
           {errors.nickname?.message &&
             typeof errors.nickname.message === 'string' && (
-              <s.ErrorMessage>{errors.nickname.message}</s.ErrorMessage>
+              <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
             )}
-        </s.Field>
+        </S.Field>
 
-        <s.Field>
-          <s.Label>내 정보</s.Label>
-          <s.Input
+        <S.Field>
+          <S.Label>내 정보</S.Label>
+          <S.Input
             placeholder="만 14세 미만은 법정 대리인 동의가 필요합니다."
             {...register('birth', {
               required: {
@@ -107,12 +107,12 @@ export default function Profile() {
               },
             })}
           />
-        </s.Field>
+        </S.Field>
 
-        <s.Field>
-          <s.Label>성별</s.Label>
-          <s.SexContainer>
-            <s.Input
+        <S.Field>
+          <S.Label>성별</S.Label>
+          <S.SexContainer>
+            <S.Input
               placeholder="성별을 선택해주세요."
               {...register('sex', {
                 required: {
@@ -122,26 +122,26 @@ export default function Profile() {
               })}
               readOnly
             />
-            <s.Arrow onClick={handleArrowClick}>{'\u25BC'}</s.Arrow>
+            <S.Arrow onClick={handleArrowClick}>{'\u25BC'}</S.Arrow>
             {isDropdownOpen && (
-              <s.Dropdown>
-                <s.DropdownItem onClick={() => handleSelect('남성')}>
+              <S.Dropdown>
+                <S.DropdownItem onClick={() => handleSelect('남성')}>
                   남성
-                </s.DropdownItem>
-                <s.DropdownItem onClick={() => handleSelect('여성')}>
+                </S.DropdownItem>
+                <S.DropdownItem onClick={() => handleSelect('여성')}>
                   여성
-                </s.DropdownItem>
-              </s.Dropdown>
+                </S.DropdownItem>
+              </S.Dropdown>
             )}
-          </s.SexContainer>
+          </S.SexContainer>
           {errors.sex?.message && typeof errors.sex.message === 'string' && (
-            <s.ErrorMessage>{errors.sex.message}</s.ErrorMessage>
+            <S.ErrorMessage>{errors.sex.message}</S.ErrorMessage>
           )}
-        </s.Field>
+        </S.Field>
 
-        <s.Field>
-          <s.Label>한줄 소개</s.Label>
-          <s.Input
+        <S.Field>
+          <S.Label>한줄 소개</S.Label>
+          <S.Input
             type="text"
             placeholder="나를 소개할 한 줄을 작성해주세요."
             {...register('introduction', {
@@ -155,11 +155,11 @@ export default function Profile() {
               },
             })}
           />
-        </s.Field>
-      </s.FieldContainer>
-      <s.ButtonContainer>
+        </S.Field>
+      </S.FieldContainer>
+      <S.ButtonContainer>
         <SaveButton disabled={!isAllSelected} />
-      </s.ButtonContainer>
-    </s.Container>
+      </S.ButtonContainer>
+    </S.Container>
   );
 }
