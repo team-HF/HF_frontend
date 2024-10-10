@@ -2,15 +2,15 @@ import { useState } from 'react';
 import * as S from './style';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Calendar from '../../shared/ui/calendar/Calendar';
-import MediumButton from '../../shared/ui/medium-button/MediumButton';
 import GenderDropdown from '../../shared/ui/gender-select-dropdown/GenderSelectDropdown';
 import BackHeader from '../../shared/ui/back-header/BackHeader';
 import { User } from '../../shared/types/user';
+import LargeButton from '../../shared/ui/large-button/LargeButton';
 
 export default function ProfileSetting() {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     setValue,
     clearErrors,
     handleSubmit,
@@ -57,10 +57,6 @@ export default function ProfileSetting() {
     }
     if (formattedBirthDate) {
       formData.append('birth', formattedBirthDate);
-    }
-
-    for (const value of formData.values()) {
-      console.log(value);
     }
   };
 
@@ -143,13 +139,7 @@ export default function ProfileSetting() {
         </S.Field>
       </S.FieldContainer>
       <S.ButtonContainer>
-        <MediumButton
-          text="임시 버튼"
-          color="black"
-          backgroundColor="gray"
-          border="1px solid black"
-          type="submit"
-        />
+        <LargeButton text="저장" type="submit" $isValid={isValid} />
       </S.ButtonContainer>
     </S.Container>
   );

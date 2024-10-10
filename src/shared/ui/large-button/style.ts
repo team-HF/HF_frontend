@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.button<{ $isValid: boolean }>`
   display: flex;
   width: 20rem;
   height: 3rem;
-  background-color: ${({ theme }) => theme.colors.main};
+  background-color: ${({ theme, $isValid }) =>
+    $isValid ? theme.colors.main : '#bbbbbb'};
+  border: none;
   border-radius: 8px;
   padding: 1rem 1.25rem;
   gap: 4px;
