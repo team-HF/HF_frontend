@@ -81,7 +81,7 @@ export default function Profile() {
                 message: '닉네임의 길이는 8글자 이하 입니다.',
               },
               onBlur: (e) => {
-                setNickname(e.target.value); // store에 값 저장
+                setNickname(e.target.value);
                 clearErrors('nickname');
               },
             })}

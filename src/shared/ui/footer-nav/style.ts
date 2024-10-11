@@ -13,6 +13,20 @@ export const Container = styled.div`
   background: ${({ theme }) => theme.colors.linear};
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  @media (min-width: 768px) and (max-width: 991px) {
+    /* 태블릿 세로 방향 */
+    display: none;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    /* 태블릿 가로 방향 */
+    display: none;
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+    display: none;
+  }
 `;
 
 export const WriteIcon = styled.img`
