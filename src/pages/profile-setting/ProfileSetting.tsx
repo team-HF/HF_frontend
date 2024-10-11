@@ -62,7 +62,9 @@ export default function ProfileSetting() {
 
   return (
     <S.Container as="form" onSubmit={handleSubmit(onSubmit)}>
-      <BackHeader text="프로필 입력" />
+      <S.HeaderWrapper>
+        <BackHeader text="프로필 입력" />
+      </S.HeaderWrapper>
       <S.ProfileIconContainer>
         {imageFile ? (
           <S.ProfileUploadImage
@@ -137,10 +139,11 @@ export default function ProfileSetting() {
             onBlur={() => clearErrors('introduction')}
           />
         </S.Field>
+
+        <S.ButtonContainer>
+          <LargeButton text="저장" type="submit" $isValid={isValid} />
+        </S.ButtonContainer>
       </S.FieldContainer>
-      <S.ButtonContainer>
-        <LargeButton text="저장" type="submit" $isValid={isValid} />
-      </S.ButtonContainer>
     </S.Container>
   );
 }
