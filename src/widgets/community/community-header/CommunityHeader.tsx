@@ -8,14 +8,11 @@ const CommunityHeader = () => {
     <S.Container>
       <S.Title>커뮤니티</S.Title>
       <div>
-        <S.AlarmIcon src={"public/svg/alarm-icon.svg"} />
+        <S.AlarmIcon src={"/svg/alarm-icon.svg"} />
         {open ? (
-          <S.CloseIcon src={"public/svg/x-icon.svg"} onClick={openMenu} />
+          <S.CloseIcon src={"/svg/x-icon.svg"} onClick={openMenu} />
         ) : (
-          <S.MenuIcon
-            src={"public/svg/hamburger-icon.svg"}
-            onClick={openMenu}
-          />
+          <S.MenuIcon src={"/svg/hamburger-icon.svg"} onClick={openMenu} />
         )}
       </div>
     </S.Container>

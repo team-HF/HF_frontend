@@ -29,9 +29,9 @@ const Filter = ({ filterData }: filterProps) => {
     <>
       <S.Container onClick={openFilter}>
         {open ? (
-          <S.ArrowIcon className="arrow-up" src={"public/svg/arrow-down.svg"} />
+          <S.ArrowIcon className="arrow-up" src={"/svg/arrow-down.svg"} />
         ) : (
-          <S.ArrowIcon src={"public/svg/arrow-down.svg"} />
+          <S.ArrowIcon src={"/svg/arrow-down.svg"} />
         )}
         <S.CurrentFilter>{currentFilter}</S.CurrentFilter>
         {open && <S.FilterList>{filterList}</S.FilterList>}

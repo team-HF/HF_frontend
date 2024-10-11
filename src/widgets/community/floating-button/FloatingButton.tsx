@@ -8,7 +8,7 @@ const FloatingButton = () => {
   };
   return (
     <S.Container onClick={moveToRegister}>
-      <S.PencilIcon src="public/svg/pencil-icon.svg" />
+      <S.PencilIcon src="/svg/pencil-icon.svg" />
     </S.Container>
   );
 };

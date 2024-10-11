@@ -18,13 +18,7 @@ const Login = () => {
   useEffect(() => {
     if (code) {
       (async () => {
-<<<<<<< HEAD
         if (path === "/login/google") {
-=======
-        if (path === '/oauth/kakao') {
-          await kakaoOauth(code);
-        } else {
->>>>>>> dev
           await googleOauth(code);
         } else {
           await kakaoOauth(code);

@@ -6,6 +6,7 @@ const useGetUserData = async () => {
     return response.data;
   } catch (error) {
     console.error("Error getting user data", error);
+    throw error;
   }
 };
 

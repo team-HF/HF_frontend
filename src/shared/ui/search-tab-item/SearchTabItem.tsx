@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import * as s from "./style";
-=======
-import * as S from './style';
->>>>>>> dev
 
 interface SearchTabIconProps {
   id: string;
@@ -19,7 +15,6 @@ export default function SearchTabItem({
     setContentType(type);
   };
   return (
-<<<<<<< HEAD
     <s.SearchTabContainer
       id={id}
       $current_filter={$current_filter}
@@ -31,10 +26,5 @@ export default function SearchTabItem({
         {id}
       </s.TabText>
     </s.SearchTabContainer>
-=======
-    <S.SearchTabContainer>
-      <S.TabText>{text}</S.TabText>
-    </S.SearchTabContainer>
->>>>>>> dev
   );
 }
