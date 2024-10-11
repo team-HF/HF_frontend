@@ -25,7 +25,7 @@ const Login = () => {
         }
       })();
     }
-  }, [code]);
+  }, [code, path]);
   return (
     <S.Container>
       <S.BtnBox>
