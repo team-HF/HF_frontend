@@ -1,4 +1,4 @@
-import * as s from './style';
+import * as S from './style';
 
 type LabelProps = {
   text: string;
@@ -14,12 +14,12 @@ export default function Label({
   backgroundColor,
 }: LabelProps) {
   return (
-    <s.LabelContainer
+    <S.LabelContainer
       borderColor={borderColor}
       backgroundColor={backgroundColor}
       radius="24px"
     >
-      <s.LabelText fontColor={fontColor}>{text}</s.LabelText>
-    </s.LabelContainer>
+      <S.LabelText fontColor={fontColor}>{text}</S.LabelText>
+    </S.LabelContainer>
   );
 }

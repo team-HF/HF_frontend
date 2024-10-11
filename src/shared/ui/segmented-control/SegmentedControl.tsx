@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import * as s from './style';
+import * as S from './style';
 
 type SegmentedControlProps = {
   firstLabel: string;
@@ -13,19 +13,19 @@ export default function SegmentedControl({
   const [selectedOption, setSelectedOption] = useState(0);
 
   return (
-    <s.SegmentedControlContainer>
-      <s.Segment
+    <S.SegmentedControlContainer>
+      <S.Segment
         isSelected={selectedOption === 0}
         onClick={() => setSelectedOption(0)}
       >
         {firstLabel}
-      </s.Segment>
-      <s.Segment
+      </S.Segment>
+      <S.Segment
         isSelected={selectedOption === 1}
         onClick={() => setSelectedOption(1)}
       >
         {secondLabel}
-      </s.Segment>
-    </s.SegmentedControlContainer>
+      </S.Segment>
+    </S.SegmentedControlContainer>
   );
 }

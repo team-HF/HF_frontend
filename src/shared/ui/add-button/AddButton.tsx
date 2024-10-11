@@ -1,11 +1,11 @@
-import * as s from './style';
+import * as S from './style';
 
 export default function AddButton() {
   return (
-    <s.Container>
-      <s.AddButtonContainer>
+    <S.Container>
+      <S.AddButtonContainer>
         <img src="/svg/add-icon.svg" alt="add-icon" />
-      </s.AddButtonContainer>
-    </s.Container>
+      </S.AddButtonContainer>
+    </S.Container>
   );
 }

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { theme } from "../../app/theme";
+import styled from 'styled-components';
+import { theme } from '../../app/theme';
 
 export const Container = styled.div`
   display: flex;
@@ -7,6 +7,14 @@ export const Container = styled.div`
   align-items: center;
   height: 100vh;
 `;
+<<<<<<< HEAD
+=======
+export const LoginTitle = styled.h1`
+  position: relative;
+  top: 15vh;
+  ${theme.fontSize.title_1};
+`;
+>>>>>>> dev
 export const BtnBox = styled.div`
   position: absolute;
   top: 50%;
@@ -27,12 +35,25 @@ export const OauthBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+<<<<<<< HEAD
   width: 100%;
   height: 2.75rem;
   border: none;
   border-radius: 0.5rem;
   &.button_login_google {
     background-color: #474747;
+=======
+  width: 342px;
+  height: 44px;
+  border: 0px;
+  border-radius: 10px;
+  color: ${theme.colors.black};
+  ${theme.fontSize.heading_1}
+  &.button_login_google {
+    border: 1px solid #c7c7c7;
+    background-color: ${theme.colors.white};
+    margin-bottom: 20px;
+>>>>>>> dev
   }
   &.button_login_kakao {
     background-color: #fae100;

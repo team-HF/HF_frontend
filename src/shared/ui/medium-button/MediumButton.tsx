@@ -1,4 +1,4 @@
-import * as s from './style';
+import * as S from './style';
 
 type MediumButtonProps = {
   text: string;
@@ -7,6 +7,8 @@ type MediumButtonProps = {
   onClick?: () => void;
   border: string;
   disabled?: boolean;
+  // eslint-disable-next-line
+  type?: any;
 };
 
 export default function MediumButton({
@@ -18,15 +20,15 @@ export default function MediumButton({
   disabled,
 }: MediumButtonProps) {
   return (
-    <s.StyledMediumButton
+    <S.StyledMediumButton
       $backgroundColor={backgroundColor}
       $border={border}
       onClick={onClick}
       disabled={disabled}
     >
-      <s.StyledText $color={color} disabled={disabled}>
+      <S.StyledText $color={color} disabled={disabled}>
         {text}
-      </s.StyledText>
-    </s.StyledMediumButton>
+      </S.StyledText>
+    </S.StyledMediumButton>
   );
 }

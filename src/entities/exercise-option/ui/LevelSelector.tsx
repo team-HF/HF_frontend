@@ -1,4 +1,4 @@
-import * as s from './level-selector.style';
+import * as S from './level-selector.style';
 import { useOptionStore } from '../../../features/exercise-option/store/exercise-option-store';
 
 type modalProps = {
@@ -9,24 +9,24 @@ export default function LevelSelector({ onOpen }: modalProps) {
   const options = [{ label: '고수' }, { label: '새싹' }];
 
   return (
-    <s.Container>
-      <s.StyleP>나의 운동 레벨은 어느 정도인가요?</s.StyleP>
-      <s.LevelSelectorContainer>
+    <S.Container>
+      <S.StyleP>나의 운동 레벨은 어느 정도인가요?</S.StyleP>
+      <S.LevelSelectorContainer>
         {options.map((option) => (
-          <s.LevelSelectorButton
+          <S.LevelSelectorButton
             key={option.label}
             selected={levelSelected === option.label}
             onClick={() => setLevelSelected(option.label)}
           >
             {option.label}
-          </s.LevelSelectorButton>
+          </S.LevelSelectorButton>
         ))}
-        <s.InformationIcon
+        <S.InformationIcon
           src="/svg/information-icon.svg"
           alt="information icon"
           onClick={onOpen}
         />
-      </s.LevelSelectorContainer>
-    </s.Container>
+      </S.LevelSelectorContainer>
+    </S.Container>
   );
 }

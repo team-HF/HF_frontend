@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import * as s from "./style";
 import { useNavigate } from "react-router-dom";
+=======
+import * as S from './style';
+>>>>>>> dev
 
 interface PostPreviewListProps {
   data: {
@@ -18,6 +22,7 @@ interface PostPreviewListProps {
 export default function PostPreviewList({ data }: PostPreviewListProps) {
   const navigate = useNavigate();
   return (
+<<<<<<< HEAD
     <s.PostPreviewContainer
       onClick={() => navigate(`/community/post-detail/${data.postId}`)}
     >
@@ -44,5 +49,31 @@ export default function PostPreviewList({ data }: PostPreviewListProps) {
         </s.CommentWrapper>
       </s.IconContainer>
     </s.PostPreviewContainer>
+=======
+    <S.PostPreviewContainer>
+      <S.CategoryWrapper>
+        <S.CategoryText>{data.category}</S.CategoryText>
+      </S.CategoryWrapper>
+      <S.TitleContainer>
+        <S.TitleText>{data.title}</S.TitleText>
+        <S.TimeStampText>{data.timestamp}</S.TimeStampText>
+      </S.TitleContainer>
+      <S.DescriptionContainer>{data.description}</S.DescriptionContainer>
+      <S.IconContainer>
+        <S.ViewWrapper>
+          <S.StyledIcon src="/svg/view-icon.svg" alt="view-icon" />
+          <S.StyledIconText>{data.view}</S.StyledIconText>
+        </S.ViewWrapper>
+        <S.HeartWrapper>
+          <S.StyledIcon src="/svg/heart-icon.svg" alt="heart-icon" />
+          <S.StyledIconText>{data.heart}</S.StyledIconText>
+        </S.HeartWrapper>
+        <S.CommentWrapper>
+          <S.StyledIcon src="svg/comment-icon.svg" alt="comment-icon" />
+          <S.StyledIconText>{data.comment}</S.StyledIconText>
+        </S.CommentWrapper>
+      </S.IconContainer>
+    </S.PostPreviewContainer>
+>>>>>>> dev
   );
 }

@@ -1,4 +1,4 @@
-import * as s from './style-selector.style';
+import * as S from './style-selector.style';
 
 type Option = {
   label: string;
@@ -19,23 +19,23 @@ export default function StyleSelector({
   setSelectedOption,
 }: CategoryProps) {
   return (
-    <s.Container>
-      <s.CategoryTitleContainer>
-        <s.StyleSpan>&#9654;</s.StyleSpan>
-        <s.CategoryTitle>{title}</s.CategoryTitle>
-      </s.CategoryTitleContainer>
-      <s.CategoryContainer>
+    <S.Container>
+      <S.CategoryTitleContainer>
+        <S.StyleSpan>&#9654;</S.StyleSpan>
+        <S.CategoryTitle>{title}</S.CategoryTitle>
+      </S.CategoryTitleContainer>
+      <S.CategoryContainer>
         {options.map((option) => (
-          <s.OptionCard
+          <S.OptionCard
             key={option.label}
             selected={selectedOption === option.label}
             onClick={() => setSelectedOption(option.label)}
           >
             <span>{option.emoji}</span>
             <p>{option.label}</p>
-          </s.OptionCard>
+          </S.OptionCard>
         ))}
-      </s.CategoryContainer>
-    </s.Container>
+      </S.CategoryContainer>
+    </S.Container>
   );
 }

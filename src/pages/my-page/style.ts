@@ -12,12 +12,17 @@ export const ProfileContainer = styled.div`
   margin-right: 2.125rem;
 `;
 
+export const LargeButtonWrapper = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+`;
 export const MatchingContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 1.75rem;
-  padding: 0 2rem;
+  padding: 0 1.25rem;
   max-width: 24.375rem;
   gap: 11px;
 `;
