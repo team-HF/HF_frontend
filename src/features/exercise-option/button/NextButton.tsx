@@ -1,5 +1,5 @@
-import Button from '../../../shared/ui/button/Button';
 import { useNavigate } from 'react-router-dom';
+import MediumButton from '../../../shared/ui/medium-button/MediumButton';
 
 type NextButtonProps = {
   disabled: boolean;
@@ -11,12 +11,12 @@ export default function NextButton({ disabled }: NextButtonProps) {
   };
   return (
     <div>
-      <Button
-        width="20.125rem"
-        height="2.8125rem"
-        color="main"
-        text="다음"
+      <MediumButton
+        text="임시 버튼"
+        color="black"
         onClick={onClick}
+        backgroundColor="gray"
+        border="1px solid black"
         disabled={disabled}
       />
     </div>

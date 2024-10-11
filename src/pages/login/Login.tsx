@@ -18,17 +18,16 @@ const Login = () => {
   useEffect(() => {
     if (code) {
       (async () => {
-        if (path === "/oauth/kakao") {
-          await kakaoOauth(code);
-        } else {
+        if (path === "/login/google") {
           await googleOauth(code);
+        } else {
+          await kakaoOauth(code);
         }
       })();
     }
-  }, [code]);
+  }, [code, path]);
   return (
     <S.Container>
-      <S.LoginTitle>로그인</S.LoginTitle>
       <S.BtnBox>
         <S.OauthBtn
           className="button_login_google"
@@ -37,7 +36,9 @@ const Login = () => {
           }}
         >
           <S.LogoIcon src="/oauth/google.png" />
-          구글로 로그인
+          <S.BtnText className="button_login_google">
+            Google로 계속하기
+          </S.BtnText>
         </S.OauthBtn>
         <S.OauthBtn
           className="button_login_kakao"
@@ -46,7 +47,7 @@ const Login = () => {
           }}
         >
           <S.LogoIcon src="/oauth/kakao.png" className="kakao" />
-          카카오톡으로 로그인
+          <S.BtnText className="button_login_kakao">Kakao로 계속하기</S.BtnText>
         </S.OauthBtn>
       </S.BtnBox>
     </S.Container>

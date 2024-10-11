@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import Button from '../../shared/ui/button/Button';
 import * as s from './style';
 import { useForm } from 'react-hook-form';
 import { usePhoneNumberFormatter } from '../../shared/utils/usePhoneNumberFormatter';
 import Calendar from '../../shared/ui/calendar/Calendar';
+import MediumButton from '../../shared/ui/medium-button/MediumButton';
 
 export default function ProfileSetting() {
   const {
@@ -128,7 +128,12 @@ export default function ProfileSetting() {
         </s.Field>
       </s.FieldContainer>
       <s.ButtonContainer>
-        <Button width="20.125rem" height="2.8125rem" color="main" text="저장" />
+        <MediumButton
+          text="임시 버튼"
+          color="black"
+          backgroundColor="gray"
+          border="1px solid black"
+        />
       </s.ButtonContainer>
     </s.Container>
   );

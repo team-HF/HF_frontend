@@ -1,18 +1,19 @@
 import * as s from './matching-box.style';
 import Hashtag from '../../../shared/ui/hashtag/Hashtag';
-import Button from '../../../shared/ui/button/Button';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { MatchingUserCard } from '../model/matching-user-card.interface';
-import { useIntersectionObserver } from '../../../shared/utils/useIntersectionObserver';
+import MediumButton from '../../../shared/ui/medium-button/MediumButton';
 
 export default function MatchingBox() {
   const [users, setUsers] = useState<MatchingUserCard[]>([]);
   const [page, setPage] = useState<number>(1);
-  const target = useRef<HTMLDivElement | null>(null);
+  const limit = 5;
 
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await fetch(`/api/matching-users?page=${page}&limit=1`);
+      const response = await fetch(
+        `/api/matching-users?page=${page}&limit=${limit}`
+      );
       if (!response.ok) {
         throw new Error('에러');
       }
@@ -25,22 +26,6 @@ export default function MatchingBox() {
     }
   }, [page]);
 
-  const [observe, unobserve] = useIntersectionObserver(() => {
-    fetchUsers();
-  });
-
-  useEffect(() => {
-    const currentTarget = target.current;
-    if (currentTarget) {
-      observe(currentTarget);
-    }
-    return () => {
-      if (currentTarget) {
-        unobserve(currentTarget);
-      }
-    };
-  }, [observe, unobserve]);
-
   useEffect(() => {
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,8 +34,8 @@ export default function MatchingBox() {
   return (
     <s.Container>
       {users.map((user, index) => (
-        <s.CardContainer>
-          <s.UpperContainer key={index + Math.random()}>
+        <s.CardContainer key={index + Math.random()}>
+          <s.UpperContainer>
             <s.ProfileIconContainer>
               <s.ProfileIcon src={user.profileImage} alt={`${user.nickname}`} />
             </s.ProfileIconContainer>
@@ -65,18 +50,16 @@ export default function MatchingBox() {
                   <Hashtag key={idx} text={tag} />
                 ))}
               </s.HashtagContainer>
-              <Button
-                width="9rem"
-                height="2.4375rem"
-                color="main"
-                text="1:1 채팅하기"
+              <MediumButton
+                text="임시 버튼"
+                color="black"
+                backgroundColor="gray"
+                border="1px solid black"
               />
             </s.UnderContainer>
           </s.UpperContainer>
         </s.CardContainer>
       ))}
-
-      <div ref={target} style={{ height: '1px' }}></div>
     </s.Container>
   );
 }

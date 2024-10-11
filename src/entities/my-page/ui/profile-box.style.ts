@@ -59,10 +59,12 @@ export const ProfileName = styled.div`
 
 export const ProfileHashtagContainer = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: row;
   margin-bottom: 0.3125rem;
   color: #ffffff;
   gap: 0.25rem;
+  flex-wrap: wrap;
 `;
 
 export const ProfileIntroduction = styled.div`
