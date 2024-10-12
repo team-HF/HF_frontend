@@ -17,6 +17,7 @@ function App() {
           <Route path="register/exercise-option" element={<ExerciseOption />} />
           <Route path="register/profile" element={<Profile />} />
           <Route path="profile-setting" element={<ProfileSetting />} />
+          <Route path="login/:oauth" element={<Login />} />
         </Routes>
       </ThemeProvider>
     </Router>

@@ -6,7 +6,7 @@ const Alert = (header: boolean) => {
       {header && (
         <S.Header>
           <S.Title>알럿</S.Title>
-          <S.CloseBtn src="public/svg/close-icon.svg" />
+          <S.CloseBtn src="/svg/close-icon.svg" />
         </S.Header>
       )}
       <S.Body>
