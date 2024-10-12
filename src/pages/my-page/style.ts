@@ -4,7 +4,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-items: center;
-  width: 24.375rem;
+  width: 22.5rem;
   margin-left: auto;
   margin-right: auto;
   @media (min-width: 768px) and (max-width: 991px) {
@@ -37,7 +37,7 @@ export const MatchingContainer = styled.div`
 
   margin-top: 1.75rem;
   padding: 0 1.25rem;
-  max-width: 24.375rem;
+  max-width: 22.5rem;
   gap: 11px;
 `;
 
@@ -50,5 +50,5 @@ export const MatchingTitle = styled.div`
 `;
 
 export const FooterContainer = styled.div`
-  max-width: 24.375rem;
+  width: 22.5rem;
 `;

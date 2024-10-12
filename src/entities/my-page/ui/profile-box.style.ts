@@ -7,8 +7,7 @@ export const Container = styled.div`
   width: 100vw;
   margin-top: 0.75rem;
   padding: 0 2rem;
-  width: 24.375rem;
-  @media (min-width: 768px) and (max-width: 991px) {
+  width: 22.5rem;
     /* 태블릿 세로 방향 */
     width: 40rem;
   }

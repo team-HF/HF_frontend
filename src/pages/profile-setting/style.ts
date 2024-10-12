@@ -5,7 +5,7 @@ export const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
   flex-direction: column;
-  max-width: 24.375rem;
+  max-width: 22.5rem;
   @media (min-width: 768px) and (max-width: 991px) {
     /* 태블릿 세로 방향 */
     max-width: 48rem;

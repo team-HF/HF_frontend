@@ -16,7 +16,7 @@ export const TabContainer = styled.div`
   display: flex;
   flex-direction: row;
   text-align: center;
-  width: 24.375rem;
+  width: 22.5rem;
   width: 100%;
 `;
 
