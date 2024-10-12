@@ -69,8 +69,8 @@ export default function MyPage() {
         <StyleSelector
           title="운동할 때 주로 누구랑?"
           options={[
-            { label: '소규모형', emoji: '🙂' },
-            { label: '그룹형', emoji: '😉🙂😊' },
+            { label: '소규모형', emoji: '🙂' ,value : "SMALL"},
+            { label: '그룹형', emoji: '😉🙂😊' ,value : "GROUP"},
           ]}
           selectedOption={styleSelected}
           setSelectedOption={setStyleSelected}
@@ -79,8 +79,8 @@ export default function MyPage() {
         <StyleSelector
           title="운동할 때 나는 평소?"
           options={[
-            { label: '의욕만렙형', emoji: '💪' },
-            { label: '귀차니즘형', emoji: '💤' },
+            { label: '의욕만렙형', emoji: '💪' ,value : "EAGER"},
+            { label: '귀차니즘형', emoji: '💤' ,value : "LAZY"},
           ]}
           selectedOption={habitSelected}
           setSelectedOption={setHabitSelected}
@@ -89,8 +89,8 @@ export default function MyPage() {
         <StyleSelector
           title="나의 운동 목적은?"
           options={[
-            { label: '헬스헬스\n무조건 벌크업!', emoji: '🏋️‍♂️' },
-            { label: '러닝러닝\n뛰어야 운동이지!', emoji: '🏃‍♂️' },
+            { label: '헬스헬스\n무조건 벌크업!', emoji: '🏋️‍♂️' ,value : "BULK_UP"},
+            { label: '러닝러닝\n뛰어야 운동이지!', emoji: '🏃‍♂️' ,value : "RUNNING"},
           ]}
           selectedOption={goalSelected}
           setSelectedOption={setGoalSelected}
@@ -99,14 +99,13 @@ export default function MyPage() {
         <StyleSelector
           title="주로 하고 있는 운동은?"
           options={[
-            { label: '고강도 운동 위주', emoji: '🔥' },
-            { label: '기능성 피트니스 위주', emoji: '🤸‍♂️' },
+            { label: '고강도 운동 위주', emoji: '🔥' ,value : "HIGH_STRESS"},
+            { label: '기능성 피트니스 위주', emoji: '🤸‍♂️' ,value : "FUNCTIONAL"},
           ]}
           selectedOption={exerciseSelected}
           setSelectedOption={setExerciseSelected}
         />
       </S.SelectorContainer>
-
       <NextButton disabled={!allSelected} />
       {isShowModal && (
         <S.ModalContainer onClick={handleModalClickOutside}>

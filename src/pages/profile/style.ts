@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { styled } from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -34,13 +34,27 @@ export const ImageContainer = styled.div`
   border-radius: 50%;
 `;
 
-export const ProfileImage = styled.img`
+export const ProfileImageLabel = styled.label`
   display: flex;
-  align-self: center;
-  margin-right: auto;
-  margin-left: auto;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
+export const ProfileImage = styled.img<{ src: string | null }>`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+`;
+
+export const CameraIcon = styled.img`
   width: 2.5625rem;
   height: 2.0625rem;
+`;
+
+export const ProfileImageInput = styled.input`
+  display: none;
 `;
 
 export const FieldContainer = styled.div`

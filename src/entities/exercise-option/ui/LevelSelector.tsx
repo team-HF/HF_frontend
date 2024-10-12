@@ -1,12 +1,15 @@
-import * as S from './level-selector.style';
-import { useOptionStore } from '../../../features/exercise-option/store/exercise-option-store';
+import * as S from "./level-selector.style";
+import { useOptionStore } from "../../../features/exercise-option/store/exercise-option-store";
 
 type modalProps = {
   onOpen: () => void;
 };
 export default function LevelSelector({ onOpen }: modalProps) {
   const { levelSelected, setLevelSelected } = useOptionStore();
-  const options = [{ label: '고수' }, { label: '새싹' }];
+  const options = [
+    { label: "고수", value: "ADVANCED" },
+    { label: "새싹", value: "BEGINNER" },
+  ];
 
   return (
     <S.Container>
@@ -15,8 +18,8 @@ export default function LevelSelector({ onOpen }: modalProps) {
         {options.map((option) => (
           <S.LevelSelectorButton
             key={option.label}
-            selected={levelSelected === option.label}
-            onClick={() => setLevelSelected(option.label)}
+            selected={levelSelected === option.value}
+            onClick={() => setLevelSelected(option.value)}
           >
             {option.label}
           </S.LevelSelectorButton>

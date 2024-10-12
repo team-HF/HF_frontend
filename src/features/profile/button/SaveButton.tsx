@@ -1,4 +1,4 @@
-import MediumButton from '../../../shared/ui/medium-button/MediumButton';
+import MediumButton from "../../../shared/ui/medium-button/MediumButton";
 
 type SaveButtonProps = {
   disabled: boolean;
@@ -12,6 +12,7 @@ export default function SaveButton({ disabled }: SaveButtonProps) {
         backgroundColor="gray"
         border="1px solid black"
         disabled={disabled}
+        onClick={() => console.log("run")}
       />
     </div>
   );

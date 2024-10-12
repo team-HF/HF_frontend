@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import * as S from './style';
-import { useForm } from 'react-hook-form';
-import SaveButton from '../../features/profile/button/SaveButton';
-import { useProfileStore } from '../../features/profile/store/profile-store';
+import { useEffect, useState } from "react";
+import * as S from "./style";
+import { useForm } from "react-hook-form";
+import SaveButton from "../../features/profile/button/SaveButton";
+import { useProfileStore } from "../../features/profile/store/profile-store";
 
 export default function Profile() {
   const {
@@ -11,11 +11,13 @@ export default function Profile() {
     clearErrors,
     setValue,
     watch,
-  } = useForm({ mode: 'onChange' });
+  } = useForm({ mode: "onChange" });
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const {
+    image,
+    setImage,
     nickname,
     setNickname,
     birth,
@@ -28,17 +30,17 @@ export default function Profile() {
 
   // 스토어 값이 변경될 때 폼에도 저장
   useEffect(() => {
-    if (nickname) setValue('nickname', nickname);
-    if (birth) setValue('birth', birth);
-    if (sex) setValue('sex', sex);
-    if (introduction) setValue('introduction', introduction);
+    if (nickname) setValue("nickname", nickname);
+    if (birth) setValue("birth", birth);
+    if (sex) setValue("sex", sex);
+    if (introduction) setValue("introduction", introduction);
   }, [nickname, birth, sex, introduction, setValue]);
 
   // 필드 watch로 감시하여 값들을 확인
-  const watchedNickname = watch('nickname');
-  const watchedBirth = watch('birth');
-  const watchedSex = watch('sex');
-  const watchedIntroduction = watch('introduction');
+  const watchedNickname = watch("nickname");
+  const watchedBirth = watch("birth");
+  const watchedSex = watch("sex");
+  const watchedIntroduction = watch("introduction");
 
   // 전부 입력 되었을때만 버튼 활성화
   const isAllSelected =
@@ -51,59 +53,84 @@ export default function Profile() {
   // 성별 드롭다운 이벤트
   const handleSelect = (value: string) => {
     setSex(value);
-    setValue('sex', value);
+    setValue("sex", value);
     setIsDropdownOpen(false);
-    clearErrors('sex');
+    clearErrors("sex");
   };
-
   return (
     <S.Container>
       <S.ProfileContainer>
         <S.StyleH1>프로필 입력</S.StyleH1>
       </S.ProfileContainer>
+
       <S.ImageContainer>
-        <S.ProfileImage src="/svg/camera-icon.svg" />
+        {image ? (
+          <S.ProfileImageLabel
+            htmlFor="profile_image_input"
+            className="is_profile_image"
+          >
+            <S.ProfileImage
+              src={URL.createObjectURL(image)}
+              alt="uploaded_user_image"
+            />
+          </S.ProfileImageLabel>
+        ) : (
+          <S.ProfileImageLabel htmlFor="profile_image_input">
+            <S.CameraIcon src="/svg/camera-icon.svg" />
+          </S.ProfileImageLabel>
+        )}
+        <S.ProfileImageInput
+          type="file"
+          id="profile_image_input"
+          onChange={(e) => {
+            if (e.target.files) {
+              setImage(e.target.files[0]);
+            }
+          }}
+        />
       </S.ImageContainer>
+
       <S.FieldContainer>
         <S.Field>
           <S.Label>닉네임</S.Label>
           <S.Input
             type="text"
             placeholder="영문, 숫자, 한글만 입력 가능합니다 (최대 8글자)"
-            {...register('nickname', {
-              required: '닉네임을 입력해주세요',
+            {...register("nickname", {
+              required: "닉네임을 입력해주세요",
               pattern: {
                 value: /^[a-zA-Z0-9가-힣]{1,8}$/,
-                message: '닉네임은 영문,숫자,한글만 포함 가능합니다.',
+                message: "닉네임은 영문,숫자,한글만 포함 가능합니다.",
               },
               maxLength: {
                 value: 8,
-                message: '닉네임의 길이는 8글자 이하 입니다.',
+                message: "닉네임의 길이는 8글자 이하 입니다.",
               },
               onBlur: (e) => {
                 setNickname(e.target.value); // store에 값 저장
-                clearErrors('nickname');
+                clearErrors("nickname");
               },
             })}
           />
           {errors.nickname?.message &&
-            typeof errors.nickname.message === 'string' && (
+            typeof errors.nickname.message === "string" && (
               <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
             )}
         </S.Field>
 
         <S.Field>
-          <S.Label>내 정보</S.Label>
+          <S.Label>생년 월일</S.Label>
           <S.Input
+            type="date"
             placeholder="만 14세 미만은 법정 대리인 동의가 필요합니다."
-            {...register('birth', {
+            {...register("birth", {
               required: {
                 value: true,
-                message: '생년월일을 입력해주세요.',
+                message: "생년월일을 입력해주세요.",
               },
               onBlur: (e) => {
                 setBirth(e.target.value);
-                clearErrors('birth');
+                clearErrors("birth");
               },
             })}
           />
@@ -114,29 +141,39 @@ export default function Profile() {
           <S.SexContainer>
             <S.Input
               placeholder="성별을 선택해주세요."
-              {...register('sex', {
+              {...register("sex", {
                 required: {
                   value: true,
-                  message: '성별을 선택해주세요.',
+                  message: "성별을 선택해주세요.",
                 },
               })}
               readOnly
             />
-            <S.Arrow onClick={handleArrowClick}>{'\u25BC'}</S.Arrow>
+            <S.Arrow onClick={handleArrowClick}>{"\u25BC"}</S.Arrow>
             {isDropdownOpen && (
               <S.Dropdown>
-                <S.DropdownItem onClick={() => handleSelect('남성')}>
+                <S.DropdownItem onClick={() => handleSelect("남성")}>
                   남성
                 </S.DropdownItem>
-                <S.DropdownItem onClick={() => handleSelect('여성')}>
+                <S.DropdownItem onClick={() => handleSelect("여성")}>
                   여성
                 </S.DropdownItem>
               </S.Dropdown>
             )}
           </S.SexContainer>
-          {errors.sex?.message && typeof errors.sex.message === 'string' && (
+          {errors.sex?.message && typeof errors.sex.message === "string" && (
             <S.ErrorMessage>{errors.sex.message}</S.ErrorMessage>
           )}
+        </S.Field>
+
+        <S.Field>
+          <S.Label>주소</S.Label>
+          <S.Input />
+        </S.Field>
+
+        <S.Field>
+          <S.Label>상세 주소</S.Label>
+          <S.Input />
         </S.Field>
 
         <S.Field>
@@ -144,14 +181,14 @@ export default function Profile() {
           <S.Input
             type="text"
             placeholder="나를 소개할 한 줄을 작성해주세요."
-            {...register('introduction', {
+            {...register("introduction", {
               required: {
                 value: true,
-                message: '한줄 소개를 입력해주세요.',
+                message: "한줄 소개를 입력해주세요.",
               },
               onBlur: (e) => {
                 setIntroduction(e.target.value);
-                clearErrors('introduction');
+                clearErrors("introduction");
               },
             })}
           />
