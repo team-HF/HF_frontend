@@ -65,6 +65,7 @@ export const TextWrapper = styled.div`
 
 export const TextArea = styled.textarea`
   width: 100%;
+  height: 100%;
   resize: none;
   border: none;
   background-color: #f8f8f8;

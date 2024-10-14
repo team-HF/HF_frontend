@@ -15,10 +15,10 @@ export default function Introduction() {
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length <= maxLength) {
       setText(e.target.value);
-      setIntroduction(e.target.value);
     }
   };
   const onClick = () => {
+    setIntroduction(text);
     navigate('/profile-setting');
   };
   useEffect(() => {
