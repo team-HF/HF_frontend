@@ -25,7 +25,6 @@ const kakaoOauth = async (code: string) => {
         })
         .then((res) => {
           const { email, name } = res.data.kakao_account;
-          console.log(email, name);
           sessionStorage.setItem("email", email);
           sessionStorage.setItem("name", name);
         })
