@@ -3,6 +3,16 @@ import * as S from "./style";
 import { useForm } from "react-hook-form";
 import SaveButton from "../../features/profile/button/SaveButton";
 import { useProfileStore } from "../../features/profile/store/profile-store";
+import { getSgisLocationData } from "../../shared/api/getSgisLocationData";
+import { getSgisApiAccessToken } from "../../shared/api/getSgisApiAccessToken";
+
+interface Location {
+  addr_name: string;
+  cd: string;
+  full_addr: string;
+  x_coor: string;
+  y_coor: string;
+}
 
 export default function Profile() {
   const {
@@ -13,8 +23,6 @@ export default function Profile() {
     watch,
   } = useForm({ mode: "onChange" });
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const {
     image,
     setImage,
@@ -23,10 +31,44 @@ export default function Profile() {
     birth,
     setBirth,
     sex,
+    cd1,
+    setCd1,
+    cd2,
+    setCd2,
+    cd3,
+    setCd3,
     setSex,
     introduction,
     setIntroduction,
   } = useProfileStore();
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [userLocation, setUserLocation] = useState("");
+  const [locationData, setLocationData] = useState<Location[]>([]);
+
+  const getLocationData = async () => {
+    const result = await getSgisLocationData(cd3 || cd2 || cd1);
+    setLocationData(result);
+  };
+
+  useEffect(() => {
+    getSgisApiAccessToken();
+    getLocationData();
+  }, [cd1, cd2, cd3]);
+
+  const onClickLocationCard = (cd: string, full_addr: string) => {
+    if (!cd1) setCd1(cd);
+    else if (!cd2) setCd2(cd);
+    else setCd3(cd);
+    setUserLocation(full_addr);
+  };
+
+  const onClickReset = () => {
+    setCd1("");
+    setCd2("");
+    setCd3("");
+    setUserLocation("");
+  };
 
   // 스토어 값이 변경될 때 폼에도 저장
   useEffect(() => {
@@ -34,7 +76,7 @@ export default function Profile() {
     if (birth) setValue("birth", birth);
     if (sex) setValue("sex", sex);
     if (introduction) setValue("introduction", introduction);
-  }, [nickname, birth, sex, introduction, setValue]);
+  }, [nickname, birth, sex, cd1, cd2, cd3, introduction, setValue]);
 
   // 필드 watch로 감시하여 값들을 확인
   const watchedNickname = watch("nickname");
@@ -43,8 +85,15 @@ export default function Profile() {
   const watchedIntroduction = watch("introduction");
 
   // 전부 입력 되었을때만 버튼 활성화
-  const isAllSelected =
-    watchedNickname && watchedBirth && watchedSex && watchedIntroduction;
+  const isAllSelected = Boolean(
+    watchedNickname &&
+      watchedBirth &&
+      watchedSex &&
+      cd1 &&
+      cd2 &&
+      cd3 &&
+      watchedIntroduction
+  );
 
   const handleArrowClick = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -106,11 +155,11 @@ export default function Profile() {
                 value: 8,
                 message: "닉네임의 길이는 8글자 이하 입니다.",
               },
-              onBlur: (e) => {
-                setNickname(e.target.value); // store에 값 저장
+              onBlur: () => {
                 clearErrors("nickname");
               },
             })}
+            onChange={(e) => setNickname(e.target.value)}
           />
           {errors.nickname?.message &&
             typeof errors.nickname.message === "string" && (
@@ -119,7 +168,7 @@ export default function Profile() {
         </S.Field>
 
         <S.Field>
-          <S.Label>생년 월일</S.Label>
+          <S.Label>생년월일</S.Label>
           <S.Input
             type="date"
             placeholder="만 14세 미만은 법정 대리인 동의가 필요합니다."
@@ -128,11 +177,9 @@ export default function Profile() {
                 value: true,
                 message: "생년월일을 입력해주세요.",
               },
-              onBlur: (e) => {
-                setBirth(e.target.value);
-                clearErrors("birth");
-              },
+              onBlur: () => clearErrors("birth"),
             })}
+            onChange={(e) => setBirth(e.target.value)}
           />
         </S.Field>
 
@@ -167,13 +214,21 @@ export default function Profile() {
         </S.Field>
 
         <S.Field>
-          <S.Label>주소</S.Label>
-          <S.Input />
-        </S.Field>
-
-        <S.Field>
-          <S.Label>상세 주소</S.Label>
-          <S.Input />
+          <S.Label>위치</S.Label>
+          <S.LocationContainer>
+            <S.Input value={userLocation} disabled />
+            <S.ResetBtn onClick={() => onClickReset()}>초기화</S.ResetBtn>
+          </S.LocationContainer>
+          <S.LocationList>
+            {locationData.map((data) => (
+              <S.LocationCard
+                key={`locationBtn_cd${data.cd}`}
+                onClick={() => onClickLocationCard(data.cd, data.full_addr)}
+              >
+                {data.full_addr}
+              </S.LocationCard>
+            ))}
+          </S.LocationList>
         </S.Field>
 
         <S.Field>
@@ -186,11 +241,9 @@ export default function Profile() {
                 value: true,
                 message: "한줄 소개를 입력해주세요.",
               },
-              onBlur: (e) => {
-                setIntroduction(e.target.value);
-                clearErrors("introduction");
-              },
+              onBlur: () => clearErrors("introduction"),
             })}
+            onChange={(e) => setIntroduction(e.target.value)}
           />
         </S.Field>
       </S.FieldContainer>
