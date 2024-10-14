@@ -1,83 +1,104 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { theme } from "../../../app/theme";
 
-export const Container = styled.div`
+export const Container = styled.div<{ open: boolean }>`
+  position: absolute;
+  display: flex;
+  left: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 360px;
-  padding: 10px 0px;
-  border-radius: 8px 8px 0px 0px;
-  box-shadow: 10px 0px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: 1.25rem 0;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background-color: ${theme.colors.white};
+  box-shadow: 0.625rem 0px 1.5rem rgba(0, 0, 0, 0.1);
+  z-index: 1;
 `;
 export const Divider_1 = styled.hr`
-  width: 46px;
-  height: 2px;
-  border: 0px;
-  border-radius: 2px;
+  width: 2.875rem;
+  height: 0.125rem;
+  border: 0;
+  border-radius: 0.125rem;
   background-color: #d9d9d9;
 `;
 export const ContentsBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0px 20px;
+  padding: 0 1.25rem;
   width: 100%;
 `;
 export const Title = styled.span`
   width: 100%;
-  padding: 10px 0px 16px 0px;
-  font-size: 17px;
+  padding: 0.625rem 0 1rem 0;
+  font-size: 1.063rem;
   font-weight: 700;
-`;
-export const Divider_2 = styled.hr`
-  width: 100%;
-  height: 1px;
-  border: 0px;
-  background-color: #ededed;
+  line-height: 1.412rem;
+  color: #212529;
+  border-bottom: 0.063rem solid #ededed;
 `;
 export const FiltersBox = styled.div`
   display: flex;
-  padding: 10px 0px;
+  gap: 0.5rem;
+  padding: 0.625rem;
 `;
-export const Filter = styled.div`
-  padding: 10px;
-  border-radius: 34px;
-  background-color: #f0f0f0;
-  color: #8e8e8e;
-  margin-right: 8px;
-  &:last-child {
-    margin: 0px;
-  }
+export const Filter = styled.button<{ checked: boolean }>`
+  padding: 0.625rem;
+  border: 0;
+  border-radius: 2.125rem;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  letter-spacing: -0.01rem;
+  ${({ checked }) =>
+    checked
+      ? css`
+          background-color: ${theme.colors.main};
+          color: ${theme.colors.white};
+        `
+      : css`
+          border: 0.063rem solid #cfc4fb;
+          background-color: ${theme.colors.white};
+          color: ${theme.colors.main};
+        `}
 `;
 export const BtnBox = styled.div`
   display: flex;
-  padding: 8px 20px;
+  width: 100%;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
 `;
-export const ResetBtn = styled.button`
+export const ResetBtnContainer = styled.button`
   display: flex;
   align-items: center;
-  padding: 16px 20px;
-  margin-right: 8px;
-  border: 0px;
-  border-radius: 8px;
-  background-color: white;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.15);
-  color: #868e96;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.5px;
+  padding: 1rem 1.25rem;
+  width: 6.813rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background-color: ${theme.colors.white};
+  box-shadow: 0 0.063rem 0.125rem rgba(0, 0, 0, 0.15);
 `;
-export const ResetIcon = styled.img<{ src: string }>`
-  margin-right: 4px;
+export const ResetText = styled.span`
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1rem;
+  letter-spacing: -0.031rem;
+  color: #868e96;
 `;
 export const DoneBtn = styled.button`
-  width: 203px;
-  padding: 16px 20px;
-  border: 0px;
-  border-radius: 8px;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border: 0;
+  border-radius: 0.5rem;
   background-color: #6541f2;
-  color: white;
-  font-size: 16px;
+  color: ${theme.colors.white};
+  font-size: 1rem;
   font-weight: 600;
+  line-height: 1rem;
+  letter-spacing: -0.031rem;
 `;

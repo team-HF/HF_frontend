@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const PostPreviewContainer = styled.div`
   display: flex;
@@ -8,6 +8,12 @@ export const PostPreviewContainer = styled.div`
   padding: 0.5rem 0;
   border-bottom: 1px solid #f1f3f5;
   flex-direction: column;
+  @media (min-width: 768px) and (max-width: 1920px) {
+    width: 40rem;
+  }
+  @media (min-width: 1920px) {
+    width: 67.5rem;
+  }
 `;
 
 export const CategoryWrapper = styled.div`
@@ -60,7 +66,7 @@ export const TimeStampText = styled.p`
 export const DescriptionContainer = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical; /* 수직 방향으로 정렬 */
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
