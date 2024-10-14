@@ -1,13 +1,23 @@
-import { useNavigate } from 'react-router-dom';
-import MediumButton from '../../../shared/ui/medium-button/MediumButton';
+import { useNavigate } from "react-router-dom";
+import MediumButton from "../../../shared/ui/medium-button/MediumButton";
+import { useOptionStore } from "../store/exercise-option-store";
 
 type NextButtonProps = {
   disabled: boolean;
 };
 export default function NextButton({ disabled }: NextButtonProps) {
+  const {
+    levelSelected,
+    styleSelected,
+    habitSelected,
+    goalSelected,
+    exerciseSelected,
+  } = useOptionStore();
   const navigate = useNavigate();
   const onClick = () => {
-    navigate('/register/profile');
+    navigate(
+      `/register/profile?fitnessLevel=${levelSelected}&companionStyle=${styleSelected}&fitnessEagerness=${habitSelected}&fitnessObjective=${goalSelected}&fitnessKind=${exerciseSelected}`
+    );
   };
   return (
     <div>
