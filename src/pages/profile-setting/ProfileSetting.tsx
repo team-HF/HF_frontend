@@ -6,6 +6,8 @@ import GenderDropdown from '../../shared/ui/gender-select-dropdown/GenderSelectD
 import BackHeader from '../../shared/ui/back-header/BackHeader';
 import { User } from '../../shared/types/user';
 import LargeButton from '../../shared/ui/large-button/LargeButton';
+import { useProfileSettingStore } from '../../features/profile-setting/store/profile-setting-store';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProfileSetting() {
   const {
@@ -19,13 +21,16 @@ export default function ProfileSetting() {
   const [formattedBirthDate, setFormattedBirthDate] = useState<string>('');
   const [selectedGender, setSelectedGender] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
-
+  const introduction = useProfileSettingStore((state) => state.introduction);
+  const navigate = useNavigate();
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setImageFile(event.target.files[0]);
     }
   };
-
+  const handleProfileSettingNavigation = () => {
+    navigate('/profile-setting/introduction');
+  };
   const handleGenderChange = (gender: string) => {
     setSelectedGender(gender);
     setValue('gender', gender);
@@ -128,7 +133,10 @@ export default function ProfileSetting() {
         <S.Field>
           <S.Label>한줄 소개</S.Label>
           <S.Input
+            style={{ cursor: 'pointer' }}
             type="text"
+            onClick={handleProfileSettingNavigation}
+            value={introduction || ''}
             placeholder="나를 소개할 한 줄을 작성해주세요."
             {...register('introduction', {
               required: {
