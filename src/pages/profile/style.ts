@@ -1,4 +1,5 @@
-import { styled } from 'styled-components';
+import { styled } from "styled-components";
+import { theme } from "../../app/theme";
 
 export const Container = styled.div`
   display: flex;
@@ -34,13 +35,27 @@ export const ImageContainer = styled.div`
   border-radius: 50%;
 `;
 
-export const ProfileImage = styled.img`
+export const ProfileImageLabel = styled.label`
   display: flex;
-  align-self: center;
-  margin-right: auto;
-  margin-left: auto;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
+export const ProfileImage = styled.img<{ src: string | null }>`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+`;
+
+export const CameraIcon = styled.img`
   width: 2.5625rem;
   height: 2.0625rem;
+`;
+
+export const ProfileImageInput = styled.input`
+  display: none;
 `;
 
 export const FieldContainer = styled.div`
@@ -67,6 +82,7 @@ export const SexContainer = styled.div`
   flex-direction: row;
   position: relative;
 `;
+
 export const Input = styled.input`
   width: 20.125rem;
   height: 2.125rem;
@@ -79,6 +95,9 @@ export const Input = styled.input`
   &:focus {
     outline: none;
     border-color: #000000;
+  }
+  &:disabled {
+    background-color: ${theme.colors.white};
   }
 `;
 
@@ -121,4 +140,41 @@ export const ErrorMessage = styled.span`
   font-size: 0.75rem;
   margin-top: 0.25rem;
   color: #ff0000;
+`;
+
+export const LocationContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+`;
+
+export const ResetBtn = styled.button`
+  position: absolute;
+  right: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.25rem;
+  border: 1px solid #cccccc;
+  border-radius: 0.5rem;
+  background-color: ${theme.colors.white};
+  font-size: 0.75rem;
+`;
+
+export const LocationList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem;
+  width: 20rem;
+  max-height: 10rem;
+  overflow: scroll;
+`;
+
+export const LocationCard = styled.button`
+  padding: 0.5rem;
+  border: 1px solid #cccccc;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  background-color: ${theme.colors.white};
+  color: #000000;
 `;
