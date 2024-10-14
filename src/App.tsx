@@ -6,6 +6,7 @@ import ExerciseOption from './pages/exercise-option/ExerciseOption';
 import ProfileSetting from './pages/profile-setting/ProfileSetting';
 import Profile from './pages/profile/Profile';
 import Login from './pages/login/Login';
+import Introduction from './pages/introduction/Introduction';
 
 function App() {
   return (
