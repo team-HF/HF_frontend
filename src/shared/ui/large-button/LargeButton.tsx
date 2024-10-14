@@ -10,7 +10,7 @@ export default function LargeButton({
   text,
   onClick,
   type,
-  $isValid = false,
+  $isValid = true,
 }: LargeButtonProps) {
   return (
     <S.Container onClick={onClick} type={type} $isValid={$isValid}>
