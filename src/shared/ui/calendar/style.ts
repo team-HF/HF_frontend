@@ -1,8 +1,12 @@
 import { styled } from 'styled-components';
 
 export const CalendarContainer = styled.div`
-  width: 122px;
+  width: 100%;
   position: relative;
+
+  react-datepicker__input-container {
+    width: 100%;
+  }
 
   .react-datepicker__input-container input::placeholder {
     color: #999999;
@@ -30,9 +34,11 @@ export const CalendarContainer = styled.div`
   .react-datepicker__day--disabled.react-datepicker__day--weekend {
     color: #ccc;
   }
-
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
   .react-datepicker__input-container input {
-    width: 20.125rem;
+    width: 100%;
     height: 2.125rem;
     border: none;
     border-bottom: 1px solid #ededed;
@@ -43,7 +49,7 @@ export const CalendarContainer = styled.div`
 
     &:focus {
       outline: none;
-      border: 1px solid #000000;
+      border-bottom: 1px solid #000000;
     }
   }
 

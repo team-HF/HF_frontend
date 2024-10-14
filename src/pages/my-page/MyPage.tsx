@@ -28,7 +28,9 @@ export default function MyPage() {
           <MatchingBox />
         </S.MatchingContainer>
       ) : (
-        <div>저장된 List</div>
+        <S.MatchingContainer>
+          <div>저장된 List</div>
+        </S.MatchingContainer>
       )}
       <FooterNav />
     </S.Container>

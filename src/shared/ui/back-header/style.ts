@@ -1,17 +1,44 @@
 import { styled } from 'styled-components';
 
 export const Container = styled.div`
-  width: 100%;
-  height: 2.875rem;
+  display: flex;
+  width: 22.5rem;
+  height: 2.5rem;
   gap: 0.625rem;
+  @media (min-width: 768px) and (max-width: 991px) {
+    /* 태블릿 세로 방향 */
+    width: 40rem;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    /* 태블릿 가로 방향 */
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+    width: 67.5rem;
+  }
 `;
 
 export const ContentsWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 20rem;
+  width: 100%;
   height: 1.875rem;
-  padding: 1.25rem 0.5rem;
+  padding: 0.5rem 1.25rem;
+  @media (min-width: 768px) and (max-width: 991px) {
+    /* 태블릿 세로 방향 */
+    width: 40rem;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    /* 태블릿 가로 방향 */
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+    width: 67.5rem;
+  }
 `;
 export const IconWrapper = styled.img`
   width: 1.5rem;

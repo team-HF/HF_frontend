@@ -13,7 +13,7 @@ export default function BackHeader({ text }: BackHeaderProps) {
     <S.Container>
       <S.ContentsWrapper>
         <S.IconWrapper
-          src="svg/left-arrow-icon.svg"
+          src="/svg/left-arrow-icon.svg"
           alt="back-icon"
           onClick={handleBackClick}
         />

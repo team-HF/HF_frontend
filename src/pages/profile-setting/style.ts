@@ -2,10 +2,41 @@ import { styled } from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
+  margin-left: auto;
+  margin-right: auto;
   flex-direction: column;
-  max-width: 24.375rem;
+  max-width: 22.5rem;
+  @media (min-width: 768px) and (max-width: 991px) {
+    /* 태블릿 세로 방향 */
+    max-width: 48rem;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    /* 태블릿 가로 방향 */
+    max-width: 40rem;
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+    max-width: 48rem;
+  }
 `;
 
+export const HeaderWrapper = styled.div`
+  display: flex;
+  @media (min-width: 768px) and (max-width: 991px) {
+    /* 태블릿 세로 방향 */
+    width: 40rem;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    /* 태블릿 가로 방향 */
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+  }
+`;
 export const ProfileIconContainer = styled.div`
   display: flex;
   position: relative;
@@ -56,9 +87,20 @@ export const ProfileChangeImage = styled.img`
   height: 1.5rem;
 `;
 export const FieldContainer = styled.div`
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 1.25rem;
   margin-top: 1.8125rem;
+  @media (min-width: 768px) and (max-width: 991px) {
+    /* 태블릿 세로 방향 */
+    width: 40rem;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    /* 태블릿 가로 방향 */
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+  }
 `;
 export const Field = styled.div`
   display: flex;
@@ -75,7 +117,7 @@ export const Label = styled.label`
 `;
 
 export const Input = styled.input`
-  width: 20.125rem;
+  width: 100%;
   height: 2.125rem;
   border: none;
   border-bottom: 1px solid #ededed;
@@ -99,9 +141,9 @@ export const Input = styled.input`
 `;
 
 export const ButtonContainer = styled.div`
+  display: flex;
   margin-top: 0.75rem;
-  margin-left: auto;
-  margin-right: auto;
+  justify-content: center;
 `;
 
 export const ErrorMessage = styled.span`
