@@ -1,8 +1,9 @@
-import * as S from './style-selector.style';
+import * as S from "./style-selector.style";
 
 type Option = {
   label: string;
   emoji: string;
+  value: string;
 };
 
 type CategoryProps = {
@@ -28,8 +29,8 @@ export default function StyleSelector({
         {options.map((option) => (
           <S.OptionCard
             key={option.label}
-            selected={selectedOption === option.label}
-            onClick={() => setSelectedOption(option.label)}
+            selected={selectedOption === option.value}
+            onClick={() => setSelectedOption(option.value)}
           >
             <span>{option.emoji}</span>
             <p>{option.label}</p>

@@ -47,7 +47,7 @@ export const CheckBtn = styled.button`
   padding: 10px 14px;
   margin-top: 14px;
   width: 114px;
-  color: ${theme.font.colors.white};
+  color: ${theme.colors.white};
   font-size: 16px;
   font-weight: 500;
 `;
