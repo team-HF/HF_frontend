@@ -1,7 +1,7 @@
-import { useParams } from "react-router-dom";
 import MediumButton from "../../../shared/ui/medium-button/MediumButton";
 import { useProfileStore } from "../store/profile-store";
 import { useAxios } from "../../../shared/utils/useAxios";
+import { useGetParams } from "../../../shared/utils/useGetParams";
 
 type SaveButtonProps = {
   disabled: boolean;
@@ -9,13 +9,11 @@ type SaveButtonProps = {
 export default function SaveButton({ disabled }: SaveButtonProps) {
   const { axiosInstance } = useAxios();
 
-  const {
-    fitnessLevel,
-    companionStyle,
-    fitnessEagerness,
-    fitnessObjective,
-    fitnessKind,
-  } = useParams();
+  const fitnessLevel = useGetParams("fitnessLevel");
+  const companionStyle = useGetParams("companionStyle");
+  const fitnessEagerness = useGetParams("fitnessEagerness");
+  const fitnessObjective = useGetParams("fitnessObjective");
+  const fitnessKind = useGetParams("fitnessKind");
 
   const accessToken = sessionStorage.getItem("accessToken");
   const id = sessionStorage.getItem("id");
