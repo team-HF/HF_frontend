@@ -1,4 +1,4 @@
-export const useGetDate = (value?: Date) => {
+export const useGetDate = (value?: string) => {
   if (value) {
     const date = new Date(value);
     const year = String(date.getFullYear()).slice(-2);

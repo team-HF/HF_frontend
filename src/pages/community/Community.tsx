@@ -7,6 +7,7 @@ import CommunityHeader from "../../widgets/community/community-header/CommunityH
 import PostPreviewList from "../../shared/ui/post-preview-list/PostPreviewList";
 import FloatingButton from "../../widgets/community/floating-button/FloatingButton";
 import getPostList from "./api/useGetPostList";
+import { useAxios } from "../../shared/utils/useAxios";
 
 interface postData {
   postId: number;
@@ -20,7 +21,20 @@ interface postData {
   fitnessLevel: string;
 }
 
+const data = Array.from({ length: 100 }, () => ({
+  postId: 0,
+  category: "헬스장 추천",
+  title: "헬스장 추천",
+  content: "헬스장 추천 내용",
+  creationTime: "2024-10-15T17:12:08.826Z",
+  viewCount: 0,
+  likeCount: 0,
+  commentCount: 0,
+  fitnessLevel: "고수",
+}));
+
 const Community = () => {
+  const { axiosInstance } = useAxios();
   const [currentPage, setCurrentPage] = useState<number>(1); //수정필요
   const [postList, setPostList] = useState<postData[]>([]);
   const [contentType, setContentType] = useState<string>(
@@ -32,18 +46,14 @@ const Community = () => {
     );
     return findObject ? findObject.filterType : "dropdown";
   };
-  const contentsList = postList.map((data, idx) => (
+  const contentsList = data.map((data, idx) => (
     <PostPreviewList key={`community_post_${idx}`} data={data} />
   ));
   useEffect(() => {
     (async () => {
-      try {
-        const response = await getPostList(currentPage);
-        if (Array.isArray(response)) {
-          setPostList([...response]);
-        }
-      } catch (error) {
-        console.error("Error Getting community post", error);
+      const response = await getPostList(axiosInstance, currentPage);
+      if (Array.isArray(response)) {
+        setPostList(response);
       }
     })();
   }, [currentPage]);

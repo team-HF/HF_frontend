@@ -1,8 +1,11 @@
-import axios from "axios";
+import { AxiosInstance } from "axios";
 
-const getPostList = async (currentPage: number) => {
+const getPostList = async (
+  axiosInstance: AxiosInstance,
+  currentPage: number
+) => {
   try {
-    const response = await axios.get(`/hf/list`, {
+    const response = await axiosInstance.get(`/hf/list`, {
       params: {
         page: currentPage,
         size: 20,
