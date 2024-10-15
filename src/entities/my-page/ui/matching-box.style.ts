@@ -26,6 +26,7 @@ export const CardContainer = styled.div`
   border: 1px solid #99999999;
   border-radius: 0.3125rem;
   gap: 1rem;
+  margin-bottom: 0.5rem;
 `;
 export const UpperContainer = styled.div`
   align-items: flex-start;
