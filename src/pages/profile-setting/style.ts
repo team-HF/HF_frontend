@@ -150,5 +150,4 @@ export const ErrorMessage = styled.span`
   font-size: 0.75rem;
   margin-top: 0.25rem;
   color: #ff0000;
-  padding: 0.5rem;
 `;
