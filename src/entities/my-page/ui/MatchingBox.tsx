@@ -3,7 +3,7 @@ import Hashtag from '../../../shared/ui/hashtag/Hashtag';
 import { useEffect, useState, useCallback } from 'react';
 import { MatchingUserCard } from '../model/matching-user-card.interface';
 import MediumButton from '../../../shared/ui/medium-button/MediumButton';
-import { useInView } from 'react-intersection-observer';
+import { useInfiniteScroll } from '../../../shared/utils/useInfiniteScroll';
 
 export default function MatchingBox() {
   const [users, setUsers] = useState<MatchingUserCard[]>([]);
@@ -12,11 +12,6 @@ export default function MatchingBox() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const limit = 5;
-
-  const { ref, inView } = useInView({
-    threshold: 1,
-    triggerOnce: false,
-  });
 
   const fetchUsers = useCallback(async () => {
     if (!hasMore || isLoading) return;
@@ -51,11 +46,7 @@ export default function MatchingBox() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (inView) {
-      fetchUsers();
-    }
-  }, [inView, fetchUsers]);
+  const { ref } = useInfiniteScroll(fetchUsers, hasMore, isLoading);
 
   return (
     <S.Container>
