@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 20.125rem;
-  height: auto;
+  width: 100%;
+  height: 100vh;
   gap: 1rem;
   @media (min-width: 768px) and (max-width: 991px) {
     /* 태블릿 세로 방향 */
@@ -26,6 +26,7 @@ export const CardContainer = styled.div`
   border: 1px solid #99999999;
   border-radius: 0.3125rem;
   gap: 1rem;
+  margin-bottom: 0.5rem;
 `;
 export const UpperContainer = styled.div`
   align-items: flex-start;
