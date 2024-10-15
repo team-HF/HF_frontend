@@ -1,22 +1,19 @@
-import { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { useEffect, useRef } from 'react';
+import { VirtuosoHandle } from 'react-virtuoso';
 
-//ref가 보였을 때 작성한 데이터 패칭 함수를 useInfiniteScroll 인자로 사용하시면 됩니다.
+// 사용하는 컴포넌트에서 useInfiniteScroll 함수의 인자로 데이터 패칭 함수를 넣어서 사용하면 됩니다.
 export const useInfiniteScroll = (
   fetchData: () => Promise<void>,
   hasMore: boolean,
   isLoading: boolean
 ) => {
-  const { ref, inView } = useInView({
-    threshold: 1,
-    triggerOnce: false,
-  });
+  const virtuosoRef = useRef<VirtuosoHandle | null>(null);
 
   useEffect(() => {
-    if (inView && !isLoading && hasMore) {
+    if (!isLoading && hasMore) {
       fetchData();
     }
-  }, [inView, isLoading, hasMore, fetchData]);
+  }, [isLoading, hasMore, fetchData]);
 
-  return { ref };
+  return { virtuosoRef };
 };

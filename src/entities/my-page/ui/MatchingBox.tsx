@@ -1,6 +1,7 @@
 import * as S from './matching-box.style';
 import Hashtag from '../../../shared/ui/hashtag/Hashtag';
 import { useEffect, useState, useCallback } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 import { MatchingUserCard } from '../model/matching-user-card.interface';
 import MediumButton from '../../../shared/ui/medium-button/MediumButton';
 import { useInfiniteScroll } from '../../../shared/utils/useInfiniteScroll';
@@ -11,7 +12,7 @@ export default function MatchingBox() {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const limit = 5;
+  const limit = 10;
 
   const fetchUsers = useCallback(async () => {
     if (!hasMore || isLoading) return;
@@ -28,7 +29,6 @@ export default function MatchingBox() {
       const result = await response.json();
       const fetchedUsers: MatchingUserCard[] = result.data;
       const totalPages: number = result.totalPages;
-
       setUsers((prev) => [...prev, ...fetchedUsers]);
       setHasMore(page < totalPages);
       setPage((prev) => prev + 1);
@@ -45,44 +45,48 @@ export default function MatchingBox() {
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const { ref } = useInfiniteScroll(fetchUsers, hasMore, isLoading);
-
+  const { virtuosoRef } = useInfiniteScroll(fetchUsers, hasMore, isLoading);
+  console.log(users);
   return (
     <S.Container>
-      {users.map((user) => (
-        <S.CardContainer key={user.id}>
-          <S.UpperContainer>
-            <S.ProfileIconContainer>
-              <S.ProfileIcon
-                src={user.profileImage}
-                alt={`${user.nickname}의 프로필`}
-              />
-            </S.ProfileIconContainer>
-            <S.ProfileTextContainer>
-              <S.UserName>{user.nickname}</S.UserName>
-              <span>{user.matchCount}회 매칭됨</span>
-              <span>{user.location}</span>
-            </S.ProfileTextContainer>
-            <S.UnderContainer>
-              <S.HashtagContainer>
-                {user.hashtags.map((tag, idx) => (
-                  <Hashtag key={idx} text={tag} />
-                ))}
-              </S.HashtagContainer>
-              <MediumButton
-                text="임시 버튼"
-                color="black"
-                backgroundColor="gray"
-                border="1px solid black"
-              />
-            </S.UnderContainer>
-          </S.UpperContainer>
-        </S.CardContainer>
-      ))}
+      <Virtuoso
+        useWindowScroll
+        ref={virtuosoRef}
+        data={users}
+        endReached={fetchUsers}
+        itemContent={(_, user: MatchingUserCard) => (
+          <S.CardContainer key={user.id}>
+            <S.UpperContainer>
+              <S.ProfileIconContainer>
+                <S.ProfileIcon
+                  src={user.profileImage}
+                  alt={`${user.nickname}의 프로필`}
+                />
+              </S.ProfileIconContainer>
+              <S.ProfileTextContainer>
+                <S.UserName>{user.nickname}</S.UserName>
+                <span>{user.matchCount}회 매칭됨</span>
+                <span>{user.location}</span>
+              </S.ProfileTextContainer>
+              <S.UnderContainer>
+                <S.HashtagContainer>
+                  {user.hashtags.map((tag, idx) => (
+                    <Hashtag key={idx} text={tag} />
+                  ))}
+                </S.HashtagContainer>
+                <MediumButton
+                  text="임시 버튼"
+                  color="black"
+                  backgroundColor="gray"
+                  border="1px solid black"
+                />
+              </S.UnderContainer>
+            </S.UpperContainer>
+          </S.CardContainer>
+        )}
+      />
       {isLoading && <p>로딩 중...</p>}
       {error && <p>{error}</p>}
-      {hasMore && !isLoading && <div ref={ref} />}
     </S.Container>
   );
 }
