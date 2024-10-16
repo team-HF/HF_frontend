@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { MatchingUserCard } from '../entities/my-page/model/matching-user-card.interface';
 
 // 더미 데이터 생성
-const dummyUsers: MatchingUserCard[] = Array.from({ length: 30 }, (_, i) => ({
+const dummyUsers: MatchingUserCard[] = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
   profileImage: '/svg/default-profile-icon.svg',
   nickname: `유저 ${i + 1}`,
