@@ -1,6 +1,7 @@
 import * as S from "./style";
 import { Virtuoso } from "react-virtuoso";
 import { useAxios } from "../../shared/utils/useAxios";
+import { getPostList } from "./api/useGetPostList";
 import { ContentsTypeData } from "../../entities/community/contents-type-data";
 import { useInfiniteScroll } from "../../shared/utils/useInfiniteScroll";
 import { useCallback, useEffect, useState } from "react";
@@ -31,16 +32,10 @@ const Community = () => {
     if (!hasMore || isLoading) return;
     setIsLoading(true);
     try {
-      const response = await axiosInstance.get("/hf/list", {
-        params: {
-          page: currentPage,
-        },
-      });
-      const newPostList = response.data.content;
-      if (!Array.isArray(newPostList)) {
-        throw new Error("Error fetching post list.");
-      }
-      const totalPages: number = response.data.totalPages;
+      const { newPostList, totalPages } = await getPostList(
+        axiosInstance,
+        currentPage
+      );
       setPostList([...postList, ...newPostList]);
       setHasMore(currentPage < totalPages);
       setCurrentPage(currentPage + 1);
