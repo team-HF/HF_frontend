@@ -1,12 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { theme } from './app/theme';
-import { ThemeProvider } from 'styled-components';
-import MyPage from './pages/my-page/MyPage';
-import ExerciseOption from './pages/exercise-option/ExerciseOption';
-import ProfileSetting from './pages/profile-setting/ProfileSetting';
-import Profile from './pages/profile/Profile';
-import Login from './pages/login/Login';
-import Introduction from './pages/introduction/Introduction';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { theme } from "./app/theme";
+import { ThemeProvider } from "styled-components";
+import MyPage from "./pages/my-page/MyPage";
+import ExerciseOption from "./pages/exercise-option/ExerciseOption";
+import ProfileSetting from "./pages/profile-setting/ProfileSetting";
+import Profile from "./pages/profile/Profile";
+import Login from "./pages/login/Login";
+import Introduction from "./pages/introduction/Introduction";
+import Community from "./pages/community/Community";
+import PostRegister from "./pages/post-register/PostRegister";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
             path="/profile-setting/introduction"
             element={<Introduction />}
           />
+          <Route path="community" element={<Community />} />
+          <Route path="community/post-register" element={<PostRegister />} />
         </Routes>
       </ThemeProvider>
     </Router>
