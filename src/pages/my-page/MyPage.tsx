@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import MatchingBox from '../../entities/my-page/ui/MatchingBox';
+import MatchingList from '../../entities/my-page/ui/MatchingList';
 import ProfileBox from '../../entities/my-page/ui/ProfileBox';
 import Tab from '../../entities/my-page/ui/Tab';
 import FooterNav from '../../shared/ui/footer-nav/FooterNav';
@@ -7,6 +7,7 @@ import Header from '../../shared/ui/header/Header';
 import LargeButton from '../../shared/ui/large-button/LargeButton';
 import * as S from './style';
 import { useState } from 'react';
+import SaveList from '../../entities/my-page/ui/SaveList';
 
 export default function MyPage() {
   const [tab, setTab] = useState('내 운동 매칭 List');
@@ -25,11 +26,11 @@ export default function MyPage() {
       {tab === '내 운동 매칭 List' ? (
         <S.MatchingContainer>
           <S.MatchingTitle>나와 매칭된 새싹</S.MatchingTitle>
-          <MatchingBox />
+          <MatchingList />
         </S.MatchingContainer>
       ) : (
         <S.MatchingContainer>
-          <div>저장된 List</div>
+          <SaveList />
         </S.MatchingContainer>
       )}
       <FooterNav />
