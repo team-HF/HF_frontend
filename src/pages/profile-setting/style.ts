@@ -5,20 +5,20 @@ export const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
   flex-direction: column;
-  max-width: 22.5rem;
+  width: 22.5rem;
   @media (min-width: 768px) and (max-width: 991px) {
     /* 태블릿 세로 방향 */
-    max-width: 48rem;
+    width: 40rem;
   }
 
   @media (min-width: 992px) and (max-width: 1199px) {
     /* 태블릿 가로 방향 */
-    max-width: 40rem;
+    width: 40rem;
   }
 
   @media (min-width: 1200px) {
     /* 데스크톱 */
-    max-width: 48rem;
+    width: 67.5rem;
   }
 `;
 
@@ -40,7 +40,6 @@ export const HeaderWrapper = styled.div`
   }
 `;
 export const ProfileIconContainer = styled.div`
-  display: flex;
   position: relative;
   width: 7.5rem;
   height: 7.5rem;

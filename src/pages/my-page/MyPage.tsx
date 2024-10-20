@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import MatchingList from '../../entities/my-page/ui/MatchingList';
 import ProfileBox from '../../entities/my-page/ui/ProfileBox';
 import Tab from '../../entities/my-page/ui/Tab';
-import FooterNav from '../../shared/ui/footer-nav/FooterNav';
 import Header from '../../shared/ui/header/Header';
 import LargeButton from '../../shared/ui/large-button/LargeButton';
 import * as S from './style';
@@ -33,7 +32,6 @@ export default function MyPage() {
           <SaveList />
         </S.MatchingContainer>
       )}
-      <FooterNav />
     </S.Container>
   );
 }

@@ -7,6 +7,7 @@ import ProfileSetting from './pages/profile-setting/ProfileSetting';
 import Profile from './pages/profile/Profile';
 import Login from './pages/login/Login';
 import Introduction from './pages/introduction/Introduction';
+import FooterNav from './shared/ui/footer-nav/FooterNav';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             element={<Introduction />}
           />
         </Routes>
+        <FooterNav />
       </ThemeProvider>
     </Router>
   );

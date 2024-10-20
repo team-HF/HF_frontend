@@ -28,6 +28,7 @@ export default function MatchingList() {
       }
       const result = await response.json();
       const fetchedUsers: MatchingUserCard[] = result.data;
+      console.log(result.data);
       const totalPages: number = result.totalPages;
       setUsers((prev) => [...prev, ...fetchedUsers]);
       setHasMore(page < totalPages);
@@ -45,6 +46,7 @@ export default function MatchingList() {
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const { virtuosoRef } = useInfiniteScroll(fetchUsers, hasMore, isLoading);
   return (
     <S.Container>
