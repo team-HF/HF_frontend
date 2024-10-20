@@ -1,17 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as S from './style';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Calendar from '../../shared/ui/calendar/Calendar';
 import GenderDropdown from '../../shared/ui/gender-select-dropdown/GenderSelectDropdown';
 import BackHeader from '../../shared/ui/back-header/BackHeader';
 import LargeButton from '../../shared/ui/large-button/LargeButton';
 import { useProfileSettingStore } from '../../features/profile-setting/store/profile-setting-store';
 import { useNavigate } from 'react-router-dom';
-import { UserSchema } from '../../shared/schema/userSchema';
-import { z } from 'zod';
+import { User } from '../../shared/types/user';
 
-type User = z.infer<typeof UserSchema>;
 export default function ProfileSetting() {
   const {
     register,
@@ -19,52 +16,190 @@ export default function ProfileSetting() {
     setValue,
     clearErrors,
     handleSubmit,
-  } = useForm<User>({ resolver: zodResolver(UserSchema), mode: 'onChange' });
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [formattedBirthDate, setFormattedBirthDate] = useState<string>('');
-  const [selectedGender, setSelectedGender] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const introduction = useProfileSettingStore((state) => state.introduction);
+  } = useForm<User>({
+    mode: 'onChange',
+    defaultValues: {
+      nickname: '',
+      birth: '',
+      gender: '',
+      introduction: '',
+    },
+  });
+
+  const {
+    nickname,
+    birth,
+    gender,
+    introduction,
+    image,
+    setNickname,
+    setBirth,
+    setGender,
+    setIntroduction,
+    setImage,
+  } = useProfileSettingStore();
+
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    birth ? new Date(birth) : null
+  );
+  const [formattedBirthDate, setFormattedBirthDate] = useState<string>(
+    birth || ''
+  );
+  const [selectedGender, setSelectedGender] = useState(gender || '');
+  const [imageFile, setImageFile] = useState<File | null>(image);
   const navigate = useNavigate();
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setImageFile(event.target.files[0]);
+
+  const saveDataToSessionStorage = (
+    key: string,
+    value: string | File | null
+  ) => {
+    if (value instanceof File) {
+      sessionStorage.setItem(key, value.name);
+    } else {
+      sessionStorage.setItem(key, JSON.stringify(value));
     }
   };
-  const handleProfileSettingNavigation = () => {
-    navigate('/profile-setting/introduction');
+
+  useEffect(() => {
+    // 새로고침 시 세션 스토리지 비우기
+    const handleBeforeUnload = () => {
+      sessionStorage.clear();
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    // 세션에 필드 값 저장
+    saveDataToSessionStorage('nickname', nickname);
+  }, [nickname]);
+
+  useEffect(() => {
+    saveDataToSessionStorage('birth', birth);
+  }, [birth]);
+
+  useEffect(() => {
+    saveDataToSessionStorage('gender', gender);
+  }, [gender]);
+
+  useEffect(() => {
+    saveDataToSessionStorage('introduction', introduction);
+  }, [introduction]);
+
+  useEffect(() => {
+    if (imageFile) {
+      saveDataToSessionStorage('image', imageFile);
+    }
+  }, [imageFile]);
+
+  // 마운트될 때 세션에서 값 로드
+  useEffect(() => {
+    const savedNickname = sessionStorage.getItem('nickname');
+    if (savedNickname) {
+      const parsedNickname = JSON.parse(savedNickname);
+      setNickname(parsedNickname);
+      setValue('nickname', parsedNickname);
+    }
+
+    const savedBirth = sessionStorage.getItem('birth');
+    if (savedBirth) {
+      const parsedBirth = JSON.parse(savedBirth);
+      setBirth(parsedBirth);
+      setFormattedBirthDate(parsedBirth);
+      setSelectedDate(new Date(parsedBirth));
+      setValue('birth', parsedBirth);
+    }
+
+    const savedGender = sessionStorage.getItem('gender');
+    if (savedGender) {
+      const parsedGender = JSON.parse(savedGender);
+      setGender(parsedGender);
+      setSelectedGender(parsedGender);
+      setValue('gender', parsedGender);
+    }
+
+    const savedIntroduction = sessionStorage.getItem('introduction');
+    if (savedIntroduction) {
+      const parsedIntroduction = JSON.parse(savedIntroduction);
+      setIntroduction(parsedIntroduction);
+      setValue('introduction', parsedIntroduction);
+    }
+
+    const savedImage = sessionStorage.getItem('image');
+    if (savedImage) {
+      setImageFile(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleNicknameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newNickname = event.target.value;
+    setNickname(newNickname);
+    setValue('nickname', newNickname);
   };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      if (file instanceof File) {
+        setImageFile(file);
+        setImage(file);
+      }
+      console.log(file);
+    }
+  };
+
   const handleGenderChange = (gender: string) => {
     setSelectedGender(gender);
     setValue('gender', gender);
+    setGender(gender);
     clearErrors('gender');
   };
 
   const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
     if (date) {
+      setSelectedDate(date);
       const formattedDate = `${date.getFullYear()}-${String(
         date.getMonth() + 1
       ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
       setFormattedBirthDate(formattedDate);
       setValue('birth', formattedDate);
+      setBirth(formattedDate);
     } else {
       setFormattedBirthDate('');
       setValue('birth', '');
+      setBirth('');
     }
     clearErrors('birth');
   };
 
+  const handleProfileSettingNavigation = () => {
+    navigate('/profile-setting/introduction');
+  };
+
   const onSubmit: SubmitHandler<User> = (data: User) => {
+    setNickname(data.nickname);
+    setGender(data.gender);
+    setIntroduction(data.introduction);
+    if (formattedBirthDate) {
+      setBirth(formattedBirthDate);
+    }
+    if (imageFile) {
+      setImage(imageFile);
+    }
     const formData = new FormData();
     formData.append('nickname', data.nickname);
     formData.append('gender', data.gender);
     formData.append('introduction', data.introduction);
-    if (imageFile) {
-      formData.append('image', imageFile);
+    formData.append('birth', formattedBirthDate);
+    if (image) {
+      formData.append('image', image);
     }
-    if (formattedBirthDate) {
-      formData.append('birth', formattedBirthDate);
+    for (const value of formData.values()) {
+      console.log(value);
     }
   };
 
@@ -76,7 +211,9 @@ export default function ProfileSetting() {
       <S.ProfileIconContainer>
         {imageFile ? (
           <S.ProfileUploadImage
-            src={URL.createObjectURL(imageFile)}
+            src={
+              imageFile instanceof File ? URL.createObjectURL(imageFile) : ''
+            }
             alt="profile-image"
           />
         ) : (
@@ -87,7 +224,7 @@ export default function ProfileSetting() {
           <input
             {...register('image')}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/jpg,image/png,image/webp"
             hidden
             onChange={handleImageChange}
           />
@@ -100,8 +237,17 @@ export default function ProfileSetting() {
           <S.Input
             type="text"
             placeholder="영문, 숫자, 한글만 입력 가능합니다 (최대 8글자)"
-            {...register('nickname')}
+            {...register('nickname', {
+              required: '닉네임을 입력해주세요.',
+              pattern: {
+                value: /^[가-힣a-zA-Z0-9]{1,8}$/,
+                message:
+                  '영문, 숫자, 한글만 입력 가능하며 최대 8글자까지 가능합니다.',
+              },
+            })}
             onBlur={() => clearErrors('nickname')}
+            value={nickname || ''}
+            onChange={handleNicknameChange}
           />
           {errors.nickname?.message && (
             <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
@@ -111,8 +257,8 @@ export default function ProfileSetting() {
         <S.Field>
           <S.Label>생년 월일</S.Label>
           <Calendar selectedDate={selectedDate} onChange={handleDateChange} />
-          {errors.gender?.message && (
-            <S.ErrorMessage>생년월일을 입력해주세요.</S.ErrorMessage>
+          {errors.birth?.message && (
+            <S.ErrorMessage>{errors.birth.message}</S.ErrorMessage>
           )}
         </S.Field>
 
@@ -137,7 +283,9 @@ export default function ProfileSetting() {
             onClick={handleProfileSettingNavigation}
             value={introduction || ''}
             placeholder="나를 소개할 한 줄을 작성해주세요."
-            {...register('introduction')}
+            {...register('introduction', {
+              required: '한줄 소개를 입력해주세요.',
+            })}
             onBlur={() => clearErrors('introduction')}
           />
           {errors.introduction?.message && (
