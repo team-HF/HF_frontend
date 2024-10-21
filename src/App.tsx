@@ -1,14 +1,16 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { theme } from "./app/theme";
-import { ThemeProvider } from "styled-components";
-import MyPage from "./pages/my-page/MyPage";
-import ExerciseOption from "./pages/exercise-option/ExerciseOption";
-import ProfileSetting from "./pages/profile-setting/ProfileSetting";
-import Profile from "./pages/profile/Profile";
-import Login from "./pages/login/Login";
-import Introduction from "./pages/introduction/Introduction";
-import Community from "./pages/community/Community";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { theme } from './app/theme';
+import { ThemeProvider } from 'styled-components';
+import MyPage from './pages/my-page/MyPage';
+import ExerciseOption from './pages/exercise-option/ExerciseOption';
+import ProfileSetting from './pages/profile-setting/ProfileSetting';
+import Profile from './pages/profile/Profile';
+import Login from './pages/login/Login';
+import Introduction from './pages/introduction/Introduction';
+import FooterNav from './shared/ui/footer-nav/FooterNav';
+import ChatLobby from './pages/chat-lobby/ChatLobby';
 import PostRegister from "./pages/post-register/PostRegister";
+import Community from "./pages/community/Community";
 
 function App() {
   return (
@@ -25,9 +27,11 @@ function App() {
             path="/profile-setting/introduction"
             element={<Introduction />}
           />
+          <Route path="/chat-lobby" element={<ChatLobby />} />
           <Route path="community" element={<Community />} />
           <Route path="community/post-register" element={<PostRegister />} />
         </Routes>
+        <FooterNav />
       </ThemeProvider>
     </Router>
   );

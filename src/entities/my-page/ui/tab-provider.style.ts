@@ -3,13 +3,30 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   justify-content: center;
+  width: 22.5rem;
   align-items: center;
   flex-direction: column;
   margin-top: 1.875rem;
+  margin-left: auto;
+  margin-right: auto;
   font-weight: 400;
   font-size: 0.8125rem;
   line-height: 1.5rem;
   position: relative;
+  @media (min-width: 768px) and (max-width: 991px) {
+    /* 태블릿 세로 방향 */
+    width: 40rem;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    /* 태블릿 가로 방향 */
+    width: 40rem;
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+    width: 67.5rem;
+  }
 `;
 
 export const TabContainer = styled.div`
@@ -42,6 +59,7 @@ export const TabIndicator = styled.span`
 
   @media (min-width: 992px) and (max-width: 1199px) {
     /* 태블릿 가로 방향 */
+    width: 20rem;
   }
 
   @media (min-width: 1200px) {

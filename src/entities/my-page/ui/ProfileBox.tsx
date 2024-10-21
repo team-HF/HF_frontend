@@ -6,7 +6,10 @@ export default function ProfileBox() {
     <S.Container>
       <S.ProfileContainer>
         <S.ProfileIconContainer>
-          <img src="/svg/default-profile-icon.svg" alt="default-profile" />
+          <S.ProfileIconWrapper
+            src="/svg/default-profile-icon.svg"
+            alt="default-profile"
+          />
         </S.ProfileIconContainer>
         <S.ProfileTextContainer>
           <S.ProfileName>유저 1</S.ProfileName>

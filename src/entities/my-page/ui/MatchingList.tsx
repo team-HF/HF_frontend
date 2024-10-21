@@ -1,4 +1,4 @@
-import * as S from './matching-box.style';
+import * as S from './matching-list.style';
 import Hashtag from '../../../shared/ui/hashtag/Hashtag';
 import { useEffect, useState, useCallback } from 'react';
 import { Virtuoso } from 'react-virtuoso';
@@ -6,7 +6,7 @@ import { MatchingUserCard } from '../model/matching-user-card.interface';
 import MediumButton from '../../../shared/ui/medium-button/MediumButton';
 import { useInfiniteScroll } from '../../../shared/utils/useInfiniteScroll';
 
-export default function MatchingBox() {
+export default function MatchingList() {
   const [users, setUsers] = useState<MatchingUserCard[]>([]);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -28,6 +28,7 @@ export default function MatchingBox() {
       }
       const result = await response.json();
       const fetchedUsers: MatchingUserCard[] = result.data;
+      console.log(result.data);
       const totalPages: number = result.totalPages;
       setUsers((prev) => [...prev, ...fetchedUsers]);
       setHasMore(page < totalPages);
@@ -45,8 +46,8 @@ export default function MatchingBox() {
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const { virtuosoRef } = useInfiniteScroll(fetchUsers, hasMore, isLoading);
-  console.log(users);
   return (
     <S.Container>
       <Virtuoso
