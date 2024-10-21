@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 import * as S from './style';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Calendar from '../../shared/ui/calendar/Calendar';
-import GenderDropdown from '../../shared/ui/gender-select-dropdown/GenderSelectDropdown';
 import BackHeader from '../../shared/ui/back-header/BackHeader';
 import LargeButton from '../../shared/ui/large-button/LargeButton';
 import { useProfileSettingStore } from '../../features/profile-setting/store/profile-setting-store';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../shared/types/user';
+import Select, { CSSObjectWithLabel, SingleValue } from 'react-select';
+
+type OptionType = {
+  value: number;
+  label: string;
+};
 
 export default function ProfileSetting() {
   const {
@@ -39,12 +43,50 @@ export default function ProfileSetting() {
     setImage,
   } = useProfileSettingStore();
 
-  const [selectedDate, setSelectedDate] = useState<Date | null>(
-    birth ? new Date(birth) : null
+  const currentYear = new Date().getFullYear();
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedDay, setSelectedDay] = useState('');
+
+  const years: OptionType[] = Array.from(
+    { length: currentYear - 1940 + 1 },
+    (_, i) => ({ value: 1940 + i, label: `${1940 + i}년` })
   );
-  const [formattedBirthDate, setFormattedBirthDate] = useState<string>(
-    birth || ''
-  );
+  const months: OptionType[] = Array.from({ length: 12 }, (_, i) => ({
+    value: i + 1,
+    label: `${i + 1}월`,
+  }));
+
+  const getDaysInMonth = (year: number, month: number) => {
+    if (month === 2) {
+      // 2월 처리 (윤년 계산)
+      return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28;
+    }
+    // 4, 6, 9, 11월은 30일, 나머지는 31일
+    return [4, 6, 9, 11].includes(month) ? 30 : 31;
+  };
+  const days: OptionType[] =
+    selectedYear && selectedMonth
+      ? Array.from(
+          {
+            length: getDaysInMonth(Number(selectedYear), Number(selectedMonth)),
+          },
+          (_, i) => ({ value: i + 1, label: `${i + 1}일` })
+        )
+      : [];
+
+  const handleYearChange = (selectedOption: SingleValue<OptionType>) => {
+    setSelectedYear(selectedOption ? selectedOption.value.toString() : '');
+  };
+
+  const handleMonthChange = (selectedOption: SingleValue<OptionType>) => {
+    setSelectedMonth(selectedOption ? selectedOption.value.toString() : '');
+  };
+
+  const handleDayChange = (selectedOption: SingleValue<OptionType>) => {
+    setSelectedDay(selectedOption ? selectedOption.value.toString() : '');
+  };
+
   const [selectedGender, setSelectedGender] = useState(gender || '');
   const [imageFile, setImageFile] = useState<File | null>(image);
   const navigate = useNavigate();
@@ -89,13 +131,7 @@ export default function ProfileSetting() {
     saveDataToSessionStorage('introduction', introduction);
   }, [introduction]);
 
-  useEffect(() => {
-    if (imageFile) {
-      saveDataToSessionStorage('image', imageFile);
-    }
-  }, [imageFile]);
-
-  // 마운트될 때 세션에서 값 로드
+  // 마운트될 때 세션에서 필드값들 로드
   useEffect(() => {
     const savedNickname = sessionStorage.getItem('nickname');
     if (savedNickname) {
@@ -107,10 +143,15 @@ export default function ProfileSetting() {
     const savedBirth = sessionStorage.getItem('birth');
     if (savedBirth) {
       const parsedBirth = JSON.parse(savedBirth);
-      setBirth(parsedBirth);
-      setFormattedBirthDate(parsedBirth);
-      setSelectedDate(new Date(parsedBirth));
-      setValue('birth', parsedBirth);
+      //날짜 유효성 검사 값이 있을 때만 값 저장
+      if (!isNaN(Date.parse(parsedBirth))) {
+        setBirth(parsedBirth);
+        setValue('birth', parsedBirth);
+        const birthDate = new Date(parsedBirth);
+        setSelectedYear(birthDate.getFullYear().toString());
+        setSelectedMonth((birthDate.getMonth() + 1).toString());
+        setSelectedDay(birthDate.getDate().toString());
+      }
     }
 
     const savedGender = sessionStorage.getItem('gender');
@@ -127,13 +168,7 @@ export default function ProfileSetting() {
       setIntroduction(parsedIntroduction);
       setValue('introduction', parsedIntroduction);
     }
-
-    const savedImage = sessionStorage.getItem('image');
-    if (savedImage) {
-      setImageFile(null);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setNickname, setValue, setBirth, setGender, setIntroduction]);
 
   const handleNicknameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = event.target.value;
@@ -148,7 +183,6 @@ export default function ProfileSetting() {
         setImageFile(file);
         setImage(file);
       }
-      console.log(file);
     }
   };
 
@@ -159,22 +193,25 @@ export default function ProfileSetting() {
     clearErrors('gender');
   };
 
-  const handleDateChange = (date: Date | null) => {
-    if (date) {
-      setSelectedDate(date);
-      const formattedDate = `${date.getFullYear()}-${String(
-        date.getMonth() + 1
-      ).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-      setFormattedBirthDate(formattedDate);
+  const handleDateChange = () => {
+    if (selectedYear && selectedMonth && selectedDay) {
+      const formattedDate = `${selectedYear}-${String(selectedMonth).padStart(
+        2,
+        '0'
+      )}-${String(selectedDay).padStart(2, '0')}`;
       setValue('birth', formattedDate);
       setBirth(formattedDate);
     } else {
-      setFormattedBirthDate('');
       setValue('birth', '');
       setBirth('');
     }
     clearErrors('birth');
   };
+
+  useEffect(() => {
+    handleDateChange();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedYear, selectedMonth, selectedDay]);
 
   const handleProfileSettingNavigation = () => {
     navigate('/profile-setting/introduction');
@@ -184,9 +221,7 @@ export default function ProfileSetting() {
     setNickname(data.nickname);
     setGender(data.gender);
     setIntroduction(data.introduction);
-    if (formattedBirthDate) {
-      setBirth(formattedBirthDate);
-    }
+    setBirth(data.birth);
     if (imageFile) {
       setImage(imageFile);
     }
@@ -194,7 +229,7 @@ export default function ProfileSetting() {
     formData.append('nickname', data.nickname);
     formData.append('gender', data.gender);
     formData.append('introduction', data.introduction);
-    formData.append('birth', formattedBirthDate);
+    formData.append('birth', data.birth);
     if (image) {
       formData.append('image', image);
     }
@@ -203,6 +238,29 @@ export default function ProfileSetting() {
     }
   };
 
+  //react-select 스타일 , styled-component로 하니 에러가 나서 컴포넌트에서 직접 정의
+  const selectStyles = {
+    container: (base: CSSObjectWithLabel) => ({
+      ...base,
+      width: '100px',
+    }),
+    control: (base: CSSObjectWithLabel) => ({
+      ...base,
+      fontSize: '12px',
+    }),
+    valueContainer: (base: CSSObjectWithLabel) => ({
+      ...base,
+      padding: '2px 8px',
+    }),
+    option: (base: CSSObjectWithLabel) => ({
+      ...base,
+      fontSize: '12px',
+    }),
+    indicatorSeparator: (base: CSSObjectWithLabel) => ({
+      ...base,
+      display: 'none',
+    }),
+  };
   return (
     <S.Container as="form" onSubmit={handleSubmit(onSubmit)}>
       <S.HeaderWrapper>
@@ -256,7 +314,48 @@ export default function ProfileSetting() {
 
         <S.Field>
           <S.Label>생년 월일</S.Label>
-          <Calendar selectedDate={selectedDate} onChange={handleDateChange} />
+          <S.DatePickerContainer>
+            <Select
+              options={years}
+              placeholder="년도"
+              onChange={handleYearChange}
+              styles={selectStyles}
+              value={
+                selectedYear
+                  ? years.find(
+                      (option) => option.value.toString() === selectedYear
+                    )
+                  : null
+              }
+            />
+            <Select
+              options={months}
+              placeholder="월"
+              onChange={handleMonthChange}
+              styles={selectStyles}
+              value={
+                selectedMonth
+                  ? months.find(
+                      (option) => option.value.toString() === selectedMonth
+                    )
+                  : null
+              }
+            />
+            <Select
+              options={days}
+              placeholder="일"
+              onChange={handleDayChange}
+              styles={selectStyles}
+              isDisabled={!selectedYear || !selectedMonth}
+              value={
+                selectedDay
+                  ? days.find(
+                      (option) => option.value.toString() === selectedDay
+                    )
+                  : null
+              }
+            />
+          </S.DatePickerContainer>
           {errors.birth?.message && (
             <S.ErrorMessage>{errors.birth.message}</S.ErrorMessage>
           )}
@@ -264,12 +363,29 @@ export default function ProfileSetting() {
 
         <S.Field>
           <S.Label>성별</S.Label>
-          <GenderDropdown
-            selectedGender={selectedGender}
-            onGenderSelect={handleGenderChange}
-            register={register}
-            clearErrors={clearErrors}
-          />
+          <S.GenderWrapper>
+            <S.StyledOption
+              value="남"
+              $isSelected={selectedGender === '남'}
+              onClick={() => handleGenderChange('남')}
+              {...register('gender', {
+                required: '성별을 선택해주세요.',
+              })}
+              onBlur={() => clearErrors('gender')}
+            />
+            <S.GenderLabel>남</S.GenderLabel>
+            <S.StyledOption
+              value="여"
+              style={{ marginLeft: '24px' }}
+              $isSelected={selectedGender === '여'}
+              onClick={() => handleGenderChange('여')}
+              {...register('gender', {
+                required: '성별을 선택해주세요.',
+              })}
+              onBlur={() => clearErrors('gender')}
+            />
+            <S.GenderLabel>여</S.GenderLabel>
+          </S.GenderWrapper>
           {errors.gender?.message && (
             <S.ErrorMessage>{errors.gender.message}</S.ErrorMessage>
           )}
