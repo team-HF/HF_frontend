@@ -8,7 +8,7 @@ import Profile from './pages/profile/Profile';
 import Login from './pages/login/Login';
 import Introduction from './pages/introduction/Introduction';
 import FooterNav from './shared/ui/footer-nav/FooterNav';
-import Chat from './pages/chat/Chat';
+import ChatLobby from './pages/chat-lobby/ChatLobby';
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
             path="/profile-setting/introduction"
             element={<Introduction />}
           />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat-lobby" element={<ChatLobby />} />
         </Routes>
         <FooterNav />
       </ThemeProvider>
