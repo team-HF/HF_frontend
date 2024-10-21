@@ -9,6 +9,8 @@ export const Container = styled.div`
   gap: 0.625rem;
   justify-content: space-between;
   padding: 0.5rem 1.25rem;
+  border-bottom: 2px solid #f1f3f5;
+
   @media (min-width: 768px) and (max-width: 991px) {
     /* 태블릿 세로 방향 */
     width: 40rem;

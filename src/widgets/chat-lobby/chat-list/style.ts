@@ -21,7 +21,7 @@ export const Container = styled.div`
 
 export const ListWrapper = styled.div`
   width: 20rem;
-  padding: 0 20px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: row;
   @media (min-width: 768px) and (max-width: 991px) {
