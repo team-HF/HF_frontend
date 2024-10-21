@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
-
-export const HeaderContainer = styled.div`
+import { theme } from '../../../app/theme';
+export const Container = styled.div`
   display: flex;
   width: 360px;
   flex-direction: row;
@@ -25,11 +25,10 @@ export const HeaderContainer = styled.div`
   }
 `;
 
-export const HeaderText = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.heading_1.fontSize};
-  line-height: ${({ theme }) => theme.fontSize.heading_1.lineHeight};
-  letter-spacing: ${({ theme }) => theme.fontSize.heading_1.letterSpacing};
-  font-weight: bold;
+export const HeaderText = styled.span`
+  font: ${theme.fontSize.heading_1};
+  font-size: 22px;
+  font-weight: 700;
 `;
 
 export const IconWrapper = styled.div`
@@ -40,11 +39,11 @@ export const BellIcon = styled.img`
   width: 1.125rem;
   height: 1.125rem;
   cursor: pointer;
-  margin-right: 8px;
 `;
 
-export const MenuIcon = styled.img`
+export const FilterIcon = styled.img`
   width: 1.125rem;
   height: 1.125rem;
   cursor: pointer;
+  margin-right: 8px;
 `;
