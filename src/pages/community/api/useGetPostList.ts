@@ -14,14 +14,13 @@ export const getPostList = async (
     if (!Array.isArray(newPostList)) {
       throw new Error("Error fetching post list.");
     }
-    const totalPages: number = response.data.totalPages;
+    const totalPages: number = response.data.totalPageSize;
     return {
-      newPostList,
       totalPages,
+      newPostList,
     };
   } catch (error) {
     console.error("Error fetching post list:", error);
-    window.alert("Error fetching post list.");
     throw error;
   }
 };
