@@ -1,20 +1,19 @@
 import * as S from "./style";
 import { useState } from "react";
-import { filterType } from "../../../entities/community/contents-type-data";
 import {
   filterData,
-  LabelNameType,
+  labelData,
+  TLabel,
 } from "../../../entities/community/filter-data";
 import Filter from "../../../shared/ui/filter/Filter";
+import { useGetParams } from "../../../shared/utils/useGetParams";
+import { useEffect } from "react";
 
-interface filterBarProps {
-  filterType: filterType;
-}
-
-const FilterBar = ({ filterType }: filterBarProps) => {
-  const [currentLabel, setCurrentLabel] = useState(filterData[0].name);
-  const changeLabel = (label: LabelNameType) => setCurrentLabel(label);
-  const FilterList = filterData.map((data) => {
+const FilterBar = () => {
+  const currentCategory = useGetParams("postCategory");
+  const [currentLabel, setCurrentLabel] = useState(labelData[0].name); // Default to the first label
+  const changeLabel = (label: TLabel) => setCurrentLabel(label);
+  const LabelList = labelData.map((data) => {
     return (
       <S.LabelBtn
         key={`community_label_${data.name}`}
@@ -25,12 +24,15 @@ const FilterBar = ({ filterType }: filterBarProps) => {
       </S.LabelBtn>
     );
   });
+
+  useEffect(() => {}, [currentCategory]);
+
   return (
     <S.Container>
-      {filterType === "dropdown" ? (
-        <Filter filterData={filterData} />
+      {currentCategory === "POPULAR" ? (
+        <S.LabelContainer>{LabelList}</S.LabelContainer>
       ) : (
-        <S.LabelContainer>{FilterList}</S.LabelContainer>
+        <Filter filterData={filterData} />
       )}
     </S.Container>
   );

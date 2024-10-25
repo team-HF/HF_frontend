@@ -1,11 +1,14 @@
 import { AxiosInstance } from "axios";
+import { TCategoryId } from "../../../entities/community/contents-type-data";
 
 export const getPostList = async (
+  category: TCategoryId,
   axiosInstance: AxiosInstance,
   currentPage: number
 ) => {
   try {
-    const response = await axiosInstance.get("/hf/list", {
+    const URL = category === "POPULAR" ? `/popularList` : `/list`;
+    const response = await axiosInstance.get(URL, {
       params: {
         page: currentPage,
       },
