@@ -9,8 +9,8 @@ export interface Comment {
   postId: number;
   writerId: number;
   content: string;
-  creationTime: Date;
-  lastModified: Date;
+  creationTime: string;
+  lastModified: string;
 }
 
 const CommentList = () => {

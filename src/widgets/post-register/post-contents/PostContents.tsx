@@ -1,5 +1,5 @@
 import * as S from "./style";
-import { filterData } from "../../../entities/community/filter-data";
+import { categoryData } from "../../../entities/community/filter-data";
 import { useEffect, useState } from "react";
 import SideFilter from "../../../shared/ui/side-filter/SideFilter";
 import { useNavigate } from "react-router-dom";
@@ -69,7 +69,7 @@ const PostContents = () => {
         title={"게시글 주제를 선택해주세요"}
         open={sideFilterOpen}
         setSideFilterOpen={setSideFilterOpen}
-        filterData={filterData.slice(1, 4)}
+        filterData={categoryData}
         postCategory={postCategory}
         setCategory={setPostCategory}
       />
