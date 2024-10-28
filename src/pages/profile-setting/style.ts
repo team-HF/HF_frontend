@@ -5,20 +5,20 @@ export const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
   flex-direction: column;
-  max-width: 22.5rem;
+  width: 22.5rem;
   @media (min-width: 768px) and (max-width: 991px) {
     /* 태블릿 세로 방향 */
-    max-width: 48rem;
+    width: 40rem;
   }
 
   @media (min-width: 992px) and (max-width: 1199px) {
     /* 태블릿 가로 방향 */
-    max-width: 40rem;
+    width: 40rem;
   }
 
   @media (min-width: 1200px) {
     /* 데스크톱 */
-    max-width: 48rem;
+    width: 67.5rem;
   }
 `;
 
@@ -31,14 +31,15 @@ export const HeaderWrapper = styled.div`
 
   @media (min-width: 992px) and (max-width: 1199px) {
     /* 태블릿 가로 방향 */
+    width: 40rem;
   }
 
   @media (min-width: 1200px) {
     /* 데스크톱 */
+    width: 67.5rem;
   }
 `;
 export const ProfileIconContainer = styled.div`
-  display: flex;
   position: relative;
   width: 7.5rem;
   height: 7.5rem;
@@ -96,10 +97,12 @@ export const FieldContainer = styled.div`
 
   @media (min-width: 992px) and (max-width: 1199px) {
     /* 태블릿 가로 방향 */
+    width: 40rem;
   }
 
   @media (min-width: 1200px) {
     /* 데스크톱 */
+    width: 67.5rem;
   }
 `;
 export const Field = styled.div`
@@ -148,7 +151,74 @@ export const ButtonContainer = styled.div`
 
 export const ErrorMessage = styled.span`
   font-size: 0.75rem;
+  margin-left: -10px;
   margin-top: 0.25rem;
   color: #ff0000;
   padding: 0.5rem;
+`;
+
+export const StyledOption = styled.option<{ $isSelected: boolean }>`
+  width: 18px;
+  height: 18px;
+  border: ${({ $isSelected }) =>
+    $isSelected ? '1.5px solid #6541f2' : '1.5px solid #868E96'};
+  border-radius: 50%;
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? '#F0ECFE' : '#ffffff'};
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${({ $isSelected }) =>
+    $isSelected &&
+    `
+      &::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background-color: #ffffff;
+        border-radius: 50%;
+        position: absolute;
+      }
+  `}
+`;
+
+export const GenderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+`;
+
+export const GenderLabel = styled.span`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.0057em;
+  margin-left: 8px;
+`;
+
+export const DatePickerContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+export const StyledGenderSelect = styled.select<{ width: string }>`
+  width: ${({ width }) => width};
+  height: 34px;
+  border: 1px solid #f0ecfe;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 14px;
+  color: #868e96;
+  appearance: none;
+  background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI0IiB2aWV3Qm94PSIwIDAgOCA0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xIDBMNCAzTCA3IDBIMyIgZmlsbD0iI0E2QjhCOCIvPjwvc3ZnPg==')
+    no-repeat right 12px center;
+  background-size: 8px 4px;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: #6541f2;
+  }
 `;

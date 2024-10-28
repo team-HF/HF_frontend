@@ -15,6 +15,7 @@ export const Container = styled.div`
 
   @media (min-width: 992px) and (max-width: 1199px) {
     /* 태블릿 가로 방향 */
+    width: 40rem;
   }
 
   @media (min-width: 1200px) {
@@ -54,13 +55,16 @@ export const ProfileContainer = styled.div`
   margin-bottom: 1.75rem;
 `;
 export const ProfileIconContainer = styled.div`
-  width: 4.5625rem;
-  height: 4.5625rem;
+  width: 5rem;
+  height: 5rem;
   background-color: #f6f6f6;
   border-radius: 100%;
   margin-right: 0.875rem;
 `;
-
+export const ProfileIconWrapper = styled.img`
+  width: 5rem;
+  height: 5rem;
+`;
 export const ProfileTextContainer = styled.div``;
 
 export const ProfileName = styled.div`

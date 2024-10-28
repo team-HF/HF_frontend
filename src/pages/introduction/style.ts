@@ -15,6 +15,7 @@ export const Container = styled.div`
 
   @media (min-width: 992px) and (max-width: 1199px) {
     /* 태블릿 가로 방향 */
+    width: 40rem;
   }
 
   @media (min-width: 1200px) {
@@ -31,6 +32,7 @@ export const HeaderWrapper = styled.div`
 
   @media (min-width: 992px) and (max-width: 1199px) {
     /* 태블릿 가로 방향 */
+    width: 40rem;
   }
 
   @media (min-width: 1200px) {
@@ -55,6 +57,7 @@ export const TextWrapper = styled.div`
 
   @media (min-width: 992px) and (max-width: 1199px) {
     /* 태블릿 가로 방향 */
+    width: 37.5rem;
   }
 
   @media (min-width: 1200px) {

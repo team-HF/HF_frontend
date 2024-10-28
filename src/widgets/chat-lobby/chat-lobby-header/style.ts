@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
-
-export const HeaderContainer = styled.div`
+import { theme } from '../../../app/theme';
+export const Container = styled.div`
   display: flex;
   width: 360px;
   flex-direction: row;
@@ -9,6 +9,8 @@ export const HeaderContainer = styled.div`
   gap: 0.625rem;
   justify-content: space-between;
   padding: 0.5rem 1.25rem;
+  border-bottom: 2px solid #f1f3f5;
+
   @media (min-width: 768px) and (max-width: 991px) {
     /* 태블릿 세로 방향 */
     width: 40rem;
@@ -25,11 +27,10 @@ export const HeaderContainer = styled.div`
   }
 `;
 
-export const HeaderText = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.heading_1.fontSize};
-  line-height: ${({ theme }) => theme.fontSize.heading_1.lineHeight};
-  letter-spacing: ${({ theme }) => theme.fontSize.heading_1.letterSpacing};
-  font-weight: bold;
+export const HeaderText = styled.span`
+  font: ${theme.fontSize.heading_1};
+  font-size: 22px;
+  font-weight: 700;
 `;
 
 export const IconWrapper = styled.div`
@@ -40,11 +41,11 @@ export const BellIcon = styled.img`
   width: 1.125rem;
   height: 1.125rem;
   cursor: pointer;
-  margin-right: 8px;
 `;
 
-export const MenuIcon = styled.img`
+export const FilterIcon = styled.img`
   width: 1.125rem;
   height: 1.125rem;
   cursor: pointer;
+  margin-right: 8px;
 `;
