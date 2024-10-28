@@ -12,6 +12,8 @@ type ProfileSettingStore = {
   setBirth: (option: string) => void;
   gender: string | null;
   setGender: (option: string) => void;
+  specs: string | null;
+  setSpecs: (option: string) => void;
 };
 
 export const useProfileSettingStore = create(
@@ -27,7 +29,10 @@ export const useProfileSettingStore = create(
       setBirth: (option) => set({ birth: option }),
       gender: null,
       setGender: (option) => set({ gender: option }),
+      specs: null,
+      setSpecs: (option) => set({ specs: option }),
     }),
+
     {
       name: 'profile-settings',
       getStorage: () => sessionStorage,
