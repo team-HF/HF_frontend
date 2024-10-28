@@ -1,13 +1,15 @@
-import axios from "axios";
+import { useQuery } from '@tanstack/react-query';
+import { useAxios } from '../utils/useAxios';
+import { AxiosInstance } from 'axios';
 
-const useGetUserData = async () => {
-  try {
-    const response = await axios.get("oauth/token/me");
-    return response.data;
-  } catch (error) {
-    console.error("Error getting user data", error);
-    throw error;
-  }
+const getMyInfo = async (axiosInstance: AxiosInstance) => {
+  const response = await axiosInstance.get('/oauth/token/me');
+  return response.data;
 };
-
-export default useGetUserData;
+export const useGetMyInfo = () => {
+  const { axiosInstance } = useAxios();
+  return useQuery({
+    queryKey: ['myInfo'],
+    queryFn: () => getMyInfo(axiosInstance),
+  });
+};
