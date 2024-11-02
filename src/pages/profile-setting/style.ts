@@ -88,6 +88,9 @@ export const ProfileChangeImage = styled.img`
   height: 1.5rem;
 `;
 export const FieldContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   margin: 0 1.25rem;
   margin-top: 1.8125rem;
   @media (min-width: 768px) and (max-width: 991px) {
@@ -145,8 +148,13 @@ export const Input = styled.input`
 
 export const ButtonContainer = styled.div`
   display: flex;
-  margin-top: 0.75rem;
+  margin-bottom: 60px;
   justify-content: center;
+  margin-top: 80px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 40px;
+  }
 `;
 
 export const ErrorMessage = styled.span`
@@ -157,31 +165,42 @@ export const ErrorMessage = styled.span`
   padding: 0.5rem;
 `;
 
-export const StyledOption = styled.option<{ $isSelected: boolean }>`
-  width: 18px;
-  height: 18px;
-  border: ${({ $isSelected }) =>
-    $isSelected ? '1.5px solid #6541f2' : '1.5px solid #868E96'};
-  border-radius: 50%;
-  background-color: ${({ $isSelected }) =>
-    $isSelected ? '#F0ECFE' : '#ffffff'};
-  position: relative;
+export const StyledRadio = styled.input`
+  display: none;
+`;
+
+export const CustomRadio = styled.label<{ $isSelected: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: center;
+  margin-right: 24px;
+  cursor: pointer;
 
-  ${({ $isSelected }) =>
-    $isSelected &&
-    `
-      &::after {
-        content: '';
-        width: 8px;
-        height: 8px;
-        background-color: #ffffff;
-        border-radius: 50%;
-        position: absolute;
-      }
-  `}
+  &::before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    border: ${({ $isSelected }) =>
+      $isSelected ? '1.5px solid #6541f2' : '1.5px solid #868E96'};
+    border-radius: 50%;
+    background-color: ${({ $isSelected }) =>
+      $isSelected ? '#F0ECFE' : '#ffffff'};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 3px;
+
+    ${({ $isSelected }) =>
+      $isSelected &&
+      `
+        &::after {
+          content: '';
+          width: 8px;
+          height: 8px;
+          background-color: #ffffff;
+          border-radius: 50%;
+        }
+      `}
+  }
 `;
 
 export const GenderWrapper = styled.div`
@@ -220,5 +239,79 @@ export const StyledGenderSelect = styled.select<{ width: string }>`
   &:focus {
     outline: none;
     border-color: #6541f2;
+  }
+`;
+
+export const SpecWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+export const SpecText = styled.span`
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+`;
+
+export const SpecInputWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+`;
+
+export const SpecInput = styled.input`
+  width: 99px;
+  height: 34px;
+  border: 1px solid #f3e9f3;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #ffffff;
+  text-align: center;
+  text-decoration: left;
+  padding: 0.5rem;
+  &::placeholder {
+    color: #8e8e8e;
+    text-align: center;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #000000;
+  }
+  @media (min-width: 768px) and (max-width: 991px) {
+    /* 태블릿 세로 방향 */
+    width: 251px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    /* 태블릿 가로 방향 */
+    width: 251px;
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+    width: 471px;
+  }
+`;
+export const SpecDateInput = styled.input`
+  width: 49px;
+  height: 34px;
+  border: 1px solid #e2d6f7;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #868e96;
+  text-align: center;
+  @media (min-width: 768px) and (max-width: 991px) {
+    /* 태블릿 세로 방향 */
+    width: 57px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    /* 태블릿 가로 방향 */
+    width: 57px;
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+    width: 57px;
   }
 `;

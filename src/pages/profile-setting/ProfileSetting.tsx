@@ -13,6 +13,13 @@ type OptionType = {
   label: string;
 };
 
+type SpecType = {
+  title: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+};
+
 export default function ProfileSetting() {
   const {
     register,
@@ -36,17 +43,23 @@ export default function ProfileSetting() {
     gender,
     introduction,
     image,
+    specs,
     setNickname,
     setBirth,
     setGender,
     setIntroduction,
     setImage,
+    setSpecs,
   } = useProfileSettingStore();
 
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
+
+  const [specList, setSpecList] = useState<SpecType[]>(
+    Array.isArray(specs) ? specs : []
+  );
 
   const years: OptionType[] = Array.from(
     { length: currentYear - 1940 + 1 },
@@ -87,8 +100,6 @@ export default function ProfileSetting() {
     setSelectedDay(selectedOption ? selectedOption.value.toString() : '');
   };
 
-  const [selectedGender, setSelectedGender] = useState(gender || '');
-  const [imageFile, setImageFile] = useState<File | null>(image);
   const navigate = useNavigate();
 
   const saveDataToSessionStorage = (
@@ -103,7 +114,7 @@ export default function ProfileSetting() {
   };
 
   useEffect(() => {
-    // 새로고침 시 세션 스토리지 비우기
+    // 새로고침 시 세션 비우기
     const handleBeforeUnload = () => {
       sessionStorage.clear();
     };
@@ -124,12 +135,18 @@ export default function ProfileSetting() {
   }, [birth]);
 
   useEffect(() => {
-    saveDataToSessionStorage('gender', gender);
+    if (gender !== null && gender !== undefined) {
+      sessionStorage.setItem('gender', JSON.stringify(gender));
+    }
   }, [gender]);
 
   useEffect(() => {
     saveDataToSessionStorage('introduction', introduction);
   }, [introduction]);
+
+  useEffect(() => {
+    saveDataToSessionStorage('specList', JSON.stringify(specList));
+  }, [specList]);
 
   // 마운트될 때 세션에서 필드값들 로드
   useEffect(() => {
@@ -158,7 +175,6 @@ export default function ProfileSetting() {
     if (savedGender) {
       const parsedGender = JSON.parse(savedGender);
       setGender(parsedGender);
-      setSelectedGender(parsedGender);
       setValue('gender', parsedGender);
     }
 
@@ -168,7 +184,12 @@ export default function ProfileSetting() {
       setIntroduction(parsedIntroduction);
       setValue('introduction', parsedIntroduction);
     }
-  }, [setNickname, setValue, setBirth, setGender, setIntroduction]);
+    // const savedSpecList = sessionStorage.getItem('specList');
+    // if (savedSpecList) {
+    //   const parsedSpecList = JSON.parse(savedSpecList);
+    //   setSpecList(parsedSpecList);
+    // }
+  }, [setNickname, setValue, setBirth, setGender, setIntroduction, setSpecs]);
 
   const handleNicknameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = event.target.value;
@@ -179,19 +200,14 @@ export default function ProfileSetting() {
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      if (file instanceof File) {
-        setImageFile(file);
-        setImage(file);
-      }
+      setImage(file);
     }
   };
-
-  const handleGenderChange = (gender: string) => {
-    setSelectedGender(gender);
-    setValue('gender', gender);
-    setGender(gender);
-    clearErrors('gender');
-  };
+  // const handleGenderChange = (gender: string) => {
+  //   setGender(gender);
+  //   setValue('gender', gender);
+  //   clearErrors('gender');
+  // };
 
   const handleDateChange = () => {
     if (selectedYear && selectedMonth && selectedDay) {
@@ -217,13 +233,35 @@ export default function ProfileSetting() {
     navigate('/profile-setting/introduction');
   };
 
+  const handleAddSpec = () => {
+    setSpecList((prevSpecList) => [
+      ...prevSpecList,
+      { title: '', location: '', startDate: '', endDate: '' },
+    ]);
+  };
+
+  const handleSpecChange = (
+    index: number,
+    field: keyof SpecType,
+    value: string
+  ) => {
+    setSpecList((prevSpecList) => {
+      const updatedSpecList = [...prevSpecList];
+      updatedSpecList[index][field] = value;
+      return updatedSpecList;
+    });
+  };
+
   const onSubmit: SubmitHandler<User> = (data: User) => {
     setNickname(data.nickname);
     setGender(data.gender);
     setIntroduction(data.introduction);
     setBirth(data.birth);
-    if (imageFile) {
-      setImage(imageFile);
+    if (image) {
+      setImage(image);
+    }
+    if (specs) {
+      setSpecs(specs);
     }
     const formData = new FormData();
     formData.append('nickname', data.nickname);
@@ -233,6 +271,12 @@ export default function ProfileSetting() {
     if (image) {
       formData.append('image', image);
     }
+    specList.forEach((spec, index) => {
+      formData.append(`specs[${index}][title]`, spec.title);
+      formData.append(`specs[${index}][location]`, spec.location);
+      formData.append(`specs[${index}][startDate]`, spec.startDate);
+      formData.append(`specs[${index}][endDate]`, spec.endDate);
+    });
     for (const value of formData.values()) {
       console.log(value);
     }
@@ -267,11 +311,9 @@ export default function ProfileSetting() {
         <BackHeader text="프로필 입력" />
       </S.HeaderWrapper>
       <S.ProfileIconContainer>
-        {imageFile ? (
+        {image ? (
           <S.ProfileUploadImage
-            src={
-              imageFile instanceof File ? URL.createObjectURL(imageFile) : ''
-            }
+            src={image instanceof File ? URL.createObjectURL(image) : ''}
             alt="profile-image"
           />
         ) : (
@@ -318,7 +360,10 @@ export default function ProfileSetting() {
             <Select
               options={years}
               placeholder="년도"
-              onChange={handleYearChange}
+              onChange={(option) => {
+                handleYearChange(option);
+                clearErrors('birth');
+              }}
               styles={selectStyles}
               value={
                 selectedYear
@@ -331,7 +376,10 @@ export default function ProfileSetting() {
             <Select
               options={months}
               placeholder="월"
-              onChange={handleMonthChange}
+              onChange={(option) => {
+                handleMonthChange(option);
+                clearErrors('birth');
+              }}
               styles={selectStyles}
               value={
                 selectedMonth
@@ -344,7 +392,10 @@ export default function ProfileSetting() {
             <Select
               options={days}
               placeholder="일"
-              onChange={handleDayChange}
+              onChange={(option) => {
+                handleDayChange(option);
+                clearErrors('birth');
+              }}
               styles={selectStyles}
               isDisabled={!selectedYear || !selectedMonth}
               value={
@@ -356,6 +407,18 @@ export default function ProfileSetting() {
               }
             />
           </S.DatePickerContainer>
+          <input
+            {...register('birth', {
+              required: '생년월일을 선택해주세요.',
+              validate: () => {
+                if (!selectedYear || !selectedMonth || !selectedDay) {
+                  return '생년월일을 모두 선택해주세요.';
+                }
+                return true;
+              },
+            })}
+            type="hidden"
+          />
           {errors.birth?.message && (
             <S.ErrorMessage>{errors.birth.message}</S.ErrorMessage>
           )}
@@ -364,27 +427,39 @@ export default function ProfileSetting() {
         <S.Field>
           <S.Label>성별</S.Label>
           <S.GenderWrapper>
-            <S.StyledOption
+            <S.StyledRadio
+              type="radio"
               value="남"
-              $isSelected={selectedGender === '남'}
-              onClick={() => handleGenderChange('남')}
+              id="male"
               {...register('gender', {
                 required: '성별을 선택해주세요.',
               })}
-              onBlur={() => clearErrors('gender')}
+              checked={gender === '남'}
+              onChange={() => {
+                setGender('남');
+                setValue('gender', '남', { shouldValidate: true });
+              }}
             />
-            <S.GenderLabel>남</S.GenderLabel>
-            <S.StyledOption
+            <S.CustomRadio htmlFor="male" $isSelected={gender === '남'}>
+              <S.GenderLabel>남</S.GenderLabel>
+            </S.CustomRadio>
+
+            <S.StyledRadio
+              type="radio"
               value="여"
-              style={{ marginLeft: '24px' }}
-              $isSelected={selectedGender === '여'}
-              onClick={() => handleGenderChange('여')}
+              id="female"
               {...register('gender', {
                 required: '성별을 선택해주세요.',
               })}
-              onBlur={() => clearErrors('gender')}
+              checked={gender === '여'}
+              onChange={() => {
+                setGender('여');
+                setValue('gender', '여', { shouldValidate: true });
+              }}
             />
-            <S.GenderLabel>여</S.GenderLabel>
+            <S.CustomRadio htmlFor="female" $isSelected={gender === '여'}>
+              <S.GenderLabel>여</S.GenderLabel>
+            </S.CustomRadio>
           </S.GenderWrapper>
           {errors.gender?.message && (
             <S.ErrorMessage>{errors.gender.message}</S.ErrorMessage>
@@ -408,7 +483,52 @@ export default function ProfileSetting() {
             <S.ErrorMessage>{errors.introduction.message}</S.ErrorMessage>
           )}
         </S.Field>
-
+        <S.SpecWrapper>
+          <S.SpecText>경력 및 수상사항</S.SpecText>
+          <button
+            style={{ display: 'flex', width: '20px' }}
+            type="button"
+            onClick={handleAddSpec}
+          >
+            +
+          </button>
+          {specList.map((spec, index) => (
+            <S.SpecInputWrapper key={index}>
+              <S.SpecInput
+                type="text"
+                placeholder="경력 및 수상명"
+                value={spec.title}
+                onChange={(e) =>
+                  handleSpecChange(index, 'title', e.target.value)
+                }
+              />
+              <S.SpecInput
+                type="text"
+                placeholder="과정 및 장소명"
+                value={spec.location}
+                onChange={(e) =>
+                  handleSpecChange(index, 'location', e.target.value)
+                }
+              />
+              <S.SpecDateInput
+                type="text"
+                placeholder="시작일"
+                value={spec.startDate}
+                onChange={(e) =>
+                  handleSpecChange(index, 'startDate', e.target.value)
+                }
+              />
+              <S.SpecDateInput
+                type="text"
+                placeholder="종료일"
+                value={spec.endDate}
+                onChange={(e) =>
+                  handleSpecChange(index, 'endDate', e.target.value)
+                }
+              />
+            </S.SpecInputWrapper>
+          ))}
+        </S.SpecWrapper>
         <S.ButtonContainer>
           <LargeButton text="저장" type="submit" $isValid={isValid} />
         </S.ButtonContainer>
