@@ -47,4 +47,7 @@ export const handlers = [
     }
     return HttpResponse.json(responseData);
   }),
+  http.get('/api/save-users', () => {
+    return HttpResponse.json(dummyUsers);
+  }),
 ];
