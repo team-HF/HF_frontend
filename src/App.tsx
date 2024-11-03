@@ -19,8 +19,8 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/login/:oauth" element={<Login />} />
+            <Route path="login" element={<Login />} />
+            <Route path="oauth/code/:oauth" element={<Login />} />
             <Route path="my-page" element={<MyPage />} />
             <Route
               path="register/exercise-option"
