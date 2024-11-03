@@ -1,6 +1,7 @@
 import * as S from "./style";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useAxios } from "../../shared/utils/useAxios";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import kakaoOauth from "./api/kakaoOauth";
 import googleOauth from "./api/googleOauth";
 
@@ -16,24 +17,41 @@ const GOOGLE_AUTHORIZATION_CODE_URL = `${GOOGLE_OAUTH_URL}&redirect_uri=${GOOGLE
 
 const Login = () => {
   const { oauth } = useParams();
+  const { axiosInstance } = useAxios();
+  const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get("code") || "";
+  const [isFetching, setIsFetching] = useState(false);
   useEffect(() => {
-    if (code) {
-      if (oauth === "google") {
-        googleOauth(code);
-      } else {
-        kakaoOauth(code);
+    if (!code) return;
+    (async () => {
+      setIsFetching(true);
+      try {
+        const isNewMember =
+          oauth === "google"
+            ? await googleOauth(code, axiosInstance)
+            : await kakaoOauth(code, axiosInstance);
+        if (isNewMember) {
+          navigate("/register/exercise-style");
+        } else {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error handling OAuth:", error);
+      } finally {
+        setIsFetching(false);
       }
-    }
-  }, [code, oauth]);
+    })();
+    // eslint-disable-next-line
+  }, []);
+  if (isFetching) {
+    return <span>Loading...</span>;
+  }
   return (
     <S.Container>
       <S.BtnBox>
         <S.OauthBtn
           className="button_login_google"
-          onClick={() => {
-            window.location.href = GOOGLE_AUTHORIZATION_CODE_URL;
-          }}
+          onClick={() => (window.location.href = GOOGLE_AUTHORIZATION_CODE_URL)}
         >
           <S.LogoIcon src="/oauth/google.png" />
           <S.BtnText className="button_login_google">
@@ -42,9 +60,7 @@ const Login = () => {
         </S.OauthBtn>
         <S.OauthBtn
           className="button_login_kakao"
-          onClick={() => {
-            window.location.href = KAKAO_AUTHORIZATION_CODE_URL;
-          }}
+          onClick={() => (window.location.href = KAKAO_AUTHORIZATION_CODE_URL)}
         >
           <S.LogoIcon src="/oauth/kakao.png" className="kakao" />
           <S.BtnText className="button_login_kakao">Kakao로 계속하기</S.BtnText>
