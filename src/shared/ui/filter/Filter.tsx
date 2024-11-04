@@ -1,8 +1,9 @@
 import { useState } from "react";
 import * as S from "./style";
+import { TFilter } from "../../../entities/community/filter-data";
 
 interface filterProps {
-  filterData: { name: string }[];
+  filterData: { name: TFilter }[];
 }
 
 const Filter = ({ filterData }: filterProps) => {

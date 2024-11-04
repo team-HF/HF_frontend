@@ -2,21 +2,19 @@ import { useGetDate } from "../../utils/useGetDate";
 import * as s from "./style";
 import { useNavigate } from "react-router-dom";
 
-interface PostPreviewListProps {
-  data: {
-    postId: number;
-    category: string;
-    title: string;
-    content: string;
-    creationTime: string;
-    viewCount: number;
-    likeCount: number;
-    commentCount: number;
-    fitnessLevel: string;
-  };
-}
+export type PostData = {
+  postId: number;
+  category: string;
+  title: string;
+  content: string;
+  creationTime: string;
+  viewCount: number;
+  likeCount: number;
+  commentCount: number;
+  fitnessLevel: string;
+};
 
-export default function PostPreviewList({ data }: PostPreviewListProps) {
+export default function PostPreviewList (data: PostData) {
   const navigate = useNavigate();
   return (
     <s.PostPreviewContainer

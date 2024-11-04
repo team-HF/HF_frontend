@@ -5,6 +5,8 @@ import SaveButton from "../../features/profile/button/SaveButton";
 import { useProfileStore } from "../../features/profile/store/profile-store";
 import { getSgisLocationData } from "../../shared/api/getSgisLocationData";
 import { getSgisApiAccessToken } from "../../shared/api/getSgisApiAccessToken";
+import { useGetParams } from "../../shared/utils/useGetParams";
+import SpecItem from "../../shared/ui/specItem/SpecItem";
 
 interface Location {
   addr_name: string;
@@ -28,20 +30,22 @@ export default function Profile() {
     setImage,
     nickname,
     setNickname,
-    birth,
-    setBirth,
-    sex,
+    birthDate,
+    setBirthDate,
+    gender,
     cd1,
     setCd1,
     cd2,
     setCd2,
     cd3,
     setCd3,
-    setSex,
+    setGender,
     introduction,
     setIntroduction,
+    specs,
+    setAddNewSpec,
   } = useProfileStore();
-
+  const fitnessLevel = useGetParams("fitnessLevel");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [userLocation, setUserLocation] = useState("");
   const [locationData, setLocationData] = useState<Location[]>([]);
@@ -73,22 +77,22 @@ export default function Profile() {
   // 스토어 값이 변경될 때 폼에도 저장
   useEffect(() => {
     if (nickname) setValue("nickname", nickname);
-    if (birth) setValue("birth", birth);
-    if (sex) setValue("sex", sex);
+    if (birthDate) setValue("birth", birthDate);
+    if (gender) setValue("gender", gender);
     if (introduction) setValue("introduction", introduction);
-  }, [nickname, birth, sex, cd1, cd2, cd3, introduction, setValue]);
+  }, [nickname, birthDate, gender, cd1, cd2, cd3, introduction, setValue]);
 
   // 필드 watch로 감시하여 값들을 확인
   const watchedNickname = watch("nickname");
   const watchedBirth = watch("birth");
-  const watchedSex = watch("sex");
+  const watchedGender = watch("gender");
   const watchedIntroduction = watch("introduction");
 
   // 전부 입력 되었을때만 버튼 활성화
   const isAllSelected = Boolean(
     watchedNickname &&
       watchedBirth &&
-      watchedSex &&
+      watchedGender &&
       cd1 &&
       cd2 &&
       cd3 &&
@@ -101,11 +105,28 @@ export default function Profile() {
 
   // 성별 드롭다운 이벤트
   const handleSelect = (value: string) => {
-    setSex(value);
-    setValue("sex", value);
+    setGender(value);
+    setValue("gender", value);
     setIsDropdownOpen(false);
-    clearErrors("sex");
+    clearErrors("gender");
   };
+
+  // 경력 & 수상
+  const addSpec = () => {
+    const canAddNewSpec = Boolean(
+      !specs.length ||
+        (specs[specs.length - 1].spec.title &&
+          specs[specs.length - 1].spec.startDate)
+    );
+    if (canAddNewSpec) setAddNewSpec();
+    else
+      alert(
+        `새로운 경력을 추가하려면 마지막 입력란의 "경력 및 수상명"과 "시작일"을 입력해주세요.`
+      );
+  };
+  const specList = specs.map((spec, idx) => (
+    <SpecItem key={`spec_${idx}`} {...spec} />
+  ));
   return (
     <S.Container>
       <S.ProfileContainer>
@@ -179,7 +200,7 @@ export default function Profile() {
               },
               onBlur: () => clearErrors("birth"),
             })}
-            onChange={(e) => setBirth(e.target.value)}
+            onChange={(e) => setBirthDate(e.target.value)}
           />
         </S.Field>
 
@@ -188,7 +209,7 @@ export default function Profile() {
           <S.SexContainer>
             <S.Input
               placeholder="성별을 선택해주세요."
-              {...register("sex", {
+              {...register("gender", {
                 required: {
                   value: true,
                   message: "성별을 선택해주세요.",
@@ -208,9 +229,10 @@ export default function Profile() {
               </S.Dropdown>
             )}
           </S.SexContainer>
-          {errors.sex?.message && typeof errors.sex.message === "string" && (
-            <S.ErrorMessage>{errors.sex.message}</S.ErrorMessage>
-          )}
+          {errors.gender?.message &&
+            typeof errors.gender.message === "string" && (
+              <S.ErrorMessage>{errors.gender.message}</S.ErrorMessage>
+            )}
         </S.Field>
 
         <S.Field>
@@ -246,6 +268,16 @@ export default function Profile() {
             onChange={(e) => setIntroduction(e.target.value)}
           />
         </S.Field>
+
+        {fitnessLevel === "ADVANCED" && (
+          <S.Field>
+            <S.LabelContainer>
+              <S.Label className="label_spec">경력 및 수상사항</S.Label>
+              <S.AddIcon src="/svg/add-icon.svg" onClick={addSpec} />
+            </S.LabelContainer>
+            {specList}
+          </S.Field>
+        )}
       </S.FieldContainer>
       <S.ButtonContainer>
         <SaveButton disabled={!isAllSelected} />

@@ -5,7 +5,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 22.5rem;
   min-height: 100vh;
   margin-top: 0.6875rem;
   overflow-y: auto;
@@ -75,6 +74,9 @@ export const Label = styled.label`
   font-weight: 600;
   margin-bottom: 0.375rem;
   color: #999999;
+  &.label_spec {
+    margin-bottom: 0;
+  }
 `;
 
 export const SexContainer = styled.div`
@@ -177,4 +179,18 @@ export const LocationCard = styled.button`
   font-size: 0.75rem;
   background-color: ${theme.colors.white};
   color: #000000;
+`;
+
+export const LabelContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+  align-items: center;
+`;
+
+export const AddIcon = styled.img`
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: #d9d9d9;
+  border-radius: 50%;
 `;

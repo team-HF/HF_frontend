@@ -1,11 +1,11 @@
-import { LabelNameType } from "../../../entities/community/filter-data";
+import { TCategory } from "../../../entities/community/filter-data";
 import * as S from "./style";
 
 interface filterProps {
   title: string;
   open: boolean;
   setSideFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  filterData: { name: LabelNameType }[];
+  filterData: { name: TCategory }[];
   postCategory: string;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
 }

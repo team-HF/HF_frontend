@@ -1,29 +1,26 @@
 import * as s from "./style";
 
-interface SearchTabIconProps {
-  id: string;
-  $current_filter: string;
-  setContentType: React.Dispatch<React.SetStateAction<string>>;
+interface SearchTabIconProps<T> {
+  id: T;
+  name: string;
+  currentCategory: string;
+  onClick: (id: T) => void;
 }
 
-export default function SearchTabItem({
+export default function SearchTabItem<T>({
   id,
-  $current_filter,
-  setContentType,
-}: SearchTabIconProps) {
-  const changeType = (type: string) => {
-    setContentType(type);
-  };
+  name,
+  currentCategory,
+  onClick,
+}: SearchTabIconProps<T>) {
   return (
     <s.SearchTabContainer
-      id={id}
-      $current_filter={$current_filter}
-      onClick={() => {
-        changeType(id);
-      }}
+      id={String(id)}
+      $current_filter={currentCategory}
+      onClick={() => onClick(id)}
     >
-      <s.TabText id={id} $current_filter={$current_filter}>
-        {id}
+      <s.TabText id={String(id)} $current_filter={currentCategory}>
+        {name}
       </s.TabText>
     </s.SearchTabContainer>
   );
