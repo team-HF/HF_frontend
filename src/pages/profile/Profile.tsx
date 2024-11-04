@@ -30,8 +30,8 @@ export default function Profile() {
     setImage,
     nickname,
     setNickname,
-    birth,
-    setBirth,
+    birthDate,
+    setBirthDate,
     gender,
     cd1,
     setCd1,
@@ -77,10 +77,10 @@ export default function Profile() {
   // 스토어 값이 변경될 때 폼에도 저장
   useEffect(() => {
     if (nickname) setValue("nickname", nickname);
-    if (birth) setValue("birth", birth);
+    if (birthDate) setValue("birth", birthDate);
     if (gender) setValue("gender", gender);
     if (introduction) setValue("introduction", introduction);
-  }, [nickname, birth, gender, cd1, cd2, cd3, introduction, setValue]);
+  }, [nickname, birthDate, gender, cd1, cd2, cd3, introduction, setValue]);
 
   // 필드 watch로 감시하여 값들을 확인
   const watchedNickname = watch("nickname");
@@ -112,7 +112,18 @@ export default function Profile() {
   };
 
   // 경력 & 수상
-  const addSpec = () => setAddNewSpec();
+  const addSpec = () => {
+    const canAddNewSpec = Boolean(
+      !specs.length ||
+        (specs[specs.length - 1].spec.title &&
+          specs[specs.length - 1].spec.startDate)
+    );
+    if (canAddNewSpec) setAddNewSpec();
+    else
+      alert(
+        `새로운 경력을 추가하려면 마지막 입력란의 "경력 및 수상명"과 "시작일"을 입력해주세요.`
+      );
+  };
   const specList = specs.map((spec, idx) => (
     <SpecItem key={`spec_${idx}`} {...spec} />
   ));
@@ -189,7 +200,7 @@ export default function Profile() {
               },
               onBlur: () => clearErrors("birth"),
             })}
-            onChange={(e) => setBirth(e.target.value)}
+            onChange={(e) => setBirthDate(e.target.value)}
           />
         </S.Field>
 

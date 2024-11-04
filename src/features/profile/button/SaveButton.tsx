@@ -40,38 +40,54 @@ export default function SaveButton({ disabled }: SaveButtonProps) {
   const id = Cookies.get("email");
   const name = Cookies.get("name");
 
-  const { image, nickname, birth, gender, cd1, cd2, cd3, introduction, specs } =
-    useProfileStore();
+  const {
+    image,
+    nickname,
+    birthDate,
+    gender,
+    cd1,
+    cd2,
+    cd3,
+    introduction,
+    specs,
+  } = useProfileStore();
 
   const joinMembership = async () => {
     const formData = new FormData();
-    const formEntries: [string, string | Blob][] = [
-      ["id", id as string],
-      ["name", name as string],
-      ["nickname", nickname as string],
-      ["birthDate", birth as string],
-      ["gender", gender as string],
-      ["cd1", cd1 as string],
-      ["cd2", cd2 as string],
-      ["cd3", cd3 as string],
-      ["introduction", introduction as string],
-      ["fitnessLevel", fitnessLevel as string],
-      ["companionStyle", companionStyle as string],
-      ["fitnessEagerness", fitnessEagerness as string],
-      ["fitnessObjective", fitnessObjective as string],
-      ["fitnessKind", fitnessKind as string],
-    ];
-    formEntries.forEach(([key, value]) => {
-      formData.append(key, value);
+    const formEntries = {
+      profileImageFileExtension: image?.type || null,
+      id,
+      name,
+      nickname,
+      birthDate,
+      gender,
+      cd1,
+      cd2,
+      cd3,
+      introduction,
+      fitnessLevel,
+      companionStyle,
+      fitnessEagerness,
+      fitnessObjective,
+      fitnessKind,
+    };
+    Object.entries(formEntries).forEach(([key, value]) => {
+      if (value) formData.append(key, value as string);
     });
-    const transformedSpecs = specs.map((spec) => ({
-      startDate: spec.spec.startDate,
-      endDate: spec.spec.endDate || null,
-      isCurrent: !spec.spec.endDate,
-      title: spec.spec.title,
-      description: spec.spec.description,
-    }));
-    formData.append("specs", JSON.stringify(transformedSpecs));
+    if (specs.length) {
+      const transformedSpecs = specs.map((spec) => {
+        if (spec.spec.title && spec.spec.startDate) {
+          return {
+            startDate: spec.spec.startDate,
+            endDate: spec.spec.endDate || null,
+            isCurrent: !spec.spec.endDate,
+            title: spec.spec.title,
+            description: spec.spec.description,
+          };
+        }
+      });
+      formData.append("specs", JSON.stringify(transformedSpecs));
+    }
     try {
       const newMemberResponse = await postNewMember(axiosInstance, formData);
       if (newMemberResponse.statusCode === 201) {
