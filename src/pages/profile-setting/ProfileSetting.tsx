@@ -145,7 +145,10 @@ export default function ProfileSetting() {
   }, [introduction]);
 
   useEffect(() => {
-    saveDataToSessionStorage('specList', JSON.stringify(specList));
+    if (specList) {
+      sessionStorage.setItem('specList', JSON.stringify(specList));
+      setSpecList(specList);
+    }
   }, [specList]);
 
   // 마운트될 때 세션에서 필드값들 로드
@@ -184,11 +187,12 @@ export default function ProfileSetting() {
       setIntroduction(parsedIntroduction);
       setValue('introduction', parsedIntroduction);
     }
-    // const savedSpecList = sessionStorage.getItem('specList');
-    // if (savedSpecList) {
-    //   const parsedSpecList = JSON.parse(savedSpecList);
-    //   setSpecList(parsedSpecList);
-    // }
+    const savedSpecList = sessionStorage.getItem('specList');
+    if (savedSpecList) {
+      const parsedSpecList = JSON.parse(savedSpecList);
+      setSpecList(parsedSpecList);
+      setSpecs(parsedSpecList);
+    }
   }, [setNickname, setValue, setBirth, setGender, setIntroduction, setSpecs]);
 
   const handleNicknameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -203,11 +207,6 @@ export default function ProfileSetting() {
       setImage(file);
     }
   };
-  // const handleGenderChange = (gender: string) => {
-  //   setGender(gender);
-  //   setValue('gender', gender);
-  //   clearErrors('gender');
-  // };
 
   const handleDateChange = () => {
     if (selectedYear && selectedMonth && selectedDay) {
