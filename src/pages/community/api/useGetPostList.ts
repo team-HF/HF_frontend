@@ -1,21 +1,29 @@
 import { AxiosInstance } from "axios";
+import { TCategoryId } from "../../../entities/community/contents-type-data";
 
-const getPostList = async (
+export const getPostList = async (
+  category: TCategoryId,
   axiosInstance: AxiosInstance,
   currentPage: number
 ) => {
   try {
-    const response = await axiosInstance.get(`/hf/list`, {
+    const URL = category === "POPULAR" ? `/popularList` : `/list`;
+    const response = await axiosInstance.get(URL, {
       params: {
         page: currentPage,
-        size: 20,
       },
     });
-    return response.data;
+    const newPostList = response.data.content;
+    if (!Array.isArray(newPostList)) {
+      throw new Error("Error fetching post list.");
+    }
+    const totalPages: number = response.data.totalPageSize;
+    return {
+      totalPages,
+      newPostList,
+    };
   } catch (error) {
-    console.error("Getting community post", error);
+    console.error("Error fetching post list:", error);
     throw error;
   }
 };
-
-export default getPostList;
