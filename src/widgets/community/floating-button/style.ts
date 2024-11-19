@@ -3,7 +3,7 @@ import { theme } from "../../../app/theme";
 
 export const Container = styled.button`
   position: fixed;
-  bottom: 2rem;
+  bottom: 5rem;
   right: 2rem;
   padding: 16px;
   width: 3.5rem;

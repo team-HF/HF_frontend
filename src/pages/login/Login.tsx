@@ -1,9 +1,4 @@
 import * as S from "./style";
-import { useAxios } from "../../shared/utils/useAxios";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import kakaoOauth from "./api/kakaoOauth";
-import googleOauth from "./api/googleOauth";
 
 const KAKAO_OAUTH_URL = import.meta.env.VITE_KAKAO_OAUTH_URL;
 const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
@@ -16,36 +11,6 @@ const GOOGLE_REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
 const GOOGLE_AUTHORIZATION_CODE_URL = `${GOOGLE_OAUTH_URL}&redirect_uri=${GOOGLE_REDIRECT_URI}&client_id=${GOOGLE_CLIENT_ID}`;
 
 const Login = () => {
-  const { oauth } = useParams();
-  const { axiosInstance } = useAxios();
-  const navigate = useNavigate();
-  const code = new URL(window.location.href).searchParams.get("code") || "";
-  const [isFetching, setIsFetching] = useState(false);
-  useEffect(() => {
-    if (!code) return;
-    (async () => {
-      setIsFetching(true);
-      try {
-        const isNewMember =
-          oauth === "google"
-            ? await googleOauth(code, axiosInstance)
-            : await kakaoOauth(code, axiosInstance);
-        if (isNewMember) {
-          navigate("/register/exercise-style");
-        } else {
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("Error handling OAuth:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    })();
-    // eslint-disable-next-line
-  }, []);
-  if (isFetching) {
-    return <span>Loading...</span>;
-  }
   return (
     <S.Container>
       <S.BtnBox>

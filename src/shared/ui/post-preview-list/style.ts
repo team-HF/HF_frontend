@@ -2,45 +2,35 @@ import styled from "styled-components";
 
 export const PostPreviewContainer = styled.div`
   display: flex;
-  width: 20rem;
-  height: 10.4375rem;
+  width: 100%;
   gap: 1rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #f1f3f5;
+  padding: 1rem 0;
+  border-bottom: 1px solid #DEE2E6;
   flex-direction: column;
-  @media (min-width: 768px) and (max-width: 1920px) {
-    width: 40rem;
-  }
-  @media (min-width: 1920px) {
-    width: 67.5rem;
+  &:first-child {
+    border-top: 1px solid #DEE2E6;
   }
 `;
 
 export const CategoryWrapper = styled.div`
   display: flex;
-  width: 2.875rem;
-  height: 1.375rem;
-  padding: 0.375rem;
-  border-radius: 24px;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.colors.main};
-  white-space: nowrap;
 `;
 
-export const CategoryText = styled.p`
+export const CategoryText = styled.span`
+  padding: 0.375rem;
+  border-radius: 1.5rem;
   font-size: 0.625rem;
   font-weight: 500;
   line-height: 0.625rem;
   letter-spacing: -0.0313rem;
   color: #ffffff;
+  background-color: ${({ theme }) => theme.colors.main};
 `;
 
 export const TitleContainer = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  height: 1.5rem;
   gap: 0.5rem;
   align-items: center;
 `;
@@ -70,8 +60,7 @@ export const DescriptionContainer = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  height: 2.9375rem;
-  line-height: 1.2rem;
+  line-height: 1.5rem;
   font-size: 0.875rem;
   color: #4d4d4d;
   font-weight: 400;
@@ -82,7 +71,6 @@ export const IconContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 1.125rem;
   gap: 0.5rem;
   justify-content: right;
 `;
