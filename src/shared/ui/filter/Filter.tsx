@@ -27,17 +27,15 @@ const Filter = ({ filterData }: filterProps) => {
     );
   });
   return (
-    <>
-      <S.Container onClick={openFilter}>
-        {open ? (
-          <S.ArrowIcon className="arrow-up" src={"/svg/arrow-down.svg"} />
-        ) : (
-          <S.ArrowIcon src={"/svg/arrow-down.svg"} />
-        )}
-        <S.CurrentFilter>{currentFilter}</S.CurrentFilter>
-        {open && <S.FilterList>{filterList}</S.FilterList>}
-      </S.Container>
-    </>
+    <S.Container onClick={openFilter}>
+      <S.CurrentFilter>{currentFilter}</S.CurrentFilter>
+      {open ? (
+        <S.ArrowIcon className="arrow-up" src={"/svg/arrow-down.svg"} />
+      ) : (
+        <S.ArrowIcon src={"/svg/arrow-down.svg"} />
+      )}
+      {open && <S.FilterList>{filterList}</S.FilterList>}
+    </S.Container>
   );
 };
 

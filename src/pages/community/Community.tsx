@@ -6,11 +6,13 @@ import { useEffect } from "react";
 import { getPostList } from "./api/useGetPostList";
 import { TCategoryId } from "../../entities/community/contents-type-data";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import PageForm from "../../shared/ui/page-form/PageForm";
 import FilterBar from "../../widgets/community/filter-bar/FilterBar";
+import EmptyList from "../../shared/ui/empty-list/EmptyList";
+import CategoryBar from "../../widgets/community/contents-type/CategoryBar";
 import FloatingButton from "../../widgets/community/floating-button/FloatingButton";
 import CommunityHeader from "../../widgets/community/community-header/CommunityHeader";
 import PostPreviewList from "../../shared/ui/post-preview-list/PostPreviewList";
-import CategoryBar from "../../widgets/community/contents-type/CategoryBar";
 
 const Community = () => {
   const { axiosInstance } = useAxios();
@@ -34,16 +36,26 @@ const Community = () => {
     // eslint-disable-next-line
   }, [inView, category]);
   return (
-    <S.Container>
-      <CommunityHeader />
-      <CategoryBar category={category} setCategory={setCategory} />
-      <FilterBar />
-      <S.PostContainer>
-        {postList}
-        {isLoading ? <p>로딩중...</p> : <div ref={ref}></div>}
-      </S.PostContainer>
-      <FloatingButton />
-    </S.Container>
+    <PageForm isGNB={true}>
+      <S.Container>
+        <CommunityHeader />
+        <CategoryBar category={category} setCategory={setCategory} />
+        <FilterBar />
+        <S.PostContainer>
+          {postList && postList.length ? (
+            postList
+          ) : (
+            <EmptyList isBtn={false}>
+              작성된 글이 없습니다
+              <br />
+              친구들과 다양한 이야기를 나눠보세요
+            </EmptyList>
+          )}
+          {isLoading ? <p>로딩중...</p> : <div ref={ref} />}
+        </S.PostContainer>
+        <FloatingButton />
+      </S.Container>
+    </PageForm>
   );
 };
 

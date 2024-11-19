@@ -1,13 +1,13 @@
-import axios from "axios";
+import { useAxios as Axios } from "../utils/useAxios";
 
-const useGetUserData = async () => {
+export const useGetUserData = async (memberId: number) => {
+  const { axiosInstance } = Axios();
   try {
-    const response = await axios.get("oauth/token/me");
+    const response = await axiosInstance(`/hf/members/${memberId}`);
     return response.data;
   } catch (error) {
-    console.error("Error getting user data", error);
+    console.error("Error fetching user data.", error);
     throw error;
   }
 };
 
-export default useGetUserData;

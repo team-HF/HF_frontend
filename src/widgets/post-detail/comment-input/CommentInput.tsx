@@ -1,7 +1,8 @@
-import { useParams } from "react-router-dom";
 import * as S from "./style";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import postComment from "./api/usePostComment";
+import InputComment from "../../../shared/ui/input_comment/InputComment";
 
 const CommentInput = () => {
   const { id } = useParams();
@@ -15,14 +16,11 @@ const CommentInput = () => {
   return (
     <S.Container>
       <S.Title>댓글</S.Title>
-      <S.InputContainer>
-        <S.CommentInput
-          placeholder="댓글을 입력하세요."
-          value={commentValue}
-          onChange={(e) => setCommentValue(e.target.value)}
-        />
-        <S.SendBtn onClick={sendComment}/>
-      </S.InputContainer>
+      <InputComment
+        commentValue={commentValue}
+        setCommentValue={setCommentValue}
+        sendComment={sendComment}
+      />
     </S.Container>
   );
 };
