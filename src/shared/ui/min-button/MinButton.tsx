@@ -11,7 +11,7 @@ type buttonStyle =
   | "style_6";
 
 export interface minButtonProps {
-  name: string;
+  name?: string;
   button_shape: buttonShape;
   button_style: buttonStyle;
 }

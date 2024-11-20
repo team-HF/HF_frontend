@@ -2,12 +2,19 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  padding: 0.5rem 1.25rem;
-  width: 22.5rem;
+  align-items: center;
+  width: 100%;
+  height: 3rem;
+  gap: 0.5rem;
   @media (min-width: 768px) and (max-width: 1919px) {
     width: 40rem;
     padding: 0.5rem 0;
   }
+`;
+export const BackIcon = styled.img<{ src: string }>`
+  width: 1.5rem;
+  height: 1.5rem;
+  transform: rotate(90deg);
 `;
 export const Title = styled.span`
   font-size: 22px;

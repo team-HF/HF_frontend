@@ -14,7 +14,7 @@ export type PostData = {
   fitnessLevel: string;
 };
 
-export default function PostPreviewList (data: PostData) {
+export default function PostPreviewList(data: PostData) {
   const navigate = useNavigate();
   return (
     <s.PostPreviewContainer

@@ -4,17 +4,13 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 22.5rem;
-  padding: 0.5rem 1.25rem;
-  @media (min-width: 768px) and (max-width: 1919px) {
-    width: 48rem;
-    padding: 0.5rem 4rem;
-  }
-  @media (min-width: 1920px) {
-    width: 67.5rem;
-  }
+  width: 100%;
+  padding: 0.5rem 0;
 `;
 export const Title = styled.span`
+  display: flex;
+  align-items: center;
+  height: 1.875rem;
   font-size: 1.375rem;
   font-weight: 700;
   line-height: 1.364rem;
