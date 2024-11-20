@@ -1,24 +1,9 @@
 import styled from "styled-components";
 import { theme } from "../../../app/theme";
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 0.5rem 0;
-  @media (min-width: 768px) and (max-width: 1919px) {
-    padding: 0.5rem 0;
-    width: 40rem;
-  }
-`;
-export const Title = styled.span`
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1.412rem;
-  color: #868e96;
-  margin-bottom: 0.5rem;
-`;
 export const InputContainer = styled.div`
   position: relative;
+  width: 100%;
 `;
 export const CommentInput = styled.textarea`
   box-sizing: border-box;

@@ -16,7 +16,17 @@ export interface Comment {
 const CommentList = () => {
   const { id } = useParams();
   const postId = Number(id);
-  const [commentDataList, setCommentDataList] = useState<Comment[]>([]);
+  const [commentDataList, setCommentDataList] = useState<Comment[]>([
+    {
+      commentId: 0,
+      postId: 0,
+      writerId: 0,
+      content:
+        "질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. 질문의 내용입니다. ",
+      creationTime: "2024-11-18T07:59:01.020Z",
+      lastModified: "2024-11-18T07:59:01.020Z",
+    },
+  ]);
   const commentList = commentDataList.map((data, idx) => (
     <CommentCard key={`post_comment_${idx}`} data={data} />
   ));

@@ -9,9 +9,9 @@ import Profile from "./pages/profile/Profile";
 import Login from "./pages/login/Login";
 import Introduction from "./pages/introduction/Introduction";
 import Community from "./pages/community/Community";
-import FooterNav from './shared/ui/footer-nav/FooterNav';
-import ChatLobby from './pages/chat-lobby/ChatLobby';
+import ChatLobby from "./pages/chat-lobby/ChatLobby";
 import PostRegister from "./pages/post-register/PostRegister";
+import PostDetail from "./pages/post-detail/PostDetail";
 
 const queryClient = new QueryClient();
 
@@ -24,15 +24,21 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="oauth/code/:oauth" element={<Login />} />
             <Route path="my-page" element={<MyPage />} />
-            <Route path="register/exercise-option" element={<ExerciseOption />} />
+            <Route
+              path="register/exercise-option"
+              element={<ExerciseOption />}
+            />
             <Route path="register/profile" element={<Profile />} />
             <Route path="profile-setting" element={<ProfileSetting />} />
-            <Route path="/profile-setting/introduction" element={<Introduction />} />
+            <Route
+              path="/profile-setting/introduction"
+              element={<Introduction />}
+            />
             <Route path="/chat-lobby" element={<ChatLobby />} />
             <Route path="community" element={<Community />} />
             <Route path="community/post-register" element={<PostRegister />} />
+            <Route path="community/post-detail/:id" element={<PostDetail />} />
           </Routes>
-          <FooterNav />
         </ThemeProvider>
       </QueryClientProvider>
     </Router>

@@ -4,18 +4,21 @@ import { theme } from "../../../app/theme";
 export const Container = styled.div<{ open: boolean }>`
   position: absolute;
   display: flex;
-  left: 0;
+  left: 50%;
   bottom: 0;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: 100%;
-  padding: 1.25rem 0;
+  width: 22.5rem;
+  padding: 0.625rem 0 1.25rem 0;
   border-radius: 0.5rem 0.5rem 0 0;
   background-color: ${theme.colors.white};
   box-shadow: 0.625rem 0px 1.5rem rgba(0, 0, 0, 0.1);
   z-index: 1;
+  @media (min-width: 768px) {
+    width: 48rem;
+  }
 `;
 export const Divider_1 = styled.hr`
   width: 2.875rem;
@@ -43,7 +46,7 @@ export const Title = styled.span`
 export const FiltersBox = styled.div`
   display: flex;
   gap: 0.5rem;
-  padding: 0.625rem;
+  padding: 0.625rem 0;
 `;
 export const Filter = styled.button<{ checked: boolean }>`
   padding: 0.625rem;

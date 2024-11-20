@@ -3,27 +3,26 @@ import { theme } from "../../../app/theme";
 
 export const Container = styled.div`
   display: flex;
-  padding: 0.625rem 1.25rem;
-  width: 22.5rem;
-  @media (min-width: 768px) and (max-width: 1919px) {
-    width: 48rem;
-    padding: 0.625rem 4rem;
-  }
-  @media (min-width: 1920px) {
-    width: 67.5rem;
-  }
+  justify-content: flex-end;
+  padding: 0.5rem 0;
+  width: 100%;
 `;
 export const LabelContainer = styled.div`
   display: flex;
-  gap: 8px;
+  width: 100%;
+  gap: 0.5rem;
 `;
 export const LabelBtn = styled.button<{ checked: boolean }>`
   display: flex;
+  justify-content: center;
+  align-items: center;
   box-sizing: border-box;
-  padding: 0.625rem;
+  text-align: center;
+  padding : 0 0.625rem;
+  height: 2.125rem;
   border-radius: 2.125rem;
-
-  font-size: 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
   line-height: 1rem;
   letter-spacing: -0.01rem;
   ${({ checked }) =>

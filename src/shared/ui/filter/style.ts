@@ -1,51 +1,57 @@
 import styled from "styled-components";
-import { theme } from "../../../app/theme";
 
 export const Container = styled.div`
   position: relative;
-  box-sizing: border-box;
   display: flex;
   align-items: center;
-  padding: 10px;
-  height: 38px;
-  border: 1px solid #cfc4fb;
-  border-radius: 34px;
+  width: 8.75rem;
+  height: 2.125rem;
+  padding: 0.313rem 0.375rem;
+  border: 0.063rem solid #e8e3fd;
+  border-radius: 0.5rem;
+  gap: 0.5rem;
   cursor: pointer;
 `;
 export const ArrowIcon = styled.img`
-  margin-right: 10px;
+  height: 24px;
   &.arrow-up {
     transform: rotate(180deg);
   }
 `;
 export const CurrentFilter = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.00875rem;
-  color: ${theme.colors.main};
+  width: 100%;
+  height: 24px;
+  text-align: center;
+  font-size: 0.938rem;
+  line-height: 1.467rem;
+  letter-spacing: -0.01rem;
+  color: #000000;
 `;
 export const FilterList = styled.div`
   position: absolute;
-  top: 44px;
-  left: 0px;
-  z-index: 1;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  top: 2.5rem;
+  left: 0;
+  z-index: 1;
+  width: 8.75rem;
   background-color: white;
-  border: 1px solid #cfc4fb;
-  border-radius: 20px;
+  border: 0.063rem solid #e8e3fd;
+  border-radius: 0.5rem;
   cursor: pointer;
 `;
 export const Filter = styled.span`
+  padding: 0.375rem;
   text-align: center;
-  padding: 10px;
-  border-bottom: 1px solid #cfc4fb;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.00875rem;
-  color: ${theme.colors.main};
+  border-bottom: 1px solid #e8e3fd;
+  font-size: 0.938rem;
+  line-height: 1.467rem;
+  letter-spacing: -0.01rem;
+  color: #000000;
+  &:hover {
+    background-color: #e8e3fd;
+  }
   &:last-child {
-    border: 0px;
+    border: 0;
   }
 `;

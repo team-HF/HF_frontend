@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { TCategory } from "../../../entities/community/filter-data";
 import * as S from "./style";
 
@@ -6,7 +7,6 @@ interface filterProps {
   open: boolean;
   setSideFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
   filterData: { name: TCategory }[];
-  postCategory: string;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -15,16 +15,19 @@ const SideFilter = ({
   open,
   setSideFilterOpen,
   filterData,
-  postCategory,
   setCategory,
 }: filterProps) => {
-  const resetFilter = () => setCategory("");
-  const sideFilterClose = () => setSideFilterOpen(false);
+  const [value, setValue] = useState("");
+  const resetFilter = () => setValue("");
+  const sideFilterClose = () => {
+    setCategory(value);
+    setSideFilterOpen(false);
+  };
   const postCategoryList = filterData.map((data) => (
     <S.Filter
       key={`side_filter_${data.name}`}
-      checked={postCategory === data.name}
-      onClick={() => setCategory(data.name)}
+      checked={value === data.name}
+      onClick={() => setValue(data.name)}
     >
       {data.name}
     </S.Filter>
