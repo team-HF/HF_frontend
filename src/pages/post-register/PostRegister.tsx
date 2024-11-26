@@ -17,14 +17,15 @@ const PostRegister = () => {
   const onOffSideFilter = () => setSideFilterOpen(!sideFilterOpen);
   const contentsPost = async () => {
     const postData = {
-      postCategory: postCategory,
-      postTitle: postTitle,
-      postContent: postContent,
-      writerId: 1,
+      category: postCategory,
+      title: postTitle,
+      content: postContent,
     };
     try {
-      await communityPostApi(postData);
-      navigate("/community");
+      const response = await communityPostApi(postData);
+      if (response.statusCode === 200) {
+        navigate("/community");
+      }
     } catch (error) {
       console.error("Error creating post", error);
     }
