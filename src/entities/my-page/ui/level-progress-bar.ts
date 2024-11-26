@@ -1,0 +1,63 @@
+import styled from 'styled-components';
+
+export const Container = styled.div`
+  display: flex;
+  align-self: center;
+  width: 100%;
+  padding: 0 20px;
+  margin-bottom: 24px;
+  justify-content: center;
+`;
+
+export const LevelProgressAndMessageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const LevelWrapper = styled.div`
+  display: flex;
+  justify-items: center;
+  margin-bottom: 4px;
+  gap: 1px;
+`;
+
+export const Level = styled.div<{ isActive: boolean }>`
+  width: 64px;
+  height: 24px;
+  background-color: ${(props) => (props.isActive ? '#6441F2' : '#ADB5BD')};
+  margin-right: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 400;
+  color: #ffffff;
+
+  @media (min-width: 768px) {
+    /* 태블릿 세로 방향 */
+    width: 126px;
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+    width: 215px;
+  }
+  &:first-child {
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+  }
+
+  &:last-child {
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+  }
+`;
+
+export const StyledMessage = styled.span`
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: -0.0031em;
+  align-self: end;
+  color: #868e96;
+`;

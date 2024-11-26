@@ -14,6 +14,7 @@ const dummyUsers: MatchingUserCard[] = Array.from({ length: 100 }, (_, i) => ({
     '#기능성피트니스위주',
     '#헬스헬스무조건벌크업',
   ],
+  levels: 3,
 }));
 
 // API 핸들러

@@ -7,6 +7,7 @@ import LargeButton from '../../shared/ui/large-button/LargeButton';
 import * as S from './style';
 import { useState } from 'react';
 import SaveList from '../../entities/my-page/ui/SaveList';
+import LevelProgressBar from '../../entities/my-page/ui/LevelProgressBar';
 
 export default function MyPage() {
   const [tab, setTab] = useState('내 운동 매칭 List');
@@ -18,6 +19,7 @@ export default function MyPage() {
     <S.Container>
       <Header text="마이페이지" />
       <ProfileBox />
+      <LevelProgressBar currentLevel={4} />
       <S.LargeButtonWrapper>
         <LargeButton text="프로필 설정" onClick={onClick} />
       </S.LargeButtonWrapper>
