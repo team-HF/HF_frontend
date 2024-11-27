@@ -37,7 +37,7 @@ const SpecItem = (props: TSpec) => {
         }
       />
       <S.Input
-        type="date"
+        type="month"
         className="spec_date"
         required
         aria-required="true"
@@ -49,7 +49,7 @@ const SpecItem = (props: TSpec) => {
         }
       />
       <S.Input
-        type="date"
+        type="month"
         className="spec_date"
         required
         aria-required="true"
