@@ -1,46 +1,14 @@
-import LevelSelector from '../../entities/exercise-option/ui/LevelSelector';
-import StyleSelector from '../../entities/exercise-option/ui/StyleSelector';
-import * as S from './style';
-import { useOptionStore } from '../../features/exercise-option/store/exercise-option-store';
-import InformationModal from '../../entities/exercise-option/ui/InformationModal';
-import { useEffect, useState } from 'react';
-import NextButton from '../../features/exercise-option/button/NextButton';
+import * as S from "./style";
+import Header from "../../widgets/post-register/header/Header";
+import PageForm from "../../shared/ui/page-form/PageForm";
+import StyleSelector from "../../entities/exercise-option/ui/StyleSelector";
+import { useOptionStore } from "../../features/exercise-option/store/exercise-option-store";
+import { useNavigate } from "react-router-dom";
 
 export default function MyPage() {
-  const [isShowModal, setIsShowModal] = useState(false);
-  const handleModalOpen = () => {
-    setIsShowModal(true);
-  };
-  const handleModalClose = () => {
-    setIsShowModal(false);
-  };
-  const handleModalClickOutside = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      setIsShowModal(false);
-    }
-  };
-
-  //모달 오픈 시 외부 스크롤 방지
-  useEffect(() => {
-    const body = document.body;
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
-
-    if (isShowModal) {
-      body.style.overflow = 'hidden';
-      body.style.paddingRight = `${scrollbarWidth}px`;
-    } else {
-      body.style.overflow = 'auto';
-      body.style.paddingRight = '0px';
-    }
-    return () => {
-      body.style.overflow = 'auto';
-      body.style.paddingRight = '0px';
-    };
-  }, [isShowModal]);
+  const navigate = useNavigate();
 
   const {
-    levelSelected,
     styleSelected,
     setStyleSelected,
     habitSelected,
@@ -51,67 +19,120 @@ export default function MyPage() {
     setExerciseSelected,
   } = useOptionStore();
 
-  const allSelected =
-    levelSelected &&
-    styleSelected &&
-    habitSelected &&
-    goalSelected &&
-    exerciseSelected;
+  const allSelected = Boolean(
+    styleSelected && habitSelected && goalSelected && exerciseSelected
+  );
 
+  const nextStep = () =>
+    navigate(
+      `/register/profile?companionStyle=${styleSelected}&fitnessEagerness=${habitSelected}&fitnessObjective=${goalSelected}&fitnessKind=${exerciseSelected}`
+    );
   return (
-    <S.Container>
-      <S.ProfileContainer>
-        <S.StyleH1>프로필 입력</S.StyleH1>
-      </S.ProfileContainer>
-      <LevelSelector onOpen={handleModalOpen} />
-      <S.StyleH1>나의 운동 스타일을 골라주세요</S.StyleH1>
-      <S.SelectorContainer>
-        <StyleSelector
-          title="운동할 때 주로 누구랑?"
-          options={[
-            { label: '소규모형', emoji: '🙂' ,value : "SMALL"},
-            { label: '그룹형', emoji: '😉🙂😊' ,value : "GROUP"},
-          ]}
-          selectedOption={styleSelected}
-          setSelectedOption={setStyleSelected}
-        />
+    <PageForm isGNB={false}>
+      <S.Container>
+        <Header title={"프로필 입력"} />
+        <S.StyleH1>나의 운동 스타일을 골라주세요</S.StyleH1>
+        <S.SelectorContainer>
+          <StyleSelector
+            title="운동할 때 주로 누구랑?"
+            options={[
+              {
+                label: "소규모형",
+                src:
+                  styleSelected === "SMALL"
+                    ? "/svg/companionStyle_small_white.svg"
+                    : "/svg/companionStyle_small_main.svg",
+                value: "SMALL",
+              },
+              {
+                label: "그룹형",
+                src:
+                  styleSelected === "GROUP"
+                    ? "/svg/companionStyle_group_white.svg"
+                    : "/svg/companionStyle_group_main.svg",
+                value: "GROUP",
+              },
+            ]}
+            selectedOption={styleSelected}
+            setSelectedOption={setStyleSelected}
+          />
 
-        <StyleSelector
-          title="운동할 때 나는 평소?"
-          options={[
-            { label: '의욕만렙형', emoji: '💪' ,value : "EAGER"},
-            { label: '귀차니즘형', emoji: '💤' ,value : "LAZY"},
-          ]}
-          selectedOption={habitSelected}
-          setSelectedOption={setHabitSelected}
-        />
+          <StyleSelector
+            title="운동할 때 나는 평소?"
+            options={[
+              {
+                label: "의욕만렙형",
+                src:
+                  habitSelected === "EAGER"
+                    ? "/svg/fitnessEagerness_eager_white.svg"
+                    : "/svg/fitnessEagerness_eager_main.svg",
+                value: "EAGER",
+              },
+              {
+                label: "귀차니즘형",
+                src:
+                  habitSelected === "LAZY"
+                    ? "/svg/fitnessEagerness_lazy_white.svg"
+                    : "/svg/fitnessEagerness_lazy_main.svg",
+                value: "LAZY",
+              },
+            ]}
+            selectedOption={habitSelected}
+            setSelectedOption={setHabitSelected}
+          />
 
-        <StyleSelector
-          title="나의 운동 목적은?"
-          options={[
-            { label: '헬스헬스\n무조건 벌크업!', emoji: '🏋️‍♂️' ,value : "BULK_UP"},
-            { label: '러닝러닝\n뛰어야 운동이지!', emoji: '🏃‍♂️' ,value : "RUNNING"},
-          ]}
-          selectedOption={goalSelected}
-          setSelectedOption={setGoalSelected}
-        />
+          <StyleSelector
+            title="나의 운동 목적은?"
+            options={[
+              {
+                label: "헬스헬스 벌크업",
+                src:
+                  goalSelected === "BULK_UP"
+                    ? "/svg/fitnessObjective_bulkUp_white.svg"
+                    : "/svg/fitnessObjective_bulkUp_main.svg",
+                value: "BULK_UP",
+              },
+              {
+                label: "러닝러닝 유산소",
+                src:
+                  goalSelected === "RUNNING"
+                    ? "/svg/fitnessObjective_jogging_white.svg"
+                    : "/svg/fitnessObjective_jogging_main.svg",
+                value: "RUNNING",
+              },
+            ]}
+            selectedOption={goalSelected}
+            setSelectedOption={setGoalSelected}
+          />
 
-        <StyleSelector
-          title="주로 하고 있는 운동은?"
-          options={[
-            { label: '고강도 운동 위주', emoji: '🔥' ,value : "HIGH_STRESS"},
-            { label: '기능성 피트니스 위주', emoji: '🤸‍♂️' ,value : "FUNCTIONAL"},
-          ]}
-          selectedOption={exerciseSelected}
-          setSelectedOption={setExerciseSelected}
-        />
-      </S.SelectorContainer>
-      <NextButton disabled={!allSelected} />
-      {isShowModal && (
-        <S.ModalContainer onClick={handleModalClickOutside}>
-          <InformationModal onClose={handleModalClose} />
-        </S.ModalContainer>
-      )}
-    </S.Container>
+          <StyleSelector
+            title="주로 하고 있는 운동은?"
+            options={[
+              {
+                label: "고강도 운동 위주",
+                src:
+                  exerciseSelected === "HIGH_STRESS"
+                    ? "/svg/fitnessKind_highStress_white.svg"
+                    : "/svg/fitnessKind_highStress_main.svg",
+                value: "HIGH_STRESS",
+              },
+              {
+                label: "기능성 피트니스 위주",
+                src:
+                  exerciseSelected === "FUNCTIONAL"
+                    ? "/svg/fitnessKind_functional_white.svg"
+                    : "/svg/fitnessKind_functional_main.svg",
+                value: "FUNCTIONAL",
+              },
+            ]}
+            selectedOption={exerciseSelected}
+            setSelectedOption={setExerciseSelected}
+          />
+        </S.SelectorContainer>
+        <S.NextBtn disabled={!allSelected} onClick={nextStep}>
+          다음
+        </S.NextBtn>
+      </S.Container>
+    </PageForm>
   );
 }
