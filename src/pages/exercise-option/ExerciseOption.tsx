@@ -1,9 +1,11 @@
 import * as S from "./style";
+import Cookies from "js-cookie";
 import Header from "../../widgets/post-register/header/Header";
 import PageForm from "../../shared/ui/page-form/PageForm";
 import StyleSelector from "../../entities/exercise-option/ui/StyleSelector";
 import { useOptionStore } from "../../features/exercise-option/store/exercise-option-store";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function MyPage() {
   const navigate = useNavigate();
@@ -27,6 +29,13 @@ export default function MyPage() {
     navigate(
       `/register/profile?companionStyle=${styleSelected}&fitnessEagerness=${habitSelected}&fitnessObjective=${goalSelected}&fitnessKind=${exerciseSelected}`
     );
+
+  useEffect(() => {
+    const isNewMember = Cookies.get("is_new_member");
+    if (isNewMember === "false") {
+      navigate("/");
+    }
+  }, []);
   return (
     <PageForm isGNB={false}>
       <S.Container>
