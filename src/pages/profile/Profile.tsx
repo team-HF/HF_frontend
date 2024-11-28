@@ -1,12 +1,18 @@
-import { useEffect, useState } from "react";
 import * as S from "./style";
-import { useForm } from "react-hook-form";
+import Header from "../../widgets/post-register/header/Header";
+import PageForm from "../../shared/ui/page-form/PageForm";
 import SaveButton from "../../features/profile/button/SaveButton";
+import DatePicker from "../../widgets/profile/date-picker/DatePicker";
+import { useForm } from "react-hook-form";
 import { useProfileStore } from "../../features/profile/store/profile-store";
+import { useEffect, useState } from "react";
 import { getSgisLocationData } from "../../shared/api/getSgisLocationData";
 import { getSgisApiAccessToken } from "../../shared/api/getSgisApiAccessToken";
-import { useGetParams } from "../../shared/utils/useGetParams";
-import SpecItem from "../../shared/ui/specItem/SpecItem";
+import {
+  dayData,
+  monthData,
+  yearData,
+} from "../../entities/profile/date-picker-data";
 
 interface Location {
   addr_name: string;
@@ -30,8 +36,12 @@ export default function Profile() {
     setImage,
     nickname,
     setNickname,
-    birthDate,
-    setBirthDate,
+    dateYear,
+    setDateYear,
+    dateMonth,
+    setDateMonth,
+    dateDay,
+    setDateDay,
     gender,
     cd1,
     setCd1,
@@ -42,13 +52,11 @@ export default function Profile() {
     setGender,
     introduction,
     setIntroduction,
-    specs,
-    setAddNewSpec,
   } = useProfileStore();
-  const fitnessLevel = useGetParams("fitnessLevel");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [userLocation, setUserLocation] = useState("");
+  const [userLocation, setUserLocation] = useState<string>("");
   const [locationData, setLocationData] = useState<Location[]>([]);
+  const [introductionModal, setIntroductionModal] = useState<boolean>(false);
+  const [introductionContent, setIntroductionContent] = useState<string>("");
 
   const getLocationData = async () => {
     const result = await getSgisLocationData(cd3 || cd2 || cd1);
@@ -77,10 +85,21 @@ export default function Profile() {
   // 스토어 값이 변경될 때 폼에도 저장
   useEffect(() => {
     if (nickname) setValue("nickname", nickname);
-    if (birthDate) setValue("birth", birthDate);
+    if (dateYear) setValue("birth", dateYear);
     if (gender) setValue("gender", gender);
     if (introduction) setValue("introduction", introduction);
-  }, [nickname, birthDate, gender, cd1, cd2, cd3, introduction, setValue]);
+  }, [
+    nickname,
+    dateYear,
+    dateMonth,
+    dateDay,
+    gender,
+    cd1,
+    cd2,
+    cd3,
+    introduction,
+    setValue,
+  ]);
 
   // 필드 watch로 감시하여 값들을 확인
   const watchedNickname = watch("nickname");
@@ -99,189 +118,201 @@ export default function Profile() {
       watchedIntroduction
   );
 
-  const handleArrowClick = () => {
-    setIsDropdownOpen((prev) => !prev);
-  };
-
-  // 성별 드롭다운 이벤트
-  const handleSelect = (value: string) => {
-    setGender(value);
-    setValue("gender", value);
-    setIsDropdownOpen(false);
-    clearErrors("gender");
-  };
-
-  // 경력 & 수상
-  const addSpec = () => {
-    const canAddNewSpec = Boolean(
-      !specs.length ||
-        (specs[specs.length - 1].spec.title &&
-          specs[specs.length - 1].spec.startDate)
-    );
-    if (canAddNewSpec) setAddNewSpec();
-    else
-      alert(
-        `새로운 경력을 추가하려면 마지막 입력란의 "경력 및 수상명"과 "시작일"을 입력해주세요.`
-      );
-  };
-  const specList = specs.map((spec, idx) => (
-    <SpecItem key={`spec_${idx}`} {...spec} />
+  const locationCards = locationData.map((data) => (
+    <S.LocationCard
+      key={`locationBtn_cd${data.cd}`}
+      onClick={() => onClickLocationCard(data.cd, data.full_addr)}
+    >
+      {data.full_addr}
+    </S.LocationCard>
   ));
+
+  const storeIntroduction = () => {
+    setIntroduction(introductionContent);
+    setIntroductionModal(false);
+  };
+
+  useEffect(() => {
+    if (introductionModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [introductionModal]);
+
   return (
-    <S.Container>
-      <S.ProfileContainer>
-        <S.StyleH1>프로필 입력</S.StyleH1>
-      </S.ProfileContainer>
+    <PageForm isGNB={false}>
+      <S.Container>
+        <Header title={"프로필 입력"} />
 
-      <S.ImageContainer>
-        {image ? (
-          <S.ProfileImageLabel
-            htmlFor="profile_image_input"
-            className="is_profile_image"
-          >
-            <S.ProfileImage
-              src={URL.createObjectURL(image)}
-              alt="uploaded_user_image"
-            />
-          </S.ProfileImageLabel>
-        ) : (
-          <S.ProfileImageLabel htmlFor="profile_image_input">
-            <S.CameraIcon src="/svg/camera-icon.svg" />
-          </S.ProfileImageLabel>
-        )}
-        <S.ProfileImageInput
-          type="file"
-          id="profile_image_input"
-          onChange={(e) => {
-            if (e.target.files) {
-              setImage(e.target.files[0]);
-            }
-          }}
-        />
-      </S.ImageContainer>
-
-      <S.FieldContainer>
-        <S.Field>
-          <S.Label>닉네임</S.Label>
-          <S.Input
-            type="text"
-            placeholder="영문, 숫자, 한글만 입력 가능합니다 (최대 8글자)"
-            {...register("nickname", {
-              required: "닉네임을 입력해주세요",
-              pattern: {
-                value: /^[a-zA-Z0-9가-힣]{1,8}$/,
-                message: "닉네임은 영문,숫자,한글만 포함 가능합니다.",
-              },
-              maxLength: {
-                value: 8,
-                message: "닉네임의 길이는 8글자 이하 입니다.",
-              },
-              onBlur: () => {
-                clearErrors("nickname");
-              },
-            })}
-            onChange={(e) => setNickname(e.target.value)}
+        <S.ImageContainer>
+          {image ? (
+            <S.ProfileImageLabel
+              htmlFor="profile_image_input"
+              className="is_profile_image"
+            >
+              <S.ProfileImage
+                src={URL.createObjectURL(image)}
+                alt="uploaded_user_image"
+              />
+              <S.CameraIcon src="/svg/camera-icon.svg" />
+            </S.ProfileImageLabel>
+          ) : (
+            <S.ProfileImageLabel htmlFor="profile_image_input">
+              <S.DefaultUserImage src={"/svg/default-profile-icon.svg"} />
+              <S.CameraIcon src="/svg/camera-icon.svg" />
+            </S.ProfileImageLabel>
+          )}
+          <S.ProfileImageInput
+            type="file"
+            id="profile_image_input"
+            onChange={(e) => {
+              if (e.target.files) {
+                setImage(e.target.files[0]);
+              }
+            }}
           />
-          {errors.nickname?.message &&
-            typeof errors.nickname.message === "string" && (
-              <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
-            )}
-        </S.Field>
+        </S.ImageContainer>
 
-        <S.Field>
-          <S.Label>생년월일</S.Label>
-          <S.Input
-            type="date"
-            placeholder="만 14세 미만은 법정 대리인 동의가 필요합니다."
-            {...register("birth", {
-              required: {
-                value: true,
-                message: "생년월일을 입력해주세요.",
-              },
-              onBlur: () => clearErrors("birth"),
-            })}
-            onChange={(e) => setBirthDate(e.target.value)}
-          />
-        </S.Field>
-
-        <S.Field>
-          <S.Label>성별</S.Label>
-          <S.SexContainer>
+        <S.FieldContainer>
+          <S.Field>
+            <S.Label>닉네임</S.Label>
             <S.Input
-              placeholder="성별을 선택해주세요."
-              {...register("gender", {
-                required: {
-                  value: true,
-                  message: "성별을 선택해주세요.",
+              type="text"
+              placeholder="닉네임"
+              {...register("nickname", {
+                required: "닉네임을 입력해주세요",
+                pattern: {
+                  value: /^[a-zA-Z0-9가-힣]{1,8}$/,
+                  message: "닉네임은 영문,숫자,한글만 포함 가능합니다.",
+                },
+                maxLength: {
+                  value: 8,
+                  message: "닉네임의 길이는 8글자 이하 입니다.",
+                },
+                onBlur: () => {
+                  clearErrors("nickname");
                 },
               })}
-              readOnly
+              onChange={(e) => setNickname(e.target.value)}
             />
-            <S.Arrow onClick={handleArrowClick}>{"\u25BC"}</S.Arrow>
-            {isDropdownOpen && (
-              <S.Dropdown>
-                <S.DropdownItem onClick={() => handleSelect("남성")}>
-                  남성
-                </S.DropdownItem>
-                <S.DropdownItem onClick={() => handleSelect("여성")}>
-                  여성
-                </S.DropdownItem>
-              </S.Dropdown>
+            {errors.nickname?.message ? (
+              typeof errors.nickname.message === "string" && (
+                <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
+              )
+            ) : (
+              <S.PlaceHolder>
+                닉네임은 최대 8자까지 입력 가능합니다.
+              </S.PlaceHolder>
             )}
-          </S.SexContainer>
-          {errors.gender?.message &&
-            typeof errors.gender.message === "string" && (
-              <S.ErrorMessage>{errors.gender.message}</S.ErrorMessage>
-            )}
-        </S.Field>
-
-        <S.Field>
-          <S.Label>위치</S.Label>
-          <S.LocationContainer>
-            <S.Input value={userLocation} disabled />
-            <S.ResetBtn onClick={() => onClickReset()}>초기화</S.ResetBtn>
-          </S.LocationContainer>
-          <S.LocationList>
-            {locationData.map((data) => (
-              <S.LocationCard
-                key={`locationBtn_cd${data.cd}`}
-                onClick={() => onClickLocationCard(data.cd, data.full_addr)}
-              >
-                {data.full_addr}
-              </S.LocationCard>
-            ))}
-          </S.LocationList>
-        </S.Field>
-
-        <S.Field>
-          <S.Label>한줄 소개</S.Label>
-          <S.Input
-            type="text"
-            placeholder="나를 소개할 한 줄을 작성해주세요."
-            {...register("introduction", {
-              required: {
-                value: true,
-                message: "한줄 소개를 입력해주세요.",
-              },
-              onBlur: () => clearErrors("introduction"),
-            })}
-            onChange={(e) => setIntroduction(e.target.value)}
-          />
-        </S.Field>
-
-        {fitnessLevel === "ADVANCED" && (
-          <S.Field>
-            <S.LabelContainer>
-              <S.Label className="label_spec">경력 및 수상사항</S.Label>
-              <S.AddIcon src="/svg/add-icon.svg" onClick={addSpec} />
-            </S.LabelContainer>
-            {specList}
           </S.Field>
-        )}
-      </S.FieldContainer>
-      <S.ButtonContainer>
+
+          <S.Field>
+            <S.Label>생년월일</S.Label>
+            <S.DateContainer>
+              <DatePicker
+                date={dateYear}
+                setDate={setDateYear}
+                placeHolder="년도"
+                optionData={yearData}
+              />
+              <DatePicker
+                date={dateMonth}
+                setDate={setDateMonth}
+                placeHolder="월"
+                optionData={monthData}
+              />
+              <DatePicker
+                date={dateDay}
+                setDate={setDateDay}
+                placeHolder="일"
+                optionData={dayData}
+              />
+            </S.DateContainer>
+            <S.PlaceHolder>
+              만 14세 미만은 법정 대리인 동의가 필요합니다.
+            </S.PlaceHolder>
+          </S.Field>
+
+          <S.Field>
+            <S.Label>성별</S.Label>
+            <S.SexContainer>
+              <S.genderBtn
+                selected={gender === "MALE"}
+                onClick={() => setGender("MALE")}
+              >
+                남자
+              </S.genderBtn>
+              <S.genderBtn
+                selected={gender === "FEMALE"}
+                onClick={() => setGender("FEMALE")}
+              >
+                여자
+              </S.genderBtn>
+            </S.SexContainer>
+            {errors.gender?.message &&
+              typeof errors.gender.message === "string" && (
+                <S.ErrorMessage>{errors.gender.message}</S.ErrorMessage>
+              )}
+          </S.Field>
+
+          <S.Field>
+            <S.Label>현재 위치</S.Label>
+            <S.LocationContainer>
+              <S.Input value={userLocation} placeholder="현재 위치" disabled />
+              <S.ResetBtn onClick={() => onClickReset()}>초기화</S.ResetBtn>
+            </S.LocationContainer>
+            <S.LocationList>{locationCards}</S.LocationList>
+          </S.Field>
+
+          <S.Field>
+            <S.Label>한줄 소개</S.Label>
+            <S.IntroductionContent
+              filled={Boolean(introduction)}
+              onClick={() => setIntroductionModal(true)}
+            >
+              {introduction ? introduction : "한줄 소개"}
+            </S.IntroductionContent>
+            <S.PlaceHolder>나를 소개할 한 줄을 작성해주세요.</S.PlaceHolder>
+          </S.Field>
+        </S.FieldContainer>
         <SaveButton disabled={!isAllSelected} />
-      </S.ButtonContainer>
-    </S.Container>
+      </S.Container>
+
+      {introductionModal && (
+        <S.IntroductionModal>
+          <S.Container>
+            <S.Header>
+              <img
+                src={"/svg/left-arrow-icon.svg"}
+                onClick={() => setIntroductionModal(false)}
+              />
+            </S.Header>
+            <S.InputContainer>
+              <S.IntroductionInput
+                placeholder="나를 소개할 한줄을 작성해주세요."
+                {...register("introduction", {
+                  required: "한줄 소개를 작성해주세요.",
+                  maxLength: {
+                    value: 500,
+                    message: "최대 500자까지 작성할 수 있어요.",
+                  },
+                  onBlur: () => {
+                    clearErrors("introduction");
+                  },
+                })}
+                maxLength={500}
+                onChange={(e) => setIntroductionContent(e.target.value)}
+              />
+              <S.LengthChecker>{`${introductionContent.length}/500`}</S.LengthChecker>
+            </S.InputContainer>
+            <S.StoreBtn onClick={storeIntroduction}>저장하기</S.StoreBtn>
+          </S.Container>
+        </S.IntroductionModal>
+      )}
+    </PageForm>
   );
 }

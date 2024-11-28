@@ -14,17 +14,21 @@ export type TSpec = {
 
 type ProfileStore = {
   image: File | null;
-  nickname: string | null;
-  birthDate: string | null;
-  gender: string | null;
-  cd1: string | null;
-  cd2: string | null;
-  cd3: string | null;
-  introduction: string | null;
+  nickname: string;
+  dateYear: string | null;
+  dateMonth: string | null;
+  dateDay: string | null;
+  gender: string;
+  cd1: string;
+  cd2: string;
+  cd3: string;
+  introduction: string;
   specs: TSpec[];
-  setImage: (option: File | null) => void;
+  setImage: (option: File) => void;
   setNickname: (option: string) => void;
-  setBirthDate: (option: string) => void;
+  setDateYear: (option: string) => void;
+  setDateMonth: (option: string) => void;
+  setDateDay: (option: string) => void;
   setGender: (option: string) => void;
   setCd1: (option: string) => void;
   setCd2: (option: string) => void;
@@ -36,17 +40,21 @@ type ProfileStore = {
 
 export const useProfileStore = create<ProfileStore>((set) => ({
   image: null,
-  nickname: null,
-  birthDate: null,
-  gender: null,
-  cd1: null,
-  cd2: null,
-  cd3: null,
-  introduction: null,
+  nickname: "",
+  dateYear: null,
+  dateMonth: null,
+  dateDay: null,
+  gender: "",
+  cd1: "",
+  cd2: "",
+  cd3: "",
+  introduction: "",
   specs: [],
   setImage: (option) => set({ image: option }),
   setNickname: (option) => set({ nickname: option }),
-  setBirthDate: (option) => set({ birthDate: option }),
+  setDateYear: (option) => set({ dateYear: option }),
+  setDateMonth: (option) => set({ dateMonth: option }),
+  setDateDay: (option) => set({ dateDay: option }),
   setGender: (option) => set({ gender: option }),
   setCd1: (option) => set({ cd1: option }),
   setCd2: (option) => set({ cd2: option }),
