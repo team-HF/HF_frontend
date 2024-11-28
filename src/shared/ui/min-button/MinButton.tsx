@@ -1,14 +1,14 @@
-import * as S from "./style";
+import * as S from './style';
 
-type buttonShape = "square" | "around";
+type buttonShape = 'square' | 'around' | 'semi-around';
 
 type buttonStyle =
-  | "style_1"
-  | "style_2"
-  | "style_3"
-  | "style_4"
-  | "style_5"
-  | "style_6";
+  | 'style_1'
+  | 'style_2'
+  | 'style_3'
+  | 'style_4'
+  | 'style_5'
+  | 'style_6';
 
 export interface minButtonProps {
   name?: string;
