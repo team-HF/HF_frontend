@@ -1,19 +1,24 @@
-import axios from "axios";
+import { useGetMyData as getMyData } from "../../../shared/api/useGetMyData";
+import { useAxios as Axios } from "../../../shared/utils/useAxios";
 
-const communityPostApi = async (data: {
-  postCategory: string;
-  postTitle: string;
-  postContent: string;
-  writerId: number;
-}) => {
+interface PostProps {
+  category: string;
+  title: string;
+  content: string;
+}
+
+const communityPostApi = async (data: PostProps) => {
+  const { axiosInstance } = Axios();
+  const userDataResponse = await getMyData();
+  const writerId = userDataResponse.content.memberId;
   try {
-    const response = await axios.post(
-      "/hf/posts", // 서버 엔드포인트 수정 필요
+    const response = await axiosInstance.post(
+      "/hf/posts",
       {
-        category: data.postCategory,
-        title: data.postTitle,
-        content: data.postContent,
-        writerId: data.writerId,
+        category: data.category,
+        title: data.title,
+        content: data.content,
+        writerId: writerId,
       },
       {
         headers: {

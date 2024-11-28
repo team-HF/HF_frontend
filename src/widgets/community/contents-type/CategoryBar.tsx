@@ -5,29 +5,35 @@ import {
 } from "../../../entities/community/contents-type-data";
 import { useNavigate } from "react-router-dom";
 import SearchTabItem from "../../../shared/ui/search-tab-item/SearchTabItem";
+import { useCommunityStore } from "../../../pages/community/store/community-store";
 
-interface CategoryBarProps {
-  category: TCategoryId;
-  setCategory: React.Dispatch<React.SetStateAction<TCategoryId>>;
-}
-
-const CategoryBar = ({ category, setCategory }: CategoryBarProps) => {
+const CategoryBar = () => {
   const navigate = useNavigate();
+  const {
+    categorySelected,
+    setCategorySelected,
+    setFilterSelected,
+    setLabelSelected,
+  } = useCommunityStore();
   const onClick = (id: TCategoryId) => {
-    setCategory(id);
-    navigate(`/community?postCategory=${id}`);
+    setCategorySelected(id);
+    if (id === "POPULAR") {
+      setLabelSelected("WEEKEND");
+      navigate(`/community?postCategory=${id}`);
+    } else {
+      setFilterSelected("ADVANCED");
+      navigate(`/community?postCategory=${id}&fitnessLevel=ADVANCED`);
+    }
   };
-  const filterList = categoryData.map((data) => {
-    return (
-      <SearchTabItem
-        key={`community_filer_${data.name}`}
-        id={data.id}
-        name={data.name}
-        currentCategory={category}
-        onClick={onClick}
-      />
-    );
-  });
+  const filterList = categoryData.map((data) => (
+    <SearchTabItem
+      key={`community_filer_${data.name}`}
+      id={data.id}
+      name={data.name}
+      currentCategory={categorySelected}
+      onClick={onClick}
+    />
+  ));
   return <S.Container>{filterList}</S.Container>;
 };
 
