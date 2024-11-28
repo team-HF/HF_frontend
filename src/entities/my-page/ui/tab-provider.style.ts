@@ -50,21 +50,16 @@ export const TabIndicator = styled.span`
   left: 0;
   background-color: ${({ theme }) => theme.colors.main};
   height: 0.125rem;
-  width: 12.1875rem;
+  width: 120px;
 
-  @media (min-width: 768px) and (max-width: 991px) {
+  @media (min-width: 768px) {
     /* 태블릿 세로 방향 */
-    width: 20rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 20rem;
+    width: 214px;
   }
 
   @media (min-width: 1200px) {
     /* 데스크톱 */
-    width: 33.75rem;
+    width: 366px;
   }
 `;
 
