@@ -3,8 +3,9 @@ import Hashtag from '../../../shared/ui/hashtag/Hashtag';
 import { useEffect, useState, useCallback } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import { MatchingUserCard } from '../model/matching-user-card.interface';
-import MediumButton from '../../../shared/ui/medium-button/MediumButton';
 import { useInfiniteScroll } from '../../../shared/utils/useInfiniteScroll';
+import ChatButton from '../../../features/my-page/ui/ChatButton';
+import ReviewButton from '../../../features/my-page/ui/ReviewButton';
 
 export default function MatchingList() {
   const [users, setUsers] = useState<MatchingUserCard[]>([]);
@@ -56,7 +57,7 @@ export default function MatchingList() {
         data={users}
         endReached={fetchUsers}
         itemContent={(_, user: MatchingUserCard) => (
-          <S.CardContainer key={user.id}>
+          <S.CardContainer key={user.id} status={user.status}>
             <S.UpperContainer>
               <S.ProfileIconContainer>
                 <S.ProfileIcon
@@ -66,23 +67,39 @@ export default function MatchingList() {
               </S.ProfileIconContainer>
               <S.ProfileTextContainer>
                 <S.UserName>{user.nickname}</S.UserName>
-                <span>{user.matchCount}회 매칭됨</span>
-                <span>{user.location}</span>
               </S.ProfileTextContainer>
-              <S.UnderContainer>
-                <S.HashtagContainer>
-                  {user.hashtags.map((tag, idx) => (
-                    <Hashtag key={idx} text={tag} />
-                  ))}
-                </S.HashtagContainer>
-                <MediumButton
-                  text="임시 버튼"
-                  color="black"
-                  backgroundColor="gray"
-                  border="1px solid black"
-                />
-              </S.UnderContainer>
+              <S.HashtagContainer>
+                {user.hashtags.map((tag, idx) => (
+                  <Hashtag key={idx} text={tag} />
+                ))}
+              </S.HashtagContainer>
             </S.UpperContainer>
+            <S.MiddleContainer>
+              <S.MiddleText>
+                <S.StyledSvg src="/svg/location-icon.svg" alt="location-icon" />
+                {user.matchCount}회 매칭됨
+              </S.MiddleText>
+              <S.MiddleText>
+                <S.StyledSvg src="/svg/location-icon.svg" alt="location-icon" />
+                {user.location}
+              </S.MiddleText>
+            </S.MiddleContainer>
+            <S.UnderContainer>
+              <S.DateWrapper>
+                <S.StyledSvg src="/svg/calendar-icon.svg" alt="calendar-icon" />
+                <S.DateText>{user.time}</S.DateText>
+              </S.DateWrapper>
+              <S.ButtonContainer>
+                {user.status === 'FINISHED' ? (
+                  <>
+                    <ReviewButton />
+                    <ChatButton />
+                  </>
+                ) : (
+                  <ChatButton />
+                )}
+              </S.ButtonContainer>
+            </S.UnderContainer>
           </S.CardContainer>
         )}
       />
