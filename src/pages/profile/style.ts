@@ -4,42 +4,35 @@ import { theme } from "../../app/theme";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  margin-top: 0.6875rem;
-  overflow-y: auto;
-  position: relative;
-`;
-
-export const ProfileContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100vw;
-  height: 3.125rem;
-`;
-
-export const StyleH1 = styled.h1`
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1.5rem;
-  margin-bottom: 0.625rem;
-  color: #000000;
+  width: 20rem;
+  height: auto;
+  @media (min-width: 768px) {
+    width: 40rem;
+  }
 `;
 
 export const ImageContainer = styled.div`
   display: flex;
-  width: 6.5rem;
-  height: 6.5rem;
-  background-color: #f6f6f6;
-  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
 `;
 
 export const ProfileImageLabel = styled.label`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  width: 7.5rem;
+  height: 7.5rem;
+`;
+
+export const DefaultUserImage = styled.img`
+  border-radius: 50%;
+  background-color: #f1f3f5;
+  width: 120px;
+  height: 120px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 `;
 
 export const ProfileImage = styled.img<{ src: string | null }>`
@@ -49,8 +42,15 @@ export const ProfileImage = styled.img<{ src: string | null }>`
 `;
 
 export const CameraIcon = styled.img`
-  width: 2.5625rem;
-  height: 2.0625rem;
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: ${theme.colors.white};
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 0.25rem;
 `;
 
 export const ProfileImageInput = styled.input`
@@ -58,84 +58,85 @@ export const ProfileImageInput = styled.input`
 `;
 
 export const FieldContainer = styled.div`
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 1.8125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
 `;
+
 export const Field = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.5625rem;
+  width: 100%;
 `;
 
 export const Label = styled.label`
-  font-size: 0.8125rem;
-  line-height: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 0.375rem;
-  color: #999999;
-  &.label_spec {
-    margin-bottom: 0;
-  }
-`;
-
-export const SexContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  position: relative;
+  font-size: 1.063rem;
+  line-height: 1.412rem;
+  font-weight: bold;
 `;
 
 export const Input = styled.input`
-  width: 20.125rem;
-  height: 2.125rem;
-  border: 1px solid #cccccc;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  font-size: 0.75rem;
-  line-height: 1.125rem;
-  color: #000000;
+  padding: 0.625rem;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #ededed;
+  font-size: 0.938rem;
+  line-height: 1.467rem;
+  letter-spacing: -0.0096rem;
   &:focus {
     outline: none;
-    border-color: #000000;
   }
   &:disabled {
     background-color: ${theme.colors.white};
   }
 `;
 
-export const Arrow = styled.span`
-  position: absolute;
-  right: 0.8rem;
-  top: 30%;
-  font-size: 0.6875rem;
-  color: #d9d9d9;
-  cursor: pointer;
+export const PlaceHolder = styled.span`
+  margin-top: 0.25rem;
+  font-size: 0.688rem;
+  line-height: 1.273rem;
+  letter-spacing: -0.0031rem;
+  color: #868e96;
 `;
 
-export const Dropdown = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: #ffffff;
-  border: 0.5px solid #999999;
-  border-radius: 0.5rem;
-  z-index: 1000;
-`;
-
-export const DropdownItem = styled.div`
-  font-size: 0.75rem;
-  padding: 0.5rem;
-  cursor: pointer;
-  &:hover {
-    background-color: #f0f0f0;
+export const DateContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.625rem;
+  .date_picker {
+    border: 1px solid #dee2e6;
+    padding: 0.625rem;
+    height: 2.125rem;
+    border-radius: 0.25rem;
+    font-size: 0.938rem;
+    line-height: 1.467rem;
+    letter-spacing: -0.0096rem;
+    &:focus {
+      outline: none;
+      border-color: ${theme.colors.main};
+    }
   }
 `;
 
-export const ButtonContainer = styled.div`
-  margin-top: 0.75rem;
-  margin-left: auto;
-  margin-right: auto;
+export const SexContainer = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+`;
+
+export const genderBtn = styled.button<{ selected: boolean }>`
+  flex: 1;
+  padding: 0.375rem 0.625rem;
+  border: ${({ selected }) => (selected ? 0 : "1px solid #dee2e6")};
+  border-radius: 0.25rem;
+  background-color: ${({ selected }) =>
+    selected ? theme.colors.main : theme.colors.white};
+  color: ${({ selected }) => (selected ? theme.colors.white : "#8E8E8E")};
+  font-size: 0.938rem;
+  line-height: 1.467rem;
+  letter-spacing: -0.0096rem;
 `;
 
 export const ErrorMessage = styled.span`
@@ -164,33 +165,107 @@ export const ResetBtn = styled.button`
 `;
 
 export const LocationList = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
   gap: 0.25rem;
-  width: 20rem;
-  max-height: 10rem;
+  max-height: 13.75rem;
   overflow: scroll;
+  @media (min-width: 768px) {
+    gap: 0.5rem;
+  }
 `;
 
 export const LocationCard = styled.button`
-  padding: 0.5rem;
-  border: 1px solid #cccccc;
+  width: 9.875rem;
+  padding: 0.375rem 0.25rem;
+  border: 1px solid #ededed;
   border-radius: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 0.938rem;
+  line-height: 1.467rem;
+  letter-spacing: -0.0096rem;
   background-color: ${theme.colors.white};
-  color: #000000;
+  @media (min-width: 768px) {
+    width: 9.625rem;
+  }
 `;
 
-export const LabelContainer = styled.div`
+export const IntroductionModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.375rem;
-  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+  background-color: white;
 `;
 
-export const AddIcon = styled.img`
-  width: 0.75rem;
-  height: 0.75rem;
-  background-color: #d9d9d9;
-  border-radius: 50%;
+export const Header = styled.div`
+  display: flex;
+  padding: 0.5rem 0;
+`;
+
+export const IntroductionContent = styled.span<{ filled: boolean }>`
+  padding: 0.625rem;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #ededed;
+  font-size: 0.938rem;
+  line-height: 1.467rem;
+  letter-spacing: -0.0096rem;
+  color: ${({ filled }) => (filled ? theme.colors.black : "#8E8E8E")};
+  cursor: pointer;
+`;
+
+export const InputContainer = styled.div`
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+`;
+
+export const IntroductionInput = styled.textarea`
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ededed;
+  border-radius: 0.5rem;
+  padding: 0.625rem;
+  background-color: #f8f8f8;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.019rem;
+  font-weight: 600;
+  &::placeholder {
+    color: #8e8e8e;
+  }
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const LengthChecker = styled.span`
+  position: absolute;
+  right: 1rem;
+  bottom: 0.5rem;
+  font-size: 0.688rem;
+  line-height: 1.273rem;
+  letter-spacing: -0.0031rem;
+  color: #8e8e8e;
+`;
+
+export const StoreBtn = styled.button`
+  width: 100%;
+  padding: 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  color: ${theme.colors.white};
+  background-color: ${theme.colors.main};
+  margin-top: auto;
+  margin: 40px 0;
+  font-size: 1rem;
+  line-height: 1rem;
+  letter-spacing: -0.031rem;
+  font-weight: 600;
 `;
