@@ -2,7 +2,7 @@ import * as S from "./style-selector.style";
 
 type Option = {
   label: string;
-  emoji: string;
+  src: string;
   value: string;
 };
 
@@ -21,10 +21,7 @@ export default function StyleSelector({
 }: CategoryProps) {
   return (
     <S.Container>
-      <S.CategoryTitleContainer>
-        <S.StyleSpan>&#9654;</S.StyleSpan>
-        <S.CategoryTitle>{title}</S.CategoryTitle>
-      </S.CategoryTitleContainer>
+      <S.CategoryTitle>{title}</S.CategoryTitle>
       <S.CategoryContainer>
         {options.map((option) => (
           <S.OptionCard
@@ -32,7 +29,7 @@ export default function StyleSelector({
             selected={selectedOption === option.value}
             onClick={() => setSelectedOption(option.value)}
           >
-            <span>{option.emoji}</span>
+            <img src={option.src} />
             <p>{option.label}</p>
           </S.OptionCard>
         ))}

@@ -40,7 +40,7 @@ const PostRegister = () => {
   return (
     <PageForm isGNB={false}>
       <S.Container>
-        <Header />
+        <Header title={"글쓰기"}/>
         <S.Container>
           <S.DoneBtnContainer>
             <S.DoneBtn disabled={!requestFill} onClick={contentsPost}>

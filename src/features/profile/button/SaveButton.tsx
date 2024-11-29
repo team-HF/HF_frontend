@@ -1,10 +1,11 @@
-import MediumButton from "../../../shared/ui/medium-button/MediumButton";
 import Cookies from "js-cookie";
 import { useProfileStore } from "../store/profile-store";
 import { useAxios } from "../../../shared/utils/useAxios";
 import { useGetParams } from "../../../shared/utils/useGetParams";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosInstance } from "axios";
+import styled from "styled-components";
+import { theme } from "../../../app/theme";
 
 type SaveButtonProps = {
   disabled: boolean;
@@ -74,7 +75,6 @@ export default function SaveButton({ disabled }: SaveButtonProps) {
   const { axiosInstance } = useAxios();
   const navigate = useNavigate();
 
-  const fitnessLevel = useGetParams("fitnessLevel");
   const companionStyle = useGetParams("companionStyle");
   const fitnessEagerness = useGetParams("fitnessEagerness");
   const fitnessObjective = useGetParams("fitnessObjective");
@@ -83,8 +83,18 @@ export default function SaveButton({ disabled }: SaveButtonProps) {
   const id = Cookies.get("email") || "";
   const name = Cookies.get("name") || "";
 
-  const { image, nickname, birthDate, gender, cd1, cd2, cd3, introduction } =
-    useProfileStore();
+  const {
+    image,
+    nickname,
+    dateYear,
+    dateMonth,
+    dateDay,
+    gender,
+    cd1,
+    cd2,
+    cd3,
+    introduction,
+  } = useProfileStore();
 
   const joinMembership = async () => {
     const imageFileExtension = image?.type.split("/")[1] || null;
@@ -93,13 +103,13 @@ export default function SaveButton({ disabled }: SaveButtonProps) {
       id,
       name,
       nickname,
-      birthDate,
-      gender: gender === "남성" ? "MALE" : "FEMALE",
+      birthDate: `${dateYear}-${dateMonth}-${dateDay}`,
+      gender,
       cd1,
       cd2: cd2?.slice(2) || null,
       cd3: cd3?.slice(5) || null,
       introduction,
-      fitnessLevel,
+      fitnessLevel: "BEGINNER",
       companionStyle,
       fitnessEagerness,
       fitnessObjective,
@@ -127,15 +137,26 @@ export default function SaveButton({ disabled }: SaveButtonProps) {
     }
   };
   return (
-    <div>
-      <MediumButton
-        text="임시 버튼"
-        color="black"
-        backgroundColor="gray"
-        border="1px solid black"
-        disabled={disabled}
-        onClick={() => joinMembership()}
-      />
-    </div>
+    <Btn disabled={disabled} onClick={() => joinMembership()}>
+      완료
+    </Btn>
   );
 }
+
+const Btn = styled.button`
+  width: 100%;
+  padding: 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  color: ${theme.colors.white};
+  background-color: ${theme.colors.main};
+  margin-top: 40px;
+  font-size: 1rem;
+  line-height: 1rem;
+  letter-spacing: -0.031rem;
+  font-weight: 600;
+  &:disabled {
+    background-color: #f2f2f2;
+    color: #868e96;
+  }
+`;

@@ -1,57 +1,59 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import { theme } from "../../../app/theme";
 
 export const Container = styled.div`
-  width: 18.25rem;
-  height: 8.5rem;
-`;
-export const CategoryTitleContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  margin-bottom: 0.375rem;
-  align-items: center;
-`;
-export const CategoryTitle = styled.p`
-  font-size: 0.8125rem;
-  font-weight: bold;
-  line-height: 2.5rem;
-  color: #797676;
-  margin-left: 0.25rem;
+  flex-direction: column;
+  width: 100%;
 `;
 
-export const StyleSpan = styled.span`
-  width: 0.6875rem;
-  height: 0.6875rem;
-  font-size: 0.6875rem;
-  color: #d9d9d9;
-  margin-bottom: 0.1rem;
+export const CategoryTitle = styled.p`
+  padding: 0.625rem 0;
+  font-size: 0.688rem;
+  font-weight: bold;
+  line-height: 1.273rem;
+  letter-spacing: -0.0031rem;
+  @media (min-width: 768px) {
+    font-size: 0.875rem;
+  }
 `;
 
 export const CategoryContainer = styled.div`
   display: flex;
-  gap: 1rem;
-  margin-bottom: 0.625rem;
+  gap: 0.5rem;
+  height: 5.625rem;
+  @media (min-width: 768px) {
+    height: 6.25rem;
+  }
 `;
 
 export const OptionCard = styled.div<{ selected: boolean }>`
-  background-color: ${({ selected, theme }) =>
-    selected ? theme.colors.sub : '#FFFFFF'};
-  border-radius: 0.625rem;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
-  width: 8.125rem;
-  height: 5.625rem;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  border: 1px solid ${theme.colors.main};
+  border-radius: 0.5rem;
+  background-color: ${({ selected }) =>
+    selected ? theme.colors.main : theme.colors.white};
   cursor: pointer;
 
+  img {
+    height: 2rem;
+    @media (min-width: 768px) {
+      height: 3rem;
+    }
+  }
+
   p {
-    font-size: 0.8125rem;
-    font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
+    font-size: 1rem;
+    font-weight: ${({ selected }) => (selected ? "bold" : "normal")};
     white-space: pre-line;
     word-break: break-word;
-    margin-top: 0.25rem;
-  }
-  span {
-    display: block;
-    font-size: 1.25rem;
-    margin-top: 1.5rem;
+    color: ${({ selected }) =>
+      selected ? theme.colors.white : theme.colors.main};
   }
 `;
