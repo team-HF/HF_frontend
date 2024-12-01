@@ -14,7 +14,10 @@ export default function MatchingList() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const limit = 10;
-
+  const [isOpenDropdownFilter, setIsOpenDropdownFilter] =
+    useState<boolean>(false);
+  const [filterStatus, setFilterStatus] = useState<string>('전체');
+  const filterOptions = ['전체', '매칭 진행 중', '매칭 종료', '매칭 중단'];
   const fetchUsers = useCallback(async () => {
     if (!hasMore || isLoading) return;
     setIsLoading(true);
@@ -29,7 +32,6 @@ export default function MatchingList() {
       }
       const result = await response.json();
       const fetchedUsers: MatchingUserCard[] = result.data;
-      console.log(result.data);
       const totalPages: number = result.totalPages;
       setUsers((prev) => [...prev, ...fetchedUsers]);
       setHasMore(page < totalPages);
@@ -51,6 +53,31 @@ export default function MatchingList() {
   const { virtuosoRef } = useInfiniteScroll(fetchUsers, hasMore, isLoading);
   return (
     <S.Container>
+      <S.FilterContainer>
+        <S.FilterButton
+          onClick={() => setIsOpenDropdownFilter((prev) => !prev)}
+        >
+          {filterStatus}
+          <S.DropdownArrowWrapper>
+            <img src="/svg/under-arrow-icon.svg" alt="under-arrow-icon" />
+          </S.DropdownArrowWrapper>
+        </S.FilterButton>
+        {isOpenDropdownFilter && (
+          <S.Dropdown>
+            {filterOptions.map((option, idx) => (
+              <S.DropdownItem
+                key={idx}
+                onClick={() => {
+                  setFilterStatus(option);
+                  setIsOpenDropdownFilter(false);
+                }}
+              >
+                {option}
+              </S.DropdownItem>
+            ))}
+          </S.Dropdown>
+        )}
+      </S.FilterContainer>
       <Virtuoso
         useWindowScroll
         ref={virtuosoRef}
