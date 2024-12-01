@@ -30,7 +30,7 @@ export const LargeButtonWrapper = styled.div`
 export const MatchingContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 1.75rem;
+  margin-top: 20px;
   padding: 0 1.25rem;
   width: 22.5rem;
   align-items: center;

@@ -53,7 +53,7 @@ export default function MyPage() {
     <S.Container>
       <Header text="마이페이지" />
       <ProfileBox />
-      <LevelProgressBar currentLevel={4} />
+      <LevelProgressBar />
       <S.LargeButtonWrapper>
         <LargeButton text="프로필 설정" onClick={onClick} />
       </S.LargeButtonWrapper>
