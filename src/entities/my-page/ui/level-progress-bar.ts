@@ -21,11 +21,11 @@ export const LevelWrapper = styled.div`
   gap: 1px;
 `;
 
-export const Level = styled.div<{ isActive: boolean }>`
+export const Level = styled.div<{ $isActive: boolean }>`
   width: 64px;
   height: 24px;
   background: ${(props) =>
-    props.isActive
+    props.$isActive
       ? 'linear-gradient(91.3deg, #6441F2 -17.11%, #1E90FF 138.78%)'
       : '#ADB5BD'};
   margin-right: 1px;
