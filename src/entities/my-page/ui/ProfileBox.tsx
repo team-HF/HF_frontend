@@ -1,21 +1,42 @@
 import Hashtag from '../../../shared/ui/hashtag/Hashtag';
 import * as S from './profile-box.style';
-import { useGetMyData } from '../../../shared/api/useGetMyData';
 
-export default function ProfileBox() {
-  const { data: myData, isLoading, isError } = useGetMyData();
+type ProfileBoxProps = {
+  myData?: {
+    nickname: string;
+    introduction: string;
+    companionStyle: string;
+    fitnessEagerness: string;
+    fitnessKind: string;
+    fitnessObjective: string;
+  };
+};
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error</p>;
+export default function ProfileBox({ myData }: ProfileBoxProps) {
+  if (!myData) {
+    return (
+      <S.Container>
+        <S.ProfileContainer>
+          <p>프로필 정보를 불러올 수 없습니다.</p>
+        </S.ProfileContainer>
+      </S.Container>
+    );
+  }
 
-  const nickname = myData?.nickname || '닉네임 정보를 불러올 수 없습니다.';
-  const introduction = myData?.introduction || '자기소개를 불러올 수 없습니다.';
+  const {
+    nickname,
+    introduction,
+    companionStyle,
+    fitnessEagerness,
+    fitnessKind,
+    fitnessObjective,
+  } = myData;
   const hashtags = [
-    myData?.companionStyle,
-    myData?.fitnessEagerness,
-    myData?.fitnessKind,
-    myData?.fitnessObjective,
-  ];
+    companionStyle,
+    fitnessEagerness,
+    fitnessKind,
+    fitnessObjective,
+  ].filter(Boolean);
 
   return (
     <S.Container>

@@ -1,24 +1,34 @@
 import * as S from './level-progress-bar';
-import { useGetMyData } from '../../../shared/api/useGetMyData';
 
-export default function LevelProgressBar() {
-  const { data: myData } = useGetMyData();
+type LevelProgressBarProps = {
+  myData?: {
+    tier: {
+      fitnessLevel: string;
+      tier: number;
+    };
+  };
+};
 
-  if (!myData?.tier?.tier) {
-    return <p>레벨 정보를 불러올 수 없습니다.</p>;
+export default function LevelProgressBar({ myData }: LevelProgressBarProps) {
+  if (!myData || !myData.tier) {
+    return (
+      <S.Container>
+        <p>레벨 정보를 불러올 수 없습니다.</p>
+      </S.Container>
+    );
   }
 
-  const tier = myData?.tier.tier;
+  const { tier } = myData;
   const levels = [1, 2, 3, 4, 5];
-  const remainingMatches = Math.max(levels.length - tier!, 0);
-  const NextLevelMessage = `다음 레벨까지 ${remainingMatches}회의 매칭이 남았어요!`;
+  const remainingMatches = Math.max(levels.length - tier.tier, 0);
+  const NextLevelMessage = `다음 레벨까지 ${remainingMatches}회의 매칭이 남았습니다!`;
 
   return (
     <S.Container>
       <S.LevelProgressAndMessageWrapper>
         <S.LevelWrapper>
           {levels.map((level) => (
-            <S.Level key={level} $isActive={level <= tier}>
+            <S.Level key={level} $isActive={level <= tier.tier}>
               Lv. {level}
             </S.Level>
           ))}

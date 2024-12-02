@@ -1,4 +1,3 @@
-// my-data.ts
 import { z } from 'zod';
 
 export const MyDataSchema = z.object({

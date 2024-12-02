@@ -9,10 +9,14 @@ import Header from '../../shared/ui/header/Header';
 import LargeButton from '../../shared/ui/large-button/LargeButton';
 import LevelProgressBar from '../../entities/my-page/ui/LevelProgressBar';
 import * as S from './style';
+import { useGetMyData } from '../../shared/api/useGetMyData';
 
 export default function MyPage() {
   const [tab, setTab] = useState('내 운동 매칭 List');
   const navigate = useNavigate();
+  const { data: myData, isLoading, isError } = useGetMyData();
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error</p>;
 
   const onClick = () => {
     navigate('/profile-setting');
@@ -29,14 +33,14 @@ export default function MyPage() {
       case '즐겨찾기':
         return (
           <S.MatchingContainer>
-            <S.MatchingTitle>즐겨찾기</S.MatchingTitle>
+            <S.MatchingTitle />
             <SaveList />
           </S.MatchingContainer>
         );
       case '선물함':
         return (
           <S.MatchingContainer>
-            <S.MatchingTitle>선물함</S.MatchingTitle>
+            <S.MatchingTitle />
             <GiftList />
           </S.MatchingContainer>
         );
@@ -52,8 +56,8 @@ export default function MyPage() {
   return (
     <S.Container>
       <Header text="마이페이지" />
-      <ProfileBox />
-      <LevelProgressBar />
+      <ProfileBox myData={myData} />
+      <LevelProgressBar myData={myData} />
       <S.LargeButtonWrapper>
         <LargeButton text="프로필 설정" onClick={onClick} />
       </S.LargeButtonWrapper>
