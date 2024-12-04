@@ -1,5 +1,5 @@
-import { useState } from "react";
-import * as S from "./style";
+import { useState } from 'react';
+import * as S from './style';
 
 interface DatePickerProps {
   date: string | null;
@@ -27,12 +27,12 @@ const DatePicker = ({
     </S.Option>
   ));
   return (
-    <S.Container type_year={true} onClick={() => setOpen(!open)}>
+    <S.Container $type_year={true} onClick={() => setOpen(!open)}>
       <S.SelectedDate selected={date}>
         {date ? date : placeHolder}
       </S.SelectedDate>
-      <S.Arrow src={"/svg/left-arrow-icon.svg"} open={open} />
-      <S.OptionContainer open={open} type_year={true}>
+      <S.Arrow src={'/svg/left-arrow-icon.svg'} open={open} />
+      <S.OptionContainer open={open} $type_year={true}>
         {options}
       </S.OptionContainer>
     </S.Container>
