@@ -2,10 +2,10 @@ import * as S from './matching-list.style';
 import Hashtag from '../../../shared/ui/hashtag/Hashtag';
 import { useEffect, useState, useCallback } from 'react';
 import { Virtuoso } from 'react-virtuoso';
-import { MatchingUserCard } from '../model/matching-user-card.interface';
+import { MatchingUserCard } from '../../../entities/my-page/model/matching-user-card.interface';
 import { useInfiniteScroll } from '../../../shared/utils/useInfiniteScroll';
-import ChatButton from '../../../features/my-page/ui/ChatButton';
-import ReviewButton from '../../../features/my-page/ui/ReviewButton';
+import ChatButton from './ChatButton';
+import ReviewButton from './ReviewButton';
 
 export default function MatchingList() {
   const [users, setUsers] = useState<MatchingUserCard[]>([]);
