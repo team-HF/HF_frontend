@@ -1,69 +1,76 @@
-import Cookies from 'js-cookie';
 import * as S from './update-my-data-button';
 import { useProfileStore } from '../../profile/store/profile-store';
-import { useGetParams } from '../../../shared/utils/useGetParams';
 import { usePutMyData } from '../api/usePatchMyData';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
+import { useEffect } from 'react';
 type UpdateButtonProps = {
   disabled: boolean;
 };
 
+interface UpdateMyDataRequest {
+  profileImageFileExtension?: string | null;
+  name?: string;
+  cd1?: string;
+  cd2?: string;
+  cd3?: string;
+  introduction?: string;
+  fitnessLevel: 'BEGINNER' | 'ADVANCED';
+  companionStyle?: 'SMALL' | 'GROUP';
+  fitnessEagerness?: 'EAGER' | 'LAZY';
+  fitnessObjective?: 'BULK_UP' | 'RUNNING';
+  fitnessKind?: 'HIGH_STRESS' | 'FUNCTIONAL';
+}
+
 export default function UpdateMyDataButton({ disabled }: UpdateButtonProps) {
-  const companionStyle = useGetParams('companionStyle');
-  const fitnessEagerness = useGetParams('fitnessEagerness');
-  const fitnessObjective = useGetParams('fitnessObjective');
-  const fitnessKind = useGetParams('fitnessKind');
-
-  const id = Cookies.get('email') || '';
-  const name = Cookies.get('name') || '';
-
-  const { data: myData } = useGetMyData();
+  const { data: myData, isLoading } = useGetMyData();
   const { mutate: uploadMyData } = usePutMyData(myData?.memberId ?? 0);
-  const {
-    image,
-    nickname,
-    dateYear,
-    dateMonth,
-    dateDay,
-    gender,
-    cd1,
-    cd2,
-    cd3,
-    introduction,
-  } = useProfileStore();
+  const { image, cd1, cd2, cd3, introduction } = useProfileStore();
+
+  useEffect(() => {
+    if (myData?.memberId) {
+      console.log('Member ID:', myData.memberId);
+    }
+  }, [myData?.memberId]);
 
   const updateMyData = async () => {
-    const imageFileExtension = image?.type.split('/')[1] || undefined;
-    const requestData = {
+    if (!myData?.memberId) {
+      alert('회원 정보가 아직 로드되지 않았습니다.');
+      return;
+    }
+
+    const imageFileExtension = image?.type.split('/')[1] || null;
+
+    const requestData: UpdateMyDataRequest = {
       profileImageFileExtension: imageFileExtension,
-      id: id || undefined,
-      name: name || undefined,
-      nickname: nickname || undefined,
-      birthDate:
-        dateYear && dateMonth && dateDay
-          ? `${dateYear}-${dateMonth}-${dateDay}`
-          : undefined,
-      gender: gender || undefined,
       cd1: cd1 || undefined,
       cd2: cd2?.slice(2) || undefined,
       cd3: cd3?.slice(5) || undefined,
       introduction: introduction || undefined,
       fitnessLevel: 'BEGINNER',
-      companionStyle: companionStyle || undefined,
-      fitnessEagerness: fitnessEagerness || undefined,
-      fitnessObjective: fitnessObjective || undefined,
-      fitnessKind: fitnessKind || undefined,
-      specs: [],
+      companionStyle: myData?.companionStyle as 'SMALL' | 'GROUP' | undefined,
+      fitnessEagerness: myData?.fitnessEagerness as
+        | 'EAGER'
+        | 'LAZY'
+        | undefined,
+      fitnessObjective: myData?.fitnessObjective as
+        | 'BULK_UP'
+        | 'RUNNING'
+        | undefined,
+      fitnessKind: myData?.fitnessKind as
+        | 'HIGH_STRESS'
+        | 'FUNCTIONAL'
+        | undefined,
     };
 
-    if (myData?.memberId) {
-      uploadMyData(requestData);
-      console.log(requestData);
-    }
+    uploadMyData(requestData);
+    console.log('Request Data:', requestData);
   };
+
+  if (isLoading) return <p>로딩 중...</p>;
+
   return (
     <S.Btn disabled={disabled} onClick={() => updateMyData()}>
-      완료
+      저장
     </S.Btn>
   );
 }
