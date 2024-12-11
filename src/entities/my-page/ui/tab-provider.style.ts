@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   justify-content: center;
-  width: 22.5rem;
+  width: 320px;
   align-items: center;
   flex-direction: column;
   margin-top: 1.875rem;
@@ -33,7 +33,7 @@ export const TabContainer = styled.div`
   display: flex;
   flex-direction: row;
   text-align: center;
-  width: 22.5rem;
+  width: 320px;
   width: 100%;
 `;
 
@@ -50,7 +50,7 @@ export const TabIndicator = styled.span`
   left: 0;
   background-color: ${({ theme }) => theme.colors.main};
   height: 0.125rem;
-  width: 120px;
+  width: 108px;
 
   @media (min-width: 768px) {
     /* 태블릿 세로 방향 */
