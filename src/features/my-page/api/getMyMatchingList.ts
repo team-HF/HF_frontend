@@ -56,7 +56,5 @@ export const useGetMyMatchingList = (
       return undefined;
     },
     staleTime: 5 * 60 * 1000,
-    retry: false,
-    refetchOnWindowFocus: false,
   });
 };
