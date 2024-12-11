@@ -13,6 +13,7 @@ export const Btn = styled.button`
   line-height: 1rem;
   letter-spacing: -0.031rem;
   font-weight: 600;
+  cursor: pointer;
   &:disabled {
     background-color: #f2f2f2;
     color: #868e96;
