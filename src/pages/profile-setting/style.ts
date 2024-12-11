@@ -1,317 +1,277 @@
 import { styled } from 'styled-components';
+import { theme } from '../../app/theme';
 
 export const Container = styled.div`
   display: flex;
-  margin-left: auto;
-  margin-right: auto;
   flex-direction: column;
-  width: 22.5rem;
-  @media (min-width: 768px) and (max-width: 991px) {
-    /* 태블릿 세로 방향 */
+  width: 20rem;
+  height: auto;
+  @media (min-width: 768px) {
     width: 40rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 67.5rem;
   }
 `;
 
-export const HeaderWrapper = styled.div`
+export const ImageContainer = styled.div`
   display: flex;
-  @media (min-width: 768px) and (max-width: 991px) {
-    /* 태블릿 세로 방향 */
-    width: 40rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 67.5rem;
-  }
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
 `;
-export const ProfileIconContainer = styled.div`
+
+export const ProfileImageLabel = styled.label`
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 7.5rem;
   height: 7.5rem;
-  background-color: #ffffff;
-  border-radius: 100%;
-  margin: 0.6875rem auto 0 auto;
-  box-shadow: 0px 0px 1px 0px #00000014;
-  box-shadow: 0px 1px 4px 0px #00000014;
-  box-shadow: 0px 2px 8px 0px #0000001f;
-  align-items: center;
-  justify-content: center;
 `;
 
-export const ProfileDefaultIcon = styled.div`
-  width: 100%;
-  height: 100%;
-  background: url('/svg/default-icon.svg');
-  background-size: cover;
-  border-radius: 100%;
-`;
-
-export const ProfileUploadImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 100%;
-`;
-
-export const ProfileChangeButton = styled.label`
-  display: flex;
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: #ffffff;
-  box-shadow: 0px 0px 1px 0px #00000014, 0px 1px 2px 0px #0000001f;
+export const DefaultUserImage = styled.img`
   border-radius: 50%;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
+  background-color: #f1f3f5;
+  width: 120px;
+  height: 120px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 `;
 
-export const ProfileChangeImage = styled.img`
+export const ProfileImage = styled.img<{ src: string | null }>`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+`;
+
+export const CameraIcon = styled.img`
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
   width: 1.5rem;
   height: 1.5rem;
+  border-radius: 50%;
+  background-color: ${theme.colors.white};
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 0.25rem;
+  cursor: pointer;
 `;
+
+export const ProfileImageInput = styled.input`
+  display: none;
+`;
+
 export const FieldContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  margin: 0 1.25rem;
-  margin-top: 1.8125rem;
-  @media (min-width: 768px) and (max-width: 991px) {
-    /* 태블릿 세로 방향 */
-    width: 40rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 67.5rem;
-  }
+  gap: 1.5rem;
+  width: 100%;
 `;
+
 export const Field = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.5625rem;
+  width: 100%;
 `;
 
 export const Label = styled.label`
-  font-size: 1.0625rem;
-  line-height: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.375rem;
-  color: #000000;
+  font-size: 1.063rem;
+  line-height: 1.412rem;
+  font-weight: bold;
 `;
 
 export const Input = styled.input`
+  padding: 0.625rem;
   width: 100%;
-  height: 2.125rem;
-  border: none;
+  border: 0;
   border-bottom: 1px solid #ededed;
-  padding: 0.5rem;
-  font-size: 0.75rem;
-  line-height: 1.125rem;
-  color: #000000;
-
+  font-size: 0.938rem;
+  line-height: 1.467rem;
+  letter-spacing: -0.0096rem;
   &:focus {
     outline: none;
-    border-color: #000000;
   }
-  &::placeholder {
-    font-size: 0.75rem;
-    line-height: 1.125rem;
-    color: #999999;
-    letter-spacing: -0.03rem;
-    text-align: left;
-    font-weight: 400;
+  &:disabled {
+    background-color: ${theme.colors.white};
   }
 `;
 
-export const ButtonContainer = styled.div`
-  display: flex;
-  margin-bottom: 60px;
-  justify-content: center;
-  margin-top: 80px;
+export const PlaceHolder = styled.span`
+  margin-top: 0.25rem;
+  font-size: 0.688rem;
+  line-height: 1.273rem;
+  letter-spacing: -0.0031rem;
+  color: #868e96;
+`;
 
-  @media (min-width: 768px) {
-    margin-bottom: 40px;
+export const DateContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.625rem;
+  .date_picker {
+    border: 1px solid #dee2e6;
+    padding: 0.625rem;
+    height: 2.125rem;
+    border-radius: 0.25rem;
+    font-size: 0.938rem;
+    line-height: 1.467rem;
+    letter-spacing: -0.0096rem;
+    &:focus {
+      outline: none;
+      border-color: ${theme.colors.main};
+    }
   }
+`;
+
+export const SexContainer = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+`;
+
+export const genderBtn = styled.button<{
+  selected: boolean;
+  disabled: boolean;
+}>`
+  flex: 1;
+  padding: 0.375rem 0.625rem;
+  border: ${({ selected }) => (selected ? 0 : '1px solid #dee2e6')};
+  border-radius: 0.25rem;
+  background-color: ${({ selected }) =>
+    selected ? theme.colors.main : theme.colors.white};
+  color: ${({ selected }) => (selected ? theme.colors.white : '#8E8E8E')};
+  font-size: 0.938rem;
+  line-height: 1.467rem;
+  letter-spacing: -0.0096rem;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 `;
 
 export const ErrorMessage = styled.span`
   font-size: 0.75rem;
-  margin-left: -10px;
   margin-top: 0.25rem;
   color: #ff0000;
-  padding: 0.5rem;
 `;
 
-export const StyledRadio = styled.input`
-  display: none;
-`;
-
-export const CustomRadio = styled.label<{ $isSelected: boolean }>`
+export const LocationContainer = styled.div`
+  position: relative;
   display: flex;
-  align-items: center;
-  margin-right: 24px;
-  cursor: pointer;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+`;
 
-  &::before {
-    content: '';
-    width: 18px;
-    height: 18px;
-    border: ${({ $isSelected }) =>
-      $isSelected ? '1.5px solid #6541f2' : '1.5px solid #868E96'};
-    border-radius: 50%;
-    background-color: ${({ $isSelected }) =>
-      $isSelected ? '#F0ECFE' : '#ffffff'};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 3px;
+export const ResetBtn = styled.button`
+  position: absolute;
+  right: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.25rem;
+  border: 1px solid #cccccc;
+  border-radius: 0.5rem;
+  background-color: ${theme.colors.white};
+  font-size: 0.75rem;
+`;
 
-    ${({ $isSelected }) =>
-      $isSelected &&
-      `
-        &::after {
-          content: '';
-          width: 8px;
-          height: 8px;
-          background-color: #ffffff;
-          border-radius: 50%;
-        }
-      `}
+export const LocationList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 0.25rem;
+  max-height: 13.75rem;
+  overflow: scroll;
+  @media (min-width: 768px) {
+    gap: 0.5rem;
   }
 `;
 
-export const GenderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-`;
-
-export const GenderLabel = styled.span`
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-  letter-spacing: -0.0057em;
-  margin-left: 8px;
-`;
-
-export const DatePickerContainer = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
-export const StyledGenderSelect = styled.select<{ width: string }>`
-  width: ${({ width }) => width};
-  height: 34px;
-  border: 1px solid #f0ecfe;
-  border-radius: 8px;
-  padding: 0 12px;
-  font-size: 14px;
-  color: #868e96;
-  appearance: none;
-  background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI0IiB2aWV3Qm94PSIwIDAgOCA0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xIDBMNCAzTCA3IDBIMyIgZmlsbD0iI0E2QjhCOCIvPjwvc3ZnPg==')
-    no-repeat right 12px center;
-  background-size: 8px 4px;
+export const LocationCard = styled.button`
+  width: 9.875rem;
+  padding: 0.375rem 0.25rem;
+  border: 1px solid #ededed;
+  border-radius: 0.5rem;
+  font-size: 0.938rem;
+  line-height: 1.467rem;
+  letter-spacing: -0.0096rem;
+  background-color: ${theme.colors.white};
   cursor: pointer;
-
-  &:focus {
-    outline: none;
-    border-color: #6541f2;
+  @media (min-width: 768px) {
+    width: 9.625rem;
   }
 `;
 
-export const SpecWrapper = styled.div`
+export const IntroductionModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
-  flex-direction: column;
-`;
-export const SpecText = styled.span`
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 24px;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+  background-color: white;
 `;
 
-export const SpecInputWrapper = styled.div`
+export const Header = styled.div`
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  padding: 0.5rem 0;
 `;
 
-export const SpecInput = styled.input`
-  width: 99px;
-  height: 34px;
-  border: 1px solid #f3e9f3;
-  border-radius: 8px;
-  font-size: 14px;
-  background-color: #ffffff;
-  text-align: center;
-  text-decoration: left;
-  padding: 0.5rem;
+export const IntroductionContent = styled.span<{ $filled: boolean }>`
+  padding: 0.625rem;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #ededed;
+  font-size: 0.938rem;
+  line-height: 1.467rem;
+  letter-spacing: -0.0096rem;
+  color: ${({ $filled }) => ($filled ? theme.colors.black : '#8E8E8E')};
+  cursor: pointer;
+`;
+
+export const InputContainer = styled.div`
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+`;
+
+export const IntroductionInput = styled.textarea`
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ededed;
+  border-radius: 0.5rem;
+  padding: 0.625rem;
+  background-color: #f8f8f8;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.019rem;
+  font-weight: 600;
   &::placeholder {
     color: #8e8e8e;
-    text-align: center;
   }
-
   &:focus {
     outline: none;
-    border-color: #000000;
-  }
-  @media (min-width: 768px) and (max-width: 991px) {
-    /* 태블릿 세로 방향 */
-    width: 251px;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 251px;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 471px;
   }
 `;
-export const SpecDateInput = styled.input`
-  width: 49px;
-  height: 34px;
-  border: 1px solid #e2d6f7;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #868e96;
-  text-align: center;
-  @media (min-width: 768px) and (max-width: 991px) {
-    /* 태블릿 세로 방향 */
-    width: 57px;
-  }
 
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 57px;
-  }
+export const LengthChecker = styled.span`
+  position: absolute;
+  right: 1rem;
+  bottom: 0.5rem;
+  font-size: 0.688rem;
+  line-height: 1.273rem;
+  letter-spacing: -0.0031rem;
+  color: #8e8e8e;
+`;
 
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 57px;
-  }
+export const StoreBtn = styled.button`
+  width: 100%;
+  padding: 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  color: ${theme.colors.white};
+  background-color: ${theme.colors.main};
+  margin-top: auto;
+  margin: 40px 0;
+  font-size: 1rem;
+  line-height: 1rem;
+  letter-spacing: -0.031rem;
+  font-weight: 600;
 `;

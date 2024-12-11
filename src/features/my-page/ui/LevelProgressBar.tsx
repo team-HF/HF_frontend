@@ -28,9 +28,11 @@ export default function LevelProgressBar({ myData }: LevelProgressBarProps) {
       <S.LevelProgressAndMessageWrapper>
         <S.LevelWrapper>
           {levels.map((level) => (
-            <S.Level key={level} $isActive={level <= tier.tier}>
-              Lv. {level}
-            </S.Level>
+            <S.Level
+              key={level}
+              $isActive={level <= tier.tier}
+              $fitnessLevel={tier.fitnessLevel}
+            />
           ))}
         </S.LevelWrapper>
         <S.StyledMessage>{NextLevelMessage}</S.StyledMessage>

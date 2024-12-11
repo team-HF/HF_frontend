@@ -21,12 +21,14 @@ export const LevelWrapper = styled.div`
   gap: 1px;
 `;
 
-export const Level = styled.div<{ $isActive: boolean }>`
+export const Level = styled.div<{ $fitnessLevel: string; $isActive: boolean }>`
   width: 64px;
   height: 24px;
   background: ${(props) =>
     props.$isActive
-      ? 'linear-gradient(91.3deg, #6441F2 -17.11%, #1E90FF 138.78%)'
+      ? props.$fitnessLevel === 'BEGINNER'
+        ? 'linear-gradient(90deg, #8AE000 0%, #00BE9E 100%)'
+        : 'linear-gradient(91.3deg, #6441F2 -17.11%, #1E90FF 138.78%)'
       : '#ADB5BD'};
   margin-right: 1px;
   display: flex;

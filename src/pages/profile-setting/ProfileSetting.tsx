@@ -1,537 +1,329 @@
-import { useEffect, useState } from 'react';
 import * as S from './style';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import BackHeader from '../../shared/ui/back-header/BackHeader';
-import LargeButton from '../../shared/ui/large-button/LargeButton';
-import { useProfileSettingStore } from '../../features/profile-setting/store/profile-setting-store';
+import Header from '../../widgets/post-register/header/Header';
+import PageForm from '../../shared/ui/page-form/PageForm';
+import { useForm } from 'react-hook-form';
+import { useProfileStore } from '../../features/profile/store/profile-store';
+import { useEffect, useState } from 'react';
+import { getSgisLocationData } from '../../shared/api/getSgisLocationData';
+import { getSgisApiAccessToken } from '../../shared/api/getSgisApiAccessToken';
+import { useGetMyData } from '../../shared/api/useGetMyData';
+import UpdateMyDataButton from '../../features/profile-setting/ui/UpdateMyDataButton';
 import { useNavigate } from 'react-router-dom';
-import { User } from '../../shared/types/user';
-import Select, { CSSObjectWithLabel, SingleValue } from 'react-select';
+import {
+  CompanionStyle,
+  FitnessEagerness,
+  FitnessKind,
+  FitnessObjective,
+  getCompanionStyleText,
+  getFITNESS_OBJECTIVE_MAP,
+  getFitnessEagernessText,
+  getFitnessKindText,
+} from '../../shared/constants/fitness-category';
 
-type OptionType = {
-  value: number;
-  label: string;
-};
+interface Location {
+  addr_name: string;
+  cd: string;
+  full_addr: string;
+  x_coor: string;
+  y_coor: string;
+}
 
-type SpecType = {
-  title: string;
-  location: string;
-  startDate: string;
-  endDate: string;
-};
-
-export default function ProfileSetting() {
+export default function Profile() {
   const {
     register,
-    formState: { errors, isValid },
-    setValue,
+    formState: { errors },
     clearErrors,
-    handleSubmit,
-  } = useForm<User>({
-    mode: 'onChange',
-    defaultValues: {
-      nickname: '',
-      birth: '',
-      gender: '',
-      introduction: '',
-    },
-  });
+    setValue,
+    watch,
+  } = useForm({ mode: 'onChange' });
 
   const {
-    nickname,
-    birth,
-    gender,
-    introduction,
     image,
-    specs,
-    setNickname,
-    setBirth,
-    setGender,
-    setIntroduction,
     setImage,
-    setSpecs,
-  } = useProfileSettingStore();
+    nickname,
+    setNickname,
+    cd1,
+    setCd1,
+    cd2,
+    setCd2,
+    cd3,
+    setCd3,
+    introduction,
+    setIntroduction,
+  } = useProfileStore();
+  const [userLocation, setUserLocation] = useState<string>('');
+  const [locationData, setLocationData] = useState<Location[]>([]);
+  const [introductionModal, setIntroductionModal] = useState<boolean>(false);
+  const [introductionContent, setIntroductionContent] = useState<string>('');
 
-  const currentYear = new Date().getFullYear();
-  const [selectedYear, setSelectedYear] = useState('');
-  const [selectedMonth, setSelectedMonth] = useState('');
-  const [selectedDay, setSelectedDay] = useState('');
+  const { data: myData, isLoading, isError } = useGetMyData();
+  //운동 스타일 필드 기본 값 불러 오기 및 한글 이름 매핑
+  const defaultExerciseStyle = [
+    getCompanionStyleText(
+      (myData?.companionStyle as CompanionStyle) ?? 'SMALL'
+    ),
+    getFitnessEagernessText(
+      (myData?.fitnessEagerness as FitnessEagerness) ?? 'EAGER'
+    ),
+    getFITNESS_OBJECTIVE_MAP(
+      (myData?.fitnessObjective as FitnessObjective) ?? 'BULK_UP'
+    ),
+    getFitnessKindText((myData?.fitnessKind as FitnessKind) ?? 'HIGH_STRESS'),
+  ]
+    .map((text) => `#${text}`)
+    .join(', ');
 
-  const [specList, setSpecList] = useState<SpecType[]>(
-    Array.isArray(specs) ? specs : []
-  );
-
-  const years: OptionType[] = Array.from(
-    { length: currentYear - 1940 + 1 },
-    (_, i) => ({ value: 1940 + i, label: `${1940 + i}년` })
-  );
-  const months: OptionType[] = Array.from({ length: 12 }, (_, i) => ({
-    value: i + 1,
-    label: `${i + 1}월`,
-  }));
-
-  const getDaysInMonth = (year: number, month: number) => {
-    if (month === 2) {
-      // 2월 처리 (윤년 계산)
-      return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28;
-    }
-    // 4, 6, 9, 11월은 30일, 나머지는 31일
-    return [4, 6, 9, 11].includes(month) ? 30 : 31;
-  };
-  const days: OptionType[] =
-    selectedYear && selectedMonth
-      ? Array.from(
-          {
-            length: getDaysInMonth(Number(selectedYear), Number(selectedMonth)),
-          },
-          (_, i) => ({ value: i + 1, label: `${i + 1}일` })
-        )
-      : [];
-
-  const handleYearChange = (selectedOption: SingleValue<OptionType>) => {
-    setSelectedYear(selectedOption ? selectedOption.value.toString() : '');
-  };
-
-  const handleMonthChange = (selectedOption: SingleValue<OptionType>) => {
-    setSelectedMonth(selectedOption ? selectedOption.value.toString() : '');
-  };
-
-  const handleDayChange = (selectedOption: SingleValue<OptionType>) => {
-    setSelectedDay(selectedOption ? selectedOption.value.toString() : '');
-  };
-
+  const [initialLocation, setInitialLocation] = useState('');
   const navigate = useNavigate();
-
-  const saveDataToSessionStorage = (
-    key: string,
-    value: string | File | null
-  ) => {
-    if (value instanceof File) {
-      sessionStorage.setItem(key, value.name);
-    } else {
-      sessionStorage.setItem(key, JSON.stringify(value));
-    }
+  const getLocationData = async () => {
+    const result = await getSgisLocationData(cd3 || cd2 || cd1);
+    setLocationData(result);
   };
 
   useEffect(() => {
-    // 새로고침 시 세션 비우기
-    const handleBeforeUnload = () => {
-      sessionStorage.clear();
-    };
+    getSgisApiAccessToken();
+    getLocationData();
+    // eslint-disable-next-line
+  }, [cd1, cd2, cd3]);
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
+  const onClickLocationCard = (cd: string, full_addr: string) => {
+    if (!cd1) setCd1(cd);
+    else if (!cd2) setCd2(cd);
+    else setCd3(cd);
+    setUserLocation(full_addr);
+  };
 
+  const onClickReset = () => {
+    setCd1('');
+    setCd2('');
+    setCd3('');
+    setUserLocation('');
+  };
+  const handleExerciseStyleEdit = () => {
+    navigate('/profile-setting/exercise-style', {
+      state: {
+        isEditMode: true,
+        initialValues: {
+          companionStyle: myData?.companionStyle,
+          fitnessEagerness: myData?.fitnessEagerness,
+          fitnessObjective: myData?.fitnessObjective,
+          fitnessKind: myData?.fitnessKind,
+        },
+      },
+    });
+  };
+
+  // 스토어 값이 변경될 때 폼에도 저장
   useEffect(() => {
-    // 세션에 필드 값 저장
-    saveDataToSessionStorage('nickname', nickname);
-  }, [nickname]);
+    if (nickname) setValue('nickname', nickname);
+    if (introduction) setValue('introduction', introduction);
+  }, [nickname, cd1, cd2, cd3, introduction, setValue]);
 
-  useEffect(() => {
-    saveDataToSessionStorage('birth', birth);
-  }, [birth]);
+  // 필드 watch로 감시하여 값들을 확인
+  const watchedNickname = watch('nickname');
+  const watchedIntroduction = watch('introduction');
+  // 전부 입력 되었을때만 버튼 활성화
+  const isAllSelected = Boolean(
+    watchedNickname && cd1 && cd2 && cd3 && watchedIntroduction
+  );
+  console.log(myData);
+  const getFullAddress = async () => {
+    try {
+      // cd3 > cd2 > cd1 순서로 주소를 가져옵니다.
+      const code = myData?.cd3 || myData?.cd2 || myData?.cd1;
 
-  useEffect(() => {
-    if (gender !== null && gender !== undefined) {
-      sessionStorage.setItem('gender', JSON.stringify(gender));
-    }
-  }, [gender]);
-
-  useEffect(() => {
-    saveDataToSessionStorage('introduction', introduction);
-  }, [introduction]);
-
-  useEffect(() => {
-    if (specList) {
-      sessionStorage.setItem('specList', JSON.stringify(specList));
-      setSpecList(specList);
-    }
-  }, [specList]);
-
-  // 마운트될 때 세션에서 필드값들 로드
-  useEffect(() => {
-    const savedNickname = sessionStorage.getItem('nickname');
-    if (savedNickname) {
-      const parsedNickname = JSON.parse(savedNickname);
-      setNickname(parsedNickname);
-      setValue('nickname', parsedNickname);
-    }
-
-    const savedBirth = sessionStorage.getItem('birth');
-    if (savedBirth) {
-      const parsedBirth = JSON.parse(savedBirth);
-      //날짜 유효성 검사 값이 있을 때만 값 저장
-      if (!isNaN(Date.parse(parsedBirth))) {
-        setBirth(parsedBirth);
-        setValue('birth', parsedBirth);
-        const birthDate = new Date(parsedBirth);
-        setSelectedYear(birthDate.getFullYear().toString());
-        setSelectedMonth((birthDate.getMonth() + 1).toString());
-        setSelectedDay(birthDate.getDate().toString());
+      if (code) {
+        const response = await getSgisLocationData(code);
+        if (response && response.length > 0) {
+          setUserLocation(response[0].full_addr);
+          setInitialLocation(response[0].full_addr);
+        } else {
+          console.error('API 응답에 주소 데이터가 없습니다.');
+        }
       }
-    }
-
-    const savedGender = sessionStorage.getItem('gender');
-    if (savedGender) {
-      const parsedGender = JSON.parse(savedGender);
-      setGender(parsedGender);
-      setValue('gender', parsedGender);
-    }
-
-    const savedIntroduction = sessionStorage.getItem('introduction');
-    if (savedIntroduction) {
-      const parsedIntroduction = JSON.parse(savedIntroduction);
-      setIntroduction(parsedIntroduction);
-      setValue('introduction', parsedIntroduction);
-    }
-    const savedSpecList = sessionStorage.getItem('specList');
-    if (savedSpecList) {
-      const parsedSpecList = JSON.parse(savedSpecList);
-      setSpecList(parsedSpecList);
-      setSpecs(parsedSpecList);
-    }
-  }, [setNickname, setValue, setBirth, setGender, setIntroduction, setSpecs]);
-
-  const handleNicknameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newNickname = event.target.value;
-    setNickname(newNickname);
-    setValue('nickname', newNickname);
-  };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      setImage(file);
+    } catch (error) {
+      console.error('주소 불러오기 실패:', error);
     }
   };
+  const locationCards = locationData.map((data) => (
+    <S.LocationCard
+      key={`locationBtn_cd${data.cd}`}
+      onClick={() => onClickLocationCard(data.cd, data.full_addr)}
+    >
+      {data.full_addr}
+    </S.LocationCard>
+  ));
 
-  const handleDateChange = () => {
-    if (selectedYear && selectedMonth && selectedDay) {
-      const formattedDate = `${selectedYear}-${String(selectedMonth).padStart(
-        2,
-        '0'
-      )}-${String(selectedDay).padStart(2, '0')}`;
-      setValue('birth', formattedDate);
-      setBirth(formattedDate);
-    } else {
-      setValue('birth', '');
-      setBirth('');
-    }
-    clearErrors('birth');
+  const storeIntroduction = () => {
+    setIntroduction(introductionContent);
+    setIntroductionModal(false);
   };
+  console.log(initialLocation, userLocation);
 
   useEffect(() => {
-    handleDateChange();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedYear, selectedMonth, selectedDay]);
-
-  const handleProfileSettingNavigation = () => {
-    navigate('/profile-setting/introduction');
-  };
-
-  const handleAddSpec = () => {
-    setSpecList((prevSpecList) => [
-      ...prevSpecList,
-      { title: '', location: '', startDate: '', endDate: '' },
-    ]);
-  };
-
-  const handleSpecChange = (
-    index: number,
-    field: keyof SpecType,
-    value: string
-  ) => {
-    setSpecList((prevSpecList) => {
-      const updatedSpecList = [...prevSpecList];
-      updatedSpecList[index][field] = value;
-      return updatedSpecList;
-    });
-  };
-
-  const onSubmit: SubmitHandler<User> = (data: User) => {
-    setNickname(data.nickname);
-    setGender(data.gender);
-    setIntroduction(data.introduction);
-    setBirth(data.birth);
-    if (image) {
-      setImage(image);
+    if (introductionModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
-    if (specs) {
-      setSpecs(specs);
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [introductionModal]);
+  useEffect(() => {
+    if (myData) {
+      setCd1(myData.cd1);
+      setCd2(myData.cd2);
+      setCd3(myData.cd3);
+      setNickname(myData.nickname);
+      setIntroduction(myData.introduction);
+      getFullAddress();
     }
-    const formData = new FormData();
-    formData.append('nickname', data.nickname);
-    formData.append('gender', data.gender);
-    formData.append('introduction', data.introduction);
-    formData.append('birth', data.birth);
-    if (image) {
-      formData.append('image', image);
-    }
-    specList.forEach((spec, index) => {
-      formData.append(`specs[${index}][title]`, spec.title);
-      formData.append(`specs[${index}][location]`, spec.location);
-      formData.append(`specs[${index}][startDate]`, spec.startDate);
-      formData.append(`specs[${index}][endDate]`, spec.endDate);
-    });
-    for (const value of formData.values()) {
-      console.log(value);
-    }
-  };
-
-  //react-select 스타일 , styled-component로 하니 에러가 나서 컴포넌트에서 직접 정의
-  const selectStyles = {
-    container: (base: CSSObjectWithLabel) => ({
-      ...base,
-      width: '100px',
-    }),
-    control: (base: CSSObjectWithLabel) => ({
-      ...base,
-      fontSize: '12px',
-    }),
-    valueContainer: (base: CSSObjectWithLabel) => ({
-      ...base,
-      padding: '2px 8px',
-    }),
-    option: (base: CSSObjectWithLabel) => ({
-      ...base,
-      fontSize: '12px',
-    }),
-    indicatorSeparator: (base: CSSObjectWithLabel) => ({
-      ...base,
-      display: 'none',
-    }),
-  };
+    // eslint-disable-next-line
+  }, [myData]);
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error</p>;
   return (
-    <S.Container as="form" onSubmit={handleSubmit(onSubmit)}>
-      <S.HeaderWrapper>
-        <BackHeader text="프로필 입력" />
-      </S.HeaderWrapper>
-      <S.ProfileIconContainer>
-        {image ? (
-          <S.ProfileUploadImage
-            src={image instanceof File ? URL.createObjectURL(image) : ''}
-            alt="profile-image"
-          />
-        ) : (
-          <S.ProfileDefaultIcon />
-        )}
+    <PageForm isGNB={false}>
+      <S.Container>
+        <Header title={'프로필 입력'} />
 
-        <S.ProfileChangeButton>
-          <input
-            {...register('image')}
+        <S.ImageContainer>
+          {image ? (
+            <S.ProfileImageLabel
+              htmlFor="profile_image_input"
+              className="is_profile_image"
+            >
+              <S.ProfileImage
+                src={URL.createObjectURL(image)}
+                alt="uploaded_user_image"
+              />
+              <S.CameraIcon src="/svg/camera-icon.svg" />
+            </S.ProfileImageLabel>
+          ) : (
+            <S.ProfileImageLabel htmlFor="profile_image_input">
+              <S.DefaultUserImage src={'/svg/default-profile-icon.svg'} />
+              <S.CameraIcon src="/svg/camera-icon.svg" />
+            </S.ProfileImageLabel>
+          )}
+          <S.ProfileImageInput
             type="file"
-            accept="image/jpeg,image/jpg,image/png,image/webp"
-            hidden
-            onChange={handleImageChange}
+            id="profile_image_input"
+            onChange={(e) => {
+              if (e.target.files) {
+                setImage(e.target.files[0]);
+              }
+            }}
           />
-          <S.ProfileChangeImage src="/svg/camera-icon.svg" alt="camera-icon" />
-        </S.ProfileChangeButton>
-      </S.ProfileIconContainer>
-      <S.FieldContainer>
-        <S.Field>
-          <S.Label>닉네임</S.Label>
-          <S.Input
-            type="text"
-            placeholder="영문, 숫자, 한글만 입력 가능합니다 (최대 8글자)"
-            {...register('nickname', {
-              required: '닉네임을 입력해주세요.',
-              pattern: {
-                value: /^[가-힣a-zA-Z0-9]{1,8}$/,
-                message:
-                  '영문, 숫자, 한글만 입력 가능하며 최대 8글자까지 가능합니다.',
-              },
-            })}
-            onBlur={() => clearErrors('nickname')}
-            value={nickname || ''}
-            onChange={handleNicknameChange}
-          />
-          {errors.nickname?.message && (
-            <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
-          )}
-        </S.Field>
+        </S.ImageContainer>
 
-        <S.Field>
-          <S.Label>생년 월일</S.Label>
-          <S.DatePickerContainer>
-            <Select
-              options={years}
-              placeholder="년도"
-              onChange={(option) => {
-                handleYearChange(option);
-                clearErrors('birth');
-              }}
-              styles={selectStyles}
-              value={
-                selectedYear
-                  ? years.find(
-                      (option) => option.value.toString() === selectedYear
-                    )
-                  : null
-              }
-            />
-            <Select
-              options={months}
-              placeholder="월"
-              onChange={(option) => {
-                handleMonthChange(option);
-                clearErrors('birth');
-              }}
-              styles={selectStyles}
-              value={
-                selectedMonth
-                  ? months.find(
-                      (option) => option.value.toString() === selectedMonth
-                    )
-                  : null
-              }
-            />
-            <Select
-              options={days}
-              placeholder="일"
-              onChange={(option) => {
-                handleDayChange(option);
-                clearErrors('birth');
-              }}
-              styles={selectStyles}
-              isDisabled={!selectedYear || !selectedMonth}
-              value={
-                selectedDay
-                  ? days.find(
-                      (option) => option.value.toString() === selectedDay
-                    )
-                  : null
-              }
-            />
-          </S.DatePickerContainer>
-          <input
-            {...register('birth', {
-              required: '생년월일을 선택해주세요.',
-              validate: () => {
-                if (!selectedYear || !selectedMonth || !selectedDay) {
-                  return '생년월일을 모두 선택해주세요.';
-                }
-                return true;
-              },
-            })}
-            type="hidden"
-          />
-          {errors.birth?.message && (
-            <S.ErrorMessage>{errors.birth.message}</S.ErrorMessage>
-          )}
-        </S.Field>
-
-        <S.Field>
-          <S.Label>성별</S.Label>
-          <S.GenderWrapper>
-            <S.StyledRadio
-              type="radio"
-              value="남"
-              id="male"
-              {...register('gender', {
-                required: '성별을 선택해주세요.',
+        <S.FieldContainer>
+          <S.Field>
+            <S.Label>닉네임</S.Label>
+            <S.Input
+              type="text"
+              defaultValue={myData?.nickname}
+              placeholder="닉네임"
+              {...register('nickname', {
+                required: '닉네임을 입력해주세요',
+                pattern: {
+                  value: /^[a-zA-Z0-9가-힣]{1,8}$/,
+                  message: '닉네임은 영문,숫자,한글만 포함 가능합니다.',
+                },
+                maxLength: {
+                  value: 8,
+                  message: '닉네임의 길이는 8글자 이하 입니다.',
+                },
+                onBlur: () => {
+                  clearErrors('nickname');
+                },
               })}
-              checked={gender === '남'}
-              onChange={() => {
-                setGender('남');
-                setValue('gender', '남', { shouldValidate: true });
+              onChange={(e) => {
+                setNickname(e.target.value);
+                setValue('nickname', e.target.value);
               }}
             />
-            <S.CustomRadio htmlFor="male" $isSelected={gender === '남'}>
-              <S.GenderLabel>남</S.GenderLabel>
-            </S.CustomRadio>
+            {errors.nickname?.message ? (
+              typeof errors.nickname.message === 'string' && (
+                <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
+              )
+            ) : (
+              <S.PlaceHolder>
+                닉네임은 최대 8자까지 입력 가능합니다.
+              </S.PlaceHolder>
+            )}
+          </S.Field>
 
-            <S.StyledRadio
-              type="radio"
-              value="여"
-              id="female"
-              {...register('gender', {
-                required: '성별을 선택해주세요.',
-              })}
-              checked={gender === '여'}
-              onChange={() => {
-                setGender('여');
-                setValue('gender', '여', { shouldValidate: true });
-              }}
+          <S.Field>
+            <S.Label>운동 스타일</S.Label>
+            <S.Input
+              readOnly
+              style={{ cursor: 'pointer' }}
+              defaultValue={defaultExerciseStyle}
+              onClick={handleExerciseStyleEdit}
             />
-            <S.CustomRadio htmlFor="female" $isSelected={gender === '여'}>
-              <S.GenderLabel>여</S.GenderLabel>
-            </S.CustomRadio>
-          </S.GenderWrapper>
-          {errors.gender?.message && (
-            <S.ErrorMessage>{errors.gender.message}</S.ErrorMessage>
-          )}
-        </S.Field>
+            <S.PlaceHolder>나를 소개할 한 줄을 작성해주세요.</S.PlaceHolder>
+          </S.Field>
 
-        <S.Field>
-          <S.Label>한줄 소개</S.Label>
-          <S.Input
-            style={{ cursor: 'pointer' }}
-            type="text"
-            onClick={handleProfileSettingNavigation}
-            value={introduction || ''}
-            placeholder="나를 소개할 한 줄을 작성해주세요."
-            {...register('introduction', {
-              required: '한줄 소개를 입력해주세요.',
-            })}
-            onBlur={() => clearErrors('introduction')}
-          />
-          {errors.introduction?.message && (
-            <S.ErrorMessage>{errors.introduction.message}</S.ErrorMessage>
-          )}
-        </S.Field>
-        <S.SpecWrapper>
-          <S.SpecText>경력 및 수상사항</S.SpecText>
-          <button
-            style={{ display: 'flex', width: '20px' }}
-            type="button"
-            onClick={handleAddSpec}
-          >
-            +
-          </button>
-          {specList.map((spec, index) => (
-            <S.SpecInputWrapper key={index}>
-              <S.SpecInput
-                type="text"
-                placeholder="경력 및 수상명"
-                value={spec.title}
-                onChange={(e) =>
-                  handleSpecChange(index, 'title', e.target.value)
-                }
+          <S.Field>
+            <S.Label>현재 위치</S.Label>
+            <S.LocationContainer>
+              <S.Input
+                value={userLocation || initialLocation}
+                placeholder="현재 위치"
+                disabled
               />
-              <S.SpecInput
-                type="text"
-                placeholder="과정 및 장소명"
-                value={spec.location}
-                onChange={(e) =>
-                  handleSpecChange(index, 'location', e.target.value)
-                }
+              <S.ResetBtn onClick={() => onClickReset()}>초기화</S.ResetBtn>
+            </S.LocationContainer>
+            <S.LocationList>{locationCards}</S.LocationList>
+          </S.Field>
+
+          <S.Field>
+            <S.Label>한줄 소개</S.Label>
+            <S.IntroductionContent
+              $filled={!!introduction}
+              onClick={() => setIntroductionModal(true)}
+              defaultValue={myData?.introduction}
+            >
+              {introduction ? introduction : '한줄 소개'}
+            </S.IntroductionContent>
+            <S.PlaceHolder>나를 소개할 한 줄을 작성해주세요.</S.PlaceHolder>
+          </S.Field>
+        </S.FieldContainer>
+        <UpdateMyDataButton disabled={!isAllSelected} />
+      </S.Container>
+
+      {introductionModal && (
+        <S.IntroductionModal>
+          <S.Container>
+            <S.Header>
+              <img
+                src={'/svg/left-arrow-icon.svg'}
+                onClick={() => setIntroductionModal(false)}
               />
-              <S.SpecDateInput
-                type="text"
-                placeholder="시작일"
-                value={spec.startDate}
-                onChange={(e) =>
-                  handleSpecChange(index, 'startDate', e.target.value)
-                }
+            </S.Header>
+            <S.InputContainer>
+              <S.IntroductionInput
+                placeholder="나를 소개할 한줄을 작성해주세요."
+                {...register('introduction', {
+                  required: '한줄 소개를 작성해주세요.',
+                  maxLength: {
+                    value: 500,
+                    message: '최대 500자까지 작성할 수 있어요.',
+                  },
+                  onBlur: () => {
+                    clearErrors('introduction');
+                  },
+                })}
+                maxLength={500}
+                onChange={(e) => setIntroductionContent(e.target.value)}
               />
-              <S.SpecDateInput
-                type="text"
-                placeholder="종료일"
-                value={spec.endDate}
-                onChange={(e) =>
-                  handleSpecChange(index, 'endDate', e.target.value)
-                }
-              />
-            </S.SpecInputWrapper>
-          ))}
-        </S.SpecWrapper>
-        <S.ButtonContainer>
-          <LargeButton text="저장" type="submit" $isValid={isValid} />
-        </S.ButtonContainer>
-      </S.FieldContainer>
-    </S.Container>
+              <S.LengthChecker>{`${introductionContent.length}/500`}</S.LengthChecker>
+            </S.InputContainer>
+            <S.StoreBtn onClick={storeIntroduction}>저장하기</S.StoreBtn>
+          </S.Container>
+        </S.IntroductionModal>
+      )}
+    </PageForm>
   );
 }

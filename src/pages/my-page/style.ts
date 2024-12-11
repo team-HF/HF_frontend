@@ -31,7 +31,6 @@ export const MatchingContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 20px;
-  padding: 0 1.25rem;
   width: 22.5rem;
   align-items: center;
   gap: 11px;
