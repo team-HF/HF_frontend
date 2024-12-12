@@ -9,7 +9,6 @@ const putMyData = async (
   data: Partial<MyData>
 ): Promise<MyData> => {
   const response = await axiosInstance.patch(`/hf/members/${memberId}`, data);
-  console.log(memberId);
   return MyDataSchema.parse(response.data.content);
 };
 

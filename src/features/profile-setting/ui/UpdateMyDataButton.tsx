@@ -2,7 +2,6 @@ import * as S from './update-my-data-button';
 import { useProfileStore } from '../../profile/store/profile-store';
 import { usePutMyData } from '../api/usePatchMyData';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
-import { useEffect } from 'react';
 type UpdateButtonProps = {
   disabled: boolean;
 };
@@ -25,12 +24,6 @@ export default function UpdateMyDataButton({ disabled }: UpdateButtonProps) {
   const { data: myData, isLoading } = useGetMyData();
   const { mutate: uploadMyData } = usePutMyData(myData?.memberId ?? 0);
   const { image, cd1, cd2, cd3, introduction } = useProfileStore();
-
-  useEffect(() => {
-    if (myData?.memberId) {
-      console.log('Member ID:', myData.memberId);
-    }
-  }, [myData?.memberId]);
 
   const updateMyData = async () => {
     if (!myData?.memberId) {
@@ -63,7 +56,6 @@ export default function UpdateMyDataButton({ disabled }: UpdateButtonProps) {
     };
 
     uploadMyData(requestData);
-    console.log('Request Data:', requestData);
   };
 
   if (isLoading) return <p>로딩 중...</p>;

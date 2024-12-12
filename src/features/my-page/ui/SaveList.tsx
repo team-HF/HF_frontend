@@ -15,7 +15,6 @@ export default function SaveList() {
     fetchUsers();
   }, []);
 
-  console.log('users', users);
   return (
     <S.Container>
       {users.map((user) => (
