@@ -113,6 +113,11 @@ export const FilterContainer = styled.div`
   display: flex;
   position: relative;
   margin-left: auto;
+  margin-right: 20px;
+  @media (min-width: 768px) {
+    /* 태블릿 세로 방향 */
+    margin-right: 0px;
+  }
 `;
 
 export const FilterButton = styled.div`

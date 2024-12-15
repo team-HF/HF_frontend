@@ -17,6 +17,7 @@ import {
   getFITNESS_OBJECTIVE_MAP,
   FitnessObjective,
 } from '../../../shared/constants/fitness-category';
+import EmptyMatchingList from './emptyMatchingList';
 
 export default function MatchingList() {
   const [filterStatus, setFilterStatus] = useState<string>('전체');
@@ -37,7 +38,7 @@ export default function MatchingList() {
     hasNextPage,
     isFetchingNextPage,
   } = useGetMyMatchingList(memberId ?? 0, filterStatus);
-
+  console.log(MatchingListData);
   const allMatches =
     MatchingListData?.pages.flatMap((page) =>
       page.content.content.map((item) => ({
@@ -104,51 +105,55 @@ export default function MatchingList() {
         )}
       </S.FilterContainer>
       <S.Container>
-        <Virtuoso
-          useWindowScroll
-          data={allMatches}
-          endReached={() => {
-            if (hasNextPage && !isFetchingNextPage) {
-              fetchNextPage();
-            }
-          }}
-          itemContent={(_, user) => (
-            <S.CardContainer key={user.id} status={user.status}>
-              <S.UpperContainer>
-                <S.ProfileIconContainer>
-                  <S.ProfileIcon src={user.profileImage} alt="Profile" />
-                </S.ProfileIconContainer>
-                <S.ProfileTextContainer>
-                  <S.UserName>{user.nickname}</S.UserName>
-                </S.ProfileTextContainer>
-                <S.HashtagContainer>
-                  {user.hashtags.map((tag, idx) => (
-                    <Hashtag key={idx} text={tag} />
-                  ))}
-                </S.HashtagContainer>
-              </S.UpperContainer>
-              <S.MiddleContainer>
-                <S.MiddleText>{user.matchCount}회 매칭됨</S.MiddleText>
-                <S.MiddleText>{user.location}</S.MiddleText>
-              </S.MiddleContainer>
-              <S.UnderContainer>
-                <S.DateWrapper>
-                  <S.DateText>{user.time}</S.DateText>
-                </S.DateWrapper>
-                <S.ButtonContainer>
-                  {user.status === 'FINISHED' ? (
-                    <>
-                      <ReviewButton />
+        {allMatches.length > 0 ? (
+          <Virtuoso
+            useWindowScroll
+            data={allMatches}
+            endReached={() => {
+              if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage();
+              }
+            }}
+            itemContent={(_, user) => (
+              <S.CardContainer key={user.id} status={user.status}>
+                <S.UpperContainer>
+                  <S.ProfileIconContainer>
+                    <S.ProfileIcon src={user.profileImage} alt="Profile" />
+                  </S.ProfileIconContainer>
+                  <S.ProfileTextContainer>
+                    <S.UserName>{user.nickname}</S.UserName>
+                  </S.ProfileTextContainer>
+                  <S.HashtagContainer>
+                    {user.hashtags.map((tag, idx) => (
+                      <Hashtag key={idx} text={tag} />
+                    ))}
+                  </S.HashtagContainer>
+                </S.UpperContainer>
+                <S.MiddleContainer>
+                  <S.MiddleText>{user.matchCount}회 매칭됨</S.MiddleText>
+                  <S.MiddleText>{user.location}</S.MiddleText>
+                </S.MiddleContainer>
+                <S.UnderContainer>
+                  <S.DateWrapper>
+                    <S.DateText>{user.time}</S.DateText>
+                  </S.DateWrapper>
+                  <S.ButtonContainer>
+                    {user.status === 'FINISHED' ? (
+                      <>
+                        <ReviewButton />
+                        <ChatButton />
+                      </>
+                    ) : (
                       <ChatButton />
-                    </>
-                  ) : (
-                    <ChatButton />
-                  )}
-                </S.ButtonContainer>
-              </S.UnderContainer>
-            </S.CardContainer>
-          )}
-        />
+                    )}
+                  </S.ButtonContainer>
+                </S.UnderContainer>
+              </S.CardContainer>
+            )}
+          />
+        ) : (
+          <EmptyMatchingList />
+        )}
       </S.Container>
     </>
   );
