@@ -6,20 +6,12 @@ export const Container = styled.div`
   justify-content: center;
   width: 100vw;
   margin-top: 0.75rem;
-  padding: 0 2rem;
   width: 22.5rem;
   @media (min-width: 768px) and (max-width: 991px) {
-    /* 태블릿 세로 방향 */
-    width: 40rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
     width: 40rem;
   }
 
   @media (min-width: 1200px) {
-    /* 데스크톱 */
     width: 67.5rem;
   }
 `;
@@ -65,15 +57,28 @@ export const ProfileIconWrapper = styled.img`
   width: 5rem;
   height: 5rem;
 `;
-export const ProfileTextContainer = styled.div``;
+export const ProfileTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const NameWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  margin-bottom: 8px;
+`;
 
 export const ProfileName = styled.div`
   font-size: 0.9375rem;
-  line-height: 1.5rem;
+  line-height: 1.125rem;
   font-weight: 700;
-  margin-bottom: 0.3125rem;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
 `;
-
 export const ProfileHashtagContainer = styled.div`
   display: flex;
   width: 100%;
@@ -87,4 +92,22 @@ export const ProfileHashtagContainer = styled.div`
 export const ProfileIntroduction = styled.div`
   font-size: 0.8125rem;
   line-height: 1.5rem;
+`;
+
+export const LevelWrapper = styled.div<{ $fitnessLevel: string }>`
+  height: 18px;
+  border-radius: 17px;
+  padding: 3px 6px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 12px;
+  letter-spacing: -0.5px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  background: ${(props) =>
+    props.$fitnessLevel === 'BEGINNER'
+      ? 'linear-gradient(90deg, #8AE000 0%, #00BE9E 100%)'
+      : 'linear-gradient(91.3deg, #6441F2 -17.11%, #1E90FF 138.78%)'};
 `;

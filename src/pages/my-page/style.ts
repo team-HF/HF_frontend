@@ -7,13 +7,8 @@ export const Container = styled.div`
   width: 22.5rem;
   margin-left: auto;
   margin-right: auto;
-  @media (min-width: 768px) and (max-width: 991px) {
+  @media (min-width: 768px) {
     /* 태블릿 세로 방향 */
-    width: 40rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
     width: 40rem;
   }
 
@@ -35,11 +30,19 @@ export const LargeButtonWrapper = styled.div`
 export const MatchingContainer = styled.div`
   display: flex;
   flex-direction: column;
-
-  margin-top: 1.75rem;
-  padding: 0 1.25rem;
-  max-width: 22.5rem;
+  margin-top: 20px;
+  width: 22.5rem;
+  align-items: center;
   gap: 11px;
+  @media (min-width: 768px) {
+    /* 태블릿 세로 방향 */
+    width: 40rem;
+  }
+
+  @media (min-width: 1200px) {
+    /* 데스크톱 */
+    width: 67.5rem;
+  }
 `;
 
 export const MatchingTitle = styled.div`

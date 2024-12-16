@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   justify-content: center;
-  width: 22.5rem;
+  width: 320px;
   align-items: center;
   flex-direction: column;
   margin-top: 1.875rem;
@@ -33,7 +33,7 @@ export const TabContainer = styled.div`
   display: flex;
   flex-direction: row;
   text-align: center;
-  width: 22.5rem;
+  width: 320px;
   width: 100%;
 `;
 
@@ -50,21 +50,16 @@ export const TabIndicator = styled.span`
   left: 0;
   background-color: ${({ theme }) => theme.colors.main};
   height: 0.125rem;
-  width: 12.1875rem;
+  width: 108px;
 
-  @media (min-width: 768px) and (max-width: 991px) {
+  @media (min-width: 768px) {
     /* 태블릿 세로 방향 */
-    width: 20rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 20rem;
+    width: 214px;
   }
 
   @media (min-width: 1200px) {
     /* 데스크톱 */
-    width: 33.75rem;
+    width: 366px;
   }
 `;
 

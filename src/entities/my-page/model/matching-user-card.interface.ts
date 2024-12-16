@@ -5,4 +5,6 @@ export interface MatchingUserCard {
   matchCount: number;
   location: string;
   hashtags: string[];
+  time: string;
+  status: 'ALL' | 'FINISHED' | 'IN_PROGRESS' | 'HALTED';
 }

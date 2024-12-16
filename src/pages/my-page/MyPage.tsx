@@ -1,37 +1,71 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MatchingList from '../../entities/my-page/ui/MatchingList';
-import ProfileBox from '../../entities/my-page/ui/ProfileBox';
+import MatchingList from '../../features/my-page/ui/MatchingList';
+import SaveList from '../../features/my-page/ui/SaveList';
+import ProfileBox from '../../features/my-page/ui/ProfileBox';
 import Tab from '../../entities/my-page/ui/Tab';
 import Header from '../../shared/ui/header/Header';
 import LargeButton from '../../shared/ui/large-button/LargeButton';
+import LevelProgressBar from '../../features/my-page/ui/LevelProgressBar';
 import * as S from './style';
-import { useState } from 'react';
-import SaveList from '../../entities/my-page/ui/SaveList';
+import { useGetMyData } from '../../shared/api/useGetMyData';
+import PageForm from '../../shared/ui/page-form/PageForm';
+import CouponList from '../../features/my-page/ui/CouponList';
 
 export default function MyPage() {
   const [tab, setTab] = useState('내 운동 매칭 List');
-  const navigation = useNavigate();
+  const navigate = useNavigate();
+  const { data: myData, isLoading, isError } = useGetMyData();
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error</p>;
+
   const onClick = () => {
-    navigation('/profile-setting');
+    navigate('/profile-setting');
   };
+
+  const tabContent = () => {
+    switch (tab) {
+      case '내 운동 매칭 List':
+        return (
+          <S.MatchingContainer>
+            <MatchingList />
+          </S.MatchingContainer>
+        );
+      case '즐겨찾기':
+        return (
+          <S.MatchingContainer>
+            <S.MatchingTitle />
+            <SaveList />
+          </S.MatchingContainer>
+        );
+      case '선물함':
+        return (
+          <S.MatchingContainer>
+            <S.MatchingTitle />
+            <CouponList />
+          </S.MatchingContainer>
+        );
+      default:
+        return (
+          <S.MatchingContainer>
+            <MatchingList />
+          </S.MatchingContainer>
+        );
+    }
+  };
+
   return (
-    <S.Container>
-      <Header text="마이페이지" />
-      <ProfileBox />
-      <S.LargeButtonWrapper>
-        <LargeButton text="프로필 설정" onClick={onClick} />
-      </S.LargeButtonWrapper>
-      <Tab currentTab={tab} setTab={setTab} />
-      {tab === '내 운동 매칭 List' ? (
-        <S.MatchingContainer>
-          <S.MatchingTitle>나와 매칭된 새싹</S.MatchingTitle>
-          <MatchingList />
-        </S.MatchingContainer>
-      ) : (
-        <S.MatchingContainer>
-          <SaveList />
-        </S.MatchingContainer>
-      )}
-    </S.Container>
+    <PageForm isGNB={true}>
+      <S.Container>
+        <Header text="마이페이지" />
+        <ProfileBox myData={myData} />
+        <LevelProgressBar myData={myData} />
+        <S.LargeButtonWrapper>
+          <LargeButton text="프로필 설정" onClick={onClick} />
+        </S.LargeButtonWrapper>
+        <Tab currentTab={tab} setTab={setTab} />
+        {tabContent()}
+      </S.Container>
+    </PageForm>
   );
 }
