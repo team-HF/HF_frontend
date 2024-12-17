@@ -28,3 +28,17 @@ export const MyDataSchema = z.object({
 });
 
 export type MyData = z.infer<typeof MyDataSchema>;
+
+export const UpdateMyDataSchema = z.object({
+  cd1: z.string().optional(),
+  cd2: z.string().optional(),
+  cd3: z.string().optional(),
+  introduction: z.string().optional(),
+  fitnessLevel: z.enum(['BEGINNER', 'ADVANCED']),
+  companionStyle: z.enum(['SMALL', 'GROUP']).optional(),
+  fitnessEagerness: z.enum(['EAGER', 'LAZY']).optional(),
+  fitnessObjective: z.enum(['BULK_UP', 'RUNNING']).optional(),
+  fitnessKind: z.enum(['HIGH_STRESS', 'FUNCTIONAL']).optional(),
+  profileImageFileExtension: z.string().nullable().optional(),
+});
+export type UpdateMyData = z.infer<typeof UpdateMyDataSchema>;
