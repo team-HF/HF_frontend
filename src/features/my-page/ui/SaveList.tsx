@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import * as S from './save-list.style';
-import { MatchingUserCard } from '../model/matching-user-card.interface';
+import { MatchingUserCard } from '../../../entities/my-page/model/matching-user-card.interface';
 
 export default function SaveList() {
   const [users, setUsers] = useState<MatchingUserCard[]>([]);
@@ -15,7 +15,6 @@ export default function SaveList() {
     fetchUsers();
   }, []);
 
-  console.log('users', users);
   return (
     <S.Container>
       {users.map((user) => (

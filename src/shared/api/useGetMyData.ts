@@ -1,18 +1,17 @@
-import { useAxios as Axios } from "../utils/useAxios";
-import Cookies from "js-cookie";
+import { useQuery } from '@tanstack/react-query';
+import { useAxios } from '../utils/useAxios';
+import { AxiosInstance } from 'axios';
+import { MyData, MyDataSchema } from '../schema/my-data';
 
-export const useGetMyData = async () => {
-  const { axiosInstance } = Axios();
-  const accessToken = Cookies.get("access_token");
-  try {
-    const response = await axiosInstance.get("/oauth/token/me", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching user data.", error);
-    throw error;
-  }
+const getMyData = async (axiosInstance: AxiosInstance): Promise<MyData> => {
+  const response = await axiosInstance.get('/oauth/token/me');
+  return MyDataSchema.parse(response.data.content);
+};
+
+export const useGetMyData = () => {
+  const { axiosInstance } = useAxios();
+  return useQuery({
+    queryKey: ['myData'],
+    queryFn: () => getMyData(axiosInstance),
+  });
 };

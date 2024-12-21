@@ -1,5 +1,4 @@
-import { useAxios as Axios } from "../utils/useAxios";
-import Cookies from "js-cookie";
+import { useAxios as Axios } from '../utils/useAxios';
 
 export const useGetUserData = async (memberId: number) => {
   const { axiosInstance } = Axios();
@@ -12,7 +11,7 @@ export const useGetUserData = async (memberId: number) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching user data.", error);
+    console.error('Error fetching user data.', error);
     throw error;
   }
 };
