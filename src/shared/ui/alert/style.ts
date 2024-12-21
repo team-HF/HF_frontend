@@ -1,53 +1,60 @@
 import styled from "styled-components";
 import { theme } from "../../../app/theme";
 
-export const Container = styled.div`
+export const Background = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
-  flex-direction: column;
-  padding: 20px;
-  border-radius: 8px;
-  width: 335px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(0.125rem);
+  z-index: 1000;
 `;
-export const Header = styled.div`
+export const Container = styled.div`
+  position: absolute;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 14px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 20rem;
+  background-color: ${theme.colors.white};
 `;
 export const Title = styled.h3`
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
-  line-height: 30px;
-`;
-export const CloseBtn = styled.button<{ src: string }>`
-  border: 0px;
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  background-image: url(${(props) => props.src});
-  background-repeat: no-repeat;
-  background-position: center;
-`;
-export const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  line-height: 1.5rem;
+  letter-spacing: -0.0057rem;
 `;
 export const Contents = styled.p`
-  text-align: center;
-  width: 100%;
-  font-size: 14px;
-  line-height: 36px;
+  font-size: 0.875rem;
+  line-height: 1.334rem;
+  letter-spacing: -0.0025rem;
   overflow-wrap: break-word;
+`;
+export const BtnBox = styled.div`
+  display: flex;
+  gap: 0.5rem;
 `;
 export const CheckBtn = styled.button`
   background-color: ${theme.colors.main};
-  border: 0px;
-  border-radius: 8px;
-  padding: 10px 14px;
-  margin-top: 14px;
-  width: 114px;
+  border: 0;
+  border-radius: 10rem;
+  padding: 0.625rem;
+  width: 6.25rem;
   color: ${theme.colors.white};
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1rem;
+  letter-spacing: -0.01rem;
+  &.cancel {
+    background-color: ${theme.colors.white};
+    border: 1px solid ${theme.colors.main};
+    color: ${theme.colors.main};
+  }
 `;

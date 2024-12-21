@@ -1,33 +1,37 @@
 import { useAxios as Axios } from "../../../../shared/utils/useAxios";
 import Cookies from "js-cookie";
 
-interface PostDataProps {
-  writerId?: number;
+interface usePostReplyProps {
   postId: number;
-  commentValue: string;
+  writerId?: number;
+  content: string;
+  parentCommentId: number;
 }
 
-const postComment = async ({
-  writerId,
+export const usePostReply = async ({
   postId,
-  commentValue,
-}: PostDataProps) => {
+  writerId,
+  content,
+  parentCommentId,
+}: usePostReplyProps) => {
   const { axiosInstance } = Axios();
   const accessToken = Cookies.get("access_token");
+  const requestData = {
+    writerId,
+    content,
+    parentCommentId,
+  };
+  console.log(postId, requestData);
   try {
     const response = await axiosInstance.post(
       `/hf/posts/${postId}/comments`,
-      {
-        writerId: writerId,
-        content: commentValue,
-      },
+      requestData,
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
+    console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error("Error posing your comment", error);
+    console.error("Error creating new reply", error);
     throw error;
   }
 };
-
-export default postComment;

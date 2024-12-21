@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
 import * as S from "./style";
 import { TFilter } from "../../../entities/community/filter-data";
-import { useAddParam as addParam } from "../../utils/useAddParam";
-import { useCommunityStore } from "../../../pages/community/store/community-store";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCommunityStore } from "../../../pages/community/store/community-store";
+import { useAddParam as addParam } from "../../utils/useAddParam";
 import { useGetParams as getParams } from "../../utils/useGetParams";
 
 interface filterProps {
@@ -12,24 +12,18 @@ interface filterProps {
 
 const Filter = ({ filterData }: filterProps) => {
   const navigate = useNavigate();
-  const category = getParams("postCategory");
-  const { setFilterSelected } = useCommunityStore();
+  const { filterSelected, setFilterSelected } = useCommunityStore();
   const [open, setOpen] = useState<boolean>(false);
-  const [currentFilter, setCurrentFilter] = useState<string>(
-    getParams("fitnessLevel") === "ADVANCED" ? "고수" : "새싹"
-  );
+
   const openFilter = () => setOpen(!open);
 
   const changeFilter = (filterIndex: number) => {
-    setCurrentFilter(filterData[filterIndex].name);
     setFilterSelected(filterData[filterIndex].id);
     const updatedParam = addParam("fitnessLevel", filterData[filterIndex].id);
     navigate(`${location.pathname}?${updatedParam}`);
     setOpen(false);
   };
-  useEffect(() => {
-    setCurrentFilter("고수");
-  }, [category]);
+
   const filterList = filterData.map((data) => {
     return (
       <S.Filter
@@ -40,9 +34,16 @@ const Filter = ({ filterData }: filterProps) => {
       </S.Filter>
     );
   });
+
+  useEffect(() => {
+    const fitnessLevel = getParams("fitnessLevel") as TFilter;
+    setFilterSelected(fitnessLevel);
+  }, []);
   return (
     <S.Container onClick={openFilter}>
-      <S.CurrentFilter>{currentFilter}</S.CurrentFilter>
+      <S.CurrentFilter>
+        {filterSelected === "ADVANCED" ? "고수" : "새싹"}
+      </S.CurrentFilter>
       {open ? (
         <S.ArrowIcon className="arrow-up" src={"/svg/arrow-down.svg"} />
       ) : (
