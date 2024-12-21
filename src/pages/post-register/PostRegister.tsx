@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { categoryData, TCategory } from "../../entities/community/filter-data";
 import { useGetPostDetail as getPostDetail } from "../post-detail/api/useGetPostDetail";
 import { usePostUpdate as postUpdate } from "./api/usePostUpdate";
+import { useGetMyData } from "../../shared/api/useGetMyData";
 
 export type TCategoryData = { name: string; id: TCategory };
 
@@ -15,6 +16,7 @@ const PostRegister = () => {
   const { id } = useParams();
   const postId = Number(id);
   const navigate = useNavigate();
+  const { data: myData } = useGetMyData();
 
   const [requestFill, setRequestFill] = useState<boolean>(false);
   const [postCategory, setPostCategory] = useState<TCategoryData | null>(null);
@@ -34,12 +36,19 @@ const PostRegister = () => {
         content: postContent,
       };
       if (postId) {
-        await postUpdate({ ...postData, postId: postId });
+        await postUpdate({
+          ...postData,
+          postId: postId,
+          writerId: myData?.memberId,
+        });
         navigate(`/community/post-detail/${postId}`, {
           state: { from: window.location.pathname },
         });
       } else {
-        const response = await communityPostApi(postData);
+        const response = await communityPostApi({
+          ...postData,
+          writerId: myData?.memberId,
+        });
         navigate(`/community/post-detail/${response.content}`, {
           state: { from: window.location.pathname },
         });

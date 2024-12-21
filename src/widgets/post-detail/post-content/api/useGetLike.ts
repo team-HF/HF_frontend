@@ -1,7 +1,10 @@
 import { useAxios as Axios } from "../../../../shared/utils/useAxios";
 import Cookies from "js-cookie";
 
-export const useGetLike = async (postId: number, memberId: number) => {
+export const useGetLike = async (
+  postId: number,
+  memberId: number | undefined
+) => {
   const { axiosInstance } = Axios();
   const accessToken = Cookies.get("access_token");
   try {

@@ -20,7 +20,6 @@ export const usePostCommentLike = async (
         },
       }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error creating new like", error);

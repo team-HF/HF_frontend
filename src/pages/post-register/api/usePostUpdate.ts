@@ -1,9 +1,9 @@
 import { useAxios as Axios } from "../../../shared/utils/useAxios";
 import Cookies from "js-cookie";
-import { useGetMyData as getMyData } from "../../../shared/api/useGetMyData";
 
 interface UpdateProps {
   postId: number;
+  writerId: number | undefined;
   category: string;
   title: string;
   content: string;
@@ -12,8 +12,6 @@ interface UpdateProps {
 export const usePostUpdate = async (postData: UpdateProps) => {
   const { axiosInstance } = Axios();
   const accessToken = Cookies.get("access_token");
-  const userDataResponse = await getMyData();
-  const writerId = userDataResponse.content.memberId;
   try {
     const response = await axiosInstance.patch(
       `/hf/posts/${postData.postId}`,
@@ -21,7 +19,7 @@ export const usePostUpdate = async (postData: UpdateProps) => {
         category: postData.category,
         title: postData.title,
         content: postData.content,
-        writerId: writerId,
+        writerId: postData.writerId,
       },
       {
         headers: {

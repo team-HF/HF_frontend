@@ -2,13 +2,12 @@ import * as S from "./style";
 import EditButton from "../../../shared/ui/edit-button/EditButton";
 import { TPost } from "../../../shared/types/community";
 import { useNavigate } from "react-router-dom";
-import { useMyProfileStore } from "../../../shared/store/my-profile-store";
 import { useEffect, useState } from "react";
 import { useGetDate as getData } from "../../../shared/utils/useGetDate";
 import { usePostLike as postLike } from "./api/usePostLike";
-import { useGetMyData as getMyData } from "../../../shared/api/useGetMyData";
 import { useGetLike as getPostLike } from "./api/useGetLike";
 import { useDeletePostLike as deletePostLike } from "./api/useDeletePostLike";
+import { useMyProfileStore } from "../../../shared/store/my-profile-store";
 
 interface postContentProps {
   setAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,9 +15,13 @@ interface postContentProps {
   postId: number;
 }
 
-const PostContent = ({ setAlertOpen, postData, postId }: postContentProps) => {
+export default function PostContent({
+  setAlertOpen,
+  postData,
+  postId,
+}: postContentProps) {
   const navigate = useNavigate();
-  const { myProfile, setMyProfile } = useMyProfileStore();
+  const { myProfile } = useMyProfileStore();
 
   const [likeId, setLikeId] = useState<number | null>(null);
 
@@ -27,6 +30,7 @@ const PostContent = ({ setAlertOpen, postData, postId }: postContentProps) => {
 
   const changeLike = async () => {
     if (likeId) {
+      console.log(likeId);
       const response = await deletePostLike(likeId);
       if (response.statusCode === 200) {
         setLikeId(response.content);
@@ -43,14 +47,9 @@ const PostContent = ({ setAlertOpen, postData, postId }: postContentProps) => {
 
   useEffect(() => {
     (async () => {
-      const myProfileResponse = await getMyData();
-      setMyProfile(myProfileResponse.content);
-      const postLikeResponse = await getPostLike(
-        postId,
-        myProfileResponse.content.memberId
-      );
+      const postLikeResponse = await getPostLike(postId, myProfile?.memberId);
       if (postLikeResponse.content) {
-        setLikeId(postLikeResponse.content);
+        setLikeId(postLikeResponse.content[0].likeId);
       }
     })();
   }, []);
@@ -110,6 +109,6 @@ const PostContent = ({ setAlertOpen, postData, postId }: postContentProps) => {
       </S.ContentContainer>
     </S.Container>
   );
-};
+}
 
-export default PostContent;
+// export default PostContent;
