@@ -36,6 +36,10 @@ function App() {
             <Route path="/chat-lobby" element={<ChatLobby />} />
             <Route path="community" element={<Community />} />
             <Route path="community/post-register" element={<PostRegister />} />
+            <Route
+              path="community/post-update/:id"
+              element={<PostRegister />}
+            />
             <Route path="community/post-detail/:id" element={<PostDetail />} />
           </Routes>
         </ThemeProvider>

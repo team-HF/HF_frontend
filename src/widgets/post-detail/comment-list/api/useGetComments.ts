@@ -1,18 +1,18 @@
-import { useAxios as Axios } from "../utils/useAxios";
+import { useAxios as Axios } from "../../../../shared/utils/useAxios";
 import Cookies from "js-cookie";
 
-export const useGetUserData = async (memberId: number) => {
+export const useGetComments = async (postId: number) => {
   const { axiosInstance } = Axios();
   const accessToken = Cookies.get("access_token");
   try {
-    const response = await axiosInstance(`/hf/members/${memberId}`, {
+    const response = await axiosInstance.get(`/hf/posts/${postId}/comments`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching user data.", error);
+    console.error("Error getting comments", error);
     throw error;
   }
 };

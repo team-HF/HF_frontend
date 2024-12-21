@@ -1,19 +1,29 @@
 import * as S from "./style";
 
-const Alert = (header: boolean) => {
+interface AlertProps {
+  title: string | null;
+  content: string;
+  cancelBtn: boolean;
+  confirm: () => void;
+  cancel: () => void;
+}
+
+const Alert = ({ title, content, cancelBtn, confirm, cancel }: AlertProps) => {
   return (
-    <S.Container>
-      {header && (
-        <S.Header>
-          <S.Title>알럿</S.Title>
-          <S.CloseBtn src="/svg/close-icon.svg" />
-        </S.Header>
-      )}
-      <S.Body>
-        <S.Contents>경고 내용</S.Contents>
-        <S.CheckBtn>확인</S.CheckBtn>
-      </S.Body>
-    </S.Container>
+    <S.Background>
+      <S.Container>
+        {title && <S.Title>{title}</S.Title>}
+        <S.Contents>{content}</S.Contents>
+        <S.BtnBox>
+          <S.CheckBtn onClick={confirm}>확인</S.CheckBtn>
+          {cancelBtn && (
+            <S.CheckBtn className="cancel" onClick={cancel}>
+              취소
+            </S.CheckBtn>
+          )}
+        </S.BtnBox>
+      </S.Container>
+    </S.Background>
   );
 };
 

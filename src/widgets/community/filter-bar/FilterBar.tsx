@@ -1,13 +1,13 @@
 import * as S from "./style";
+import Filter from "../../../shared/ui/filter/Filter";
+import { useCommunityStore } from "../../../pages/community/store/community-store";
+import { useAddParam as addParam } from "../../../shared/utils/useAddParam";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   filterData,
   labelData,
   TLabel,
 } from "../../../entities/community/filter-data";
-import Filter from "../../../shared/ui/filter/Filter";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAddParam as addParam } from "../../../shared/utils/useAddParam";
-import { useCommunityStore } from "../../../pages/community/store/community-store";
 
 const FilterBar = () => {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ const FilterBar = () => {
       </S.LabelBtn>
     );
   });
-  
+
   return (
     <S.Container>
       {categorySelected === "POPULAR" ? (

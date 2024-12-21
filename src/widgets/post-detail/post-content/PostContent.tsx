@@ -1,90 +1,92 @@
 import * as S from "./style";
-import { useGetDate } from "../../../shared/utils/useGetDate";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import getPostDetail from "./api/useGetPostDetail";
-import { useGetUserData as getUserData } from "../../../shared/api/useGetUserData";
 import EditButton from "../../../shared/ui/edit-button/EditButton";
+import { TPost } from "../../../shared/types/community";
+import { useNavigate } from "react-router-dom";
+import { useMyProfileStore } from "../../../shared/store/my-profile-store";
+import { useEffect, useState } from "react";
+import { useGetDate as getData } from "../../../shared/utils/useGetDate";
+import { usePostLike as postLike } from "./api/usePostLike";
+import { useGetMyData as getMyData } from "../../../shared/api/useGetMyData";
+import { useGetLike as getPostLike } from "./api/useGetLike";
+import { useDeletePostLike as deletePostLike } from "./api/useDeletePostLike";
 
-export type TFitnessLevel = "ADVANCED" | "BEGINNER";
-
-interface userData {
-  nickname: string;
-  profileImageUrl: string;
-  fitnessLevel: TFitnessLevel;
-  tier: number;
-}
-interface PostData {
+interface postContentProps {
+  setAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  postData: TPost | null;
   postId: number;
-  postCategory: string;
-  memberId: number;
-  title: string;
-  content: string;
-  createDate: string;
-  viewCount: number;
-  likeCount: number;
-  commentCount: number;
 }
 
-const PostContent = () => {
-  const { id } = useParams();
-  const postId = Number(id);
-  const [userData, setUserData] = useState<userData>({
-    nickname: "알 수 없는 사용자",
-    profileImageUrl: "",
-    fitnessLevel: "BEGINNER",
-    tier: 1,
-  });
-  const [postData, setPostData] = useState<PostData>({
-    postId: 0,
-    postCategory: "알 수 없음",
-    memberId: 0,
-    title: "알 수 없음",
-    content: "내용을 가져오는데 실패하였습니다.",
-    createDate: "",
-    viewCount: 0,
-    likeCount: 0,
-    commentCount: 0,
-  });
+const PostContent = ({ setAlertOpen, postData, postId }: postContentProps) => {
+  const navigate = useNavigate();
+  const { myProfile, setMyProfile } = useMyProfileStore();
+
+  const [likeId, setLikeId] = useState<number | null>(null);
+
+  const category =
+    postData?.postCategory === "FREE_COMMUNITY" ? "자유게시판" : "고민/사연";
+
+  const changeLike = async () => {
+    if (likeId) {
+      const response = await deletePostLike(likeId);
+      if (response.statusCode === 200) {
+        setLikeId(response.content);
+      }
+    } else {
+      const response = await postLike(postId, myProfile?.memberId);
+      if (response.statusCode === 201) {
+        setLikeId(response.content);
+      }
+    }
+  };
+
+  const updateContent = () => navigate(`/community/post-update/${postId}`);
+
   useEffect(() => {
     (async () => {
-      const postResponse = await getPostDetail(postId);
-      setPostData(postResponse.content);
-      const userResponse = await getUserData(postResponse.content.memberId);
-      const {
-        nickname,
-        fitnessLevel,
-        profileImageUrl,
-        tier: { tier },
-      } = userResponse.data.content;
-      setUserData({ nickname, profileImageUrl, fitnessLevel, tier });
+      const myProfileResponse = await getMyData();
+      setMyProfile(myProfileResponse.content);
+      const postLikeResponse = await getPostLike(
+        postId,
+        myProfileResponse.content.memberId
+      );
+      if (postLikeResponse.content) {
+        setLikeId(postLikeResponse.content);
+      }
     })();
-  }, [postId]);
+  }, []);
+
   return (
     <S.Container>
       <S.TagContainer className="tag_container">
-        <S.PostTypeTag>{postData?.postCategory}</S.PostTypeTag>
-        <EditButton />
+        <S.PostTypeTag>{category}</S.PostTypeTag>
+        {myProfile?.memberId === postData?.writerId && (
+          <EditButton
+            updateContent={updateContent}
+            deleteContent={() => setAlertOpen(true)}
+          />
+        )}
       </S.TagContainer>
       <S.ContentContainer>
         <S.Title>{postData?.title}</S.Title>
         <S.InfoBox>
           <S.ProfileImage
             src={
-              userData.profileImageUrl
-                ? userData.profileImageUrl
+              postData?.imagePath
+                ? postData.imagePath
                 : "/svg/default-profile-icon.svg"
             }
             alt="user_profile_image"
           />
-          <S.InfoText>{userData.nickname}</S.InfoText>
-          <S.LevelLabel fitnessLevel={userData.fitnessLevel}>
-            Lv. {userData.tier}
+          <S.InfoText>{postData?.writerNickname}</S.InfoText>
+          <S.LevelLabel
+            $advanced={postData?.writerTier.fitnessLevel === "ADVANCED"}
+          >
+            Lv. {postData?.writerTier.tier}
           </S.LevelLabel>
-          <S.InfoText>{useGetDate(postData.createDate)}</S.InfoText>
+          <S.InfoText>{postData && getData(postData.createDate)}</S.InfoText>
         </S.InfoBox>
         <S.MainContent>{postData?.content}</S.MainContent>
-        <S.TagContainer >
+        <S.TagContainer>
           <S.InfoBox>
             <S.IconBox>
               <img src={"/svg/view-icon.svg"} alt="icon_view_count" />
@@ -99,7 +101,11 @@ const PostContent = () => {
               <S.InfoText>{postData?.commentCount}</S.InfoText>
             </S.IconBox>
           </S.InfoBox>
-          <S.UnLikeICon src="/svg/heart-icon.svg" alt="like_icon" />
+          <S.FavoriteBtn
+            src={likeId ? "/svg/heart-fill-icon.svg" : "/svg/heart-icon.svg"}
+            $fill={likeId !== null}
+            onClick={changeLike}
+          />
         </S.TagContainer>
       </S.ContentContainer>
     </S.Container>

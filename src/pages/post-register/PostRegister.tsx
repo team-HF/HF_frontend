@@ -1,35 +1,52 @@
 import * as S from "./style";
 import Header from "../../widgets/post-register/header/Header";
 import PageForm from "../../shared/ui/page-form/PageForm";
-import { categoryData } from "../../entities/community/filter-data";
-import { useEffect, useState } from "react";
 import SideFilter from "../../shared/ui/side-filter/SideFilter";
-import { useNavigate } from "react-router-dom";
 import communityPostApi from "./api/usePost";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { categoryData, TCategory } from "../../entities/community/filter-data";
+import { useGetPostDetail as getPostDetail } from "../post-detail/api/useGetPostDetail";
+import { usePostUpdate as postUpdate } from "./api/usePostUpdate";
+
+export type TCategoryData = { name: string; id: TCategory };
 
 const PostRegister = () => {
+  const { id } = useParams();
+  const postId = Number(id);
   const navigate = useNavigate();
+
   const [requestFill, setRequestFill] = useState<boolean>(false);
-  const [postCategory, setPostCategory] = useState<string>("");
+  const [postCategory, setPostCategory] = useState<TCategoryData | null>(null);
   const [postTitle, setPostTitle] = useState<string>("");
   const [postContent, setPostContent] = useState<string>("");
   const [sideFilterOpen, setSideFilterOpen] = useState<boolean>(false);
+
+  const headerNavigate = () => navigate(-1);
+
   const onOffSideFilter = () => setSideFilterOpen(!sideFilterOpen);
-  const contentsPost = async () => {
-    const postData = {
-      category: postCategory,
-      title: postTitle,
-      content: postContent,
-    };
-    try {
-      const response = await communityPostApi(postData);
-      if (response.statusCode === 200) {
-        navigate("/community");
+
+  const postRegister = async () => {
+    if (postCategory) {
+      const postData = {
+        category: postCategory.id,
+        title: postTitle,
+        content: postContent,
+      };
+      if (postId) {
+        await postUpdate({ ...postData, postId: postId });
+        navigate(`/community/post-detail/${postId}`, {
+          state: { from: window.location.pathname },
+        });
+      } else {
+        const response = await communityPostApi(postData);
+        navigate(`/community/post-detail/${response.content}`, {
+          state: { from: window.location.pathname },
+        });
       }
-    } catch (error) {
-      console.error("Error creating post", error);
     }
   };
+
   useEffect(() => {
     if (postCategory && postTitle && postContent) {
       setRequestFill(true);
@@ -37,19 +54,35 @@ const PostRegister = () => {
       setRequestFill(false);
     }
   }, [postCategory, postTitle, postContent]);
+
+  useEffect(() => {
+    (async () => {
+      if (postId) {
+        const postDetailResponse = await getPostDetail(postId);
+        const postDetail = postDetailResponse.content;
+        setPostCategory(
+          postDetail.postCategory === "FREE_COMMUNITY"
+            ? { id: "FREE_COMMUNITY", name: "자유게시판" }
+            : { id: "COUNSELING", name: "고민/사연" }
+        );
+        setPostTitle(postDetail.title);
+        setPostContent(postDetail.content);
+      }
+    })();
+  }, []);
   return (
     <PageForm isGNB={false}>
       <S.Container>
-        <Header title={"글쓰기"}/>
+        <Header title={"글쓰기"} navigate={headerNavigate} />
         <S.Container>
           <S.DoneBtnContainer>
-            <S.DoneBtn disabled={!requestFill} onClick={contentsPost}>
+            <S.DoneBtn disabled={!requestFill} onClick={postRegister}>
               완료
             </S.DoneBtn>
           </S.DoneBtnContainer>
           <S.PostCategoryBtn onClick={onOffSideFilter}>
             {postCategory ? (
-              <S.Label>{postCategory}</S.Label>
+              <S.Label>{postCategory.name}</S.Label>
             ) : (
               <S.CategoryBtnText>게시글 주제를 선택해주세요</S.CategoryBtnText>
             )}
@@ -80,6 +113,7 @@ const PostRegister = () => {
             open={sideFilterOpen}
             setSideFilterOpen={setSideFilterOpen}
             filterData={categoryData}
+            category={postCategory}
             setCategory={setPostCategory}
           />
         </S.Container>
