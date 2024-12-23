@@ -1,21 +1,26 @@
 import { useAxios as Axios } from "../../../shared/utils/useAxios";
 import Cookies from "js-cookie";
 
-interface PostProps {
+interface UpdateProps {
+  postId: number;
+  writerId: number | undefined;
   category: string;
   title: string;
   content: string;
-  writerId: number | undefined;
 }
 
-const communityPostApi = async (postData: PostProps) => {
+export const usePostUpdate = async (postData: UpdateProps) => {
   const { axiosInstance } = Axios();
   const accessToken = Cookies.get("access_token");
-
   try {
-    const response = await axiosInstance.post(
-      "/hf/posts",
-      { ...postData, writerId: postData.writerId, imagePath: null },
+    const response = await axiosInstance.patch(
+      `/hf/posts/${postData.postId}`,
+      {
+        category: postData.category,
+        title: postData.title,
+        content: postData.content,
+        writerId: postData.writerId,
+      },
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -24,9 +29,7 @@ const communityPostApi = async (postData: PostProps) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error posting data:", error);
+    console.error("Error updating post", error);
     throw error;
   }
 };
-
-export default communityPostApi;
