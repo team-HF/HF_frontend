@@ -17,7 +17,7 @@ import {
   getFITNESS_OBJECTIVE_MAP,
   FitnessObjective,
 } from '../../../shared/constants/fitness-category';
-import EmptyMatchingList from './emptyMatchingList';
+import EmptyMatchingList from './EmptyMatchingList';
 
 export default function MatchingList() {
   const [filterStatus, setFilterStatus] = useState<string>('전체');

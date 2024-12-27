@@ -1,7 +1,7 @@
+import ChatList from '../../features/chat-lobby/chat-list/ui/ChatList';
+import ChatLobbyHeader from '../../features/chat-lobby/chat-lobby-header/ui/ChatLobbyHeader';
 import * as S from './style';
-import ChatLobbyHeader from '../../widgets/chat-lobby/chat-lobby-header/ChatLobbyHeader';
 import { useState } from 'react';
-import ChatList from '../../widgets/chat-lobby/chat-list/ChatList';
 
 export default function ChatLobby() {
   //임시 state
