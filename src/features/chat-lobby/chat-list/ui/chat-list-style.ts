@@ -3,6 +3,7 @@ import { theme } from '../../../../app/theme';
 
 export const Container = styled.div`
   width: 360px;
+  position: relative;
   @media (min-width: 768px) {
     width: 40rem;
   }
@@ -121,4 +122,14 @@ export const StyledMenuDotIcon = styled.img`
 
 export const MatchingCardWrapper = styled.div`
   margin-top: 10px;
+`;
+
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
 `;

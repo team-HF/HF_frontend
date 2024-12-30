@@ -2,7 +2,7 @@ import * as S from './chat-list-style';
 import OnGoingMatchCard from '../../card/ui/OnGoingMatchCard';
 import { useEffect, useState } from 'react';
 import ChatListDropdown from './ChatListDropdown';
-import ChatConfirmModal from '../../../../shared/ui/chat-cofirm-modal/ChatCofirmModal';
+import ChatConfirmModal from '../../../../shared/ui/chat-confirm-modal/ChatConfirmModal';
 
 export default function ChatList() {
   const dummyUsers = Array.from({ length: 10 }, (_, i) => ({
@@ -24,6 +24,15 @@ export default function ChatList() {
 
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const handleConfirm = () => {
+    console.log('확인 클릭');
+    setIsOpenModal(false);
+  };
+
+  const handleCancel = () => {
+    console.log('취소 클릭');
+    setIsOpenModal(false);
+  };
   const toggleDropdown = (id: number) => {
     if (activeDropdown === id) {
       setActiveDropdown(null);
@@ -31,6 +40,19 @@ export default function ChatList() {
       setActiveDropdown(id);
     }
   };
+
+  //모달 오픈 시 스크롤 비활성화
+  useEffect(() => {
+    if (isOpenModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpenModal]);
 
   const handleOutsideClick = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -74,7 +96,10 @@ export default function ChatList() {
             />
             {activeDropdown === user.id && (
               <div className="dropdown" onClick={(e) => e.stopPropagation()}>
-                <ChatListDropdown setIsOpenModal={setIsOpenModal} />
+                <ChatListDropdown
+                  setIsOpenModal={setIsOpenModal}
+                  setActiveDropdown={setActiveDropdown}
+                />
               </div>
             )}
             <S.MatchingCardWrapper>
@@ -83,7 +108,12 @@ export default function ChatList() {
           </S.SubWrapper>
         </S.ListWrapper>
       ))}
-      {isOpenModal ? <ChatConfirmModal /> : null}
+      {isOpenModal && (
+        <>
+          <S.ModalOverlay />
+          <ChatConfirmModal onConfirm={handleConfirm} onCancel={handleCancel} />
+        </>
+      )}
     </S.Container>
   );
 }
