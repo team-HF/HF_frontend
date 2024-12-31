@@ -13,6 +13,7 @@ import {
   monthData,
   yearData,
 } from "../../entities/profile/date-picker-data";
+import { useNavigate } from "react-router-dom";
 
 interface Location {
   addr_name: string;
@@ -23,6 +24,8 @@ interface Location {
 }
 
 export default function Profile() {
+  const navigate = useNavigate();
+
   const {
     register,
     formState: { errors },
@@ -53,6 +56,7 @@ export default function Profile() {
     introduction,
     setIntroduction,
   } = useProfileStore();
+
   const [userLocation, setUserLocation] = useState<string>("");
   const [locationData, setLocationData] = useState<Location[]>([]);
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
@@ -146,7 +150,7 @@ export default function Profile() {
   return (
     <PageForm isGNB={false}>
       <S.Container>
-        <Header title={"프로필 입력"} />
+        <Header title={"프로필 입력"} navigate={() => navigate(-1)} />
 
         <S.ImageContainer>
           {image ? (

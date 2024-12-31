@@ -87,6 +87,7 @@ export const theme = {
     gray5: "#868E96", // 제목, 분문들의 한단계 낮은
     gray6: "#212529", // 제목, 헤더
     linear: "linear-gradient(91.14deg, #6441F2 -39.38%, #1E90FF 100%)", // 그라데이션 색상
+    beginner_linear: "linear-gradient(90deg, #8AE000 0%, #00BE9E 100%)",
   },
   shadows: {
     shadow1: `

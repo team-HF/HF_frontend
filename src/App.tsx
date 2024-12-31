@@ -12,6 +12,7 @@ import Community from "./pages/community/Community";
 import ChatLobby from "./pages/chat-lobby/ChatLobby";
 import PostRegister from "./pages/post-register/PostRegister";
 import PostDetail from "./pages/post-detail/PostDetail";
+import UserProfile from "./pages/user-profile/UserProfile";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ function App() {
               element={<PostRegister />}
             />
             <Route path="community/post-detail/:id" element={<PostDetail />} />
+            <Route path="member/:id/profile" element={<UserProfile />} />
           </Routes>
         </ThemeProvider>
       </QueryClientProvider>
