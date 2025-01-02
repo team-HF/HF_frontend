@@ -22,11 +22,12 @@ export default function Calendar({ selectedDate, onChange }: CalendarTypes) {
       <DatePicker
         locale={ko}
         dateFormat="yyyy-MM-dd"
-        shouldCloseOnSelect
-        maxDate={new Date()}
-        placeholderText="YYYY-MM-DD"
         selected={date}
         onChange={handleDateChange}
+        open={true}
+        popperPlacement="bottom-end"
+        popperClassName="myDatePickerPopper"
+        customInput={<div />}
         renderCustomHeader={({
           date,
           changeYear,
