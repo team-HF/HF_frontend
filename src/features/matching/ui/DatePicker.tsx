@@ -11,7 +11,9 @@ export default function DatePicker() {
     setDate(newDate);
     setIsOpen(false);
   };
-
+  const handleCloseCalendar = () => {
+    setIsOpen(false);
+  };
   const displayValue = date ? date.toLocaleDateString('ko-KR') : '';
 
   return (
@@ -32,7 +34,13 @@ export default function DatePicker() {
           onClick={() => setIsOpen(!isOpen)}
         />
 
-        {isOpen && <Calendar selectedDate={date} onChange={handleDateChange} />}
+        {isOpen && (
+          <Calendar
+            selectedDate={date}
+            onChange={handleDateChange}
+            onClose={handleCloseCalendar}
+          />
+        )}
       </S.FieldWrapper>
     </S.Container>
   );
