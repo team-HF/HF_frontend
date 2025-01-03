@@ -7,9 +7,14 @@ import * as S from './style';
 type CalendarTypes = {
   selectedDate: Date | null;
   onChange: (date: Date | null) => void;
+  onClose: () => void;
 };
 
-export default function Calendar({ selectedDate, onChange }: CalendarTypes) {
+export default function Calendar({
+  selectedDate,
+  onChange,
+  onClose,
+}: CalendarTypes) {
   const [date, setDate] = useState<Date | null>(selectedDate);
 
   const handleDateChange = (date: Date | null) => {
@@ -28,6 +33,7 @@ export default function Calendar({ selectedDate, onChange }: CalendarTypes) {
         popperPlacement="bottom-end"
         popperClassName="myDatePickerPopper"
         customInput={<div />}
+        onClickOutside={() => onClose()}
         renderCustomHeader={({
           date,
           changeYear,
