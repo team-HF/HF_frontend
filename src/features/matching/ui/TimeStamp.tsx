@@ -12,32 +12,48 @@ type Time = {
 
 export default function TimeStamp() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedTime, setSelectedTime] = useState<Time>({
-    period: '오전',
-    hour: 1,
-    minute: 0,
-  });
+  const [selectedTime, setSelectedTime] = useState<Time | null>(null);
+
+  const defaultTime = { period: '오전', hour: 1, minute: 0 };
+
+  const openPicker = () => {
+    setIsOpen(true);
+  };
+
+  const handleTimeSelect = (time: Time) => {
+    setSelectedTime(time);
+  };
+
   const handleConfirm = () => {
-    console.log('선택된 시간:', selectedTime);
     setIsOpen(false);
   };
+
+  const timeString = selectedTime
+    ? `${selectedTime.period} ${selectedTime.hour}시 ${selectedTime.minute}분`
+    : '';
+
   return (
     <S.Container>
       <S.Title>시간</S.Title>
       <S.FieldWrapper>
-        <S.FieldInput placeholder="시간을 선택하세요" readOnly />
+        <S.FieldInput
+          placeholder="시간을 선택하세요"
+          readOnly
+          value={timeString}
+        />
         <S.Icon
           src="/svg/under-arrow-icon.svg"
           alt="arrow"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={openPicker}
         />
         <EmblaLocalWrapper className="theme-white">
           {isOpen && (
-            <>
-              <EmblaCarousel>
-                <ConfirmButton onConfirm={handleConfirm} />
-              </EmblaCarousel>
-            </>
+            <EmblaCarousel
+              onTimeSelect={handleTimeSelect}
+              initialTime={selectedTime || defaultTime}
+            >
+              <ConfirmButton onConfirm={handleConfirm} />
+            </EmblaCarousel>
           )}
         </EmblaLocalWrapper>
       </S.FieldWrapper>

@@ -59,6 +59,7 @@ const setSlideStyles = (
     slideNode.style.transform = 'none';
   }
 };
+
 export const setContainerStyles = (
   emblaApi: EmblaCarouselType,
   wheelRotation: number
@@ -80,6 +81,8 @@ type PropType = {
   customSlides?: (string | number)[];
   start?: number;
   end?: number;
+  selectedValue?: string | number;
+  onSelect?: (value: string | number) => void;
 };
 
 const IosPickerItem: React.FC<PropType> = ({
@@ -91,7 +94,10 @@ const IosPickerItem: React.FC<PropType> = ({
   customSlides,
   start,
   end,
+  selectedValue,
+  onSelect,
 }) => {
+  // slides 배열
   const makeRange = (startVal: number, endVal: number, stepVal: number) => {
     const arr: number[] = [];
     for (let i = startVal; i <= endVal; i += stepVal) {
@@ -101,7 +107,6 @@ const IosPickerItem: React.FC<PropType> = ({
   };
 
   let slides: (string | number)[] = [];
-
   if (customSlides) {
     slides = customSlides;
   } else if (start !== undefined && end !== undefined) {
@@ -117,9 +122,12 @@ const IosPickerItem: React.FC<PropType> = ({
     containScroll: false,
     watchSlides: false,
   });
+
   const rootNodeRef = useRef<HTMLDivElement>(null);
 
+  // 전체 3D 회전 각도
   const totalRadius = slides.length * WHEEL_ITEM_RADIUS;
+  // loop가 아닐 때는 미묘하게 회전 각도를 오프셋
   const rotationOffset = loop ? 0 : WHEEL_ITEM_RADIUS;
 
   const inactivateEmblaTransform = useCallback(
@@ -136,8 +144,10 @@ const IosPickerItem: React.FC<PropType> = ({
     []
   );
 
+  // 휠 회전 (3D) 및 슬라이드 스타일 적용
   const rotateWheel = useCallback(
     (emblaApi: EmblaCarouselType) => {
+      // 현재 스크롤 진행도를 바탕으로 휠 각도 계산
       const wheelRotation =
         (slides.length * WHEEL_ITEM_RADIUS - rotationOffset) *
         emblaApi.scrollProgress();
@@ -150,20 +160,32 @@ const IosPickerItem: React.FC<PropType> = ({
     [slides, loop, rotationOffset, totalRadius]
   );
 
+  // 사용자가 스크롤을 멈췄을 때, 가까운 스냅포인트로 이동
   useEffect(() => {
     if (!emblaApi) return;
 
+    // 사용자가 드래그를 놓는 순간(pointerUp) → 가장 가까운 위치로 스냅
     emblaApi.on('pointerUp', (embla) => {
       const { scrollTo, target, location } = embla.internalEngine();
       const diffToTarget = target.get() - location.get();
+      // diff가 너무 작으면(거의 정중앙 가까이) 바로, 멀면 천천히
       const factor = Math.abs(diffToTarget) < WHEEL_ITEM_SIZE / 2.5 ? 1 : 0.01;
       const distance = diffToTarget * factor;
       scrollTo.distance(distance, true);
     });
 
+    // scroll 이벤트 발생 시, wheel 업데이트
     emblaApi.on('scroll', rotateWheel);
-    emblaApi.on('select', rotateWheel);
+    emblaApi.on('select', () => {
+      rotateWheel(emblaApi);
 
+      // embla가 선택한 인덱스 → slides 배열에서 값 추출
+      const selectedIndex = emblaApi.selectedScrollSnap();
+      const selectedVal = slides[selectedIndex];
+      onSelect?.(selectedVal);
+    });
+
+    // 재초기화 하는 시점
     emblaApi.on('reInit', (embla) => {
       inactivateEmblaTransform(embla);
       rotateWheel(embla);
@@ -171,7 +193,16 @@ const IosPickerItem: React.FC<PropType> = ({
 
     inactivateEmblaTransform(emblaApi);
     rotateWheel(emblaApi);
-  }, [emblaApi, inactivateEmblaTransform, rotateWheel]);
+  }, [emblaApi, inactivateEmblaTransform, rotateWheel, onSelect, slides]);
+
+  // 외부에서 `selectedValue`가 바뀔 때 → 해당 인덱스로 휠 이동
+  useEffect(() => {
+    if (!emblaApi || selectedValue == null) return;
+    const index = slides.findIndex((v) => v === selectedValue);
+    if (index !== -1) {
+      emblaApi.scrollTo(index, false);
+    }
+  }, [emblaApi, selectedValue, slides]);
 
   return (
     <S.IosPicker>
