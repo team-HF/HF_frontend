@@ -10,16 +10,16 @@ declare global {
 
 type MapModalProps = {
   onClose: () => void;
+  onSelectLocation: (location: string) => void;
 };
 
-export default function KakaoMap({ onClose }: MapModalProps) {
+export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
   const { kakao } = window;
   const mapRef = useRef<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
   const [keyword, setKeyword] = useState('');
   const pinnedOverlayRef = useRef<any>(null);
-  const activeOverlayRef = useRef<any>(null); // 현재 활성화된 비고정 CustomOverlay 추적
-
+  const activeOverlayRef = useRef<any>(null);
   useEffect(() => {
     const container = document.getElementById('map');
     if (!container || !kakao) return;
@@ -27,7 +27,7 @@ export default function KakaoMap({ onClose }: MapModalProps) {
       center: new kakao.maps.LatLng(
         37.5385167,
         127.1237667
-      ) /*현재 위치 강동구 천호역*/,
+      ) /*현재 기본 위치 값 강동구 천호역*/,
       level: 3,
     };
     mapRef.current = new kakao.maps.Map(container, options);
@@ -74,15 +74,28 @@ export default function KakaoMap({ onClose }: MapModalProps) {
     content.style.backgroundColor = '#fff';
     content.style.borderRadius = '4px';
     content.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+    content.style.cursor = 'pointer';
+
+    content.style.pointerEvents = 'auto';
+    content.style.zIndex = '9999';
+
     content.innerHTML = `
       <div style="font-weight:600; margin-bottom:6px;">이 위치 전송</div>
       <div style="font-size:12px; color:grey">${place.place_name}</div>
     `;
-
     const overlay = new kakao.maps.CustomOverlay({
       content: content,
       position: marker.getPosition(),
-      yAnchor: 1.8, //말풍선과 마커 간격
+      yAnchor: 1.8,
+      zIndex: 9999,
+    });
+    console.log(overlay);
+    console.log(content);
+    content.addEventListener('click', (e) => {
+      e.stopPropagation();
+      console.log('클릭');
+      onSelectLocation(place.place_name);
+      onClose();
     });
 
     return overlay;
@@ -103,7 +116,7 @@ export default function KakaoMap({ onClose }: MapModalProps) {
       });
       newMarkers.push(marker);
 
-      // 각 마커에 대한 CustomOverlay 생성
+      //마커 오버레이 생성
       const overlay = createCustomOverlay(place, marker);
 
       // 마우스 오버 이벤트
