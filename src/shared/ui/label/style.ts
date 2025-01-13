@@ -4,6 +4,7 @@ interface LabelContainerProps {
   $borderColor: string;
   $backgroundColor?: string;
   radius: '24px' | '4px';
+  $width: number;
 }
 
 interface LabelTextProps {
@@ -14,7 +15,7 @@ export const LabelContainer = styled.div<LabelContainerProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
+  width: ${(props) => props.$width};
   height: 22px;
   border-radius: ${(props) => props.radius};
   padding: 0.375rem;
