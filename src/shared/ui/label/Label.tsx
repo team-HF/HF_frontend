@@ -6,6 +6,7 @@ type LabelProps = {
   backgroundColor: string;
   borderColor?: string;
   width: number;
+  height: number;
 };
 
 export default function Label({
@@ -14,6 +15,7 @@ export default function Label({
   borderColor = 'transparent',
   backgroundColor,
   width,
+  height,
 }: LabelProps) {
   return (
     <S.LabelContainer
@@ -21,6 +23,7 @@ export default function Label({
       $backgroundColor={backgroundColor}
       radius="24px"
       $width={width}
+      $height={height}
     >
       <S.LabelText $fontColor={fontColor}>{text}</S.LabelText>
     </S.LabelContainer>

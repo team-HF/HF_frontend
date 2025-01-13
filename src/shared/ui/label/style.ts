@@ -5,6 +5,7 @@ interface LabelContainerProps {
   $backgroundColor?: string;
   radius: '24px' | '4px';
   $width: number;
+  $height: number;
 }
 
 interface LabelTextProps {
@@ -16,7 +17,7 @@ export const LabelContainer = styled.div<LabelContainerProps>`
   align-items: center;
   justify-content: center;
   width: ${(props) => props.$width};
-  height: 22px;
+  height: ${(props) => props.$height};
   border-radius: ${(props) => props.radius};
   padding: 0.375rem;
   gap: 0.625rem;

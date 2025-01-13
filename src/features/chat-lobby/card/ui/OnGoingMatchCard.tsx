@@ -7,6 +7,7 @@ export default function OnGoingMatchCard() {
       fontColor="#FF5E00"
       backgroundColor="#FFEFE6"
       width={50}
+      height={22}
     />
   );
 }

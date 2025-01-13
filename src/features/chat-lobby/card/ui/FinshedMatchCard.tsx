@@ -7,6 +7,7 @@ export default function FinishedMatchCard() {
       backgroundColor="#F0ECFE"
       fontColor="#6541F2"
       width={50}
+      height={22}
     />
   );
 }
