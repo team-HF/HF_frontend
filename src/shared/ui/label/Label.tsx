@@ -22,8 +22,8 @@ export default function Label({
       $borderColor={borderColor}
       $backgroundColor={backgroundColor}
       radius="24px"
-      $width={width}
-      $height={height}
+      width={width}
+      height={height}
     >
       <S.LabelText $fontColor={fontColor}>{text}</S.LabelText>
     </S.LabelContainer>
