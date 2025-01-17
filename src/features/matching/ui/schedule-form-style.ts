@@ -1,11 +1,14 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
 export const Container = styled.div`
   width: 100%;
   display: flex;
-  padding: 8px 0px;
-  justify-self: center;
   flex-direction: column;
+  padding: 8px 0px;
+  flex: 1;
+  position: relative;
+  min-height: 70vh;
+
   @media (min-width: 768px) {
     width: 640px;
   }

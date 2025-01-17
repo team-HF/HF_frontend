@@ -1,7 +1,7 @@
 import DatePicker from './DatePicker';
-import LocationSelect from './LocationSelect.tsx';
-import * as S from './schedule-form-style.ts';
-import TimeStamp from './TimeStamp.tsx';
+import LocationSelect from './LocationSelect';
+import TimeStamp from './TimeStamp';
+import * as S from './schedule-form-style';
 
 export default function ScheduleForm() {
   return (
