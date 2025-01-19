@@ -1,22 +1,11 @@
 import styled from "styled-components";
-import {
-  CompanionStyle,
-  FitnessEagerness,
-  FitnessKind,
-  FitnessObjective,
-} from "../../constants/fitness-category";
 import { theme } from "../../../app/theme";
 
-type CombinedFitnessType =
-  | CompanionStyle
-  | FitnessEagerness
-  | FitnessObjective
-  | FitnessKind;
-
-interface ExerciseTagProps {
-  tag?: CombinedFitnessType;
+interface ExerciseTag {
+  tag: string | undefined;
 }
-const ExerciseTag = ({ tag }: ExerciseTagProps) => {
+
+const ExerciseTag = ({ tag }: ExerciseTag) => {
   return <Tag>{`# ${tag}`}</Tag>;
 };
 

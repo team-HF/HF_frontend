@@ -5,6 +5,14 @@ export interface Tier {
   tier: number;
 }
 
+export interface Location {
+  y_coor: string;
+  full_addr: string;
+  x_coor: string;
+  addr_name: string;
+  cd: string;
+}
+
 export interface User {
   memberId: number;
   loginId: string;
@@ -38,10 +46,12 @@ export interface Spec {
   description: string;
 }
 
+export interface ReviewCard {
+  reviewDetailId: number;
+  reviewDetailCount: number;
+}
+
 export interface Review {
-  evaluationType: "GOOD" | "NOT_GOOD";
-  reviewDetailsPerEvaluationType: {
-    reviewDetailId: number;
-    reviewDetailCount: number;
-  }[];
+  good: ReviewCard[];
+  notGood: ReviewCard[];
 }

@@ -3,12 +3,12 @@ import { theme } from "../../../app/theme";
 import { FitnessLevel, Tier } from "../../types/user";
 
 const TierTag = ({ fitnessLevel, tier }: Tier) => {
-  return <Tag fitnessLevel={fitnessLevel}>{`Lv. ${tier}`}</Tag>;
+  return <Tag $fitnessLevel={fitnessLevel}>{`Lv. ${tier}`}</Tag>;
 };
 
 export default TierTag;
 
-const Tag = styled.span<{ fitnessLevel: FitnessLevel }>`
+const Tag = styled.span<{ $fitnessLevel: FitnessLevel }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +21,7 @@ const Tag = styled.span<{ fitnessLevel: FitnessLevel }>`
   font-weight: 400;
   color: ${theme.colors.white};
   background: ${(props) =>
-    props.fitnessLevel === "ADVANCED"
+    props.$fitnessLevel === "ADVANCED"
       ? theme.colors.linear
       : theme.colors.beginner_linear};
 `;

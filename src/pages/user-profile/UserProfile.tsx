@@ -1,5 +1,5 @@
 import * as S from "./style";
-import Header from "../../widgets/user-profile/header/Header";
+import LogoHeader from "../../shared/ui/logo-header/Header";
 import Career from "../../widgets/user-profile/career/Career";
 import PageForm from "../../shared/ui/page-form/PageForm";
 import UserDataDefault from "../../widgets/user-profile/user-data-default/UserDataDefault";
@@ -23,6 +23,7 @@ const UserProfile = () => {
       const userData_1 = await getUserData(memberId);
       setUserProfile(userData_1);
       const userData_2 = await getUserDetail(memberId);
+      console.log(userData_2);
       if (userData_2) setUserDetail(userData_2);
     })();
   }, []);
@@ -30,9 +31,9 @@ const UserProfile = () => {
   return (
     <PageForm isGNB={true}>
       <S.Container>
-        <Header navigate={() => {}} alarm={() => {}} />
+        <LogoHeader backBtn={true} />
         <UserDataDefault />
-        {userDetail && userDetail.specs[0].title && <Career />}
+        {userDetail && userDetail.specs[0] && <Career />}
         <Review />
       </S.Container>
     </PageForm>

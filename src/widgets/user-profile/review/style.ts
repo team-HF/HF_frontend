@@ -21,8 +21,8 @@ export const Box = styled.div`
   &.gap_8 {
     gap: 0.5rem;
   }
-  &.gap_16{
-    gap : 1rem;
+  &.gap_16 {
+    gap: 1rem;
   }
   &.gap_24 {
     gap: 1.5rem;
@@ -56,8 +56,8 @@ export const GraphBackground = styled.div<{ percentage: number }>`
   height: 6rem;
   border-radius: 50%;
   background: ${({ percentage }) => `conic-gradient(
-    #ff9200 ${percentage}% 0%,
-    ${theme.colors.main} 0%
+    ${theme.colors.main} ${percentage}% 0%,
+    #ff9200 0%
   )`};
 `;
 export const GraphFront = styled.div`
@@ -83,12 +83,12 @@ export const ElementText = styled.span`
     color: #ff9200;
   }
 `;
-export const PositiveReviewCard = styled.div<{ positive: boolean }>`
+export const PositiveReviewCard = styled.div<{ $positive: boolean }>`
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 1.25rem;
   border-radius: 0.5rem;
-  background-color: ${({ positive }) => (positive ? "#F0ECFE" : "#FFF4E6")};
+  background-color: ${({ $positive }) => ($positive ? "#F0ECFE" : "#FFF4E6")};
 `;
 export const ReviewCardText = styled.span`
   font-size: 0.75rem;
@@ -106,4 +106,19 @@ export const DetailBtn = styled.button`
   font-weight: 500;
   background-color: ${theme.colors.gray2};
   color: ${theme.colors.gray5};
+`;
+export const EmptyReview = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  height: 10rem;
+`;
+export const EmptyContent = styled.p`
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.334rem;
+  letter-spacing: -0.0025rem;
+  font-weight: 500;
+  color: ${theme.colors.gray4};
 `;

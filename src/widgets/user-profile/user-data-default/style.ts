@@ -39,6 +39,7 @@ export const UserImage = styled.img`
   height: 5rem;
   border-radius: 50%;
   box-shadow: ${theme.shadows.shadow2};
+  background-color: ${theme.colors.gray2};
 `;
 export const Text_1 = styled.span`
   font-size: 1.125rem;
