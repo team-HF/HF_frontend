@@ -6,10 +6,6 @@ export const Container = styled.div`
   width: 100%;
   height: 3rem;
   gap: 0.5rem;
-  @media (min-width: 768px) and (max-width: 1919px) {
-    width: 40rem;
-    padding: 0.5rem 0;
-  }
 `;
 export const BackIcon = styled.img<{ src: string }>`
   width: 1.5rem;

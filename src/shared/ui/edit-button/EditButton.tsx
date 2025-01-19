@@ -1,11 +1,16 @@
 import * as S from "./style";
 
-const EditButton = () => {
+interface EditButtonProps {
+  updateContent: () => void;
+  deleteContent: () => void;
+}
+
+const EditButton = ({ updateContent, deleteContent }: EditButtonProps) => {
   return (
     <S.Container>
-      <S.Button>수정</S.Button>
+      <S.Button onClick={updateContent}>수정</S.Button>
       <S.Divider />
-      <S.Button>삭제</S.Button>
+      <S.Button onClick={deleteContent}>삭제</S.Button>
     </S.Container>
   );
 };
