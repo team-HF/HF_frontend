@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { theme } from './app/theme';
 import { ThemeProvider } from 'styled-components';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import MyPage from './pages/my-page/MyPage';
 import ExerciseOption from './pages/exercise-option/ExerciseOption';
 import ProfileSetting from './pages/profile-setting/ProfileSetting';
@@ -15,14 +14,13 @@ import PostDetail from './pages/post-detail/PostDetail';
 import ExerciseStyle from './pages/exercise-style/ExerciseStyle';
 import Matching from './pages/matching/Matching';
 import MatchingReview from './pages/matching-review/MatchingReview';
-
-const queryClient = new QueryClient();
+import { SocketProvider } from './shared/ui/socket/SocketProvider';
 
 function App() {
   return (
     <Router>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <SocketProvider>
           <Routes>
             <Route path="login" element={<Login />} />
             <Route path="/my-page" element={<MyPage />} />
@@ -44,8 +42,8 @@ function App() {
             <Route path="/matching" element={<Matching />} />
             <Route path="/matching-review" element={<MatchingReview />} />
           </Routes>
-        </ThemeProvider>
-      </QueryClientProvider>
+        </SocketProvider>
+      </ThemeProvider>
     </Router>
   );
 }
