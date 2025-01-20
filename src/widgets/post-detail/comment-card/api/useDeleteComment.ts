@@ -2,7 +2,6 @@ import { useAxios as Axios } from "../../../../shared/utils/useAxios";
 import Cookies from "js-cookie";
 
 export const useDeleteComment = async (commentId: number) => {
-  console.log(commentId);
   const { axiosInstance } = Axios();
   const accessToken = Cookies.get("access_token");
   try {

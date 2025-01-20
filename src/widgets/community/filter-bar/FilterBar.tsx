@@ -12,8 +12,13 @@ import {
 const FilterBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { categorySelected, labelSelected, setLabelSelected } =
-    useCommunityStore();
+  const {
+    categorySelected,
+    labelSelected,
+    setLabelSelected,
+    filterSelected,
+    setFilterSelected,
+  } = useCommunityStore();
 
   const changeLabel = (label: TLabel) => {
     setLabelSelected(label);
@@ -42,7 +47,12 @@ const FilterBar = () => {
       {categorySelected === "POPULAR" ? (
         <S.LabelContainer>{LabelList}</S.LabelContainer>
       ) : (
-        <Filter filterData={filterData} />
+        <Filter
+          filterData={filterData}
+          selectedFilter={filterSelected}
+          setFilter={setFilterSelected}
+          paramName="fitnessLevel"
+        />
       )}
     </S.Container>
   );
