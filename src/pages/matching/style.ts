@@ -43,3 +43,11 @@ export const DetailDiv = styled.div`
     width: 1080px;
   }
 `;
+
+export const BottomWrapper = styled.div`
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  margin-bottom: 40px;
+  margin-top: -40px;
+`;
