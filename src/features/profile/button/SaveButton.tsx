@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios, { AxiosInstance } from "axios";
 import styled from "styled-components";
 import { theme } from "../../../app/theme";
+import { useLocationStore } from "../../../shared/store/location-store";
 
 type SaveButtonProps = {
   disabled: boolean;
@@ -90,11 +91,10 @@ export default function SaveButton({ disabled }: SaveButtonProps) {
     dateMonth,
     dateDay,
     gender,
-    cd1,
-    cd2,
-    cd3,
     introduction,
   } = useProfileStore();
+
+  const { cd1, cd2, cd3 } = useLocationStore();
 
   const joinMembership = async () => {
     const imageFileExtension = image?.type.split("/")[1] || null;

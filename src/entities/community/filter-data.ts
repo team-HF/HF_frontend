@@ -1,9 +1,9 @@
-export type TCategory = "FREE" | "COUNSELING";
+export type TCategory = "FREE_COMMUNITY" | "COUNSELING";
 export type TFilter = "ADVANCED" | "BEGINNER";
 export type TLabel = "WEEKEND" | "ADVANCED" | "BEGINNER";
 
 export const categoryData: { name: string; id: TCategory }[] = [
-  { name: "자유게시판", id: "FREE" },
+  { name: "자유게시판", id: "FREE_COMMUNITY" },
   { name: "고민/사연", id: "COUNSELING" },
 ];
 export const filterData: { name: string; id: TFilter }[] = [

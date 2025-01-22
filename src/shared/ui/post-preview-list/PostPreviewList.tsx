@@ -16,12 +16,18 @@ export type PostData = {
 
 export default function PostPreviewList(data: PostData) {
   const navigate = useNavigate();
+  const category =
+    data.category === "FREE_COMMUNITY" ? "자유게시판" : "고민/사연";
   return (
     <s.PostPreviewContainer
-      onClick={() => navigate(`/community/post-detail/${data.postId}`)}
+      onClick={() =>
+        navigate(`/community/post-detail/${data.postId}`, {
+          state: { from: window.location.pathname },
+        })
+      }
     >
       <s.CategoryWrapper>
-        <s.CategoryText>{data.category}</s.CategoryText>
+        <s.CategoryText>{category}</s.CategoryText>
       </s.CategoryWrapper>
       <s.TitleContainer>
         <s.TitleText>{data.title}</s.TitleText>

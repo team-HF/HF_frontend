@@ -15,7 +15,8 @@ import ExerciseStyle from './pages/exercise-style/ExerciseStyle';
 import Matching from './pages/matching/Matching';
 import MatchingReview from './pages/matching-review/MatchingReview';
 import { SocketProvider } from './shared/ui/socket/SocketProvider';
-
+import UserProfile from './pages/user-profile/UserProfile';
+import ProfileSearch from './pages/profile-serch/ProfileSearch';
 function App() {
   return (
     <Router>
@@ -38,9 +39,13 @@ function App() {
             <Route path="/chat-lobby" element={<ChatLobby />} />
             <Route path="community" element={<Community />} />
             <Route path="community/post-register" element={<PostRegister />} />
+            <Route
+              path="community/post-update/:id"
+              element={<PostRegister />}
+            />
             <Route path="community/post-detail/:id" element={<PostDetail />} />
-            <Route path="/matching" element={<Matching />} />
-            <Route path="/matching-review" element={<MatchingReview />} />
+            <Route path="member/:id/profile" element={<UserProfile />} />
+            <Route path="/" element={<ProfileSearch />} />
           </Routes>
         </SocketProvider>
       </ThemeProvider>

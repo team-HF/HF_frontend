@@ -1,89 +1,173 @@
-import { useState } from "react";
+import * as S from "./style";
+import ReplyCard from "./ReplyCard";
 import EditButton from "../../../shared/ui/edit-button/EditButton";
 import InputComment from "../../../shared/ui/input_comment/InputComment";
+import { TComment, TLike } from "../../../shared/types/community";
+import { useMyProfileStore } from "../../../shared/store/my-profile-store";
+import { useEffect, useState } from "react";
 import { useGetDate as getDate } from "../../../shared/utils/useGetDate";
-import { Comment } from "../comment-list/CommentList";
-import * as S from "./style";
-import postComment from "../comment-input/api/usePostComment";
+import { usePostReply as postReply } from "./api/usePostReply";
+import { useUpdateComment as updateComment } from "./api/useUpdateComment";
+import { useDeleteComment as deleteComment } from "./api/useDeleteComment";
+import { useGetCommentLike as getCommentLike } from "./api/useGetCommentLike";
+import { useDeletePostLike as deletePostLike } from "../post-content/api/useDeletePostLike";
+import { usePostCommentLike as postCommentLike } from "./api/usePostCommentLike";
 
-interface CommentData {
-  data: Comment;
-}
+const CommentCard = (data: TComment) => {
+  const { myProfile } = useMyProfileStore();
 
-const CommentCard = ({ data }: CommentData) => {
   const [openInput, setOpenInput] = useState<boolean>(false);
-  const [commentValue, setCommentValue] = useState<string>("");
-  const [comments, setComments] = useState<Comment[]>([]);
-  const sendComment = () =>
-    postComment({
-      postId: 0,
-      commentValue: commentValue,
+  const [tagName, setTagName] = useState<string>("");
+  const [replyValue, setReplyValue] = useState<string>("");
+  const [likeStatus, setLikeStatus] = useState<TLike | number>(0);
+  const [commentUpdate, setCommentUpdate] = useState<boolean>(false);
+  const [updateValue, setUpdateValue] = useState<string>(data.content);
+
+  const changeReplyInput = (name: string) => {
+    if (openInput) {
+      if (tagName !== "@" + name && data.replies.length >= 1) {
+        setTagName("@" + name);
+      } else {
+        setOpenInput(false);
+      }
+    } else {
+      if (data.replies.length >= 1) {
+        setTagName("@" + name);
+      }
+      setOpenInput(true);
+    }
+  };
+
+  const sendReply = async () => {
+    const response = await postReply({
+      postId: data.postId,
+      writerId: myProfile?.memberId,
+      content: replyValue,
+      parentCommentId: data.commentId,
     });
-  const myComment = true;
-  const like = false; // 수정필요
-  const commentList = comments.map((item) => (
-    <S.InputContainer>
-      <img src="/svg/arrow-curve-icon.svg" alt="arrow_curved_icon" />
-      <S.Container>
-        <S.InfoBox_1>
-          <S.profileBox>
-            <S.ProfileImage
-              src="/svg/default-profile-icon.svg"
-              alt="profile_image"
-            />
-            <S.InfoText>사용자</S.InfoText>
-            <S.LevelLabel>Lv. 1</S.LevelLabel>
-            <S.InfoText>{getDate(item.creationTime)}</S.InfoText>
-          </S.profileBox>
-          {myComment && <EditButton />}
-        </S.InfoBox_1>
-        <S.Comment>{data.content}</S.Comment>
-        <S.InfoBox_1>
-          <S.CommentButton onClick={() => setOpenInput(!openInput)}>
-            답글 쓰기
-          </S.CommentButton>
-          {like ? (
-            <S.FavoriteBtn src={"/svg/heart-fill-icon.svg"} />
-          ) : (
-            <S.NonFavorite src={"/svg/heart-icon.svg"} />
-          )}
-        </S.InfoBox_1>
-      </S.Container>
-    </S.InputContainer>
+    if (response.statusCode === 201) {
+      window.location.reload();
+    }
+  };
+
+  const changeLike = async () => {
+    if (likeStatus) {
+      if (typeof likeStatus !== "number") {
+        const response = await deletePostLike(likeStatus.likeId);
+        if (response.statusCode === 200) {
+          setLikeStatus(0);
+        }
+      }
+    } else {
+      const response = await postCommentLike(
+        data.commentId,
+        myProfile?.memberId
+      );
+      if (response.statusCode === 201) {
+        const likeData = {
+          commentId: data.commentId,
+          likeId: response.content as number,
+          memberId: myProfile?.memberId as number,
+        };
+        setLikeStatus(likeData);
+      }
+    }
+  };
+
+  const updateCommentState = () => {
+    setUpdateValue(data.content);
+    setCommentUpdate(true);
+  };
+
+  const updateDone = async () => {
+    if (updateValue) {
+      await updateComment(data.commentId, updateValue);
+    }
+  };
+
+  const deleteCurrentComment = async () => {
+    await deleteComment(data.commentId);
+  };
+
+  useEffect(() => {
+    (async () => {
+      const likeResponse = await getCommentLike(data.commentId);
+      if (likeResponse.content.length) {
+        setLikeStatus(likeResponse.content[0]);
+      }
+    })();
+  }, []);
+
+  const commentList = data.replies.map((item, index) => (
+    <ReplyCard
+      key={`comment_reply_${item.commentId}`}
+      data={item}
+      parentTag={index >= 1 ? true : false}
+      setOpenInput={changeReplyInput}
+    />
   ));
   return (
     <S.Container>
       <S.InfoBox_1>
         <S.profileBox>
           <S.ProfileImage
-            src="/svg/default-profile-icon.svg"
+            src={
+              data.writerProfileUrl
+                ? data.writerProfileUrl
+                : "/svg/default-profile-icon.svg"
+            }
             alt="profile_image"
           />
-          <S.InfoText>사용자</S.InfoText>
-          <S.LevelLabel>Lv. 1</S.LevelLabel>
+          <S.InfoText>{data.writerName}</S.InfoText>
+          <S.LevelLabel
+            $fitnessLevel={data?.writerTier.fitnessLevel === "ADVANCED"}
+          >
+            Lv. {data?.writerTier.tier}
+          </S.LevelLabel>
           <S.InfoText>{getDate(data.creationTime)}</S.InfoText>
         </S.profileBox>
-        {myComment && <EditButton />}
+        {myProfile?.memberId === data.writerId && !commentUpdate ? (
+          <EditButton
+            updateContent={updateCommentState}
+            deleteContent={deleteCurrentComment}
+          />
+        ) : commentUpdate ? (
+          <S.Button onClick={() => setCommentUpdate(false)}>취소</S.Button>
+        ) : (
+          <></>
+        )}
       </S.InfoBox_1>
-      <S.Comment>{data.content}</S.Comment>
+      {commentUpdate ? (
+        <S.UpdateBox>
+          <InputComment
+            tagName={null}
+            commentValue={updateValue}
+            setCommentValue={setUpdateValue}
+            sendComment={updateDone}
+          />
+        </S.UpdateBox>
+      ) : (
+        <S.Comment>{data.content}</S.Comment>
+      )}
       <S.InfoBox_1>
-        <S.CommentButton onClick={() => setOpenInput(!openInput)}>
+        <S.CommentButton onClick={() => changeReplyInput(data.writerName)}>
           답글 쓰기
         </S.CommentButton>
-        {like ? (
-          <S.FavoriteBtn src={"/svg/heart-fill-icon.svg"} />
-        ) : (
-          <S.NonFavorite src={"/svg/heart-icon.svg"} />
-        )}
+        <S.FavoriteBtn
+          src={likeStatus ? "/svg/heart-fill-icon.svg" : "/svg/heart-icon.svg"}
+          $fill={typeof likeStatus !== "number"}
+          onClick={() => changeLike()}
+        />
       </S.InfoBox_1>
       {commentList}
       {openInput && (
         <S.InputContainer>
           <img src="/svg/arrow-curve-icon.svg" alt="arrow_curved_icon" />
           <InputComment
-            commentValue={commentValue}
-            setCommentValue={setCommentValue}
-            sendComment={sendComment}
+            tagName={tagName}
+            commentValue={replyValue}
+            setCommentValue={setReplyValue}
+            sendComment={sendReply}
           />
         </S.InputContainer>
       )}

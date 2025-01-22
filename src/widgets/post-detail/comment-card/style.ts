@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { theme } from "../../../app/theme";
 
 export const Container = styled.div`
@@ -6,9 +6,6 @@ export const Container = styled.div`
   flex-direction: column;
   padding: 0.5rem 0;
   border-bottom: 1px solid #f1f3f5;
-  &:first-child {
-    border-top: 1px solid #f1f3f5;
-  }
 `;
 export const InfoBox_1 = styled.div`
   display: flex;
@@ -28,11 +25,14 @@ export const ProfileImage = styled.img`
   height: 1.5rem;
   box-shadow: ${theme.shadows.shadow1};
 `;
-export const LevelLabel = styled.span`
+export const LevelLabel = styled.span<{ $fitnessLevel: boolean }>`
   padding: 0.125rem 0.375rem;
   border-radius: 2.125rem;
   color: ${theme.colors.white};
-  background: linear-gradient(91.14deg, #6441f2 -39.38%, #1e90ff 100%);
+  background: ${({ $fitnessLevel }) =>
+    $fitnessLevel
+      ? "linear-gradient(91.14deg, #6441f2 -39.38%, #1e90ff 100%)"
+      : "#00BF40"};
   font-size: 0.75rem;
   line-height: 1rem;
   letter-spacing: -0.031rem;
@@ -43,13 +43,20 @@ export const InfoText = styled.span`
   letter-spacing: -0.003rem;
   color: #8e8e93;
 `;
-export const Comment = styled.p`
+export const CommentBox = styled.div`
+  padding: 1rem 0;
+`;
+export const Comment = styled.span`
   padding: 1rem 0;
   font-size: 0.875rem;
   line-height: 1.5rem;
   letter-spacing: -0.005rem;
   color: #4d4d4d;
+  &.mention {
+    color: ${theme.colors.sub};
+  }
 `;
+
 export const CommentButton = styled.button`
   border: 0;
   font-size: 0.75rem;
@@ -58,13 +65,34 @@ export const CommentButton = styled.button`
   color: ${theme.colors.sub};
   background-color: ${theme.colors.white};
 `;
-export const FavoriteBtn = styled.img<{ src: string }>`
-  filter: invert(34%) sepia(100%) saturate(600%) hue-rotate(0deg)
-    brightness(90%) contrast(100%);
+export const FavoriteBtn = styled.img<{ $fill: boolean }>`
+  ${({ $fill }) =>
+    $fill &&
+    css`
+      filter: invert(24%) sepia(91%) saturate(7435%) hue-rotate(323deg)
+        brightness(97%) contrast(107%);
+    `}
 `;
-export const NonFavorite = styled.img<{ src: string }>``;
 export const InputContainer = styled.div`
   display: flex;
   padding: 0.5rem 0;
   gap: 0.5rem;
+`;
+export const ReplyContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  width: 100%;
+  border-top: 1px solid #f1f3f5;
+`;
+export const UpdateBox = styled.div`
+  padding: 0.5rem 0;
+`;
+export const Button = styled.button`
+  border: 0;
+  font-size: 0.75rem;
+  line-height: 1.334rem;
+  letter-spacing: -0.0025rem;
+  color: #adb5bd;
+  background-color: white;
 `;

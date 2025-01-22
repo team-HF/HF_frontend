@@ -6,23 +6,18 @@ import DatePicker from "../../widgets/profile/date-picker/DatePicker";
 import { useForm } from "react-hook-form";
 import { useProfileStore } from "../../features/profile/store/profile-store";
 import { useEffect, useState } from "react";
-import { getSgisLocationData } from "../../shared/api/getSgisLocationData";
-import { getSgisApiAccessToken } from "../../shared/api/getSgisApiAccessToken";
 import {
   dayData,
   monthData,
   yearData,
 } from "../../entities/profile/date-picker-data";
-
-interface Location {
-  addr_name: string;
-  cd: string;
-  full_addr: string;
-  x_coor: string;
-  y_coor: string;
-}
+import { useNavigate } from "react-router-dom";
+import LocationSelectBar from "../../shared/ui/location-select-bar/LocationSelectBar";
+import { useLocationStore } from "../../shared/store/location-store";
 
 export default function Profile() {
+  const navigate = useNavigate();
+
   const {
     register,
     formState: { errors },
@@ -43,44 +38,15 @@ export default function Profile() {
     dateDay,
     setDateDay,
     gender,
-    cd1,
-    setCd1,
-    cd2,
-    setCd2,
-    cd3,
-    setCd3,
     setGender,
     introduction,
     setIntroduction,
   } = useProfileStore();
-  const [userLocation, setUserLocation] = useState<string>("");
-  const [locationData, setLocationData] = useState<Location[]>([]);
+
+  const { cd1, cd2, cd3 } = useLocationStore();
+
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
   const [introductionContent, setIntroductionContent] = useState<string>("");
-
-  const getLocationData = async () => {
-    const result = await getSgisLocationData(cd3 || cd2 || cd1);
-    setLocationData(result);
-  };
-
-  useEffect(() => {
-    getSgisApiAccessToken();
-    getLocationData();
-  }, [cd1, cd2, cd3]);
-
-  const onClickLocationCard = (cd: string, full_addr: string) => {
-    if (!cd1) setCd1(cd);
-    else if (!cd2) setCd2(cd);
-    else setCd3(cd);
-    setUserLocation(full_addr);
-  };
-
-  const onClickReset = () => {
-    setCd1("");
-    setCd2("");
-    setCd3("");
-    setUserLocation("");
-  };
 
   // 스토어 값이 변경될 때 폼에도 저장
   useEffect(() => {
@@ -118,15 +84,6 @@ export default function Profile() {
       watchedIntroduction
   );
 
-  const locationCards = locationData.map((data) => (
-    <S.LocationCard
-      key={`locationBtn_cd${data.cd}`}
-      onClick={() => onClickLocationCard(data.cd, data.full_addr)}
-    >
-      {data.full_addr}
-    </S.LocationCard>
-  ));
-
   const storeIntroduction = () => {
     setIntroduction(introductionContent);
     setIntroductionModal(false);
@@ -146,7 +103,7 @@ export default function Profile() {
   return (
     <PageForm isGNB={false}>
       <S.Container>
-        <Header title={"프로필 입력"} />
+        <Header title={"프로필 입력"} navigate={() => navigate(-1)} />
 
         <S.ImageContainer>
           {image ? (
@@ -260,12 +217,7 @@ export default function Profile() {
           </S.Field>
 
           <S.Field>
-            <S.Label>현재 위치</S.Label>
-            <S.LocationContainer>
-              <S.Input value={userLocation} placeholder="현재 위치" disabled />
-              <S.ResetBtn onClick={() => onClickReset()}>초기화</S.ResetBtn>
-            </S.LocationContainer>
-            <S.LocationList>{locationCards}</S.LocationList>
+            <LocationSelectBar />
           </S.Field>
 
           <S.Field>
