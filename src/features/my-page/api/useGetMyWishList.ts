@@ -37,5 +37,6 @@ export const useGetMyWishList = (size: number, memberId: number) => {
       return undefined;
     },
     staleTime: 5 * 60 * 1000,
+    enabled: memberId !== 0,
   });
 };

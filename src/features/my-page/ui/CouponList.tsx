@@ -3,6 +3,7 @@ import { useGetMyData } from '../../../shared/api/useGetMyData';
 import { useGetMyCoupons } from '../api/getMyCouponList';
 import * as S from './coupon-list';
 import { useQueryClient } from '@tanstack/react-query';
+import EmptyFavoriteListAndCouponList from './EmptyFavoriteListAndCouponList';
 
 export default function CouponList() {
   const { data: myData } = useGetMyData();
@@ -12,24 +13,39 @@ export default function CouponList() {
   const [isOpenDropdownFilter, setIsOpenDropdownFilter] =
     useState<boolean>(false);
 
-  const filterOptions = ['전체', '사용 가능 쿠폰', '만료 쿠폰'];
+  const filterOptions = [
+    '전체',
+    '사용 가능 쿠폰',
+    '사용 완료 쿠폰',
+    '만료 쿠폰',
+  ];
 
   const handleFilterChange = (option: string) => {
     setFilterStatus(option);
     setIsOpenDropdownFilter(false);
     queryClient.invalidateQueries({
-      queryKey: ['myMatchingList', memberId, option],
+      queryKey: ['myCoupons', memberId, option],
     });
   };
 
-  // const {
-  //   data: couponData,
-  //   isLoading,
-  //   isError,
-  // } = useGetMyCoupons(memberId, filterStatus);
+  const { data, isLoading, isError } = useGetMyCoupons(memberId, filterStatus);
+  const coupons = data?.content ?? [];
 
-  // if (isLoading) return <p>Loading...</p>;
-  // if (isError) return <p>Error</p>;
+  function formatPeriod(grantTime: string, expirationTime: string) {
+    const format = (isoDate: string) => {
+      const date = new Date(isoDate);
+      const yyyy = date.getFullYear();
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const dd = String(date.getDate()).padStart(2, '0');
+      return `${yyyy}.${mm}.${dd}`;
+    };
+
+    return `${format(grantTime)}~${format(expirationTime)}`;
+  }
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error</p>;
+
   return (
     <>
       <S.FilterContainer>
@@ -54,27 +70,38 @@ export default function CouponList() {
           </S.Dropdown>
         )}
       </S.FilterContainer>
-      <S.Container type="all">
-        <S.CouponTitleWrapper>
-          <S.CouponTitle>고수 3단계 리워드</S.CouponTitle>
-        </S.CouponTitleWrapper>
-        <S.CouponDescriptionWrapper>
-          <S.CouponDescription>[1회 매칭권] 레벨업 혜택</S.CouponDescription>
-        </S.CouponDescriptionWrapper>
-        <S.CouponTypeWrapper>
-          <S.CouponType>
-            쿠폰 사용하기
-            <img
-              src="/svg/right-arrow-icon.svg"
-              alt="right-arrow-icon"
-              style={{ marginLeft: '4px' }}
-            />
-          </S.CouponType>
-        </S.CouponTypeWrapper>
-        <S.CouponDateWrapper>
-          <S.CouponDate>0000.00.00~0000.00.00</S.CouponDate>
-        </S.CouponDateWrapper>
-      </S.Container>
+
+      {coupons.length > 0 ? (
+        coupons.map((coupon) => (
+          <S.Container key={coupon.couponId} type="all">
+            <S.CouponTitleWrapper>
+              <S.CouponTitle>{coupon.couponType} 리워드</S.CouponTitle>
+            </S.CouponTitleWrapper>
+            <S.CouponDescriptionWrapper>
+              <S.CouponDescription>
+                [1회 매칭권] 레벨업 혜택
+              </S.CouponDescription>
+            </S.CouponDescriptionWrapper>
+            <S.CouponTypeWrapper>
+              <S.CouponType>
+                쿠폰 사용하기
+                <img
+                  src="/svg/right-arrow-icon.svg"
+                  alt="right-arrow-icon"
+                  style={{ marginLeft: '4px' }}
+                />
+              </S.CouponType>
+            </S.CouponTypeWrapper>
+            <S.CouponDateWrapper>
+              <S.CouponDate>
+                {formatPeriod(coupon.grantTime, coupon.expirationTime)}
+              </S.CouponDate>
+            </S.CouponDateWrapper>
+          </S.Container>
+        ))
+      ) : (
+        <EmptyFavoriteListAndCouponList category="선물함" />
+      )}
     </>
   );
 }

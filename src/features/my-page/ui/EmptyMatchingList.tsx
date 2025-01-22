@@ -1,4 +1,4 @@
-import * as S from './empty-matching-list';
+import * as S from './empty-matching-list.style';
 
 export default function EmptyMatchingList() {
   return (
