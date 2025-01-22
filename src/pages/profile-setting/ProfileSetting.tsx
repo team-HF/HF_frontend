@@ -19,6 +19,7 @@ import {
   getFitnessEagernessText,
   getFitnessKindText,
 } from '../../shared/constants/fitness-category';
+import DuplicateNicknameButton from '../../features/profile-setting/ui/DuplicateNicknameButton';
 
 interface ExerciseStyleState {
   companionStyle: string;
@@ -68,6 +69,10 @@ export default function ProfileSetting() {
     fitnessObjective: '',
     fitnessKind: '',
   });
+  const [lastValidatedNickname, setLastValidatedNickname] =
+    useState<string>('');
+  const [isNicknameValidated, setIsNicknameValidated] =
+    useState<boolean>(false);
 
   const { data: myData, isLoading, isError } = useGetMyData();
   const navigate = useNavigate();
@@ -122,6 +127,7 @@ export default function ProfileSetting() {
   useEffect(() => {
     getSgisApiAccessToken();
     getLocationData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cd1, cd2, cd3]);
 
   const onClickLocationCard = (cd: string, full_addr: string) => {
@@ -155,7 +161,12 @@ export default function ProfileSetting() {
   const watchedNickname = watch('nickname');
   const watchedIntroduction = watch('introduction');
   const isAllSelected = Boolean(
-    watchedNickname && cd1 && cd2 && cd3 && watchedIntroduction
+    watchedNickname &&
+      cd1 &&
+      cd2 &&
+      cd3 &&
+      watchedIntroduction &&
+      isNicknameValidated
   );
 
   const getFullAddress = async () => {
@@ -183,6 +194,7 @@ export default function ProfileSetting() {
     if (myData) {
       getFullAddress();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myData]);
 
   const locationCards = locationData.map((data) => (
@@ -209,6 +221,18 @@ export default function ProfileSetting() {
       document.body.style.overflow = '';
     };
   }, [introductionModal]);
+
+  useEffect(() => {
+    // myData가 로드되고 현재 입력된 닉네임이 원래 닉네임과 같으면 자동 검증 성공
+    if (myData && watchedNickname === myData.nickname) {
+      setLastValidatedNickname(watchedNickname);
+      setIsNicknameValidated(true);
+    }
+    // 현재 입력된 닉네임이 마지막으로 검증된 닉네임과 다르면 검증 상태를 재설정
+    else if (watchedNickname !== lastValidatedNickname) {
+      setIsNicknameValidated(false);
+    }
+  }, [watchedNickname, myData, lastValidatedNickname]);
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
@@ -248,37 +272,59 @@ export default function ProfileSetting() {
         <S.FieldContainer>
           <S.Field>
             <S.Label>닉네임</S.Label>
-            <S.Input
-              type="text"
-              placeholder="닉네임"
-              {...register('nickname', {
-                required: '닉네임을 입력해주세요',
-                pattern: {
-                  value: /^[a-zA-Z0-9가-힣]{1,8}$/,
-                  message: '닉네임은 영문,숫자,한글만 포함 가능합니다.',
-                },
-                maxLength: {
-                  value: 8,
-                  message: '닉네임의 길이는 8글자 이하 입니다.',
-                },
-                onBlur: () => {
-                  clearErrors('nickname');
-                },
-              })}
-              onChange={(e) => {
-                setNickname(e.target.value);
-                setValue('nickname', e.target.value);
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                whiteSpace: 'nowrap',
+                alignItems: 'center',
+                position: 'relative',
               }}
-            />
+            >
+              <S.Input
+                type="text"
+                placeholder="닉네임"
+                {...register('nickname', {
+                  required: '닉네임을 입력해주세요',
+                  pattern: {
+                    value: /^[a-zA-Z0-9가-힣]{1,8}$/,
+                    message: '닉네임은 영문,숫자,한글만 포함 가능합니다.',
+                  },
+                  maxLength: {
+                    value: 8,
+                    message: '닉네임의 길이는 8글자 이하 입니다.',
+                  },
+                  onBlur: () => {
+                    clearErrors('nickname');
+                  },
+                })}
+                onChange={(e) => {
+                  setNickname(e.target.value);
+                  setValue('nickname', e.target.value);
+                }}
+              />
+              <DuplicateNicknameButton
+                nickname={nickname}
+                onSuccess={(validatedName: string) => {
+                  setLastValidatedNickname(validatedName);
+                  setIsNicknameValidated(true);
+                }}
+              />
+            </div>
             {errors.nickname?.message ? (
-              typeof errors.nickname.message === 'string' && (
-                <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
-              )
-            ) : (
-              <S.PlaceHolder>
-                닉네임은 최대 8자까지 입력 가능합니다.
-              </S.PlaceHolder>
-            )}
+              <S.ErrorMessage>{String(errors.nickname.message)}</S.ErrorMessage>
+            ) : null}
+
+            {!errors.nickname?.message &&
+              !(!isNicknameValidated && watchedNickname) && (
+                <S.PlaceHolder>
+                  닉네임은 최대 8자까지 입력 가능합니다.
+                </S.PlaceHolder>
+              )}
+
+            {/* {!isNicknameValidated && watchedNickname && (
+              <S.ErrorMessage>닉네임 중복검사를 완료해주세요.</S.ErrorMessage>
+            )} */}
           </S.Field>
           <S.Field>
             <S.Label>운동 스타일</S.Label>
