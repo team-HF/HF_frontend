@@ -3,6 +3,7 @@ import OnGoingMatchCard from '../../card/ui/OnGoingMatchCard';
 import { useEffect, useState } from 'react';
 import ChatListDropdown from './ChatListDropdown';
 import ChatConfirmModal from '../../../../shared/ui/chat-confirm-modal/ChatConfirmModal';
+import ChatWarningMessage from '../../../../shared/ui/chat-warning-message/ChatWarningMessage';
 
 export default function ChatList() {
   const dummyUsers = Array.from({ length: 10 }, (_, i) => ({
@@ -72,6 +73,7 @@ export default function ChatList() {
 
   return (
     <S.Container>
+      <ChatWarningMessage />
       {dummyUsers.map((user) => (
         <S.ListWrapper key={user.id}>
           <S.ProfileImageWrapper>
