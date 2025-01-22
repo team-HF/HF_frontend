@@ -2,19 +2,18 @@ import { useEffect, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { CompatClient, Stomp } from '@stomp/stompjs';
 import { SocketContext } from './SocketContext';
+import { useGetMyData } from '../../api/useGetMyData';
 
 interface SocketProviderProps {
-  memberId: number;
   children: React.ReactNode;
 }
 
-export const SocketProvider: React.FC<SocketProviderProps> = ({
-  memberId,
-  children,
-}) => {
+export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
   const [stompClient, setStompClient] = useState<CompatClient | null>(null);
-
+  const { data: myData } = useGetMyData();
+  const memberId = myData?.memberId;
   useEffect(() => {
+    if (!myData) return;
     const socket = new SockJS(
       `http://localhost:8080/hf/portfolio?member-id=${memberId}`
     );
@@ -28,7 +27,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
       client.subscribe(`/hf/user/${memberId}/chat/request`, (response) => {
         const data = JSON.parse(response.body);
         console.log('채팅 신청 수신:', data);
-        // 새로운 채팅방 ID 등 처리 (예: 페이지 이동 로직 포함 가능)
       });
     });
 
@@ -37,6 +35,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
         client.disconnect(() => console.log('STOMP 연결 해제'));
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memberId]);
 
   return (
