@@ -6,7 +6,6 @@ export const Container = styled.div`
   flex-direction: column;
   padding: 8px 0px;
   flex: 1;
-  position: relative;
   min-height: 70vh;
 
   @media (min-width: 768px) {
