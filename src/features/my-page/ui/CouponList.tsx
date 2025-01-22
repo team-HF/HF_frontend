@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
-import { useGetMyCoupons } from '../api/getMyCouponList';
+import { useGetMyCoupons } from '../api/useGetMyCouponList';
 import * as S from './coupon-list';
 import { useQueryClient } from '@tanstack/react-query';
 import EmptyFavoriteListAndCouponList from './EmptyFavoriteListAndCouponList';

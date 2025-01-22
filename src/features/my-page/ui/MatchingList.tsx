@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import ChatButton from './ChatButton';
 import ReviewButton from './ReviewButton';
-import { useGetMyMatchingList } from '../api/getMyMatchingList';
+import { useGetMyMatchingList } from '../api/useGetMyMatchingList';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
 import { useQueryClient } from '@tanstack/react-query';
 import {
