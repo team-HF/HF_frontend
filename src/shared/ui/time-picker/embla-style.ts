@@ -8,12 +8,12 @@ export const EmblaContainer = styled.div`
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  width: 320px;
-  max-width: 30rem;
-  height: 40%;
+  min-width: 320px;
+  height: 50%;
   margin-left: auto;
   margin-right: auto;
   background: #ffffff;
+  border: 1px solid black;
 
   &::before,
   &::after {
@@ -46,6 +46,13 @@ export const EmblaContainer = styled.div`
       rgba(var(--background-site-rgb-value), 0.65) 0%,
       rgba(var(--background-site-rgb-value), 1) 100%
     );
+  }
+  @media (min-width: 768px) {
+    width: 40rem;
+  }
+
+  @media (min-width: 1200px) {
+    width: 67.5rem;
   }
 `;
 
