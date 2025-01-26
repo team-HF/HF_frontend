@@ -20,6 +20,7 @@ import {
   getFitnessKindText,
 } from '../../shared/constants/fitness-category';
 import DuplicateNicknameButton from '../../features/profile-setting/ui/DuplicateNicknameButton';
+import { getSgisLocation } from '../../shared/api/getSgisLocation';
 
 interface ExerciseStyleState {
   companionStyle: string;
@@ -59,7 +60,7 @@ export default function ProfileSetting() {
     setIntroduction,
   } = useProfileSettingStore();
 
-  const [userLocation, setUserLocation] = useState<string>('');
+  const [selectedLocation, setSelectedLocation] = useState<string>('');
   const [locationData, setLocationData] = useState<Location[]>([]);
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
   const [introductionContent, setIntroductionContent] = useState<string>('');
@@ -75,6 +76,7 @@ export default function ProfileSetting() {
     useState<boolean>(false);
 
   const { data: myData, isLoading, isError } = useGetMyData();
+  const [location, setLocation] = useState<string>('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -134,14 +136,14 @@ export default function ProfileSetting() {
     if (!cd1) setCd1(cd);
     else if (!cd2) setCd2(cd);
     else setCd3(cd);
-    setUserLocation(full_addr);
+    setSelectedLocation(full_addr);
   };
 
   const onClickReset = () => {
     setCd1('');
     setCd2('');
     setCd3('');
-    setUserLocation('');
+    setSelectedLocation('');
   };
 
   const handleExerciseStyleEdit = () => {
@@ -153,6 +155,9 @@ export default function ProfileSetting() {
     });
   };
 
+  const backNavigation = () => {
+    navigate(-1);
+  };
   useEffect(() => {
     if (nickname) setValue('nickname', nickname);
     if (introduction) setValue('introduction', introduction);
@@ -169,32 +174,17 @@ export default function ProfileSetting() {
       isNicknameValidated
   );
 
-  const getFullAddress = async () => {
-    try {
-      let fullAddress = '';
-      if (cd1) {
-        const response1 = await getSgisLocationData(cd1);
-        if (response1?.length > 0) fullAddress = response1[0].full_addr;
-      }
-      if (cd2) {
-        const response2 = await getSgisLocationData(cd2);
-        if (response2?.length > 0) fullAddress += ` ${response2[0].full_addr}`;
-      }
-      if (cd3) {
-        const response3 = await getSgisLocationData(cd3);
-        if (response3?.length > 0) fullAddress += ` ${response3[0].full_addr}`;
-      }
-      setUserLocation(fullAddress.trim());
-    } catch (error) {
-      console.error('주소 불러오기 실패:', error);
-    }
-  };
-
   useEffect(() => {
-    if (myData) {
-      getFullAddress();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    (async () => {
+      if (myData) {
+        await getSgisApiAccessToken();
+        const result = await getSgisLocation(
+          `${myData?.cd1}${myData?.cd2}`,
+          `${myData?.cd1}${myData?.cd2}${myData?.cd3}`
+        );
+        setLocation(result.full_addr);
+      }
+    })();
   }, [myData]);
 
   const locationCards = locationData.map((data) => (
@@ -234,13 +224,15 @@ export default function ProfileSetting() {
     }
   }, [watchedNickname, myData, lastValidatedNickname]);
 
+  const displayLocation = selectedLocation || location;
+
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
 
   return (
     <PageForm isGNB={false}>
       <S.Container>
-        <Header title={'프로필 입력'} />
+        <Header title={'프로필 입력'} navigate={backNavigation} />
         <S.ImageContainer>
           {image ? (
             <S.ProfileImageLabel
@@ -339,7 +331,11 @@ export default function ProfileSetting() {
           <S.Field>
             <S.Label>현재 위치</S.Label>
             <S.LocationContainer>
-              <S.Input value={userLocation} placeholder="현재 위치" disabled />
+              <S.Input
+                value={displayLocation}
+                placeholder="현재 위치"
+                disabled
+              />
               <S.ResetBtn onClick={() => onClickReset()}>초기화</S.ResetBtn>
             </S.LocationContainer>
             <S.LocationList>{locationCards}</S.LocationList>
