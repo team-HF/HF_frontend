@@ -23,6 +23,7 @@ export const LabelContainer = styled.div<LabelContainerProps>`
   gap: 0.625rem;
   border: 1px solid ${(props) => props.$borderColor};
   background-color: ${(props) => props.$backgroundColor || '#fff'};
+  white-space: nowrap;
 `;
 
 export const LabelText = styled.span<LabelTextProps>`
