@@ -14,43 +14,64 @@ import PostDetail from './pages/post-detail/PostDetail';
 import ExerciseStyle from './pages/exercise-style/ExerciseStyle';
 import Matching from './pages/matching/Matching';
 import MatchingReview from './pages/matching-review/MatchingReview';
-import { SocketProvider } from './shared/ui/socket/SocketProvider';
 import UserProfile from './pages/user-profile/UserProfile';
 import ProfileSearch from './pages/profile-serch/ProfileSearch';
+import { Chat } from './pages/chat/Chat';
+import { SocketProvider } from './app/providers/SocketProvider';
+import { useGetMyData } from './shared/api/useGetMyData';
 
 function App() {
+  const { data: myData } = useGetMyData();
+
+  const memberId = myData?.memberId;
+
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <SocketProvider>
-          <Routes>
-            <Route path="login" element={<Login />} />
-            <Route path="/my-page" element={<MyPage />} />
-            <Route
-              path="/register/exercise-style"
-              element={<ExerciseOption />}
-            />
-            <Route path="/register/profile" element={<Profile />} />
-            <Route path="/profile-setting">
-              <Route index element={<ProfileSetting />} />
-              <Route path="exercise-style" element={<ExerciseStyle />} />
-              <Route path="introduction" element={<Introduction />} />
-            </Route>
+        {memberId ? (
+          // 로그인 상태: 소켓 프로바이더로 감싼 라우트
+          <SocketProvider memberId={memberId}>
+            <Routes>
+              <Route path="/my-page" element={<MyPage />} />
+              <Route
+                path="/register/exercise-style"
+                element={<ExerciseOption />}
+              />
+              <Route path="/register/profile" element={<Profile />} />
 
-            <Route path="/chat-lobby" element={<ChatLobby />} />
-            <Route path="community" element={<Community />} />
-            <Route path="community/post-register" element={<PostRegister />} />
-            <Route
-              path="community/post-update/:id"
-              element={<PostRegister />}
-            />
-            <Route path="community/post-detail/:id" element={<PostDetail />} />
-            <Route path="/matching" element={<Matching />} />
-            <Route path="/matching-review" element={<MatchingReview />} />
-            <Route path="member/:id/profile" element={<UserProfile />} />
-            <Route path="/" element={<ProfileSearch />} />
+              <Route path="/profile-setting">
+                <Route index element={<ProfileSetting />} />
+                <Route path="exercise-style" element={<ExerciseStyle />} />
+                <Route path="introduction" element={<Introduction />} />
+              </Route>
+
+              <Route path="/chat-lobby" element={<ChatLobby />} />
+              <Route path="/chat/:chatRoomId" element={<Chat />} />
+              <Route path="community" element={<Community />} />
+              <Route
+                path="community/post-register"
+                element={<PostRegister />}
+              />
+              <Route
+                path="community/post-update/:id"
+                element={<PostRegister />}
+              />
+              <Route
+                path="community/post-detail/:id"
+                element={<PostDetail />}
+              />
+              <Route path="/matching" element={<Matching />} />
+              <Route path="/matching-review" element={<MatchingReview />} />
+              <Route path="member/:id/profile" element={<UserProfile />} />
+              <Route path="/" element={<ProfileSearch />} />
+            </Routes>
+          </SocketProvider>
+        ) : (
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<Login />} />
           </Routes>
-        </SocketProvider>
+        )}
       </ThemeProvider>
     </Router>
   );
