@@ -2,8 +2,8 @@ import * as S from './chat-list-style';
 import OnGoingMatchCard from '../../card/ui/OnGoingMatchCard';
 import { useEffect, useState } from 'react';
 import ChatListDropdown from './ChatListDropdown';
-import ChatConfirmModal from '../../../../shared/ui/chat-confirm-modal/ChatConfirmModal';
-import ChatWarningMessage from '../../../../shared/ui/chat-warning-message/ChatWarningMessage';
+import ChatConfirmModal from '../../../../../shared/ui/chat-confirm-modal/ChatConfirmModal';
+import ChatWarningMessage from '../../../../../shared/ui/chat-warning-message/ChatWarningMessage';
 
 export default function ChatList() {
   const dummyUsers = Array.from({ length: 10 }, (_, i) => ({
@@ -26,12 +26,10 @@ export default function ChatList() {
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const handleConfirm = () => {
-    console.log('확인 클릭');
     setIsOpenModal(false);
   };
 
   const handleCancel = () => {
-    console.log('취소 클릭');
     setIsOpenModal(false);
   };
   const toggleDropdown = (id: number) => {

@@ -10,7 +10,7 @@ export interface ChatContent {
 }
 
 export enum MatchingStatus {
-  PENDING = 'PENDING',
-  ACCEPTED = 'ACCEPTED',
-  REJECTED = 'REJECTED',
+  ALL = 'ALL',
+  MATCHING_IN_PROGRESS = 'MATCHING_IN_PROGRESS',
+  MATCHING_TERMINATED = 'MATCHING_TERMINATED',
 }
