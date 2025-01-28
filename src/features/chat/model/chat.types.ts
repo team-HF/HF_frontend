@@ -7,8 +7,24 @@ export interface ChatRoom {
   id: number;
 }
 
+export interface Content {
+  isFirst: boolean;
+  isLast: boolean;
+  page: number;
+  pageSize: number;
+  chatMessages: ChatMessage[];
+}
+
 export interface ChatMessage {
-  chatRoomId: number;
+  chatMessageId: number;
   senderId: number;
-  content: string;
+  creationTime: string;
+  lastModified: string;
+  chatMessageType: 'TEXT' | 'IMAGE' | string;
+  content: ChatMessageContent;
+  read: boolean;
+}
+
+interface ChatMessageContent {
+  text: string;
 }
