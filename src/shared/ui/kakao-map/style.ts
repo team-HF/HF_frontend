@@ -8,14 +8,30 @@ export const Container = styled.div`
 `;
 
 export const ModalContainer = styled.div`
-  width: 80%;
-  height: 70%;
+  width: 360px;
+  height: 80%;
   margin: 50px auto;
-  background: #000000;
-  position: relative;
+  z-index: 1000;
+  background: #000;
   padding: 10px;
+  position: relative;
+  @media (min-width: 768px) {
+    width: 40rem;
+  }
+  @media (min-width: 1200px) {
+    width: 67.5rem;
+  }
 `;
-
+export const UpperWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+export const MapText = styled.div`
+  font-size: 16px;
+  color: #fff;
+  flex: 1;
+  text-align: center;
+`;
 export const MapContainer = styled.div`
   position: relative;
   width: 100%;
@@ -33,15 +49,16 @@ export const XButton = styled.div`
   display: flex;
   align-self: center;
   text-align: center;
+  position: absolute;
+  left: 10px;
 `;
 
-export const StyleX = styled.p`
-  color: #ffffff;
-  width: 100%;
+export const StyleX = styled.img`
+  width: 14px;
 `;
 export const ZoomControl = styled.div`
   position: absolute;
-  top: 8px;
+  top: 40px;
   right: 8px;
   display: flex;
   flex-direction: column;
@@ -76,30 +93,100 @@ export const ZoomIcon = styled.img`
 
 export const SearchBar = styled.div`
   position: absolute;
-  top: 8px;
+  width: 100%;
   left: 8px;
   z-index: 10;
   display: flex;
   align-items: center;
-  background: #ffffff;
-  border-radius: 4px;
+  margin-left: -8px;
+  background: #333;
   padding: 4px;
 `;
 
 export const SearchInput = styled.input`
-  width: 120px;
+  width: 100%;
   height: 24px;
   margin-right: 4px;
   padding: 2px 8px;
-  border: 1px solid #ccc;
+  background-color: #333;
   border-radius: 4px;
+  color: #fff;
+  outline: none;
+  position: relative;
 `;
 
 export const SearchButton = styled.button`
-  height: 28px;
+  height: 24px;
   background: #666;
   color: #fff;
   border: none;
+  white-space: nowrap;
   border-radius: 4px;
+  padding: 2px;
+  cursor: pointer;
+`;
+
+export const CircleButton = styled.button`
+  position: absolute;
+  right: 40px;
+  width: 16px;
+  height: 16px;
+  background-color: #999;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+`;
+
+export const XIcon = styled.span`
+  color: #000;
+  font-size: 14px;
+`;
+
+export const ResultsHeaderWrapper = styled.div`
+  width: 100%;
+  background-color: #1a1a1a;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+`;
+export const ResultHeaderText = styled.span`
+  font-size: 14px;
+  color: #fff;
+`;
+export const ResultHeaderSVG = styled.img`
+  width: 14px;
+  height: 14px;
+`;
+export const ResultsContainer = styled.div<{ viewList: boolean }>`
+  max-height: 200px;
+  width: ${({ viewList }) => (viewList ? '100%' : 'calc(100% - 20px)')};
+  overflow-y: auto;
+  background-color: #000;
+  z-index: 10003;
+  position: relative;
+  bottom: ${(viewList) => (viewList ? '110px' : 0)};
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const PlaceWrapper = styled.ul``;
+export const PlaceName = styled.div`
+  font-weight: bold;
+  font-size: 14px;
+  color: #ffffff;
+  cursor: pointer;
+`;
+
+export const PlaceAddress = styled.div`
+  font-size: 12px;
+  color: grey;
   cursor: pointer;
 `;

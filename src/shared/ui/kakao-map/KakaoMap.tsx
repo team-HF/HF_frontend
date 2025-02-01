@@ -17,17 +17,19 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
   const { kakao } = window;
   const mapRef = useRef<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
+  const [places, setPlaces] = useState<any[]>([]);
   const [keyword, setKeyword] = useState('');
+  const [viewList, setViewList] = useState(true);
   const pinnedOverlayRef = useRef<any>(null);
   const activeOverlayRef = useRef<any>(null);
+  const resetKeyword = () => {
+    setKeyword('');
+  };
   useEffect(() => {
     const container = document.getElementById('map');
     if (!container || !kakao) return;
     const options = {
-      center: new kakao.maps.LatLng(
-        37.5385167,
-        127.1237667
-      ) /*현재 기본 위치 값 강동구 천호역*/,
+      center: new kakao.maps.LatLng(37.5385167, 127.1237667), // 현재 기본 위치 값 강동구 천호역
       level: 3,
     };
     mapRef.current = new kakao.maps.Map(container, options);
@@ -47,7 +49,10 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
       alert('검색어를 입력하세요.');
       return;
     }
+    // 기존 마커 제거
     markers.forEach((marker) => marker.setMap(null));
+    setMarkers([]);
+    setPlaces([]); // 기존 검색 결과 제거
 
     const ps = new kakao.maps.services.Places(mapRef.current);
     ps.keywordSearch(
@@ -67,7 +72,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
     );
   };
 
-  //마커 위 말풍선 스타일
+  // 마커 위 말풍선 스타일
   const createCustomOverlay = (place: any, marker: any) => {
     const content = document.createElement('div');
     content.style.padding = '6px 10px';
@@ -75,7 +80,6 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
     content.style.borderRadius = '4px';
     content.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
     content.style.cursor = 'pointer';
-
     content.style.pointerEvents = 'auto';
     content.style.zIndex = '9999';
 
@@ -89,8 +93,6 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
       yAnchor: 1.8,
       zIndex: 9999,
     });
-    console.log(overlay);
-    console.log(content);
     content.addEventListener('click', (e) => {
       e.stopPropagation();
       console.log('클릭');
@@ -101,22 +103,22 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
     return overlay;
   };
 
-  const displayMarkers = (places: any[]) => {
+  const displayMarkers = (placesData: any[]) => {
     const { kakao } = window;
     if (!mapRef.current || !kakao) return;
 
     const bounds = new kakao.maps.LatLngBounds();
     const newMarkers: any[] = [];
 
-    places.forEach((place) => {
+    placesData.forEach((place) => {
       const position = new kakao.maps.LatLng(place.y, place.x);
       const marker = new kakao.maps.Marker({
         position,
         map: mapRef.current,
       });
       newMarkers.push(marker);
-
-      //마커 오버레이 생성
+      console.log('places:', placesData);
+      // 마커 오버레이 생성
       const overlay = createCustomOverlay(place, marker);
 
       // 마우스 오버 이벤트
@@ -159,6 +161,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
     });
 
     setMarkers(newMarkers);
+    setPlaces(placesData);
     mapRef.current.setBounds(bounds);
   };
 
@@ -172,12 +175,52 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
     mapRef.current.setLevel(mapRef.current.getLevel() + 1);
   };
 
+  // 리스트 항목 클릭 시 동작
+  const handleSelectPlace = (place: any) => {
+    if (!mapRef.current || !kakao) return;
+
+    const position = new kakao.maps.LatLng(place.y, place.x);
+    mapRef.current.setCenter(position);
+    mapRef.current.setLevel(3); // 원하는 줌 레벨로 설정
+
+    // 해당 장소의 마커 찾기
+    const selectedMarker = markers.find(
+      (marker: any) =>
+        marker.getPosition().getLat() === parseFloat(place.y) &&
+        marker.getPosition().getLng() === parseFloat(place.x)
+    );
+
+    if (selectedMarker) {
+      // 기존 오버레이 제거
+      if (activeOverlayRef.current) {
+        activeOverlayRef.current.setMap(null);
+      }
+
+      // 선택된 마커의 오버레이 표시
+      const overlay = createCustomOverlay(place, selectedMarker);
+      overlay.setMap(mapRef.current);
+      activeOverlayRef.current = overlay;
+    }
+  };
+  const controlPlaceList = () => {
+    setViewList((prev) => !prev);
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [places]);
   return (
     <S.Container>
       <S.ModalContainer>
-        <S.XButton onClick={onClose}>
-          <S.StyleX>X</S.StyleX>
-        </S.XButton>
+        <S.UpperWrapper>
+          <S.XButton onClick={onClose}>
+            <S.StyleX src="/svg/white-x-icon.svg" alt="close-button" />
+          </S.XButton>
+          <S.MapText>지도</S.MapText>
+        </S.UpperWrapper>
 
         <S.MapContainer id="map">
           <S.SearchBar>
@@ -185,7 +228,15 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               placeholder="검색어 입력"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSearch();
+                }
+              }}
             />
+            <S.CircleButton onClick={resetKeyword}>
+              <S.XIcon>x</S.XIcon>
+            </S.CircleButton>
             <S.SearchButton onClick={handleSearch}>검색</S.SearchButton>
           </S.SearchBar>
 
@@ -204,6 +255,39 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
             </S.ZoomIconWrapper>
           </S.ZoomControl>
         </S.MapContainer>
+
+        <S.ResultsContainer
+          viewList={viewList}
+          style={{
+            position: viewList ? 'sticky' : 'absolute',
+            ...(viewList ? { top: 0 } : { bottom: 0 }),
+          }}
+        >
+          {places.length > 0 ? (
+            <>
+              <S.ResultsHeaderWrapper>
+                <S.ResultHeaderText>검색 결과</S.ResultHeaderText>
+                <S.ResultHeaderSVG
+                  src={
+                    viewList
+                      ? '/svg/white-under-arrow-icon.svg'
+                      : '/svg/white-upper-arrow-icon.svg'
+                  }
+                  alt="arrow"
+                  onClick={controlPlaceList}
+                />
+              </S.ResultsHeaderWrapper>
+              <S.PlaceWrapper style={{ display: viewList ? 'block' : 'none' }}>
+                {places.map((place, index) => (
+                  <li key={index} onClick={() => handleSelectPlace(place)}>
+                    <S.PlaceName>{place.place_name}</S.PlaceName>
+                    <S.PlaceAddress>{place.address_name}</S.PlaceAddress>
+                  </li>
+                ))}
+              </S.PlaceWrapper>
+            </>
+          ) : null}
+        </S.ResultsContainer>
       </S.ModalContainer>
     </S.Container>
   );
