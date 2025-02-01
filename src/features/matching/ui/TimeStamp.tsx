@@ -46,16 +46,20 @@ export default function TimeStamp() {
           alt="arrow"
           onClick={openPicker}
         />
-        <EmblaLocalWrapper className="theme-white">
-          {isOpen && (
-            <EmblaCarousel
-              onTimeSelect={handleTimeSelect}
-              initialTime={selectedTime || defaultTime}
-            >
-              <ConfirmButton onConfirm={handleConfirm} />
-            </EmblaCarousel>
-          )}
-        </EmblaLocalWrapper>
+
+        {isOpen && (
+          <>
+            <S.Overlay onClick={handleConfirm} />
+            <EmblaLocalWrapper className="theme-white">
+              <EmblaCarousel
+                onTimeSelect={handleTimeSelect}
+                initialTime={selectedTime || defaultTime}
+              >
+                <ConfirmButton onConfirm={handleConfirm} />
+              </EmblaCarousel>
+            </EmblaLocalWrapper>
+          </>
+        )}
       </S.FieldWrapper>
     </S.Container>
   );

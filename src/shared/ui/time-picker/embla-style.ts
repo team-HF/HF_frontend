@@ -6,15 +6,16 @@ export const EmblaContainer = styled.div`
   bottom: 0;
   transform: translateX(-50%);
   z-index: 9999;
+
   display: flex;
   flex-direction: column;
-  min-width: 320px;
+  padding: 0 20px;
+  width: 100%;
   height: 50%;
   margin-left: auto;
   margin-right: auto;
-  background: #ffffff;
-  border: 1px solid black;
-
+  background: #fff;
+  border-radius: 40px 40px 0 0;
   &::before,
   &::after {
     position: absolute;
@@ -25,7 +26,6 @@ export const EmblaContainer = styled.div`
     height: calc(50% - 32px / 2);
     z-index: 1;
     pointer-events: none;
-    border-radius: 40px 40px 0 0;
   }
 
   &::before {
