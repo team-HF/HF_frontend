@@ -164,14 +164,14 @@ export const ResultHeaderSVG = styled.img`
   width: 14px;
   height: 14px;
 `;
-export const ResultsContainer = styled.div<{ viewList: boolean }>`
+export const ResultsContainer = styled.div<{ $viewList: boolean }>`
   max-height: 200px;
-  width: ${({ viewList }) => (viewList ? '100%' : 'calc(100% - 20px)')};
+  width: ${({ $viewList }) => ($viewList ? '100%' : 'calc(100% - 20px)')};
   overflow-y: auto;
   background-color: #000;
   z-index: 10003;
   position: relative;
-  bottom: ${(viewList) => (viewList ? '110px' : 0)};
+  bottom: ${($viewList) => ($viewList ? '110px' : 0)};
   &::-webkit-scrollbar {
     display: none;
   }

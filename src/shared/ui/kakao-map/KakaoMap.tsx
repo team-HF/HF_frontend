@@ -257,7 +257,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
         </S.MapContainer>
 
         <S.ResultsContainer
-          viewList={viewList}
+          $viewList={viewList}
           style={{
             position: viewList ? 'sticky' : 'absolute',
             ...(viewList ? { top: 0 } : { bottom: 0 }),
@@ -271,9 +271,9 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
                   src={
                     viewList
                       ? '/svg/white-under-arrow-icon.svg'
-                      : '/svg/white-upper-arrow-icon.svg'
+                      : '/svg/white--arrow-icon.svg'
                   }
-                  alt="arrow"
+                  alt="under-arrow"
                   onClick={controlPlaceList}
                 />
               </S.ResultsHeaderWrapper>
