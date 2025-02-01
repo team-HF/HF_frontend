@@ -2,7 +2,6 @@ import { styled } from 'styled-components';
 
 export const Container = styled.div`
   width: 360px;
-  padding: 0 20px;
   box-sizing: border-box;
   display: flex;
   justify-self: center;
@@ -18,7 +17,7 @@ export const Container = styled.div`
 
 export const DetailDiv = styled.div`
   display: flex;
-  width: 320px;
+  width: 360px;
   margin-left: auto;
   margin-right: auto;
   height: 34px;

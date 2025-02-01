@@ -7,7 +7,7 @@ import * as S from './style';
 export default function Matching() {
   return (
     <S.Container>
-      <BackHeader text="매칭 신청" />
+      <BackHeader text="매칭 신청" style={{ padding: '0px' }} />
       <PartnerInfo />
       <S.DetailDiv>상세 일정</S.DetailDiv>
       <ScheduleForm />
