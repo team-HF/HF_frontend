@@ -22,14 +22,12 @@ import { useGetMyData } from './shared/api/useGetMyData';
 
 function App() {
   const { data: myData } = useGetMyData();
-
   const memberId = myData?.memberId;
 
   return (
     <Router>
       <ThemeProvider theme={theme}>
         {memberId ? (
-          // 로그인 상태: 소켓 프로바이더로 감싼 라우트
           <SocketProvider memberId={memberId}>
             <Routes>
               <Route path="/my-page" element={<MyPage />} />
@@ -69,7 +67,6 @@ function App() {
         ) : (
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="*" element={<Login />} />
           </Routes>
         )}
       </ThemeProvider>
