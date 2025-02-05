@@ -58,7 +58,7 @@ function App() {
                 path="community/post-detail/:id"
                 element={<PostDetail />}
               />
-              <Route path="/matching" element={<Matching />} />
+              <Route path="/matching/:id" element={<Matching />} />
               <Route path="/matching-review" element={<MatchingReview />} />
               <Route path="member/:id/profile" element={<UserProfile />} />
               <Route path="/" element={<ProfileSearch />} />
