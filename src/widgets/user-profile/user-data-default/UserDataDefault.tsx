@@ -22,9 +22,8 @@ const UserDataDefault = () => {
       alert('상대방 정보가 없습니다.');
       return;
     }
-    navigate(`/matching?user=${userProfile.memberId}`);
+    navigate(`/matching/${userProfile.memberId}`);
   };
-
   const exerciseStyle = [
     { id: 'companionStyle', content: userProfile?.companionStyle },
     { id: 'fitnessEagerness', content: userProfile?.fitnessEagerness },
