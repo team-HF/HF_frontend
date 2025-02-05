@@ -27,7 +27,7 @@ export const ContentsWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 1.875rem;
-  padding: 0.5rem 1.25rem;
+  padding: 16px 0px;
   @media (min-width: 768px) and (max-width: 991px) {
     /* 태블릿 세로 방향 */
     width: 40rem;

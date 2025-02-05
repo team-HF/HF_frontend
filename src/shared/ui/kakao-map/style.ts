@@ -141,9 +141,10 @@ export const CircleButton = styled.button`
   cursor: pointer;
 `;
 
-export const XIcon = styled.span`
+export const XIcon = styled.div`
   color: #000;
   font-size: 14px;
+  margin-bottom: 2px;
 `;
 
 export const ResultsHeaderWrapper = styled.div`

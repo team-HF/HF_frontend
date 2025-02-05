@@ -6,6 +6,7 @@ export const Container = styled.div`
   display: flex;
   justify-self: center;
   flex-direction: column;
+  max-height: 100vh;
   @media (min-width: 768px) {
     width: 640px;
   }
