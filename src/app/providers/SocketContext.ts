@@ -1,10 +1,4 @@
-import { Client } from '@stomp/stompjs';
 import { createContext } from 'react';
+import { SocketProps } from './socket.interface';
 
-interface SocketContextProps {
-  stompClient: Client | null;
-  isConnected: boolean;
-  memberId: number;
-}
-
-export const SocketContext = createContext<SocketContextProps | null>(null);
+export const SocketContext = createContext<SocketProps | null>(null);
