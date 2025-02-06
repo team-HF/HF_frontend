@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import { Client, Stomp } from '@stomp/stompjs';
 import { SocketProps } from './socket.interface';
 
-const SocketContext = createContext<SocketProps | null>(null);
+export const SocketContext = createContext<SocketProps | null>(null);
 
 export function SocketProvider({
   memberId,
