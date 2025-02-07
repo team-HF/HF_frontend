@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { theme } from './app/theme';
 import { ThemeProvider } from 'styled-components';
 import MyPage from './pages/my-page/MyPage';
@@ -18,17 +18,23 @@ import UserProfile from './pages/user-profile/UserProfile';
 import ProfileSearch from './pages/profile-serch/ProfileSearch';
 import { Chat } from './pages/chat/Chat';
 import { SocketProvider } from './app/providers/SocketProvider';
+import { SubscriptionProvider } from './app/providers/SubscriptionProvider';
 import { useGetMyData } from './shared/api/useGetMyData';
 
 function App() {
   const { data: myData } = useGetMyData();
   const memberId = myData?.memberId;
+  const navigate = useNavigate();
 
   return (
-    <Router>
-      <ThemeProvider theme={theme}>
-        {memberId ? (
-          <SocketProvider memberId={memberId}>
+    <ThemeProvider theme={theme}>
+      {memberId ? (
+        <SocketProvider memberId={memberId}>
+          <SubscriptionProvider
+            onNewChatroom={(newChatroomId: number) => {
+              navigate(`/chat/${newChatroomId}`);
+            }}
+          >
             <Routes>
               <Route path="/my-page" element={<MyPage />} />
               <Route
@@ -63,14 +69,14 @@ function App() {
               <Route path="member/:id/profile" element={<UserProfile />} />
               <Route path="/" element={<ProfileSearch />} />
             </Routes>
-          </SocketProvider>
-        ) : (
-          <Routes>
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        )}
-      </ThemeProvider>
-    </Router>
+          </SubscriptionProvider>
+        </SocketProvider>
+      ) : (
+        <Routes>
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      )}
+    </ThemeProvider>
   );
 }
 
