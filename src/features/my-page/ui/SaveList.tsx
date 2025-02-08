@@ -1,33 +1,55 @@
-import { useEffect, useState } from 'react';
 import * as S from './save-list.style';
-import { MatchingUserCard } from '../../../entities/my-page/model/matching-user-card.interface';
+import EmptyFavoriteListAndCouponList from './EmptyFavoriteListAndCouponList';
+import { useGetMyWishList } from '../api/useGetMyWishList';
+import { useGetMyData } from '../../../shared/api/useGetMyData';
 
 export default function SaveList() {
-  const [users, setUsers] = useState<MatchingUserCard[]>([]);
+  const size = 20;
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await fetch('/api/save-users');
-      const data: MatchingUserCard[] = await response.json();
-      setUsers(data.slice(0, 30));
-    };
+  const {
+    data: myData,
+    isLoading: isLoadingMyData,
+    error: errorMyData,
+  } = useGetMyData();
 
-    fetchUsers();
-  }, []);
+  const memberId = myData?.memberId ?? 0;
 
+  const { data: saveList, isLoading, error } = useGetMyWishList(size, memberId);
+
+  if (isLoadingMyData) {
+    return <p>loading...</p>;
+  }
+  if (errorMyData || !myData?.memberId) {
+    return <p>error</p>;
+  }
+
+  if (isLoading) {
+    return <p>loading...</p>;
+  }
+  if (error) {
+    return <p>error</p>;
+  }
+
+  const allItems = saveList?.pages.flatMap((page) => page.content) || [];
+
+  //api에 문제가 있어서 추후 수정예정
   return (
     <S.Container>
-      {users.map((user) => (
-        <S.ProfileWrapper key={user.id}>
-          <S.IconContainer>
-            <S.ProfileIcon src={user.profileImage} alt="profile-icon" />
-            <S.HeartIcon src="/svg/profile-heart-icon.svg" alt="save-icon" />
-          </S.IconContainer>
-          <S.TextWrapper>
-            <S.ProfileText>{user.nickname}</S.ProfileText>
-          </S.TextWrapper>
-        </S.ProfileWrapper>
-      ))}
+      {allItems.length > 0 ? (
+        allItems.map((user) => (
+          <S.ProfileWrapper key={user.wishId}>
+            <S.IconContainer>
+              <S.ProfileIcon src={user.profileImage} alt="profile-icon" />
+              <S.HeartIcon src="/svg/profile-heart-icon.svg" alt="save-icon" />
+            </S.IconContainer>
+            <S.TextWrapper>
+              <S.ProfileText>{user.nickname}</S.ProfileText>
+            </S.TextWrapper>
+          </S.ProfileWrapper>
+        ))
+      ) : (
+        <EmptyFavoriteListAndCouponList category="즐겨찾기" />
+      )}
     </S.Container>
   );
 }

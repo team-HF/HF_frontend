@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 type BackHeaderProps = {
   text: string;
+  style?: React.CSSProperties;
 };
-export default function BackHeader({ text }: BackHeaderProps) {
+export default function BackHeader({ text, style }: BackHeaderProps) {
   const navigate = useNavigate();
   const handleBackClick = () => {
     navigate(-1);
   };
   return (
-    <S.Container>
+    <S.Container style={style}>
       <S.ContentsWrapper>
         <S.IconWrapper
           src="/svg/left-arrow-icon.svg"

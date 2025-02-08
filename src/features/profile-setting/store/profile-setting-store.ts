@@ -1,40 +1,93 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type ProfileSettingStore = {
+type ProfileOptionStore = {
   image: File | null;
   setImage: (option: File) => void;
+
   introduction: string | null;
   setIntroduction: (option: string) => void;
   nickname: string | null;
   setNickname: (option: string) => void;
-  birth: string | null;
-  setBirth: (option: string) => void;
-  gender: string | null;
-  setGender: (option: string) => void;
+
   specs: string | null;
   setSpecs: (option: string) => void;
+
+  cd1: string | null;
+  setCd1: (option: string) => void;
+  cd2: string | null;
+  setCd2: (option: string) => void;
+  cd3: string | null;
+  setCd3: (option: string) => void;
+
+  styleSelected: 'SMALL' | 'GROUP' | null;
+  habitSelected: 'EAGER' | 'LAZY' | null;
+  goalSelected: 'BULK_UP' | 'RUNNING' | null;
+  exerciseSelected: 'HIGH_STRESS' | 'FUNCTIONAL' | null;
+
+  setStyleSelected: (option: string) => void;
+  setHabitSelected: (option: string) => void;
+  setGoalSelected: (option: string) => void;
+  setExerciseSelected: (option: string) => void;
 };
 
 export const useProfileSettingStore = create(
-  persist<ProfileSettingStore>(
+  persist<ProfileOptionStore>(
     (set) => ({
       image: null,
       setImage: (option) => set({ image: option }),
+
       introduction: null,
       setIntroduction: (option) => set({ introduction: option }),
       nickname: null,
       setNickname: (option) => set({ nickname: option }),
-      birth: null,
-      setBirth: (option) => set({ birth: option }),
-      gender: null,
-      setGender: (option) => set({ gender: option }),
+
       specs: null,
       setSpecs: (option) => set({ specs: option }),
-    }),
 
+      cd1: null,
+      setCd1: (option) => set({ cd1: option }),
+      cd2: null,
+      setCd2: (option) => set({ cd2: option }),
+      cd3: null,
+      setCd3: (option) => set({ cd3: option }),
+
+      styleSelected: null,
+      habitSelected: null,
+      goalSelected: null,
+      exerciseSelected: null,
+
+      setStyleSelected: (option) => {
+        if (option === 'SMALL' || option === 'GROUP') {
+          set({ styleSelected: option });
+        } else {
+          console.error(`Invalid styleSelected option: ${option}`);
+        }
+      },
+      setHabitSelected: (option) => {
+        if (option === 'EAGER' || option === 'LAZY') {
+          set({ habitSelected: option });
+        } else {
+          console.error(`Invalid habitSelected option: ${option}`);
+        }
+      },
+      setGoalSelected: (option) => {
+        if (option === 'BULK_UP' || option === 'RUNNING') {
+          set({ goalSelected: option });
+        } else {
+          console.error(`Invalid goalSelected option: ${option}`);
+        }
+      },
+      setExerciseSelected: (option) => {
+        if (option === 'HIGH_STRESS' || option === 'FUNCTIONAL') {
+          set({ exerciseSelected: option });
+        } else {
+          console.error(`Invalid exerciseSelected option: ${option}`);
+        }
+      },
+    }),
     {
-      name: 'profile-settings',
+      name: 'profile-setting-store',
       getStorage: () => sessionStorage,
     }
   )

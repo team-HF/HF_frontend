@@ -1,0 +1,43 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useContext, useEffect } from 'react';
+import { SocketContext } from './SocketProvider';
+
+interface SubscriptionProviderProps {
+  children: React.ReactNode;
+  onNewChatroom: (newChatroomId: number) => void;
+}
+
+export function SubscriptionProvider({
+  children,
+  onNewChatroom,
+}: SubscriptionProviderProps) {
+  const socketContext = useContext(SocketContext);
+  if (!socketContext) {
+    throw new Error('Socket연결 실패');
+  }
+
+  const { stompClient, isConnected, memberId } = socketContext;
+
+  useEffect(() => {
+    if (!stompClient || !isConnected || !memberId) return;
+
+    //채팅 요청 구독
+    const chatReqSub = stompClient.subscribe(
+      `/hf/user/${memberId}/chat/request`,
+      (message: any) => {
+        const data = JSON.parse(message.body);
+        console.log('새 채팅방 생성 알림:', data);
+        if (data) {
+          console.log(`${data}:data`);
+          onNewChatroom(data.newChatroomId);
+        }
+      }
+    );
+
+    return () => {
+      chatReqSub.unsubscribe();
+    };
+  }, [stompClient, isConnected, memberId, onNewChatroom]);
+
+  return <>{children}</>;
+}

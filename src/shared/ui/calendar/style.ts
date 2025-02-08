@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 export const CalendarContainer = styled.div`
   width: 100%;
   position: relative;
+  z-index: 10005;
 
   react-datepicker__input-container {
     width: 100%;

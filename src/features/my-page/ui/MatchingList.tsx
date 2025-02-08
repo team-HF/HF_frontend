@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import ChatButton from './ChatButton';
 import ReviewButton from './ReviewButton';
-import { useGetMyMatchingList } from '../api/getMyMatchingList';
+import { useGetMyMatchingList } from '../api/useGetMyMatchingList';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -17,7 +17,7 @@ import {
   getFITNESS_OBJECTIVE_MAP,
   FitnessObjective,
 } from '../../../shared/constants/fitness-category';
-import EmptyMatchingList from './emptyMatchingList';
+import EmptyMatchingList from './EmptyMatchingList';
 
 export default function MatchingList() {
   const [filterStatus, setFilterStatus] = useState<string>('전체');

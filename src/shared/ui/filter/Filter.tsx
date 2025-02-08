@@ -1,45 +1,48 @@
-import { useEffect, useState } from "react";
 import * as S from "./style";
-import { TFilter } from "../../../entities/community/filter-data";
-import { useAddParam as addParam } from "../../utils/useAddParam";
-import { useCommunityStore } from "../../../pages/community/store/community-store";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGetParams as getParams } from "../../utils/useGetParams";
+import { useAddParam as addParam } from "../../utils/useAddParam";
 
-interface filterProps {
-  filterData: { name: string; id: TFilter }[];
+interface FilterProps<T> {
+  filterData: { name: string; id: T }[];
+  selectedFilter: T;
+  setFilter: (option: T) => void;
+  paramName: string;
 }
 
-const Filter = ({ filterData }: filterProps) => {
+const Filter = <T,>({
+  filterData,
+  selectedFilter,
+  setFilter,
+  paramName,
+}: FilterProps<T>) => {
   const navigate = useNavigate();
-  const category = getParams("postCategory");
-  const { setFilterSelected } = useCommunityStore();
+
+  const currentFilter = filterData.filter(
+    (item) => item.id === selectedFilter
+  )[0].name;
   const [open, setOpen] = useState<boolean>(false);
-  const [currentFilter, setCurrentFilter] = useState<string>(
-    getParams("fitnessLevel") === "ADVANCED" ? "고수" : "새싹"
-  );
+
   const openFilter = () => setOpen(!open);
 
-  const changeFilter = (filterIndex: number) => {
-    setCurrentFilter(filterData[filterIndex].name);
-    setFilterSelected(filterData[filterIndex].id);
-    const updatedParam = addParam("fitnessLevel", filterData[filterIndex].id);
+  const changeFilter = (filterId: T) => {
+    setFilter(filterId);
+    const updatedParam = addParam(paramName, filterId);
     navigate(`${location.pathname}?${updatedParam}`);
     setOpen(false);
   };
-  useEffect(() => {
-    setCurrentFilter("고수");
-  }, [category]);
+
   const filterList = filterData.map((data) => {
     return (
       <S.Filter
         key={`filter_${data.name}`}
-        onClick={() => changeFilter(filterData.indexOf(data))}
+        onClick={() => changeFilter(data.id)}
       >
         {data.name}
       </S.Filter>
     );
   });
+
   return (
     <S.Container onClick={openFilter}>
       <S.CurrentFilter>{currentFilter}</S.CurrentFilter>

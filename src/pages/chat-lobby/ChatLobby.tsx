@@ -1,28 +1,26 @@
+import ChatList from '../../features/chat-lobby/ui/chat-list/ui/ChatList';
+import ChatLobbyHeader from '../../features/chat-lobby/ui/chat-lobby-header/ui/ChatLobbyHeader';
+import EmptyChatList from '../../features/chat-lobby/ui/EmptyChatList';
 import * as S from './style';
-import ChatLobbyHeader from '../../widgets/chat-lobby/chat-lobby-header/ChatLobbyHeader';
-import { useState } from 'react';
-import ChatList from '../../widgets/chat-lobby/chat-list/ChatList';
-
+import { useGetChatRooms } from '../../features/chat-lobby/api/useGetChatRooms';
+import { useGetMyData } from '../../shared/api/useGetMyData';
 export default function ChatLobby() {
-  //임시 state
-  const [hasChat, setHasChat] = useState(true);
+  const { data: myData } = useGetMyData();
+  const participantId = myData?.memberId;
+  const {
+    data: chatData,
+    isLoading,
+    error,
+  } = useGetChatRooms({ participantId });
+
+  if (isLoading) <p>Loading...</p>;
+  if (error) <p>error</p>;
   return (
     <S.Container>
       <S.HeaderWrapper>
         <ChatLobbyHeader />
       </S.HeaderWrapper>
-      {!hasChat ? (
-        <S.NoMatchingChatWrapper>
-          <S.NoMatchingChatMainText>
-            참여 중인 채팅이 없습니다.
-          </S.NoMatchingChatMainText>
-          <S.NoMatchingChatSubText>
-            원하는 운동 고수에게 인사를 건네보세요.
-          </S.NoMatchingChatSubText>
-        </S.NoMatchingChatWrapper>
-      ) : (
-        <ChatList />
-      )}
+      {chatData?.length === 0 ? <EmptyChatList /> : <ChatList />}
     </S.Container>
   );
 }
