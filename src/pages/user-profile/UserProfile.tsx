@@ -23,7 +23,6 @@ const UserProfile = () => {
       const userData_1 = await getUserData(memberId);
       setUserProfile(userData_1);
       const userData_2 = await getUserDetail(memberId);
-      console.log(userData_1);
       if (userData_2) setUserDetail(userData_2);
     })();
   }, []);
