@@ -3,18 +3,29 @@ import ChatLobbyHeader from '../../features/chat-lobby/ui/chat-lobby-header/ui/C
 import EmptyChatList from '../../features/chat-lobby/ui/EmptyChatList';
 import * as S from './style';
 import { useGetChatRooms } from '../../features/chat-lobby/api/useGetChatRooms';
-import { useGetMyData } from '../../shared/api/useGetMyData';
+import { MatchingStatus } from '../../features/chat-lobby/model/chat-lobby.types';
+import { SocketContext } from '../../app/providers/SocketProvider';
+import { useContext } from 'react';
 export default function ChatLobby() {
-  const { data: myData } = useGetMyData();
-  const participantId = myData?.memberId;
+  const socketContext = useContext(SocketContext);
+  if (!socketContext) {
+    throw new Error('Socket 연결 실패');
+  }
+  const { memberId } = socketContext;
+  console.log(memberId);
   const {
     data: chatData,
     isLoading,
     error,
-  } = useGetChatRooms({ participantId });
+  } = useGetChatRooms({
+    participantId: memberId,
+    searchCondition: MatchingStatus.ALL,
+    page: 1,
+    pageSize: 10,
+  });
 
-  if (isLoading) <p>Loading...</p>;
-  if (error) <p>error</p>;
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>error</p>;
   return (
     <S.Container>
       <S.HeaderWrapper>

@@ -31,7 +31,7 @@ export default function SaveList() {
   }
 
   const allItems = saveList?.pages.flatMap((page) => page.content) || [];
-
+  console.log('All', allItems);
   //api에 문제가 있어서 추후 수정예정
   return (
     <S.Container>

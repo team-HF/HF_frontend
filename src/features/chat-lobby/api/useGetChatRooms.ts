@@ -4,14 +4,19 @@ import { useAxios } from '../../../shared/utils/useAxios';
 import { useQuery } from '@tanstack/react-query';
 
 type ChatRoomProps = {
-  participantId: number;
-  searchCondition: MatchingStatus;
-  page: number;
-  pageSize: number;
+  participantId?: number;
+  searchCondition?: MatchingStatus;
+  page?: number;
+  pageSize?: number;
 };
 
 const getChatRooms = async (
-  { participantId, searchCondition, page, pageSize }: ChatRoomProps,
+  {
+    participantId,
+    searchCondition = MatchingStatus.ALL,
+    page = 1,
+    pageSize = 10,
+  }: ChatRoomProps,
   axiosInstance: AxiosInstance
 ): Promise<ChatContent[]> => {
   const response = await axiosInstance.get(
@@ -29,13 +34,13 @@ const getChatRooms = async (
 
 export const useGetChatRooms = ({
   participantId,
-  searchCondition,
-  page,
-  pageSize,
+  searchCondition = MatchingStatus.ALL,
+  page = 1,
+  pageSize = 10,
 }: ChatRoomProps) => {
   const { axiosInstance } = useAxios();
 
-  return useQuery<ChatContent[], Error>({
+  return useQuery<ChatContent[]>({
     queryKey: [
       'chat-lobby-content',
       participantId,
@@ -43,9 +48,10 @@ export const useGetChatRooms = ({
       page,
       pageSize,
     ],
+    enabled: participantId !== undefined,
     queryFn: () =>
       getChatRooms(
-        { participantId, searchCondition, page, pageSize },
+        { participantId: participantId!, searchCondition, page, pageSize },
         axiosInstance
       ),
     staleTime: 1000 * 60 * 5,
