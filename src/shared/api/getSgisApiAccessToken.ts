@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getSgisApiAccessToken = async (getLocationData: () => void) => {
+export const getSgisApiAccessToken = async () => {
   const KEY = import.meta.env.VITE_SGIS_CONSUMER_KEY;
   const SECRET = import.meta.env.VITE_SGIS_CONSUMER_SECRET;
   const URL = import.meta.env.VITE_SGIS_TOKEN_URL;
@@ -12,5 +12,4 @@ export const getSgisApiAccessToken = async (getLocationData: () => void) => {
   });
   const accessToken = result.data.result.accessToken;
   sessionStorage.setItem("sgisAccessToken", accessToken);
-  getLocationData();
 };

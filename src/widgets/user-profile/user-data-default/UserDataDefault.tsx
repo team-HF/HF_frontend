@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import * as S from './style';
 import TierTag from '../../../shared/ui/tier-tag/TierTag';
 import ExerciseTag from '../../../shared/ui/exercise-tag/ExerciseTag';
@@ -9,24 +8,8 @@ import { getSgisLocation } from '../../../shared/api/getSgisLocation';
 import { useGetTagName as getTagName } from '../../../shared/utils/useGetTagName';
 import { useUserDetailStore } from '../../../pages/profile/store/user-detail-store';
 import { usePostWish as postWish } from '../../../shared/api/usePostWish';
-<<<<<<< HEAD
 import { SocketContext } from '../../../app/providers/SocketProvider';
 import { useRequestChat } from '../../../features/matching/api/useRequestNewChat';
-=======
-import { useNavigate } from 'react-router-dom';
-=======
-import * as S from "./style";
-import TierTag from "../../../shared/ui/tier-tag/TierTag";
-import ExerciseTag from "../../../shared/ui/exercise-tag/ExerciseTag";
-import { useUserProfileStore } from "../../../shared/store/user-profile-store";
-import { useEffect, useState } from "react";
-import { getSgisApiAccessToken } from "../../../shared/api/getSgisApiAccessToken";
-import { getSgisLocation } from "../../../shared/api/getSgisLocation";
-import { useGetTagName as getTagName } from "../../../shared/utils/useGetTagName";
-import { useUserDetailStore } from "../../../pages/profile/store/user-detail-store";
-import { usePostWish as postWish } from "../../../shared/api/usePostWish";
->>>>>>> Stashed changes
->>>>>>> 9019a47fd47c2e660c37dc0b677ceb6db2d362b1
 
 const UserDataDefault = () => {
   const { userProfile } = useUserProfileStore();
@@ -48,16 +31,16 @@ const UserDataDefault = () => {
   };
   const handleFriendRequest = () => {
     if (!userProfile?.memberId) {
-      alert('상대방 정보가 없습니다.');
+      alert("상대방 정보가 없습니다.");
       return;
     }
     createChat();
   };
   const exerciseStyle = [
-    { id: 'companionStyle', content: userProfile?.companionStyle },
-    { id: 'fitnessEagerness', content: userProfile?.fitnessEagerness },
-    { id: 'fitnessKind', content: userProfile?.fitnessKind },
-    { id: 'fitnessObjective', content: userProfile?.fitnessObjective },
+    { id: "companionStyle", content: userProfile?.companionStyle },
+    { id: "fitnessEagerness", content: userProfile?.fitnessEagerness },
+    { id: "fitnessKind", content: userProfile?.fitnessKind },
+    { id: "fitnessObjective", content: userProfile?.fitnessObjective },
   ];
 
   const exerciseTags = exerciseStyle.map((style) => {
@@ -88,19 +71,19 @@ const UserDataDefault = () => {
             src={
               userProfile?.profileImageUrl
                 ? userProfile?.profileImageUrl
-                : '/svg/default-profile-icon.svg'
+                : "/svg/default-profile-icon.svg"
             }
           />
           <S.Box className="column gap_8">
             <S.Box className="gap_8">
               <S.Text_1>{userProfile?.nickname}</S.Text_1>
               <TierTag
-                fitnessLevel={userProfile?.fitnessLevel || 'BEGINNER'}
+                fitnessLevel={userProfile?.fitnessLevel || "BEGINNER"}
                 tier={userProfile?.tier.tier || 0}
               />
             </S.Box>
             <S.Box>
-              <img src={'/svg/location-icon.svg'} />
+              <img src={"/svg/location-icon.svg"} />
               <S.Text_2>{location}</S.Text_2>
             </S.Box>
           </S.Box>

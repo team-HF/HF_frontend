@@ -36,7 +36,7 @@ const LocationSelectBar = () => {
   };
 
   useEffect(() => {
-    getSgisApiAccessToken(getLocationData);
+    getSgisApiAccessToken();
   }, []);
 
   useEffect(() => {
