@@ -1,7 +1,13 @@
-import * as S from './chat-message-style';
+import * as S from "./chat-message-style";
+
+type TMessage = {
+  senderId: number;
+  message: string;
+  timestamp: string;
+};
 
 type ChatMessageProps = {
-  message: string;
+  message: TMessage;
   currentUserId: number;
 };
 export default function ChatMessage({

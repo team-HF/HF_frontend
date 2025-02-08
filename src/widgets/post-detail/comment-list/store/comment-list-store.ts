@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { Comment } from "../CommentList";
+import { TComment } from "../../../../shared/types/community";
 
 type UserStore = {
-  commentDataList: Comment[] | null;
-  setCommentDataList: (option: Comment[]) => void;
+  commentDataList: TComment[] | null;
+  setCommentDataList: (option: TComment[]) => void;
 };
 
 export const useCommentListStore = create<UserStore>((set) => ({

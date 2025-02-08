@@ -22,3 +22,13 @@ export const useOptionStore = create<OptionStore>((set) => ({
   setGoalSelected: (option) => set({ goalSelected: option }),
   setExerciseSelected: (option) => set({ exerciseSelected: option }),
 }));
+
+type LevelStore = {
+  levelSelected: string | null;
+  setLevelSelected: (option: string) => void;
+};
+
+export const useLevelStore = create<LevelStore>((set) => ({
+  levelSelected: null,
+  setLevelSelected: (option) => set({ levelSelected: option }),
+}));
