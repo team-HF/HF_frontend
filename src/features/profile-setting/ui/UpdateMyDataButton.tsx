@@ -1,6 +1,6 @@
 import * as S from './update-my-data-button';
-import { useProfileStore } from '../../profile/store/profile-store';
-import { usePutMyData } from '../api/usePatchMyData';
+import { useProfileSettingStore } from '../store/profile-setting-store';
+import { usePatchMyData } from '../api/usePatchMyData';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
 type UpdateButtonProps = {
   disabled: boolean;
@@ -22,9 +22,18 @@ interface UpdateMyDataRequest {
 
 export default function UpdateMyDataButton({ disabled }: UpdateButtonProps) {
   const { data: myData, isLoading } = useGetMyData();
-  const { mutate: uploadMyData } = usePutMyData(myData?.memberId ?? 0);
-  const { image, cd1, cd2, cd3, introduction } = useProfileStore();
-
+  const { mutate: uploadMyData } = usePatchMyData(myData?.memberId ?? 0);
+  const {
+    image,
+    cd1,
+    cd2,
+    cd3,
+    introduction,
+    styleSelected,
+    habitSelected,
+    goalSelected,
+    exerciseSelected,
+  } = useProfileSettingStore();
   const updateMyData = async () => {
     if (!myData?.memberId) {
       alert('회원 정보가 아직 로드되지 않았습니다.');
@@ -40,22 +49,17 @@ export default function UpdateMyDataButton({ disabled }: UpdateButtonProps) {
       cd3: cd3?.slice(5) || undefined,
       introduction: introduction || undefined,
       fitnessLevel: 'BEGINNER',
-      companionStyle: myData?.companionStyle as 'SMALL' | 'GROUP' | undefined,
-      fitnessEagerness: myData?.fitnessEagerness as
-        | 'EAGER'
-        | 'LAZY'
-        | undefined,
-      fitnessObjective: myData?.fitnessObjective as
-        | 'BULK_UP'
-        | 'RUNNING'
-        | undefined,
-      fitnessKind: myData?.fitnessKind as
-        | 'HIGH_STRESS'
-        | 'FUNCTIONAL'
-        | undefined,
+      companionStyle: styleSelected as 'SMALL' | 'GROUP',
+      fitnessEagerness: habitSelected as 'EAGER' | 'LAZY',
+      fitnessObjective: goalSelected as 'BULK_UP' | 'RUNNING',
+      fitnessKind: exerciseSelected as 'HIGH_STRESS' | 'FUNCTIONAL',
     };
-
-    uploadMyData(requestData);
+    console.log(requestData);
+    uploadMyData(requestData, {
+      onSuccess: () => {
+        sessionStorage.removeItem('exerciseStyles');
+      },
+    });
   };
 
   if (isLoading) return <p>로딩 중...</p>;

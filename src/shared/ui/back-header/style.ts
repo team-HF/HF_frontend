@@ -5,6 +5,7 @@ export const Container = styled.div`
   width: 22.5rem;
   height: 2.5rem;
   gap: 0.625rem;
+  padding: 8px 0px;
   @media (min-width: 768px) and (max-width: 991px) {
     /* 태블릿 세로 방향 */
     width: 40rem;
@@ -26,7 +27,7 @@ export const ContentsWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 1.875rem;
-  padding: 0.5rem 1.25rem;
+  padding: 16px 0px;
   @media (min-width: 768px) and (max-width: 991px) {
     /* 태블릿 세로 방향 */
     width: 40rem;

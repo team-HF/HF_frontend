@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { theme } from "../../../app/theme";
+import styled from 'styled-components';
+import { theme } from '../../../app/theme';
 
 export const Container = styled.div`
   display: flex;
@@ -82,6 +82,7 @@ export const SignUpBtn = styled.button`
   font-weight: 500;
   color: ${theme.colors.white};
   background-color: ${theme.colors.main};
+  cursor: pointer;
 `;
 export const IconBtn = styled.button`
   display: flex;

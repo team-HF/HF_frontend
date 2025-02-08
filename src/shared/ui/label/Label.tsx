@@ -4,22 +4,28 @@ type LabelProps = {
   text: string;
   fontColor: string;
   backgroundColor: string;
-  borderColor: string;
+  borderColor?: string;
+  width: number;
+  height: number;
 };
 
 export default function Label({
   text,
   fontColor,
-  borderColor,
+  borderColor = 'transparent',
   backgroundColor,
+  width,
+  height,
 }: LabelProps) {
   return (
     <S.LabelContainer
-      borderColor={borderColor}
-      backgroundColor={backgroundColor}
+      $borderColor={borderColor}
+      $backgroundColor={backgroundColor}
       radius="24px"
+      width={width}
+      height={height}
     >
-      <S.LabelText fontColor={fontColor}>{text}</S.LabelText>
+      <S.LabelText $fontColor={fontColor}>{text}</S.LabelText>
     </S.LabelContainer>
   );
 }

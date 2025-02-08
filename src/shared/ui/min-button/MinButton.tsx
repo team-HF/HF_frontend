@@ -14,11 +14,21 @@ export interface minButtonProps {
   name?: string;
   button_shape: buttonShape;
   button_style: buttonStyle;
+  onClick?: () => void;
 }
 
-const MinButton = ({ name, button_shape, button_style }: minButtonProps) => {
+const MinButton = ({
+  name,
+  button_shape,
+  button_style,
+  onClick,
+}: minButtonProps) => {
   return (
-    <S.Container button_shape={button_shape} button_style={button_style}>
+    <S.Container
+      button_shape={button_shape}
+      button_style={button_style}
+      onClick={onClick}
+    >
       {name}
     </S.Container>
   );
