@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import * as S from './style';
 import TierTag from '../../../shared/ui/tier-tag/TierTag';
 import ExerciseTag from '../../../shared/ui/exercise-tag/ExerciseTag';
@@ -8,8 +9,24 @@ import { getSgisLocation } from '../../../shared/api/getSgisLocation';
 import { useGetTagName as getTagName } from '../../../shared/utils/useGetTagName';
 import { useUserDetailStore } from '../../../pages/profile/store/user-detail-store';
 import { usePostWish as postWish } from '../../../shared/api/usePostWish';
+<<<<<<< HEAD
 import { SocketContext } from '../../../app/providers/SocketProvider';
 import { useRequestChat } from '../../../features/matching/api/useRequestNewChat';
+=======
+import { useNavigate } from 'react-router-dom';
+=======
+import * as S from "./style";
+import TierTag from "../../../shared/ui/tier-tag/TierTag";
+import ExerciseTag from "../../../shared/ui/exercise-tag/ExerciseTag";
+import { useUserProfileStore } from "../../../shared/store/user-profile-store";
+import { useEffect, useState } from "react";
+import { getSgisApiAccessToken } from "../../../shared/api/getSgisApiAccessToken";
+import { getSgisLocation } from "../../../shared/api/getSgisLocation";
+import { useGetTagName as getTagName } from "../../../shared/utils/useGetTagName";
+import { useUserDetailStore } from "../../../pages/profile/store/user-detail-store";
+import { usePostWish as postWish } from "../../../shared/api/usePostWish";
+>>>>>>> Stashed changes
+>>>>>>> 9019a47fd47c2e660c37dc0b677ceb6db2d362b1
 
 const UserDataDefault = () => {
   const { userProfile } = useUserProfileStore();
