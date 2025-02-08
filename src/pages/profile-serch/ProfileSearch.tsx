@@ -7,10 +7,27 @@ import { useGetParams } from "../../shared/utils/useGetParams";
 import UserProfileCard from "../../shared/ui/user-profile-card/UserProfileCard";
 import SearchModal from "../../widgets/profile-search/search-modal/SearchModal";
 import LogoHeader from "../../shared/ui/logo-header/Header";
+import { useGetSearchData as getSearchData } from "../../shared/api/useGetSearchData";
+import { TProfile } from "../search-result/SearchResult";
 
 const ProfileSearch = () => {
   const [filter, setFilter] = useState(useGetParams("filter"));
   const [searchBarOpen, setSearchBarOpen] = useState<boolean>(false);
+  const [searchResult, setSearchResult] = useState({
+    profileList: [],
+    profileListSize: 0,
+  });
+
+  const profiles = searchResult.profileList.map((profile: TProfile, idx) => {
+    return <UserProfileCard key={`user_${idx}`} {...profile} />;
+  });
+
+  useEffect(() => {
+    (async () => {
+      const searchResult = await getSearchData();
+      setSearchResult(searchResult);
+    })();
+  }, []);
 
   useEffect(() => {
     if (searchBarOpen) {
@@ -41,12 +58,7 @@ const ProfileSearch = () => {
             paramName="filter"
           />
         </S.FilterContainer>
-        <S.UserContainer>
-          <UserProfileCard />
-          <UserProfileCard />
-          <UserProfileCard />
-          <UserProfileCard />
-        </S.UserContainer>
+        <S.UserContainer>{profiles}</S.UserContainer>
       </S.Container>
       {searchBarOpen && <SearchModal closeModal={setSearchBarOpen} />}
     </PageForm>

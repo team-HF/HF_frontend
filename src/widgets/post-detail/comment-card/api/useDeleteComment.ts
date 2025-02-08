@@ -1,17 +1,21 @@
+import axios from "axios";
 import { useAxios as Axios } from "../../../../shared/utils/useAxios";
-import Cookies from "js-cookie";
 
 export const useDeleteComment = async (commentId: number) => {
+  console.log(commentId);
   const { axiosInstance } = Axios();
-  const accessToken = Cookies.get("access_token");
   try {
-    const response = await axiosInstance.delete(`/hf/comments/${commentId}`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    const response = await axiosInstance.delete(`/hf/comments/${commentId}`);
     console.log(response.data);
-    return response.data;
+    // return response.data;
   } catch (error) {
-    console.error("Error deleting comment", error);
+    if (axios.isAxiosError(error)) {
+      console.error("Error Response:", error.response);
+      console.error("Status Code:", error.response?.status);
+      console.error("Error Message:", error.response?.data);
+    } else {
+      console.error("Unknown Error:", error);
+    }
     throw error;
   }
 };

@@ -48,9 +48,8 @@ export default function PostContent({
   useEffect(() => {
     (async () => {
       const postLikeResponse = await getPostLike(postId, myProfile?.memberId);
-      if (postLikeResponse.content) {
+      if (postLikeResponse.content[0].likeId)
         setLikeId(postLikeResponse.content[0].likeId);
-      }
     })();
   }, []);
 

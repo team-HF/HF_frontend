@@ -2,27 +2,39 @@ import * as S from './style';
 import TierTag from '../../../shared/ui/tier-tag/TierTag';
 import ExerciseTag from '../../../shared/ui/exercise-tag/ExerciseTag';
 import { useUserProfileStore } from '../../../shared/store/user-profile-store';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getSgisApiAccessToken } from '../../../shared/api/getSgisApiAccessToken';
 import { getSgisLocation } from '../../../shared/api/getSgisLocation';
 import { useGetTagName as getTagName } from '../../../shared/utils/useGetTagName';
 import { useUserDetailStore } from '../../../pages/profile/store/user-detail-store';
 import { usePostWish as postWish } from '../../../shared/api/usePostWish';
-import { useNavigate } from 'react-router-dom';
+import { SocketContext } from '../../../app/providers/SocketProvider';
+import { useRequestChat } from '../../../features/matching/api/useRequestNewChat';
 
 const UserDataDefault = () => {
   const { userProfile } = useUserProfileStore();
   const { userDetail } = useUserDetailStore();
+  const socket = useContext(SocketContext);
+  const requesterId = socket?.memberId;
+  const chatTargetId = userProfile?.memberId;
   const [location, setLocation] = useState<string>('');
+  const { requestChat } = useRequestChat();
   // const [wished, setWished] = useState<boolean>(false);
-  const navigate = useNavigate();
-
+  const createChat = () => {
+    if (requesterId && chatTargetId) {
+      requestChat({ requesterId, chatTargetId });
+    } else {
+      alert('채팅방 생성에 실패하였습니다.');
+    }
+    // navigate('/chat');
+    console.log('채팅방 생성 성공');
+  };
   const handleFriendRequest = () => {
     if (!userProfile?.memberId) {
       alert('상대방 정보가 없습니다.');
       return;
     }
-    navigate(`/matching/${userProfile.memberId}`);
+    createChat();
   };
   const exerciseStyle = [
     { id: 'companionStyle', content: userProfile?.companionStyle },

@@ -36,7 +36,7 @@ const LocationSelectBar = () => {
   };
 
   useEffect(() => {
-    getSgisApiAccessToken();
+    getSgisApiAccessToken(getLocationData);
   }, []);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const LocationSelectBar = () => {
       {data.full_addr}
     </S.LocationCard>
   ));
-  
+
   return (
     <S.Container>
       <S.Label>위치</S.Label>

@@ -20,6 +20,7 @@ import { Chat } from './pages/chat/Chat';
 import { SocketProvider } from './app/providers/SocketProvider';
 import { SubscriptionProvider } from './app/providers/SubscriptionProvider';
 import { useGetMyData } from './shared/api/useGetMyData';
+import SearchResult from './pages/search-result/SearchResult';
 
 function App() {
   const { data: myData } = useGetMyData();
@@ -68,6 +69,7 @@ function App() {
               <Route path="/matching-review" element={<MatchingReview />} />
               <Route path="member/:id/profile" element={<UserProfile />} />
               <Route path="/" element={<ProfileSearch />} />
+              <Route path="/search-result" element={<SearchResult />} />
             </Routes>
           </SubscriptionProvider>
         </SocketProvider>

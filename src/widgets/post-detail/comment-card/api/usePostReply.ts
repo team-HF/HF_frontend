@@ -22,6 +22,7 @@ export const usePostReply = async ({
     parentCommentId,
   };
   console.log(postId, requestData);
+  
   try {
     const response = await axiosInstance.post(
       `/hf/posts/${postId}/comments`,

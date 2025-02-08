@@ -85,6 +85,9 @@ const SearchModal = ({ closeModal }: SearchModalProps) => {
           </S.TagContainer>
         </S.OptionContainer>
         <S.OptionContainer>
+          <LocationSelectBar />
+        </S.OptionContainer>
+        <S.OptionContainer>
           <S.Title>운동 레벨</S.Title>
           <S.Box>
             <S.GenderBtn
@@ -105,9 +108,7 @@ const SearchModal = ({ closeModal }: SearchModalProps) => {
           <S.Title>운동 스타일</S.Title>
           <S.Box>{exerciseStyleTags}</S.Box>
         </S.OptionContainer>
-        <S.OptionContainer>
-          <LocationSelectBar />
-        </S.OptionContainer>
+        
       </S.Container>
     </S.ModalContainer>
   );
