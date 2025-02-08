@@ -1,8 +1,10 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const WishListSchema = z.object({
   wishId: z.number(),
   wisherId: z.number(),
+  profileImage: z.string(),
+  nickname: z.string(),
 });
 
 export const WishListResponseSchema = z.object({

@@ -1,9 +1,7 @@
-import Cookies from "js-cookie";
 import { useAxios as Axios } from "../../../shared/utils/useAxios";
 import { useGetParams as getParams } from "../../../shared/utils/useGetParams";
 
 export const getPostList = async (currentPage: number) => {
-  const accessToken = Cookies.get("access_token");
   const postCategory = getParams("postCategory");
   const fitnessLevel = getParams("fitnessLevel");
   const { axiosInstance } = Axios();
@@ -21,9 +19,6 @@ export const getPostList = async (currentPage: number) => {
   try {
     const response = await axiosInstance.get(URL, {
       params: params,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
     });
 
     const content = response.data.content;

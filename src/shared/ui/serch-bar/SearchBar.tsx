@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
 import * as S from "./style";
+import { useSearchValueStore } from "../../store/search-value-store";
+import { useLocationStore } from "../../store/location-store";
 
 interface SearchBarProps {
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -7,12 +10,29 @@ interface SearchBarProps {
   setKeyWord: (word: string) => void;
 }
 
-const SearchBar = ({
-  closeModal,
-  setSearchResult,
-  $value,
-  setKeyWord,
-}: SearchBarProps) => {
+const SearchBar = ({ closeModal, $value, setKeyWord }: SearchBarProps) => {
+  const navigate = useNavigate();
+
+  const { keyWord, fitnessLevel, fitnessStyle } = useSearchValueStore();
+  const { cd1, cd2, cd3 } = useLocationStore();
+
+  const params = {
+    ...(keyWord && { keyWord }),
+    ...(fitnessLevel && { fitnessLevel }),
+    ...(fitnessStyle.length && {
+      fitnessStyle: fitnessStyle.map((item) => item.id).join(","),
+    }),
+    ...(cd1 && { cd1 }),
+    ...(cd2 && { cd2: cd2.slice(2) }),
+    ...(cd3 && { cd3: cd3.slice(5) }),
+  };
+
+
+  const queryString = new URLSearchParams(params).toString();
+
+  // console.log(queryString);
+  console.log(decodeURIComponent(queryString));
+
   return (
     <S.Container>
       <S.IconBtn onClick={() => closeModal(false)}>
@@ -24,7 +44,7 @@ const SearchBar = ({
           value={$value}
           onChange={(ev) => setKeyWord(ev.target.value)}
         />
-        <S.IconBtn onClick={() => {}}>
+        <S.IconBtn onClick={() => navigate("search-result")}>
           <S.SearchIcon src="/svg/search-icon.svg" />
         </S.IconBtn>
       </S.InputContainer>

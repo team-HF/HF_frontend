@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import * as S from './style';
 import TierTag from '../../../shared/ui/tier-tag/TierTag';
 import ExerciseTag from '../../../shared/ui/exercise-tag/ExerciseTag';
@@ -9,6 +10,18 @@ import { useGetTagName as getTagName } from '../../../shared/utils/useGetTagName
 import { useUserDetailStore } from '../../../pages/profile/store/user-detail-store';
 import { usePostWish as postWish } from '../../../shared/api/usePostWish';
 import { useNavigate } from 'react-router-dom';
+=======
+import * as S from "./style";
+import TierTag from "../../../shared/ui/tier-tag/TierTag";
+import ExerciseTag from "../../../shared/ui/exercise-tag/ExerciseTag";
+import { useUserProfileStore } from "../../../shared/store/user-profile-store";
+import { useEffect, useState } from "react";
+import { getSgisApiAccessToken } from "../../../shared/api/getSgisApiAccessToken";
+import { getSgisLocation } from "../../../shared/api/getSgisLocation";
+import { useGetTagName as getTagName } from "../../../shared/utils/useGetTagName";
+import { useUserDetailStore } from "../../../pages/profile/store/user-detail-store";
+import { usePostWish as postWish } from "../../../shared/api/usePostWish";
+>>>>>>> Stashed changes
 
 const UserDataDefault = () => {
   const { userProfile } = useUserProfileStore();

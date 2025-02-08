@@ -8,7 +8,8 @@ export const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   background-color: white;
-  padding-bottom: 4.5rem;
+  padding-bottom: 2.6rem;
+  z-index: 1000;
 `;
 export const Container = styled.div`
   display: flex;
