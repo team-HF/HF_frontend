@@ -15,14 +15,13 @@ export function SocketProvider({
   const [isConnected, setIsConnected] = useState<boolean>(false);
   useEffect(() => {
     if (!memberId) return;
-
     const ws = new WebSocket(
       `ws://localhost:8080/hf/portfolio?member-id=${memberId}`
     );
     const client = Stomp.over(ws);
 
     client.debug = (msg) => console.log(msg);
-
+    client.reconnect_delay = 5000;
     client.connect(
       {},
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
