@@ -24,6 +24,7 @@ export const StyleSpan = styled.span`
   letter-spacing: -0.0025em;
   text-align: center;
   color: #adb5bd;
+  white-space: nowrap;
 `;
 export const MiddleWrapper = styled.div`
   position: relative;
