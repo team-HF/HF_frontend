@@ -34,9 +34,8 @@ export const useGetMyWishList = (size: number, memberId: number) => {
       if (lastPage.page < lastPage.totalPageCount) {
         return lastPage.page + 1;
       }
-      return undefined;
+      return null;
     },
     staleTime: 5 * 60 * 1000,
-    enabled: memberId !== 0,
   });
 };
