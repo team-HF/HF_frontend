@@ -1,4 +1,4 @@
-import Label from '../../label/Label';
+import Label from '../label/Label';
 
 export default function OnGoingMatchCard() {
   return (
