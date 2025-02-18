@@ -27,6 +27,7 @@ export default function Label({
       width={width}
       height={height}
       onClick={onClick}
+      $clickalbe={!!onClick}
     >
       <S.LabelText $fontColor={fontColor}>{text}</S.LabelText>
     </S.LabelContainer>
