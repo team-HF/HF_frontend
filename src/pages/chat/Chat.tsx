@@ -7,6 +7,7 @@ import { SocketContext } from '../../app/providers/SocketProvider';
 import { useGetChatMessages } from '../../features/chat/api/useGetChatMessage';
 import { Virtuoso } from 'react-virtuoso';
 import ChatWarningMessage from '../../shared/ui/chat-warning-message/ChatWarningMessage';
+import { useGetMatchingUserInfo } from '../../features/matching/api/useGetMatchingUserInfo';
 
 // creationTime 파싱 함수
 function parseCreationTime(creationTime: string): Date {
@@ -74,7 +75,6 @@ export function Chat() {
   const { chatRoomId } = useParams();
   const [textInput, setTextInput] = useState('');
 
-  // useInfiniteQuery로 채팅 메시지 불러오기
   const {
     data,
     isLoading,
@@ -86,12 +86,19 @@ export function Chat() {
     chatroomId: Number(chatRoomId),
     pageSize: 1000,
   });
+  const allParticipantIds = data?.pages.flatMap((page) => page.participantIds);
+  const matchingUserId = allParticipantIds?.filter((id) => id !== memberId)[0];
+  const {
+    data: matchingUserInfo,
+    isLoading: matchingUserInfoLoading,
+    error: matchingUserInfoError,
+  } = useGetMatchingUserInfo(matchingUserId);
 
+  console.log(matchingUserInfo);
   const [realTimeMessages, setRealTimeMessages] = useState<any[]>([]);
 
   const fetchedMessages = useMemo(() => {
     if (!data) return [];
-    // data.pages: [page1, page2, ...] (page1: 최신 메시지 묶음, page2: 그보다 오래된 메시지 …)
     const allMessages = data.pages.flatMap((page: any) => page.chatMessages);
     return [...allMessages].reverse();
   }, [data]);
@@ -133,12 +140,18 @@ export function Chat() {
     setTextInput('');
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error</p>;
+  if (isLoading || !chatRoomId || matchingUserInfoLoading)
+    return <p>Loading...</p>;
+  if (error || matchingUserInfoError) return <p>Error</p>;
 
   return (
     <S.Container>
-      <ChatHeader />
+      <ChatHeader
+        chatroomId={chatRoomId}
+        matchingUserNickname={matchingUserInfo.nickname}
+        matchingUserTier={matchingUserInfo.tier}
+        matchingUserId={matchingUserId}
+      />
       <S.MessageContainer>
         {messages.length > 0 ? (
           <Virtuoso

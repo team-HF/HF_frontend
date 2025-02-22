@@ -1,5 +1,4 @@
 import * as S from './chat-header-style.ts';
-import { useGetMyData } from '../../../shared/api/useGetMyData.ts';
 import LevelLabel from '../../../shared/ui/level-label/LevelLabel.tsx';
 import { useNavigate } from 'react-router-dom';
 import RequestMatchingLabel from './RequestMatchingLabel.tsx';
@@ -8,9 +7,20 @@ import ChatMenuModal from './ChatMenuModal.tsx';
 
 type ChatHeaderProps = {
   chatroomId: string;
+  matchingUserNickname: string;
+  matchingUserTier: {
+    fitnessLevel: string;
+    tier: number;
+  };
+  matchingUserId: number;
 };
 
-export default function ChatHeader({ chatroomId }: ChatHeaderProps) {
+export default function ChatHeader({
+  chatroomId,
+  matchingUserNickname,
+  matchingUserTier,
+  matchingUserId,
+}: ChatHeaderProps) {
   const navigate = useNavigate();
   const onBackCluck = () => {
     navigate(-1);
@@ -19,7 +29,6 @@ export default function ChatHeader({ chatroomId }: ChatHeaderProps) {
   const onClick = () => {
     setIsOpen(true);
   };
-  const { data: myData } = useGetMyData();
   return (
     <S.Container>
       <S.LeftWrapper>
@@ -30,11 +39,14 @@ export default function ChatHeader({ chatroomId }: ChatHeaderProps) {
         />
       </S.LeftWrapper>
       <S.CenterWrapper>
-        <S.StyleName>{myData?.nickname}</S.StyleName>
-        <LevelLabel />
+        <S.StyleName>{matchingUserNickname}</S.StyleName>
+        <LevelLabel matchingUserTier={matchingUserTier} />
       </S.CenterWrapper>
       <S.RightWrapper>
-        <RequestMatchingLabel chatroomId={chatroomId} />
+        <RequestMatchingLabel
+          chatroomId={chatroomId}
+          matchingUserId={matchingUserId}
+        />
         <S.StyleMenu
           src="/svg/menu-dot-col-icon.svg"
           alt="menu-icon"

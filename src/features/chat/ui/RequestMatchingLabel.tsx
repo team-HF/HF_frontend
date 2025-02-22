@@ -3,13 +3,15 @@ import Label from '../../../shared/ui/label/Label';
 
 type RequestMatchingLabelProps = {
   chatroomId: string;
+  matchingUserId: number;
 };
 export default function RequestMatchingLabel({
   chatroomId,
+  matchingUserId,
 }: RequestMatchingLabelProps) {
   const navigate = useNavigate();
   const onClick = () => {
-    navigate(`/matching/${chatroomId}`);
+    navigate(`/matching/${chatroomId}`, { state: matchingUserId });
   };
   return (
     <Label

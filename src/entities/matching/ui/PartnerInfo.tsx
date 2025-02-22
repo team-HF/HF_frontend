@@ -1,6 +1,9 @@
 import LevelLabel from '../../../shared/ui/level-label/LevelLabel';
 import * as S from './partner-info-style.ts';
 import { useGetMatchingUserInfo } from '../../../features/matching/api/useGetMatchingUserInfo.ts';
+import { useEffect, useState } from 'react';
+import { getSgisApiAccessToken } from '../../../shared/api/getSgisApiAccessToken.ts';
+import { getSgisLocation } from '../../../shared/api/getSgisLocation.ts';
 
 export default function PartnerInfo({
   matchingUserId,
@@ -12,12 +15,25 @@ export default function PartnerInfo({
     isLoading,
     error,
   } = useGetMatchingUserInfo(matchingUserId);
-  console.log(matchingUserData);
+  const [location, setLocation] = useState('');
+  useEffect(() => {
+    (async () => {
+      if (matchingUserData) {
+        await getSgisApiAccessToken();
+        const result = await getSgisLocation(
+          `${matchingUserData?.cd1}${matchingUserData?.cd2}`,
+          `${matchingUserData?.cd1}${matchingUserData?.cd2}${matchingUserData?.cd3}`
+        );
+
+        setLocation(result.full_addr);
+      }
+    })();
+  }, [matchingUserData]);
   if (isLoading || !matchingUserData) {
     return <div>로딩</div>;
   }
+
   if (error) return <div>error.</div>;
-  const location = `${matchingUserData!.cd1 + matchingUserData!.cd2}`;
 
   return (
     <S.Container>
@@ -25,7 +41,7 @@ export default function PartnerInfo({
       <S.RightWrapper>
         <S.NameAndLevelWrapper>
           <S.StyleName>{matchingUserData?.nickname}</S.StyleName>
-          <LevelLabel />
+          <LevelLabel matchingUserTier={matchingUserData.tier} />
         </S.NameAndLevelWrapper>
         <S.LocationWrapper>
           <S.StyleLocationSvg
