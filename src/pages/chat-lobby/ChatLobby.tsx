@@ -21,7 +21,7 @@ export default function ChatLobby() {
     setFilterStatus(option);
     setIsOpenDropdownFilter(false);
     queryClient.invalidateQueries({
-      queryKey: ['myMatchingList', memberId, option].filter(Boolean),
+      queryKey: ['chat-lobby-content', memberId, option].filter(Boolean),
     });
   };
 
@@ -42,7 +42,6 @@ export default function ChatLobby() {
         return MatchingStatus.ALL;
     }
   })();
-
   const {
     data: chatData,
     isLoading,
