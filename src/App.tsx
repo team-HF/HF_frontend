@@ -38,11 +38,6 @@ function App() {
           >
             <Routes>
               <Route path="/my-page" element={<MyPage />} />
-              <Route
-                path="/register/exercise-style"
-                element={<ExerciseOption />}
-              />
-              <Route path="/register/profile" element={<Profile />} />
 
               <Route path="/profile-setting">
                 <Route index element={<ProfileSetting />} />
@@ -76,6 +71,8 @@ function App() {
       ) : (
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register/exercise-style" element={<ExerciseOption />} />
+          <Route path="/register/profile" element={<Profile />} />
         </Routes>
       )}
     </ThemeProvider>
