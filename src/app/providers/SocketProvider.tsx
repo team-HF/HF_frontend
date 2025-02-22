@@ -20,7 +20,6 @@ export function SocketProvider({
     );
     const client = Stomp.over(ws);
 
-    client.debug = (msg) => console.log(msg);
     client.reconnect_delay = 5000;
     client.connect(
       {},

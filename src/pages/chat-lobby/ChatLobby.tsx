@@ -12,7 +12,6 @@ export default function ChatLobby() {
     throw new Error('Socket 연결 실패');
   }
   const { memberId } = socketContext;
-  console.log(memberId);
   const {
     data: chatData,
     isLoading,

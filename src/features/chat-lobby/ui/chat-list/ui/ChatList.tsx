@@ -1,5 +1,5 @@
 import * as S from './chat-list-style';
-import OnGoingMatchCard from '../../card/ui/OnGoingMatchCard';
+import OnGoingMatchCard from '../../../../../shared/ui/card/OnGoingMatchCard';
 import { useEffect, useState } from 'react';
 import ChatListDropdown from './ChatListDropdown';
 import ChatConfirmModal from '../../../../../shared/ui/chat-confirm-modal/ChatConfirmModal';
