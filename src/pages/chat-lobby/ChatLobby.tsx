@@ -25,12 +25,17 @@ export default function ChatLobby() {
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>error</p>;
+  if (!chatData) return <p>데이터를 불러올 수 없습니다.</p>;
   return (
     <S.Container>
       <S.HeaderWrapper>
         <ChatLobbyHeader />
       </S.HeaderWrapper>
-      {chatData?.length === 0 ? <EmptyChatList /> : <ChatList />}
+      {chatData?.length === 0 ? (
+        <EmptyChatList />
+      ) : (
+        <ChatList chatListData={chatData} />
+      )}
     </S.Container>
   );
 }
