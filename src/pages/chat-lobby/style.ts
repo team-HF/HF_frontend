@@ -77,6 +77,7 @@ export const Dropdown = styled.div`
   box-shadow: 4px 4px 8px 0px #00000040;
   z-index: 101;
   top: 120%;
+  right: 20px;
   border: 1px solid #cfc4fb;
   width: 140px;
   height: 136px;
