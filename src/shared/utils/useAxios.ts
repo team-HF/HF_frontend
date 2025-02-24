@@ -31,7 +31,7 @@ export const useAxios = () => {
   };
 
   axiosInstance.interceptors.response.use(
-    (response) => response, // 성공 응답 그대로 반환
+    (response) => response, 
     async (error) => {
       const originalRequest = error.config;
 
@@ -55,7 +55,7 @@ export const useAxios = () => {
           const response = await axios.get(
             `${import.meta.env.VITE_BASE_URL}/oauth/token/refresh`,
             {
-              withCredentials: true, // 쿠키에 있는 refresh token 자동 포함
+              withCredentials: true, 
             }
           );
           const newAccessToken = response.data.content.accessToken;
