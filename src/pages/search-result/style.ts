@@ -69,13 +69,13 @@ export const IconBox = styled.div`
   width: 1.5rem;
   height: 1.5rem;
 `;
-export const SearchInput = styled.span`
+export const SearchInput = styled.span<{ value: string }>`
   border: 0;
   font-size: 1rem;
   line-height: 1.25rem;
   letter-spacing: 0.021rem;
   font-weight: 600;
-  color: ${theme.colors.gray4};
+  color: ${({ value }) => (value ? "black" : theme.colors.gray4)};
 `;
 export const ProfileContainer = styled.div`
   display: flex;

@@ -223,7 +223,7 @@ export default function Profile() {
           <S.Field>
             <S.Label>한줄 소개</S.Label>
             <S.IntroductionContent
-              filled={Boolean(introduction)}
+              $filled={Boolean(introduction)}
               onClick={() => setIntroductionModal(true)}
             >
               {introduction ? introduction : "한줄 소개"}

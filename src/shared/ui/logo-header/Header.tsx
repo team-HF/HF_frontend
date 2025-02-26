@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as S from "./style";
 import AlarmModal from "../alarm-modal/AlarmModal";
 import { useNavigate } from "react-router-dom";
@@ -27,34 +27,33 @@ const LogoHeader = ({ backBtn }: HeaderProps) => {
   //   };
   // }, [alarmOpen]);
 
-  // useEffect(() => {
-  //   const memberId = 1;
-  //   const eventSource = new EventSource(
-  //     `http://localhost:8080/hf/connect/sse?memberId=${memberId}`
-  //   );
+  useEffect(() => {
+    const memberId = 1;
+    const eventSource = new EventSource(
+      `http://localhost:8080/hf/connect/sse?memberId=${memberId}`
+    );
 
-  //   eventSource.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     // useNotificationStore.getState().addNotification(data);
-  //     console.log("Received data: ", data);
-  //     console.log(event.lastEventId);
-  //     if (event.lastEventId) {
-  //       localStorage.setItem("LastEventId", event.lastEventId);
-  //     }
-  //   };
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("Received data: ", data);
+      console.log(event.lastEventId);
+      if (event.lastEventId) {
+        localStorage.setItem("LastEventId", event.lastEventId);
+      }
+    };
 
-  //   eventSource.addEventListener("new_thread", () => {
-  //     console.log("알림이 왔어용!");
-  //   });
+    eventSource.addEventListener("new_thread", () => {
+      console.log("알림이 왔어요!");
+    });
 
-  //   eventSource.onerror = () => {
-  //     eventSource.close(); //연결 끊기
-  //   };
+    eventSource.onerror = () => {
+      eventSource.close(); //연결 끊기
+    };
 
-  //   return () => {
-  //     eventSource.close();
-  //   };
-  // }, []);
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   return (
     <S.Container>

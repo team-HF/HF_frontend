@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { theme } from "../../../app/theme";
-import { FitnessLevel, Tier } from "../../types/user";
+import {  Tier } from "../../types/user";
+import { FitnessLevel } from "../../constants/fitness-category";
 
 const TierTag = ({ fitnessLevel, tier }: Tier) => {
   return <Tag $fitnessLevel={fitnessLevel}>{`Lv. ${tier}`}</Tag>;
