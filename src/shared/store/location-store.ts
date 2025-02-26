@@ -21,5 +21,5 @@ export const useLocationStore = create<LocationStore>((set) => ({
   setCd1: (cd1) => set({ cd1: cd1 }),
   setCd2: (cd2) => set({ cd2: cd2 }),
   setCd3: (cd3) => set({ cd3: cd3 }),
-  reset: () => set({ cd1: "", cd2: "", cd3: "" }),
+  reset: () => set({ cd1: null, cd2: null, cd3: null }),
 }));

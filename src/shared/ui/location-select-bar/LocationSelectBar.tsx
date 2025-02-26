@@ -14,7 +14,7 @@ interface Location {
 
 const LocationSelectBar = () => {
   const { cd1, cd2, cd3, setCd1, setCd2, setCd3, reset } = useLocationStore();
-
+  
   const [userLocation, setUserLocation] = useState<string>("");
   const [locationData, setLocationData] = useState<Location[]>([]);
 
