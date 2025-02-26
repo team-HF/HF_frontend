@@ -29,7 +29,6 @@ export default function CouponList() {
   };
 
   const { data } = useGetMyCoupons(memberId, filterStatus);
-  console.log(filterStatus);
   const coupons = data?.content ?? [];
 
   function formatPeriod(grantTime: string, expirationTime: string) {

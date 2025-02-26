@@ -21,23 +21,14 @@ export function SocketProvider({
     const client = Stomp.over(ws);
 
     client.reconnect_delay = 5000;
-    client.connect(
-      {},
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (frame: any) => {
-        console.log('Connected!', frame);
-        setIsConnected(true);
-      },
-      (error: Error) => {
-        console.error('STOMP error:', error);
-      }
-    );
+    client.connect({}, () => {
+      setIsConnected(true);
+    });
 
     setStompClient(client);
 
     return () => {
       client.disconnect(() => {
-        console.log('Disconnected');
         setIsConnected(false);
       });
     };

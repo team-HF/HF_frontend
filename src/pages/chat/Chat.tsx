@@ -94,7 +94,6 @@ export function Chat() {
     error: matchingUserInfoError,
   } = useGetMatchingUserInfo(matchingUserId);
 
-  console.log(matchingUserInfo);
   const [realTimeMessages, setRealTimeMessages] = useState<any[]>([]);
 
   const fetchedMessages = useMemo(() => {
