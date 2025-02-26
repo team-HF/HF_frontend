@@ -8,6 +8,8 @@ import PostPreviewList from "../../shared/ui/post-preview-list/PostPreviewList";
 import { User } from "../../shared/types/user";
 import { useSearchValueStore } from "../../shared/store/search-value-store";
 import { FitnessLevel } from "../../shared/constants/fitness-category";
+import { useNavigate } from "react-router-dom";
+import { useLocationStore } from "../../shared/store/location-store";
 
 // ❕추후에 타입 통일 필요
 type TPost = {
@@ -25,6 +27,9 @@ type TPost = {
 };
 
 const SearchResult = () => {
+  const navigate = useNavigate();
+  const { reset } = useLocationStore();
+
   const [searchResult, setSearchResult] = useState({
     postList: [],
     postListSize: 0,
@@ -56,7 +61,12 @@ const SearchResult = () => {
     <PageForm isGNB={true}>
       <S.Container>
         <S.Box className="search_bar">
-          <S.IconBtn>
+          <S.IconBtn
+            onClick={() => {
+              reset();
+              navigate("/?filter=matchedCount");
+            }}
+          >
             <S.ArrowIcon className="back" src="/svg/arrow-down.svg" />
           </S.IconBtn>
           <S.InputContainer onClick={() => setSearchBarOpen(true)}>
@@ -78,7 +88,13 @@ const SearchResult = () => {
                 </S.ResultTile>
               </S.Box>
               {profiles.length > 5 && (
-                <S.ShowAllBtn>
+                <S.ShowAllBtn
+                  onClick={() => {
+                    navigate(
+                      `/?filter=matchedCount` + `&${window.location.search}`
+                    );
+                  }}
+                >
                   모두 보기
                   <S.ArrowIcon className="front" src="/svg/arrow-down.svg" />
                 </S.ShowAllBtn>
