@@ -1,4 +1,10 @@
-export type FitnessLevel = "BEGINNER" | "ADVANCED";
+import {
+  CompanionStyle,
+  FitnessEagerness,
+  FitnessKind,
+  FitnessLevel,
+  FitnessObjective,
+} from "../constants/fitness-category";
 
 export interface Tier {
   fitnessLevel: FitnessLevel;
@@ -28,11 +34,11 @@ export interface User {
   birthDate: string;
   gender: "MALE" | "FEMALE";
   introduction: string;
-  companionStyle: "SMALL" | "GROUP";
-  fitnessEagerness: "EAGER" | "LAZY";
-  fitnessKind: "HIGH_STRESS" | "FUNCTIONAL";
+  companionStyle: CompanionStyle;
+  fitnessEagerness: FitnessEagerness;
+  fitnessKind: FitnessKind;
   fitnessLevel: FitnessLevel;
-  fitnessObjective: "BULK_UP" | "RUNNING";
+  fitnessObjective: FitnessObjective;
   matchedCount: number;
   tier: Tier;
 }

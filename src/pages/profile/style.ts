@@ -207,7 +207,7 @@ export const Header = styled.div`
   padding: 0.5rem 0;
 `;
 
-export const IntroductionContent = styled.span<{ filled: boolean }>`
+export const IntroductionContent = styled.span<{ $filled: boolean }>`
   padding: 0.625rem;
   width: 100%;
   border: 0;
@@ -215,7 +215,7 @@ export const IntroductionContent = styled.span<{ filled: boolean }>`
   font-size: 0.938rem;
   line-height: 1.467rem;
   letter-spacing: -0.0096rem;
-  color: ${({ filled }) => (filled ? theme.colors.black : "#8E8E8E")};
+  color: ${({ $filled }) => ($filled ? theme.colors.black : "#8E8E8E")};
   cursor: pointer;
 `;
 

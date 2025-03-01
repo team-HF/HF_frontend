@@ -13,25 +13,39 @@ interface SearchBarProps {
 const SearchBar = ({ closeModal, $value, setKeyWord }: SearchBarProps) => {
   const navigate = useNavigate();
 
-  const { keyWord, fitnessLevel, fitnessStyle } = useSearchValueStore();
+  const { keyword, fitnessLevels, fitnessStyle } = useSearchValueStore();
   const { cd1, cd2, cd3 } = useLocationStore();
 
+  const fitnessEntries = fitnessStyle.reduce<Record<string, string>>(
+    (acc, item) => {
+      const key = item.type;
+      acc[key] = acc[key] ? `${acc[key]},${item.id}` : `${item.id}`;
+      return acc;
+    },
+    {}
+  );
+
   const params = {
-    ...(keyWord && { keyWord }),
-    ...(fitnessLevel && { fitnessLevel }),
-    ...(fitnessStyle.length && {
-      fitnessStyle: fitnessStyle.map((item) => item.id).join(","),
-    }),
+    ...(keyword && { keyword }),
+    ...(fitnessLevels && { fitnessLevels }),
+    ...(fitnessStyle.length && fitnessEntries),
     ...(cd1 && { cd1 }),
     ...(cd2 && { cd2: cd2.slice(2) }),
     ...(cd3 && { cd3: cd3.slice(5) }),
   };
 
+  const handleNavigate = () => {
+    const queryString = new URLSearchParams(params).toString();
+    const currentPath = window.location.pathname;
+    const newQuery = decodeURIComponent(queryString);
 
-  const queryString = new URLSearchParams(params).toString();
-
-  // console.log(queryString);
-  console.log(decodeURIComponent(queryString));
+    if (currentPath === "/search-result") {
+      closeModal(false);
+      navigate(`?${newQuery}`, { replace: true });
+    } else {
+      navigate(`search-result?${newQuery}`);
+    }
+  };
 
   return (
     <S.Container>
@@ -44,7 +58,7 @@ const SearchBar = ({ closeModal, $value, setKeyWord }: SearchBarProps) => {
           value={$value}
           onChange={(ev) => setKeyWord(ev.target.value)}
         />
-        <S.IconBtn onClick={() => navigate("search-result")}>
+        <S.IconBtn type="button" id="fuck_you" onClick={handleNavigate}>
           <S.SearchIcon src="/svg/search-icon.svg" />
         </S.IconBtn>
       </S.InputContainer>

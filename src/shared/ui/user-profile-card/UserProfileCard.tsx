@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { TProfile } from "../../../pages/search-result/SearchResult";
 import {
   getCompanionStyleText,
   getFITNESS_OBJECTIVE_MAP,
@@ -9,8 +8,9 @@ import {
 import ExerciseTag from "../exercise-tag/ExerciseTag";
 import TierTag from "../tier-tag/TierTag";
 import * as S from "./style";
+import { User } from "../../types/user";
 
-const UserProfileCard = (profile: TProfile) => {
+const UserProfileCard = (profile: User) => {
   const navigate = useNavigate();
   return (
     <S.Container

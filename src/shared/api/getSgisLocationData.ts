@@ -11,7 +11,6 @@ export const getSgisLocationData = async (cd: string | null) => {
       params.cd = cd;
     }
     const result = await axios.get(URL, { params });
-
     return result.data.result || [];
   } catch (error) {
     console.error("Error getting location data", error);
