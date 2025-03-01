@@ -21,11 +21,14 @@ import { SocketProvider } from './app/providers/SocketProvider';
 import { SubscriptionProvider } from './app/providers/SubscriptionProvider';
 import { useGetMyData } from './shared/api/useGetMyData';
 import SearchResult from './pages/search-result/SearchResult';
+import NotFound from './pages/not-found/NotFound';
 
 function App() {
-  const { data: myData } = useGetMyData();
+  const { data: myData, isLoading } = useGetMyData();
   const memberId = myData?.memberId;
   const navigate = useNavigate();
+
+  if (isLoading) return <p>loading...</p>;
 
   return (
     <ThemeProvider theme={theme}>
@@ -65,11 +68,13 @@ function App() {
               <Route path="member/:id/profile" element={<UserProfile />} />
               <Route path="/" element={<ProfileSearch />} />
               <Route path="/search-result" element={<SearchResult />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </SubscriptionProvider>
         </SocketProvider>
       ) : (
         <Routes>
+          <Route path="*" element={<NotFound />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register/exercise-style" element={<ExerciseOption />} />
           <Route path="/register/profile" element={<Profile />} />
