@@ -1,7 +1,7 @@
-type TFilterId = "matching-up" | "score-up" | "like-up";
+type TFilterId = "matchedCount" | "reviewScore" | "wishCount";
 
 export const filterData: { name: string; id: TFilterId }[] = [
-  { name: "매칭 많은순", id: "matching-up" },
-  { name: "별점 높은순", id: "score-up" },
-  { name: "찜하기 많은순", id: "like-up" },
+  { name: "매칭 많은순", id: "matchedCount" },
+  { name: "별점 높은순", id: "reviewScore" },
+  { name: "찜하기 많은순", id: "wishCount" },
 ];

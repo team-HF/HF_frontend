@@ -8,23 +8,28 @@ import UserProfileCard from "../../shared/ui/user-profile-card/UserProfileCard";
 import SearchModal from "../../widgets/profile-search/search-modal/SearchModal";
 import LogoHeader from "../../shared/ui/logo-header/Header";
 import { useGetSearchData as getSearchData } from "../../shared/api/useGetSearchData";
-import { TProfile } from "../search-result/SearchResult";
+import EmptyList from "../../shared/ui/empty-list/EmptyList";
+import { User } from "../../shared/types/user";
 
 const ProfileSearch = () => {
-  const [filter, setFilter] = useState(useGetParams("filter"));
+  const [filter, setFilter] = useState(
+    useGetParams("filter") || "matchedCount"
+  );
   const [searchBarOpen, setSearchBarOpen] = useState<boolean>(false);
   const [searchResult, setSearchResult] = useState({
     profileList: [],
     profileListSize: 0,
   });
 
-  const profiles = searchResult.profileList.map((profile: TProfile, idx) => {
-    return <UserProfileCard key={`user_${idx}`} {...profile} />;
-  });
+  const profiles = searchResult.profileList
+    .sort((a, b) => b[filter] - a[filter])
+    .map((profile: User, idx) => {
+      return <UserProfileCard key={`user_${idx}`} {...profile} />;
+    });
 
   useEffect(() => {
     (async () => {
-      const searchResult = await getSearchData();
+      const searchResult = await getSearchData();      
       setSearchResult(searchResult);
     })();
   }, []);
@@ -58,7 +63,11 @@ const ProfileSearch = () => {
             paramName="filter"
           />
         </S.FilterContainer>
-        <S.UserContainer>{profiles}</S.UserContainer>
+        {searchResult.profileList.length ? (
+          <S.UserContainer>{profiles}</S.UserContainer>
+        ) : (
+          <EmptyList isBtn={false}>검색 결과가 없습니다.</EmptyList>
+        )}
       </S.Container>
       {searchBarOpen && <SearchModal closeModal={setSearchBarOpen} />}
     </PageForm>
