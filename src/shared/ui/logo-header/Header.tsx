@@ -31,7 +31,7 @@ const LogoHeader = ({ backBtn }: HeaderProps) => {
     );
 
     eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      // const data = JSON.parse(event.data);
       if (event.lastEventId) {
         localStorage.setItem("LastEventId", event.lastEventId);
       }
