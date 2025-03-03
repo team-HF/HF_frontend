@@ -11,21 +11,18 @@ interface HeaderProps {
 const LogoHeader = ({ backBtn }: HeaderProps) => {
   const navigate = useNavigate();
 
-  // const { hasNewNotification, markAsRead } = useNotificationStore();
-
   const [alarmOpen, setAlarmOpen] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   if (alarmOpen) {
-  //     document.body.style.overflow = "hidden";
-  //     markAsRead();
-  //   } else {
-  //     document.body.style.overflow = "";
-  //   }
-  //   return () => {
-  //     document.body.style.overflow = "";
-  //   };
-  // }, [alarmOpen]);
+  useEffect(() => {
+    if (alarmOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [alarmOpen]);
 
   useEffect(() => {
     const memberId = 1;
@@ -34,9 +31,7 @@ const LogoHeader = ({ backBtn }: HeaderProps) => {
     );
 
     eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log("Received data: ", data);
-      console.log(event.lastEventId);
+      // const data = JSON.parse(event.data);
       if (event.lastEventId) {
         localStorage.setItem("LastEventId", event.lastEventId);
       }
@@ -47,7 +42,7 @@ const LogoHeader = ({ backBtn }: HeaderProps) => {
     });
 
     eventSource.onerror = () => {
-      eventSource.close(); //연결 끊기
+      eventSource.close();
     };
 
     return () => {

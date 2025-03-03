@@ -1,26 +1,27 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { theme } from './app/theme';
-import { ThemeProvider } from 'styled-components';
-import MyPage from './pages/my-page/MyPage';
-import ExerciseOption from './pages/exercise-option/ExerciseOption';
-import ProfileSetting from './pages/profile-setting/ProfileSetting';
-import Profile from './pages/profile/Profile';
-import Login from './pages/login/Login';
-import Introduction from './pages/introduction/Introduction';
-import Community from './pages/community/Community';
-import ChatLobby from './pages/chat-lobby/ChatLobby';
-import PostRegister from './pages/post-register/PostRegister';
-import PostDetail from './pages/post-detail/PostDetail';
-import ExerciseStyle from './pages/exercise-style/ExerciseStyle';
-import Matching from './pages/matching/Matching';
-import MatchingReview from './pages/matching-review/MatchingReview';
-import UserProfile from './pages/user-profile/UserProfile';
-import ProfileSearch from './pages/profile-serch/ProfileSearch';
-import { Chat } from './pages/chat/Chat';
-import { SocketProvider } from './app/providers/SocketProvider';
-import { SubscriptionProvider } from './app/providers/SubscriptionProvider';
-import { useGetMyData } from './shared/api/useGetMyData';
-import SearchResult from './pages/search-result/SearchResult';
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { theme } from "./app/theme";
+import { ThemeProvider } from "styled-components";
+import MyPage from "./pages/my-page/MyPage";
+import ExerciseOption from "./pages/exercise-option/ExerciseOption";
+import ProfileSetting from "./pages/profile-setting/ProfileSetting";
+import Profile from "./pages/profile/Profile";
+import Login from "./pages/login/Login";
+import Introduction from "./pages/introduction/Introduction";
+import Community from "./pages/community/Community";
+import ChatLobby from "./pages/chat-lobby/ChatLobby";
+import PostRegister from "./pages/post-register/PostRegister";
+import PostDetail from "./pages/post-detail/PostDetail";
+import ExerciseStyle from "./pages/exercise-style/ExerciseStyle";
+import Matching from "./pages/matching/Matching";
+import MatchingReview from "./pages/matching-review/MatchingReview";
+import UserProfile from "./pages/user-profile/UserProfile";
+import ProfileSearch from "./pages/profile-serch/ProfileSearch";
+import { Chat } from "./pages/chat/Chat";
+import { SocketProvider } from "./app/providers/SocketProvider";
+import { SubscriptionProvider } from "./app/providers/SubscriptionProvider";
+import { useGetMyData } from "./shared/api/useGetMyData";
+import SearchResult from "./pages/search-result/SearchResult";
+import Agreement from "./pages/agreement/Agreement";
 
 function App() {
   const { data: myData } = useGetMyData();
@@ -70,6 +71,7 @@ function App() {
               <Route path="member/:id/profile" element={<UserProfile />} />
               <Route path="/" element={<ProfileSearch />} />
               <Route path="/search-result" element={<SearchResult />} />
+              <Route path="/agreement" element={<Agreement />} />
             </Routes>
           </SubscriptionProvider>
         </SocketProvider>
