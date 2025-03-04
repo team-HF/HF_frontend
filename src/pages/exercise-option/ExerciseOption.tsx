@@ -1,5 +1,4 @@
 import * as S from "./style";
-import Cookies from "js-cookie";
 import Header from "../../widgets/post-register/header/Header";
 import PageForm from "../../shared/ui/page-form/PageForm";
 import StyleSelector from "../../entities/exercise-option/ui/StyleSelector";
