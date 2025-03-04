@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as S from "./style";
 import DetailModal from "../../widgets/agreemens/Detail-modal/DetailModal";
 import { locationServiceTerm } from "../../entities/agreement/location-terms-data";
@@ -6,6 +6,7 @@ import { serviceTerms } from "../../entities/agreement/service-terms-data";
 import { personalInfoTerms } from "../../entities/agreement/personal-info-terms-data";
 import { infoCollectTerms } from "../../entities/agreement/info-collect-terms-data";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 type TTermItem = {
   subTitle: string;
@@ -66,6 +67,13 @@ const Agreement = () => {
     setModalData(null);
     setDetailModalOpen(false);
   };
+
+  useEffect(() => {
+    const isNewMember = Cookies.get("is_new_member");
+    if (isNewMember === "false") {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <S.Container>
