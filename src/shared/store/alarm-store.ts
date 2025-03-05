@@ -1,10 +1,19 @@
 import { create } from "zustand";
+import {
+  TCommunityNotification,
+  TMatchNotification,
+} from "../types/notification";
+
+type TContent = {
+  actor: string;
+  memberId: number;
+  targetId: number;
+  type: TCommunityNotification | TMatchNotification;
+};
 
 export interface Notification {
-  id: string;
-  title: string;
-  message: string;
-  timestamp: string;
+  event: TContent;
+  alarmMessage: string;
 }
 
 interface NotificationStore {
