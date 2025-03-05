@@ -20,7 +20,6 @@ export const Container = styled.div`
 export const Box = styled.div`
   display: flex;
   width: 100%;
-
   &.header {
     height: 2.875rem;
   }
