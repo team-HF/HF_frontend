@@ -14,13 +14,19 @@ interface Location {
 
 const LocationSelectBar = () => {
   const { cd1, cd2, cd3, setCd1, setCd2, setCd3, reset } = useLocationStore();
-  
+
   const [userLocation, setUserLocation] = useState<string>("");
   const [locationData, setLocationData] = useState<Location[]>([]);
 
   const getLocationData = async () => {
     const result = await getSgisLocationData(cd3 || cd2 || cd1);
-    setLocationData(result);
+    if (result.errCd === -401) {
+      getSgisApiAccessToken();
+      const reloadResult = await getSgisLocationData(cd3 || cd2 || cd1);
+      setLocationData(reloadResult);
+    } else {
+      setLocationData(result.result);
+    }
   };
 
   const onClickLocationCard = (cd: string, full_addr: string) => {
