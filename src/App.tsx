@@ -27,6 +27,7 @@ import { useNotificationStore } from "./shared/store/alarm-store";
 
 function App() {
   const { addNotification } = useNotificationStore();
+
   const { data: myData } = useGetMyData();
   const memberId = myData?.memberId;
   const navigate = useNavigate();
@@ -51,23 +52,21 @@ function App() {
           return;
         }
       } catch (error) {
-        console.error("❌ Failed to parse event data:", error, event.data);
+        console.error("Failed to parse event data:", error, event.data);
       }
     };
 
     eventSource.addEventListener("alarm", handleAlarmEvent);
 
-    eventSource.onerror = (error) => {
-      console.error("❌ SSE Error:", error);
+    eventSource.onerror = () => {
       eventSource.close();
     };
 
     return () => {
-      console.log("❌ Closing SSE Connection");
       eventSource.removeEventListener("alarm", handleAlarmEvent);
       eventSource.close();
     };
-  }, [memberId]);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
