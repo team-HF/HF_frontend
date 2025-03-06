@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import eventEmitter from "./useEventEmitter";
 
 export const useAxios = () => {
   const axiosInstance = axios.create({
@@ -31,14 +32,15 @@ export const useAxios = () => {
   };
 
   axiosInstance.interceptors.response.use(
-    (response) => response, 
+    (response) => response,
     async (error) => {
       const originalRequest = error.config;
 
-      if (
-        (error.response?.status === 403 || error.response?.status === 401) &&
-        !originalRequest._retry
-      ) {
+      if (error.response?.status === 403) {
+        eventEmitter.dispatchEvent(new Event("forbidden"));
+      }
+
+      if (error.response?.status === 401 && !originalRequest._retry) {
         if (isRefreshing) {
           return new Promise((resolve) => {
             refreshSubscribers.push((token) => {
@@ -54,21 +56,21 @@ export const useAxios = () => {
         try {
           const response = await axios.get(
             `${import.meta.env.VITE_BASE_URL}/oauth/token/refresh`,
-            {
-              withCredentials: true, 
-            }
+            { withCredentials: true }
           );
+
           const newAccessToken = response.data.content.accessToken;
           Cookies.set("access_token", newAccessToken, {
             secure: true,
             sameSite: "None",
           });
-          onTokenRefreshed(newAccessToken);
 
+          onTokenRefreshed(newAccessToken);
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
           return axiosInstance(originalRequest);
         } catch (refreshError) {
-          console.error("토큰 갱신 실패", refreshError);
+          console.error("🚨 토큰 갱신 실패", refreshError);
           return Promise.reject(refreshError);
         } finally {
           isRefreshing = false;
@@ -78,5 +80,6 @@ export const useAxios = () => {
       return Promise.reject(error);
     }
   );
+
   return { axiosInstance };
 };
