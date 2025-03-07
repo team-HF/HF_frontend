@@ -22,11 +22,51 @@ import { SubscriptionProvider } from "./app/providers/SubscriptionProvider";
 import { useGetMyData } from "./shared/api/useGetMyData";
 import SearchResult from "./pages/search-result/SearchResult";
 import Agreement from "./pages/agreement/Agreement";
+import { useEffect } from "react";
+import { useNotificationStore } from "./shared/store/alarm-store";
 
 function App() {
+  const { addNotification } = useNotificationStore();
+
   const { data: myData } = useGetMyData();
   const memberId = myData?.memberId;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!memberId) return;
+
+    const eventSource = new EventSource(
+      `http://localhost:8080/hf/connect/sse?memberId=${memberId}`
+    );
+
+    const handleAlarmEvent = (event: MessageEvent) => {
+      try {
+        if (
+          event.data &&
+          event.data.trim().startsWith("{") &&
+          event.data.trim().endsWith("}")
+        ) {
+          const eventData = JSON.parse(event.data);
+          addNotification(eventData);
+        } else {
+          return;
+        }
+      } catch (error) {
+        console.error("Failed to parse event data:", error, event.data);
+      }
+    };
+
+    eventSource.addEventListener("alarm", handleAlarmEvent);
+
+    eventSource.onerror = () => {
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.removeEventListener("alarm", handleAlarmEvent);
+      eventSource.close();
+    };
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

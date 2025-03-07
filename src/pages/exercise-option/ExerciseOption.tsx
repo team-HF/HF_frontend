@@ -1,5 +1,4 @@
 import * as S from './style';
-import Cookies from 'js-cookie';
 import Header from '../../widgets/post-register/header/Header';
 import PageForm from '../../shared/ui/page-form/PageForm';
 import StyleSelector from '../../entities/exercise-option/ui/StyleSelector';
@@ -58,15 +57,7 @@ export default function ExerciseOption() {
     }
   };
 
-  useEffect(() => {
-    // 수정 모드가 아닐 때만 신규 회원 체크
-    if (!isEditMode) {
-      const isNewMember = Cookies.get('is_new_member');
-      if (isNewMember === 'false') {
-        navigate('/');
-      }
-    }
-  }, [isEditMode]);
+
   return (
     <PageForm isGNB={false}>
       <S.Container>
