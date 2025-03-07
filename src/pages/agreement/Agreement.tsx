@@ -120,7 +120,7 @@ const Agreement = () => {
         <S.DoneBtn
           disabled={!allAgreed}
           onClick={() => {
-            navigate("/register/profile");
+            navigate("/register/exercise-style");
           }}
         >
           계속

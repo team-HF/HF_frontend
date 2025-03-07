@@ -14,6 +14,11 @@ const LogoHeader = ({ backBtn }: HeaderProps) => {
 
   const [alarmOpen, setAlarmOpen] = useState<boolean>(false);
 
+  const closeModal = () => {
+    markAsRead();
+    setAlarmOpen(false);
+  };
+
   useEffect(() => {
     if (alarmOpen) {
       document.body.style.overflow = "hidden";
@@ -47,10 +52,9 @@ const LogoHeader = ({ backBtn }: HeaderProps) => {
               ? "/svg/bell-alarm-icon.svg"
               : "/svg/alarm-icon.svg"
           }
-          onClick={markAsRead}
         />
       </S.IconBtn>
-      {alarmOpen && <AlarmModal closeModal={() => setAlarmOpen(false)} />}
+      {alarmOpen && <AlarmModal closeModal={closeModal} />}
     </S.Container>
   );
 };
