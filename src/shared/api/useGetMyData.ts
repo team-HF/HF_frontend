@@ -16,5 +16,6 @@ export const useGetMyData = () => {
     queryKey: ['myData'],
     queryFn: () => getMyData(axiosInstance),
     enabled: !!accessToken,
+    retry: false,
   });
 };
