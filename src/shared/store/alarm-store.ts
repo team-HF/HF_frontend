@@ -3,33 +3,30 @@ import {
   TCommunityNotification,
   TMatchNotification,
 } from "../types/notification";
-
-type TContent = {
-  actor: string;
-  memberId: number;
-  targetId: number;
-  type: TCommunityNotification | TMatchNotification;
-};
+import { persist } from "zustand/middleware";
 
 export interface Notification {
-  event: TContent;
-  alarmMessage: string;
+  message: string;
+  type: TCommunityNotification | TMatchNotification;
+  time: string;
+  targetId: number;
 }
 
 interface NotificationStore {
-  notifications: Notification[];
   hasNewNotification: boolean;
-  addNotification: (notification: Notification) => void;
+  addNewNotification: () => void;
   markAsRead: () => void;
 }
-
-export const useNotificationStore = create<NotificationStore>((set) => ({
-  notifications: [],
-  hasNewNotification: false,
-  addNotification: (notification) =>
-    set((state) => ({
-      notifications: [notification, ...state.notifications],
-      hasNewNotification: true,
-    })),
-  markAsRead: () => set({ hasNewNotification: false }),
-}));
+export const useNotificationStore = create<NotificationStore>()(
+  persist(
+    (set) => ({
+      hasNewNotification: false,
+      addNewNotification: () => set({ hasNewNotification: true }),
+      markAsRead: () => set({ hasNewNotification: false }),
+    }),
+    {
+      name: "notification-storage",
+      getStorage: () => localStorage,
+    }
+  )
+);
