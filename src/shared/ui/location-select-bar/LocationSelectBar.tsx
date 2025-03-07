@@ -20,12 +20,13 @@ const LocationSelectBar = () => {
 
   const getLocationData = async () => {
     const result = await getSgisLocationData(cd3 || cd2 || cd1);
-    if (result.errCd === -401) {
-      getSgisApiAccessToken();
+
+    if (!result) {
+      await getSgisApiAccessToken();
       const reloadResult = await getSgisLocationData(cd3 || cd2 || cd1);
       setLocationData(reloadResult);
     } else {
-      setLocationData(result.result);
+      setLocationData(result);
     }
   };
 
@@ -37,8 +38,8 @@ const LocationSelectBar = () => {
   };
 
   const onClickReset = () => {
-    reset();
     setUserLocation("");
+    reset();
   };
 
   useEffect(() => {
