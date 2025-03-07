@@ -1,17 +1,21 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  width: 360px;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 10px 20px;
   align-items: center;
-  @media (min-width: 768px) and (max-width: 991px) {
-    width: 640px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 1080px;
-  }
+  justify-self: center;
+  background-color: #f1f3f5;
+`;
+export const UpperWrapper = styled.div`
+  display: flex;
+  margin-top: 10px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `;
 
 export const Logo = styled.span`
@@ -19,6 +23,7 @@ export const Logo = styled.span`
   font-size: 20px;
   line-height: 24px;
 `;
+
 export const CopyRight = styled.span`
   font-weight: 400;
   font-size: 11px;
