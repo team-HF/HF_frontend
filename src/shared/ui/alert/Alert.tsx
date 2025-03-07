@@ -2,7 +2,7 @@ import * as S from "./style";
 
 interface AlertProps {
   title: string | null;
-  content: string;
+  content: string | string[];
   cancelBtn: boolean;
   confirm: () => void;
   cancel: () => void;
@@ -13,7 +13,16 @@ const Alert = ({ title, content, cancelBtn, confirm, cancel }: AlertProps) => {
     <S.Background>
       <S.Container>
         {title && <S.Title>{title}</S.Title>}
-        <S.Contents>{content}</S.Contents>
+        <S.Contents>
+          {Array.isArray(content)
+            ? content.map((line, index) => (
+                <span key={index}>
+                  {line}
+                  <br />
+                </span>
+              ))
+            : content}
+        </S.Contents>
         <S.BtnBox>
           <S.CheckBtn onClick={confirm}>확인</S.CheckBtn>
           {cancelBtn && (
