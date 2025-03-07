@@ -58,6 +58,12 @@ function App() {
         <Route path="/register/exercise-style" element={<ExerciseOption />} />
         <Route path="/register/profile" element={<Profile />} />
 
+        <Route path="community" element={<Community />} />
+        <Route path="community/post-detail/:id" element={<PostDetail />} />
+        <Route path="member/:id/profile" element={<UserProfile />} />
+        <Route path="/" element={<ProfileSearch />} />
+        <Route path="/search-result" element={<SearchResult />} />
+
         <Route element={<LoginLayout />}>
           <Route path="/my-page" element={<MyPage />} />
           <Route path="/profile-setting">
@@ -67,15 +73,10 @@ function App() {
           </Route>
           <Route path="/chat-lobby" element={<ChatLobby />} />
           <Route path="/chat/:chatRoomId" element={<Chat />} />
-          <Route path="community" element={<Community />} />
           <Route path="community/post-register" element={<PostRegister />} />
           <Route path="community/post-update/:id" element={<PostRegister />} />
-          <Route path="community/post-detail/:id" element={<PostDetail />} />
           <Route path="/matching/:id" element={<Matching />} />
           <Route path="/matching-review" element={<MatchingReview />} />
-          <Route path="member/:id/profile" element={<UserProfile />} />
-          <Route path="/" element={<ProfileSearch />} />
-          <Route path="/search-result" element={<SearchResult />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
