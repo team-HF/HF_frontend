@@ -1,15 +1,14 @@
 import * as S from './style';
+import { useGetMyData } from '../../api/useGetMyData';
 
-type LevelLabel = {
-  matchingUserTier?: {
-    fitnessLevel?: string;
-    tier?: number;
-  };
-};
-export default function LevelLabel({ matchingUserTier }: LevelLabel) {
-  if (!matchingUserTier) {
-    return <p>사용자 정보를 불러올 수 없습니다.</p>;
+export default function LevelLabel() {
+  const { data: myData, isLoading, isError } = useGetMyData();
+  if (isLoading) {
+    return <div>loading...</div>;
   }
-  const { fitnessLevel, tier } = matchingUserTier;
+  if (isError) {
+    return <div>레벨 정보를 불러올 수 없습니다.</div>;
+  }
+  const { fitnessLevel, tier } = myData!.tier;
   return <S.Container level={fitnessLevel}>Lv.{tier}</S.Container>;
 }

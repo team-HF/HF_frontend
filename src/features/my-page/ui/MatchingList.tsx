@@ -38,6 +38,7 @@ export default function MatchingList() {
     hasNextPage,
     isFetchingNextPage,
   } = useGetMyMatchingList(memberId ?? 0, filterStatus);
+  console.log(MatchingListData);
   const allMatches =
     MatchingListData?.pages.flatMap((page) =>
       page.content.content.map((item) => ({

@@ -1,17 +1,17 @@
-import * as S from './chat-list-dropdown.style';
+import * as S from './chat-list-dropdown-style';
 
 interface ChatListDropdownProps {
   setIsOpenModal: (value: boolean) => void;
-  setActiveDropdown: (value: boolean | null) => void;
+  setActiveDropdown: (value: number | null) => void;
 }
 
 export default function ChatListDropdown({
   setIsOpenModal,
   setActiveDropdown,
 }: ChatListDropdownProps) {
-  const dropdownElement = ['알림 끄기', '채팅방 나가기'];
+  const dropdownElement = ['알림 끄기', '채팅방 삭제'];
   const handleModal = (element: string) => {
-    if (element === '채팅방 나가기') {
+    if (element === '채팅방 삭제') {
       setIsOpenModal(true);
       setActiveDropdown(null);
     }
