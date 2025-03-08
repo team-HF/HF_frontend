@@ -25,6 +25,7 @@ import NotFound from './pages/not-found/NotFound';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 import { useNotificationStore } from './shared/store/alarm-store';
+import Footer from './shared/footer/Footer';
 
 interface LoginLayoutProps {
   myData: { memberId: number };
@@ -123,6 +124,7 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </ThemeProvider>
   );
 }
