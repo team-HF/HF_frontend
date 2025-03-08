@@ -20,7 +20,6 @@ export function useRequestChat() {
   const requestChat = useCallback(
     (payload: ChatParticipationRequestDto) => {
       if (!stompClient) {
-        console.warn('STOMP client not ready');
         return;
       }
       stompClient.publish({

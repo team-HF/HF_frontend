@@ -17,9 +17,9 @@ export default function Calendar({
 }: CalendarTypes) {
   const [date, setDate] = useState<Date | null>(selectedDate);
 
-  const handleDateChange = (date: Date | null) => {
-    setDate(date);
-    onChange(date);
+  const handleDateChange = (value: Date | null) => {
+    setDate(value);
+    onChange(value);
   };
 
   return (
@@ -29,11 +29,18 @@ export default function Calendar({
         dateFormat="yyyy-MM-dd"
         selected={date}
         onChange={handleDateChange}
+        // 달력 항상 오픈
         open={true}
+        // 달력이 뜨는 위치(오른쪽 하단 정렬 등)
         popperPlacement="bottom-end"
+        // 커스텀 popper 클래스
         popperClassName="myDatePickerPopper"
+        // input 대신 div를 사용(기본 input 숨김)
         customInput={<div />}
-        onClickOutside={() => onClose()}
+        // 오늘 이전 날짜 비활성화
+        minDate={new Date()}
+        // 달력 영역 밖 클릭 시 닫기
+        onClickOutside={onClose}
         renderCustomHeader={({
           date,
           changeYear,
@@ -43,16 +50,17 @@ export default function Calendar({
           prevMonthButtonDisabled,
           nextMonthButtonDisabled,
         }) => (
-          <div>
-            <button onClick={decreaseMonth} disabled={prevMonthButtonDisabled}>
+          <S.Header>
+            <S.ArrowButton
+              onClick={decreaseMonth}
+              disabled={prevMonthButtonDisabled}
+            >
               &lt;
-            </button>
-            <span>
+            </S.ArrowButton>
+            <S.SelectContainer>
               <select
                 value={date.getFullYear()}
-                onChange={({ target: { value } }) =>
-                  changeYear(parseInt(value))
-                }
+                onChange={(e) => changeYear(parseInt(e.target.value))}
               >
                 {Array.from(
                   { length: new Date().getFullYear() - 1940 + 1 },
@@ -68,9 +76,7 @@ export default function Calendar({
               </select>
               <select
                 value={date.getMonth()}
-                onChange={({ target: { value } }) =>
-                  changeMonth(parseInt(value))
-                }
+                onChange={(e) => changeMonth(parseInt(e.target.value))}
               >
                 {Array.from({ length: 12 }, (_, i) => (
                   <option key={i} value={i}>
@@ -78,11 +84,14 @@ export default function Calendar({
                   </option>
                 ))}
               </select>
-            </span>
-            <button onClick={increaseMonth} disabled={nextMonthButtonDisabled}>
+            </S.SelectContainer>
+            <S.ArrowButton
+              onClick={increaseMonth}
+              disabled={nextMonthButtonDisabled}
+            >
               &gt;
-            </button>
-          </div>
+            </S.ArrowButton>
+          </S.Header>
         )}
       />
     </S.CalendarContainer>

@@ -145,8 +145,10 @@ export const genderBtn = styled.button<{
 `;
 
 export const ErrorMessage = styled.span`
-  font-size: 0.75rem;
+  font-size: 0.688rem;
   margin-top: 0.25rem;
+  letter-spacing: -0.0031rem;
+  line-height: 1.273rem;
   color: #ff0000;
 `;
 
@@ -163,10 +165,12 @@ export const ResetBtn = styled.button`
   top: 50%;
   transform: translateY(-50%);
   padding: 0.25rem;
-  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  border: 1px solid #868e96;
   border-radius: 0.5rem;
-  background-color: ${theme.colors.white};
+  color: #868e96;
   font-size: 0.75rem;
+  cursor: pointer;
 `;
 
 export const LocationList = styled.div`
