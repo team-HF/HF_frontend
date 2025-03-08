@@ -1,10 +1,9 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import * as S from "./style";
 import FooterNav from "../footer-nav/FooterNav";
 import { useAccountExpiresStore } from "../../store/account-expires-store";
 import Alert from "../alert/Alert";
 import { useNavigate } from "react-router-dom";
-import eventEmitter from "../../utils/useEventEmitter";
 
 type TChildren = {
   isGNB: boolean;
@@ -13,28 +12,12 @@ type TChildren = {
 
 const PageForm = ({ isGNB, children }: TChildren) => {
   const navigate = useNavigate();
-  const {
-    expiresModalOpen,
-    requireModalOpen,
-    setExpiresModalOpen,
-    setRequireModalOpen,
-  } = useAccountExpiresStore();
+  const { expiresModalOpen, setExpiresModalOpen } = useAccountExpiresStore();
 
   const navigateLogin = () => {
     if (expiresModalOpen) setExpiresModalOpen(false);
-    if (requireModalOpen) setRequireModalOpen(false);
     navigate("/login");
   };
-
-  useEffect(() => {
-    const handleForbidden = () => setExpiresModalOpen(true);
-
-    eventEmitter.addEventListener("forbidden", handleForbidden); 
-
-    return () => {
-      eventEmitter.removeEventListener("forbidden", handleForbidden);
-    };
-  }, []);
 
   return (
     <S.Container>
@@ -50,17 +33,6 @@ const PageForm = ({ isGNB, children }: TChildren) => {
           cancelBtn={true}
           confirm={navigateLogin}
           cancel={() => navigate("/")}
-        />
-      )}
-      {requireModalOpen && (
-        <Alert
-          title="로그인"
-          content={
-            "서비스를 이용하기 위해서는 로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?"
-          }
-          cancelBtn={true}
-          confirm={navigateLogin}
-          cancel={() => navigate(-1)}
         />
       )}
     </S.Container>
