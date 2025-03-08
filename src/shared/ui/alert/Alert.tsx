@@ -1,11 +1,11 @@
 import * as S from "./style";
 
 interface AlertProps {
-  title: string | null;
+  title?: string;
   content: string | string[];
   cancelBtn: boolean;
   confirm: () => void;
-  cancel: () => void;
+  cancel?: () => void;
 }
 
 const Alert = ({ title, content, cancelBtn, confirm, cancel }: AlertProps) => {
