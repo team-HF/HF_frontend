@@ -8,11 +8,7 @@ export const Container = styled.div`
   flex-direction: column;
   max-height: 100vh;
   @media (min-width: 768px) {
-    width: 640px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 1080px;
+    width: 40rem;
   }
 `;
 
@@ -34,13 +30,8 @@ export const DetailDiv = styled.div`
   letter-spacing: -0.01em;
   color: #ffffff;
   align-items: center;
-
   @media (min-width: 768px) {
-    width: 640px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 1080px;
+    width: 40rem;
   }
 `;
 

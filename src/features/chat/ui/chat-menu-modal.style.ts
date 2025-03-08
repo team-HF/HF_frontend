@@ -20,11 +20,7 @@ export const Modal = styled.div`
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   @media (min-width: 768px) {
-    width: 640px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 67.5rem;
+    width: 40rem;
   }
 `;
 

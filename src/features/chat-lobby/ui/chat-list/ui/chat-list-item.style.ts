@@ -9,11 +9,7 @@ export const ListWrapper = styled.div`
   align-items: center;
   margin-bottom: 24px;
   @media (min-width: 768px) {
-    width: 640px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 67.5rem;
+    width: 40rem;
   }
 `;
 export const MainWrapper = styled.div`
@@ -22,11 +18,7 @@ export const MainWrapper = styled.div`
   justify-content: center;
   padding-left: 16px;
   @media (min-width: 768px) {
-    width: 34.125rem;
-  }
-
-  @media (min-width: 1200px) {
-    width: 61.625rem;
+    width: 40rem;
   }
 `;
 export const InfoWrapper = styled.div`
