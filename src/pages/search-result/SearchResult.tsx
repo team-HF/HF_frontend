@@ -51,7 +51,7 @@ const SearchResult = () => {
   useEffect(() => {
     (async () => {
       if (!searchBarOpen) {
-        const searchResult = await getSearchData();
+        const searchResult = await getSearchData(1);
         setSearchResult(searchResult);
       }
     })();

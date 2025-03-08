@@ -12,26 +12,32 @@ const GOOGLE_AUTHORIZATION_CODE_URL = `${GOOGLE_OAUTH_URL}&redirect_uri=${GOOGLE
 
 const Login = () => {
   return (
-    <S.Container>
-      <S.BtnBox>
-        <S.OauthBtn
-          className="button_login_google"
-          onClick={() => (window.location.href = GOOGLE_AUTHORIZATION_CODE_URL)}
-        >
-          <S.LogoIcon src="/oauth/google.png" />
-          <S.BtnText className="button_login_google">
-            Google로 계속하기
-          </S.BtnText>
-        </S.OauthBtn>
-        <S.OauthBtn
-          className="button_login_kakao"
-          onClick={() => (window.location.href = KAKAO_AUTHORIZATION_CODE_URL)}
-        >
-          <S.LogoIcon src="/oauth/kakao.png" className="kakao" />
-          <S.BtnText className="button_login_kakao">Kakao로 계속하기</S.BtnText>
-        </S.OauthBtn>
-      </S.BtnBox>
-    </S.Container>
+      <S.Container>
+        <S.BtnBox>
+          <S.OauthBtn
+            className="button_login_google"
+            onClick={() =>
+              (window.location.href = GOOGLE_AUTHORIZATION_CODE_URL)
+            }
+          >
+            <S.LogoIcon src="/oauth/google.png" />
+            <S.BtnText className="button_login_google">
+              Google로 계속하기
+            </S.BtnText>
+          </S.OauthBtn>
+          <S.OauthBtn
+            className="button_login_kakao"
+            onClick={() =>
+              (window.location.href = KAKAO_AUTHORIZATION_CODE_URL)
+            }
+          >
+            <S.LogoIcon src="/oauth/kakao.png" className="kakao" />
+            <S.BtnText className="button_login_kakao">
+              Kakao로 계속하기
+            </S.BtnText>
+          </S.OauthBtn>
+        </S.BtnBox>
+      </S.Container>
   );
 };
 

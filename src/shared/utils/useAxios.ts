@@ -1,14 +1,12 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import eventEmitter from "./useEventEmitter";
 
 export const useAxios = () => {
+  const eventTarget = new EventTarget();
+
   const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
-    headers: {
-      Authorization: `Bearer ${Cookies.get("access_token")}`,
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     withCredentials: true,
   });
 
@@ -36,10 +34,6 @@ export const useAxios = () => {
     async (error) => {
       const originalRequest = error.config;
 
-      if (error.response?.status === 403) {
-        eventEmitter.dispatchEvent(new Event("forbidden"));
-      }
-
       if (error.response?.status === 401 && !originalRequest._retry) {
         if (isRefreshing) {
           return new Promise((resolve) => {
@@ -54,12 +48,12 @@ export const useAxios = () => {
         isRefreshing = true;
 
         try {
-          const response = await axios.get(
+          const { data } = await axios.get(
             `${import.meta.env.VITE_BASE_URL}/oauth/token/refresh`,
             { withCredentials: true }
           );
 
-          const newAccessToken = response.data.content.accessToken;
+          const newAccessToken = data.content.accessToken;
           Cookies.set("access_token", newAccessToken, {
             secure: true,
             sameSite: "None",
@@ -70,7 +64,7 @@ export const useAxios = () => {
 
           return axiosInstance(originalRequest);
         } catch (refreshError) {
-          console.error("🚨 토큰 갱신 실패", refreshError);
+          eventTarget.dispatchEvent(new Event("token-refresh-failed"));
           return Promise.reject(refreshError);
         } finally {
           isRefreshing = false;
@@ -81,5 +75,5 @@ export const useAxios = () => {
     }
   );
 
-  return { axiosInstance };
+  return { axiosInstance, eventTarget };
 };
