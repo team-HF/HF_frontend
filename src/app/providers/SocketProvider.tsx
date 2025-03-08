@@ -15,31 +15,20 @@ export function SocketProvider({
   const [isConnected, setIsConnected] = useState<boolean>(false);
   useEffect(() => {
     if (!memberId) return;
-
     const ws = new WebSocket(
       `ws://localhost:8080/hf/portfolio?member-id=${memberId}`
     );
     const client = Stomp.over(ws);
 
-    client.debug = (msg) => console.log(msg);
-
-    client.connect(
-      {},
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (frame: any) => {
-        console.log('Connected!', frame);
-        setIsConnected(true);
-      },
-      (error: Error) => {
-        console.error('STOMP error:', error);
-      }
-    );
+    client.reconnect_delay = 5000;
+    client.connect({}, () => {
+      setIsConnected(true);
+    });
 
     setStompClient(client);
 
     return () => {
       client.disconnect(() => {
-        console.log('Disconnected');
         setIsConnected(false);
       });
     };

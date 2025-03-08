@@ -54,7 +54,6 @@ export default function UpdateMyDataButton({ disabled }: UpdateButtonProps) {
       fitnessObjective: goalSelected as 'BULK_UP' | 'RUNNING',
       fitnessKind: exerciseSelected as 'HIGH_STRESS' | 'FUNCTIONAL',
     };
-    console.log(requestData);
     uploadMyData(requestData, {
       onSuccess: () => {
         sessionStorage.removeItem('exerciseStyles');

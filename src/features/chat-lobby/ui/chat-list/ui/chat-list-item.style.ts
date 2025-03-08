@@ -1,18 +1,6 @@
 import styled from 'styled-components';
 import { theme } from '../../../../../app/theme';
 
-export const Container = styled.div`
-  width: 360px;
-  position: relative;
-  @media (min-width: 768px) {
-    width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    width: 67.5rem;
-  }
-`;
-
 export const ListWrapper = styled.div`
   width: 360px;
   height: 52px;

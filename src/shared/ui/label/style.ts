@@ -6,6 +6,7 @@ interface LabelContainerProps {
   radius: '24px' | '4px';
   width: number;
   height: number;
+  $clickalbe?: boolean;
 }
 
 interface LabelTextProps {
@@ -24,12 +25,13 @@ export const LabelContainer = styled.div<LabelContainerProps>`
   border: 1px solid ${(props) => props.$borderColor};
   background-color: ${(props) => props.$backgroundColor || '#fff'};
   white-space: nowrap;
+  cursor: ${(props) => (props.$clickalbe ? 'pointer' : 'default')};
 `;
 
 export const LabelText = styled.span<LabelTextProps>`
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 700;
-  line-height: 18.68px;
+  line-height: 10px;
   letter-spacing: -0.0025em;
   color: ${(props) => props.$fontColor || '#000'};
 `;

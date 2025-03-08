@@ -13,26 +13,22 @@ export default function SaveList() {
   } = useGetMyData();
 
   const memberId = myData?.memberId ?? 0;
-
   const { data: saveList, isLoading, error } = useGetMyWishList(size, memberId);
-
   if (isLoadingMyData) {
     return <p>loading...</p>;
   }
   if (errorMyData || !myData?.memberId) {
-    return <p>error</p>;
+    return <p>회원정보를 가져올 수 없습니다.</p>;
   }
 
   if (isLoading) {
     return <p>loading...</p>;
   }
+
   if (error) {
     return <p>error</p>;
   }
-
   const allItems = saveList?.pages.flatMap((page) => page.content) || [];
-  console.log('All', allItems);
-  //api에 문제가 있어서 추후 수정예정
   return (
     <S.Container>
       {allItems.length > 0 ? (

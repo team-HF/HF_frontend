@@ -1,4 +1,4 @@
-import Label from '../../../../../shared/ui/label/Label';
+import Label from '../label/Label';
 
 export default function FinishedMatchCard() {
   return (

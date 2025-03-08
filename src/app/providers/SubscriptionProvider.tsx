@@ -26,9 +26,7 @@ export function SubscriptionProvider({
       `/hf/user/${memberId}/chat/request`,
       (message: any) => {
         const data = JSON.parse(message.body);
-        console.log('새 채팅방 생성 알림:', data);
         if (data) {
-          console.log(`${data}:data`);
           onNewChatroom(data.newChatroomId);
         }
       }
