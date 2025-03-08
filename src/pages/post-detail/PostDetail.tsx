@@ -1,6 +1,5 @@
 import * as S from "./style";
 import Alert from "../../shared/ui/alert/Alert";
-import Header from "../../widgets/post-register/header/Header";
 import PageForm from "../../shared/ui/page-form/PageForm";
 import CommentList from "../../widgets/post-detail/comment-list/CommentList";
 import PostContent from "../../widgets/post-detail/post-content/PostContent";
@@ -14,6 +13,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { postDeleteAlert } from "./contants/text";
 import { useMyProfileStore } from "../../shared/store/my-profile-store";
 import { useGetMyData } from "../../shared/api/useGetMyData";
+import NewHeader from "../../shared/ui/new-header/NewHeader";
 
 const PostDetail = () => {
   const navigate = useNavigate();
@@ -53,7 +53,11 @@ const PostDetail = () => {
   return (
     <PageForm isGNB={true}>
       <S.Container>
-        <Header title={"커뮤니티"} navigate={headerNavigation} />
+        <NewHeader
+          title="커뮤니티"
+          isBackBtn={true}
+          onClickBack={headerNavigation}
+        />
         <PostContent
           setAlertOpen={setAlertOpen}
           postData={postData}

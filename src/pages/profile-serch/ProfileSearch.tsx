@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { useGetParams } from "../../shared/utils/useGetParams";
 import UserProfileCard from "../../shared/ui/user-profile-card/UserProfileCard";
 import SearchModal from "../../widgets/profile-search/search-modal/SearchModal";
-import LogoHeader from "../../shared/ui/logo-header/Header";
 import { useGetSearchData as getSearchData } from "../../shared/api/useGetSearchData";
 import EmptyList from "../../shared/ui/empty-list/EmptyList";
 import { User } from "../../shared/types/user";
+import NewHeader from "../../shared/ui/new-header/NewHeader";
 
 const ProfileSearch = () => {
   const [filter, setFilter] = useState(
@@ -45,7 +45,7 @@ const ProfileSearch = () => {
   return (
     <PageForm isGNB={true}>
       <S.Container>
-        <LogoHeader backBtn={false} />
+        <NewHeader logo={true} isAlarmBtn={true} isLoginBtn={true} />
         <S.InputContainer onClick={() => setSearchBarOpen(true)}>
           <S.SearchInput>운동 스타일, 키워드로 검색</S.SearchInput>
           <S.IconBox>

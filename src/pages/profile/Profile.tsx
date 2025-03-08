@@ -1,5 +1,4 @@
 import * as S from "./style";
-import Header from "../../widgets/post-register/header/Header";
 import PageForm from "../../shared/ui/page-form/PageForm";
 import SaveButton from "../../features/profile/button/SaveButton";
 import DatePicker from "../../widgets/profile/date-picker/DatePicker";
@@ -14,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import LocationSelectBar from "../../shared/ui/location-select-bar/LocationSelectBar";
 import { useLocationStore } from "../../shared/store/location-store";
+import NewHeader from "../../shared/ui/new-header/NewHeader";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -48,7 +48,6 @@ export default function Profile() {
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
   const [introductionContent, setIntroductionContent] = useState<string>("");
 
-  // 스토어 값이 변경될 때 폼에도 저장
   useEffect(() => {
     if (nickname) setValue("nickname", nickname);
     if (dateYear) setValue("birth", dateYear);
@@ -67,13 +66,11 @@ export default function Profile() {
     setValue,
   ]);
 
-  // 필드 watch로 감시하여 값들을 확인
   const watchedNickname = watch("nickname");
   const watchedBirth = watch("birth");
   const watchedGender = watch("gender");
   const watchedIntroduction = watch("introduction");
 
-  // 전부 입력 되었을때만 버튼 활성화
   const isAllSelected = Boolean(
     watchedNickname &&
       watchedBirth &&
@@ -103,7 +100,11 @@ export default function Profile() {
   return (
     <PageForm isGNB={false}>
       <S.Container>
-        <Header title={"프로필 입력"} navigate={() => navigate(-1)} />
+        <NewHeader
+          title="프로필 입력"
+          isBackBtn={true}
+          onClickBack={() => navigate(-1)}
+        />
 
         <S.ImageContainer>
           {image ? (
@@ -237,12 +238,10 @@ export default function Profile() {
       {introductionModal && (
         <S.IntroductionModal>
           <S.Container>
-            <S.Header>
-              <img
-                src={"/svg/left-arrow-icon.svg"}
-                onClick={() => setIntroductionModal(false)}
-              />
-            </S.Header>
+            <NewHeader
+              isBackBtn={true}
+              onClickBack={() => setIntroductionModal(false)}
+            />
             <S.InputContainer>
               <S.IntroductionInput
                 placeholder="나를 소개할 한줄을 작성해주세요."

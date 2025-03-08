@@ -2,7 +2,6 @@ import * as S from "./style";
 import { useNotificationStore } from "../../store/alarm-store";
 import { useEffect, useState } from "react";
 import AlarmModal from "../alarm-modal/AlarmModal";
-import { useGetMyData } from "../../api/useGetMyData";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import Alert from "../alert/Alert";
@@ -18,7 +17,7 @@ interface headerProps {
 
 const NewHeader = (props: headerProps) => {
   const navigate = useNavigate();
-  const { data: myData } = useGetMyData();
+  const doneJoinMembership = Cookies.get("is_new_member");
   const accessToken = Cookies.get("access_token");
 
   const { hasNewNotification, markAsRead } = useNotificationStore();
@@ -65,7 +64,7 @@ const NewHeader = (props: headerProps) => {
       <S.Box className="align_center gap_8">
         {!props.isLoginBtn ? (
           <></>
-        ) : myData?.memberId && accessToken ? (
+        ) : doneJoinMembership && accessToken ? (
           <S.membershipBtn
             className="logout"
             onClick={() => setLogoutAlert(true)}

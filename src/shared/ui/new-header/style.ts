@@ -3,7 +3,7 @@ import { theme } from "../../../app/theme";
 
 export const Container = styled.div`
   display: flex;
-  height: 4rem;
+  height: 3rem;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 0;

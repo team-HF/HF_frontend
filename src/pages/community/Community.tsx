@@ -4,7 +4,6 @@ import FilterBar from "../../widgets/community/filter-bar/FilterBar";
 import EmptyList from "../../shared/ui/empty-list/EmptyList";
 import CategoryBar from "../../widgets/community/contents-type/CategoryBar";
 import FloatingButton from "../../widgets/community/floating-button/FloatingButton";
-import CommunityHeader from "../../widgets/community/community-header/CommunityHeader";
 import PostPreviewList from "../../shared/ui/post-preview-list/PostPreviewList";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
@@ -12,6 +11,7 @@ import { getPostList } from "./api/useGetPostList";
 import { useGetParams } from "../../shared/utils/useGetParams";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCommunityStore } from "./store/community-store";
+import NewHeader from "../../shared/ui/new-header/NewHeader";
 
 const Community = () => {
   const category = useGetParams("postCategory");
@@ -55,7 +55,7 @@ const Community = () => {
   return (
     <PageForm isGNB={true}>
       <S.Container>
-        <CommunityHeader />
+        <NewHeader title="커뮤니티" isLoginBtn={true} isAlarmBtn={true} />
         <CategoryBar />
         <FilterBar />
         <S.PostContainer>

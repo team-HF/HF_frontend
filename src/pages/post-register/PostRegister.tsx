@@ -1,5 +1,4 @@
 import * as S from "./style";
-import Header from "../../widgets/post-register/header/Header";
 import PageForm from "../../shared/ui/page-form/PageForm";
 import SideFilter from "../../shared/ui/side-filter/SideFilter";
 import communityPostApi from "./api/usePost";
@@ -9,6 +8,7 @@ import { categoryData, TCategory } from "../../entities/community/filter-data";
 import { useGetPostDetail as getPostDetail } from "../post-detail/api/useGetPostDetail";
 import { usePostUpdate as postUpdate } from "./api/usePostUpdate";
 import { useGetMyData } from "../../shared/api/useGetMyData";
+import NewHeader from "../../shared/ui/new-header/NewHeader";
 
 export type TCategoryData = { name: string; id: TCategory };
 
@@ -82,7 +82,11 @@ const PostRegister = () => {
   return (
     <PageForm isGNB={false}>
       <S.Container>
-        <Header title={"글쓰기"} navigate={headerNavigate} />
+        <NewHeader
+          title={"글쓰기"}
+          isBackBtn={true}
+          onClickBack={headerNavigate}
+        />
         <S.Container>
           <S.DoneBtnContainer>
             <S.DoneBtn disabled={!requestFill} onClick={postRegister}>
