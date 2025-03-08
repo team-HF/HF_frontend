@@ -16,12 +16,9 @@ const ProfileSearch = () => {
     useGetParams("filter") || "matchedCount"
   );
   const [searchBarOpen, setSearchBarOpen] = useState<boolean>(false);
-  const [searchResult, setSearchResult] = useState({
-    profileList: [],
-    profileListSize: 0,
-  });
+  const [searchResult, setSearchResult] = useState([]);
 
-  const profiles = searchResult.profileList
+  const profiles = searchResult
     .sort((a, b) => b[filter] - a[filter])
     .map((profile: User, idx) => {
       return <UserProfileCard key={`user_${idx}`} {...profile} />;
@@ -29,7 +26,7 @@ const ProfileSearch = () => {
 
   useEffect(() => {
     (async () => {
-      const searchResult = await getSearchData();      
+      const searchResult = await getSearchData(1);
       setSearchResult(searchResult);
     })();
   }, []);
@@ -63,7 +60,7 @@ const ProfileSearch = () => {
             paramName="filter"
           />
         </S.FilterContainer>
-        {searchResult.profileList.length ? (
+        {searchResult.length ? (
           <S.UserContainer>{profiles}</S.UserContainer>
         ) : (
           <EmptyList isBtn={false}>검색 결과가 없습니다.</EmptyList>

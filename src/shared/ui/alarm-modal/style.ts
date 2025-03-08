@@ -27,7 +27,7 @@ export const Container = styled.div`
 export const TitleContainer = styled.div`
   display: flex;
   padding: 1rem;
-
+  height: 2.875rem;
   justify-content: space-between;
   align-items: center;
 `;
