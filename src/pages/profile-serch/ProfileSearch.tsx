@@ -10,18 +10,34 @@ import LogoHeader from "../../shared/ui/logo-header/Header";
 import { useGetSearchData as getSearchData } from "../../shared/api/useGetSearchData";
 import EmptyList from "../../shared/ui/empty-list/EmptyList";
 import { User } from "../../shared/types/user";
+import Cookies from "js-cookie";
+import { useGetMyData } from "../../shared/api/useGetMyData";
+// import { useInView } from "react-intersection-observer";
+// import { useInfiniteQuery } from "@tanstack/react-query";
 
 const ProfileSearch = () => {
+  const accessToken = Cookies.get("access_token");
+  const { data: memberId } = useGetMyData();
+  // const [ref, inVeiw] = useInView();
+
   const [filter, setFilter] = useState(
     useGetParams("filter") || "matchedCount"
   );
   const [searchBarOpen, setSearchBarOpen] = useState<boolean>(false);
-  const [searchResult, setSearchResult] = useState({
-    profileList: [],
-    profileListSize: 0,
-  });
+  const [searchResult, setSearchResult] = useState([]);
 
-  const profiles = searchResult.profileList
+  // const { data } = useInfiniteQuery({
+  //   queryKey: ["profileList", filter],
+  //   queryFn: ({ pageParam = 1 }) => getSearchData(pageParam),
+  //   initialPageParam: 1,
+  //   getNextPageParam: (lastPage, allPages) => {
+  //     return lastPage.totalPages > allPages.length
+  //       ? allPages.length + 1
+  //       : undefined;
+  //   },
+  // });
+
+  const profiles = searchResult
     .sort((a, b) => b[filter] - a[filter])
     .map((profile: User, idx) => {
       return <UserProfileCard key={`user_${idx}`} {...profile} />;
@@ -29,7 +45,7 @@ const ProfileSearch = () => {
 
   useEffect(() => {
     (async () => {
-      const searchResult = await getSearchData();      
+      const searchResult = await getSearchData(1);
       setSearchResult(searchResult);
     })();
   }, []);
@@ -63,7 +79,7 @@ const ProfileSearch = () => {
             paramName="filter"
           />
         </S.FilterContainer>
-        {searchResult.profileList.length ? (
+        {searchResult.length ? (
           <S.UserContainer>{profiles}</S.UserContainer>
         ) : (
           <EmptyList isBtn={false}>검색 결과가 없습니다.</EmptyList>
