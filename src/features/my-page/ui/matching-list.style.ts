@@ -7,13 +7,7 @@ export const Container = styled.div`
   height: 100vh;
   gap: 1rem;
   @media (min-width: 768px) {
-    /* 태블릿 세로 방향 */
     width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 67.5rem;
   }
 `;
 
@@ -115,7 +109,6 @@ export const FilterContainer = styled.div`
   margin-left: auto;
   margin-right: 20px;
   @media (min-width: 768px) {
-    /* 태블릿 세로 방향 */
     margin-right: 0px;
   }
 `;
@@ -132,6 +125,7 @@ export const FilterButton = styled.div`
   align-items: center;
   font-size: 14px;
   color: #000000;
+  box-sizing: border-box;
 
   &:hover {
     background-color: #e9e4fc;
@@ -142,7 +136,7 @@ export const Dropdown = styled.div`
   position: absolute;
   box-shadow: 4px 4px 8px 0px #00000040;
   z-index: 101;
-  top: 120%;
+  top: calc(100% + 8px);
   border: 1px solid #cfc4fb;
   width: 140px;
   height: 136px;

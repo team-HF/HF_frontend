@@ -11,10 +11,6 @@ export const Container = styled.div`
   @media (min-width: 768px) {
     width: 40rem;
   }
-
-  @media (min-width: 1200px) {
-    width: 67.5rem;
-  }
 `;
 
 export const MessageContainer = styled.div`
@@ -61,6 +57,7 @@ export const ChatTime = styled.div<{ $isMine: boolean }>`
 export const InputWrapper = styled.div`
   display: flex;
   margin-top: 16px;
+  margin-bottom: 20px;
   height: 36px;
   gap: 10px;
   border-radius: 8px;

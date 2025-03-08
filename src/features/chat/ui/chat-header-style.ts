@@ -9,11 +9,7 @@ export const Container = styled.div`
   justify-content: space-between;
   align-self: center;
   @media (min-width: 768px) {
-    width: 640px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 1080px;
+    width: 40rem;
   }
 `;
 export const LeftWrapper = styled.div`

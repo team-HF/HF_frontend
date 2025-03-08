@@ -13,13 +13,8 @@ export const Container = styled.div`
   background-color: #ffffff;
   margin-left: auto;
   margin-right: auto;
-
   @media (min-width: 768px) {
     width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    width: 67.5rem;
   }
 `;
 

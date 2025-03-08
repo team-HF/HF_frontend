@@ -7,12 +7,8 @@ export const Container = styled.div`
   width: 100vw;
   margin-top: 0.75rem;
   width: 22.5rem;
-  @media (min-width: 768px) and (max-width: 991px) {
+  @media (min-width: 768px) {
     width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    width: 67.5rem;
   }
 `;
 export const HeaderContainer = styled.div`

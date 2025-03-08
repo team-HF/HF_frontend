@@ -8,12 +8,8 @@ export const Container = styled.div`
   background-color: #f8f9fa;
   padding: 0 20px;
   width: 340px;
-  @media (min-width: 768px) and (max-width: 991px) {
-    width: 620px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 1060px;
+  @media (min-width: 768px) {
+    width: 40rem;
   }
 `;
 

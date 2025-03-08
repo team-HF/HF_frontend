@@ -5,13 +5,8 @@ export const Container = styled.div`
   width: 22.5rem;
   margin-left: auto;
   margin-right: auto;
-
   @media (min-width: 768px) {
     width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    width: 67.5rem;
   }
 `;
 export const HeaderWrapper = styled.div`

@@ -7,41 +7,16 @@ export const Container = styled.div`
   height: 100vh;
   gap: 2.25rem;
   flex-flow: wrap;
-  @media (min-width: 768px) and (max-width: 991px) {
-    /* 태블릿 세로 방향 */
+  @media (min-width: 768px) {
     width: 40rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 67.5rem;
   }
 `;
 
 export const ProfileWrapper = styled.div`
   width: 5rem;
   height: 6.9375rem;
-  @media (min-width: 768px) and (max-width: 991px) {
-    /* 태블릿 세로 방향 */
-    width: 7.5rem;
-    height: 9.4375rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 7.5rem;
-    height: 9.4375rem;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 7.5rem;
-    height: 9.4375rem;
+  @media (min-width: 768px) {
+    width: 40rem;
   }
 `;
 export const IconContainer = styled.div`
@@ -49,22 +24,8 @@ export const IconContainer = styled.div`
   height: 5rem;
   position: relative;
   margin-bottom: 16px;
-  @media (min-width: 768px) and (max-width: 991px) {
-    /* 태블릿 세로 방향 */
-    width: 7.5rem;
-    height: 7.5rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 7.5rem;
-    height: 7.5rem;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 7.5rem;
-    height: 7.5rem;
+  @media (min-width: 768px) {
+    width: 40rem;
   }
 `;
 export const ProfileIcon = styled.img`
