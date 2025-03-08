@@ -1,13 +1,13 @@
-import * as S from './style';
-import Header from '../../widgets/post-register/header/Header';
-import PageForm from '../../shared/ui/page-form/PageForm';
-import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import { getSgisLocationData } from '../../shared/api/getSgisLocationData';
-import { getSgisApiAccessToken } from '../../shared/api/getSgisApiAccessToken';
-import { useGetMyData } from '../../shared/api/useGetMyData';
-import UpdateMyDataButton from '../../features/profile-setting/ui/UpdateMyDataButton';
-import { useNavigate } from 'react-router-dom';
+import * as S from "./style";
+import Header from "../../widgets/post-register/header/Header";
+import PageForm from "../../shared/ui/page-form/PageForm";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { getSgisLocationData } from "../../shared/api/getSgisLocationData";
+import { getSgisApiAccessToken } from "../../shared/api/getSgisApiAccessToken";
+import { useGetMyData } from "../../shared/api/useGetMyData";
+import UpdateMyDataButton from "../../features/profile-setting/ui/UpdateMyDataButton";
+import { useNavigate } from "react-router-dom";
 import {
   CompanionStyle,
   FitnessEagerness,
@@ -17,9 +17,9 @@ import {
   getFITNESS_OBJECTIVE_MAP,
   getFitnessEagernessText,
   getFitnessKindText,
-} from '../../shared/constants/fitness-category';
-import DuplicateNicknameButton from '../../features/profile-setting/ui/DuplicateNicknameButton';
-import { getSgisLocation } from '../../shared/api/getSgisLocation';
+} from "../../shared/constants/fitness-category";
+import DuplicateNicknameButton from "../../features/profile-setting/ui/DuplicateNicknameButton";
+import { getSgisLocation } from "../../shared/api/getSgisLocation";
 
 interface ExerciseStyleState {
   companionStyle: string;
@@ -42,42 +42,42 @@ export default function ProfileSetting() {
     clearErrors,
     setValue,
     watch,
-  } = useForm({ mode: 'onChange' });
+  } = useForm({ mode: "onChange" });
 
   const { data: myData, isLoading, isError } = useGetMyData();
 
   const [image, setImage] = useState<File>();
-  const [nickname, setNickname] = useState<string>('');
-  const [selectedLocation, setSelectedLocation] = useState<string>('');
+  const [nickname, setNickname] = useState<string>("");
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [cd1, setCd1] = useState<string>(myData!.cd1);
   const [cd2, setCd2] = useState<string>(myData!.cd2);
   const [cd3, setCd3] = useState<string>(myData!.cd3);
   const [locationData, setLocationData] = useState<Location[]>([]);
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
-  const [introduction, setIntroduction] = useState<string | null>('');
-  const [introductionContent, setIntroductionContent] = useState<string>('');
+  const [introduction, setIntroduction] = useState<string | null>("");
+  const [introductionContent, setIntroductionContent] = useState<string>("");
   const [exerciseStyles, setExerciseStyles] = useState<ExerciseStyleState>({
-    companionStyle: '',
-    fitnessEagerness: '',
-    fitnessObjective: '',
-    fitnessKind: '',
+    companionStyle: "",
+    fitnessEagerness: "",
+    fitnessObjective: "",
+    fitnessKind: "",
   });
   const [lastValidatedNickname, setLastValidatedNickname] =
-    useState<string>('');
+    useState<string>("");
   const [isNicknameValidated, setIsNicknameValidated] =
     useState<boolean>(false);
 
-  const [location, setLocation] = useState<string>('');
+  const [location, setLocation] = useState<string>("");
   const navigate = useNavigate();
   useEffect(() => {
     if (!myData) return;
     setNickname(myData.nickname);
     setIntroduction(myData.introduction);
     setExerciseStyles({
-      companionStyle: myData.companionStyle || '',
-      fitnessEagerness: myData.fitnessEagerness || '',
-      fitnessObjective: myData.fitnessObjective || '',
-      fitnessKind: myData.fitnessKind || '',
+      companionStyle: myData.companionStyle || "",
+      fitnessEagerness: myData.fitnessEagerness || "",
+      fitnessObjective: myData.fitnessObjective || "",
+      fitnessKind: myData.fitnessKind || "",
     });
     const fetchLocation = async () => {
       await getSgisApiAccessToken();
@@ -94,20 +94,20 @@ export default function ProfileSetting() {
 
   const defaultExerciseStyle = [
     getCompanionStyleText(
-      (exerciseStyles.companionStyle as CompanionStyle) ?? 'SMALL'
+      (exerciseStyles.companionStyle as CompanionStyle) ?? "SMALL"
     ),
     getFitnessEagernessText(
-      (exerciseStyles.fitnessEagerness as FitnessEagerness) ?? 'EAGER'
+      (exerciseStyles.fitnessEagerness as FitnessEagerness) ?? "EAGER"
     ),
     getFITNESS_OBJECTIVE_MAP(
-      (exerciseStyles.fitnessObjective as FitnessObjective) ?? 'BULK_UP'
+      (exerciseStyles.fitnessObjective as FitnessObjective) ?? "BULK_UP"
     ),
     getFitnessKindText(
-      (exerciseStyles.fitnessKind as FitnessKind) ?? 'HIGH_STRESS'
+      (exerciseStyles.fitnessKind as FitnessKind) ?? "HIGH_STRESS"
     ),
   ]
     .map((text) => `#${text}`)
-    .join(', ');
+    .join(", ");
 
   const getLocationData = async () => {
     const result = await getSgisLocationData(cd3 || cd2 || cd1);
@@ -128,15 +128,15 @@ export default function ProfileSetting() {
   };
 
   const onClickReset = () => {
-    setCd1('');
-    setCd2('');
-    setCd3('');
-    setLocation('');
-    setSelectedLocation('');
+    setCd1("");
+    setCd2("");
+    setCd3("");
+    setLocation("");
+    setSelectedLocation("");
   };
 
   const handleExerciseStyleEdit = () => {
-    navigate('/profile-setting/exercise-style', {
+    navigate("/profile-setting/exercise-style", {
       state: {
         isEditMode: true,
         initialValues: exerciseStyles,
@@ -144,11 +144,7 @@ export default function ProfileSetting() {
     });
   };
 
-  const backNavigation = () => {
-    navigate(-1);
-  };
-
-  const watchedNickname = watch('nickname');
+  const watchedNickname = watch("nickname");
   const isLocationValid = Boolean(cd1 && cd2 && cd3);
   const isAllSelected = Boolean(nickname && isLocationValid && introduction);
 
@@ -168,12 +164,12 @@ export default function ProfileSetting() {
 
   useEffect(() => {
     if (introductionModal) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [introductionModal]);
 
@@ -196,11 +192,11 @@ export default function ProfileSetting() {
     onBlur: nicknameOnBlur,
     name: nicknameName,
     ref: nicknameRef,
-  } = register('nickname', {
-    required: '닉네임을 입력해주세요',
+  } = register("nickname", {
+    required: "닉네임을 입력해주세요",
     pattern: {
       value: /^[a-zA-Z0-9가-힣]{1,8}$/,
-      message: '닉네임은 영문,숫자,한글만 포함 가능합니다.',
+      message: "닉네임은 영문,숫자,한글만 포함 가능합니다.",
     },
   });
 
@@ -210,7 +206,7 @@ export default function ProfileSetting() {
   return (
     <PageForm isGNB={false}>
       <S.Container>
-        <Header title={'프로필 입력'} navigate={backNavigation} />
+        <Header title={"프로필 입력"} />
         <S.ImageContainer>
           {image ? (
             <S.ProfileImageLabel
@@ -225,7 +221,7 @@ export default function ProfileSetting() {
             </S.ProfileImageLabel>
           ) : (
             <S.ProfileImageLabel htmlFor="profile_image_input">
-              <S.DefaultUserImage src={'/svg/default-profile-icon.svg'} />
+              <S.DefaultUserImage src={"/svg/default-profile-icon.svg"} />
               <S.CameraIcon src="/svg/camera-icon.svg" />
             </S.ProfileImageLabel>
           )}
@@ -244,11 +240,11 @@ export default function ProfileSetting() {
             <S.Label>닉네임</S.Label>
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                whiteSpace: 'nowrap',
-                alignItems: 'center',
-                position: 'relative',
+                display: "flex",
+                flexDirection: "row",
+                whiteSpace: "nowrap",
+                alignItems: "center",
+                position: "relative",
               }}
             >
               <S.Input
@@ -261,7 +257,7 @@ export default function ProfileSetting() {
                 onChange={(e) => {
                   nicknameOnChange(e);
                   setNickname(e.target.value);
-                  setValue('nickname', e.target.value);
+                  setValue("nickname", e.target.value);
                 }}
                 onBlur={(e) => {
                   nicknameOnBlur(e);
@@ -285,7 +281,7 @@ export default function ProfileSetting() {
             <S.Label>운동 스타일</S.Label>
             <S.Input
               readOnly
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
               value={defaultExerciseStyle}
               onClick={handleExerciseStyleEdit}
             />
@@ -308,11 +304,11 @@ export default function ProfileSetting() {
             <S.IntroductionContent
               $filled={!!introduction}
               onClick={() => {
-                setIntroductionContent(introduction || '');
+                setIntroductionContent(introduction || "");
                 setIntroductionModal(true);
               }}
             >
-              {introduction ? introduction : '한줄 소개를 입력해주세요.'}
+              {introduction ? introduction : "한줄 소개를 입력해주세요."}
             </S.IntroductionContent>
             <S.PlaceHolder>나를 소개할 한 줄을 작성해주세요.</S.PlaceHolder>
           </S.Field>
@@ -324,21 +320,21 @@ export default function ProfileSetting() {
           <S.Container>
             <S.Header>
               <img
-                src={'/svg/left-arrow-icon.svg'}
+                src={"/svg/left-arrow-icon.svg"}
                 onClick={() => setIntroductionModal(false)}
               />
             </S.Header>
             <S.InputContainer>
               <S.IntroductionInput
                 placeholder="나를 소개할 한줄을 작성해주세요."
-                {...register('introduction', {
-                  required: '한줄 소개를 작성해주세요.',
+                {...register("introduction", {
+                  required: "한줄 소개를 작성해주세요.",
                   maxLength: {
                     value: 500,
-                    message: '최대 500자까지 작성할 수 있어요.',
+                    message: "최대 500자까지 작성할 수 있어요.",
                   },
                   onBlur: () => {
-                    clearErrors('introduction');
+                    clearErrors("introduction");
                   },
                 })}
                 maxLength={500}

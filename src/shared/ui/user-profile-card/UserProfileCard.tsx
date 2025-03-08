@@ -19,7 +19,13 @@ const UserProfileCard = (profile: User) => {
       }}
     >
       <S.profileContainer>
-        <S.ProfileImage src={"/svg/default-profile-icon.svg"} />
+        <S.ProfileImage
+          src={
+            profile?.profileImageUrl
+              ? `http://localhost:8080/${profile?.profileImageUrl}`
+              : "/svg/default-profile-icon.svg"
+          }
+        />
         <S.Box className="gap_8 column">
           <S.Box className="align-items-center gap_8">
             <S.Nickname>{profile.nickname}</S.Nickname>
