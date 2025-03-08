@@ -1,20 +1,14 @@
-import { useNavigate } from "react-router-dom";
-import * as S from "./style";
+import * as S from './style';
 
 interface HeaderProps {
   title: string;
+  navigate?: () => void;
 }
 
-const Header = ({ title }: HeaderProps) => {
-  const navigate = useNavigate();
-
-  const backNavigation = () => {
-    navigate(-1);
-  };
-
+const Header = ({ title, navigate }: HeaderProps) => {
   return (
     <S.Container>
-      <S.BackIcon src={"/svg/arrow-down.svg"} onClick={backNavigation} />
+      <S.BackIcon src={'/svg/arrow-down.svg'} onClick={navigate} />
       <S.Title>{title}</S.Title>
     </S.Container>
   );
