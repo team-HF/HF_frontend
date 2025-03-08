@@ -26,19 +26,21 @@ const UserDataDefault = () => {
     } else {
       alert('채팅방 생성에 실패하였습니다.');
     }
+    // navigate('/chat');
+    console.log('채팅방 생성 성공');
   };
   const handleFriendRequest = () => {
     if (!userProfile?.memberId) {
-      alert('상대방 정보가 없습니다.');
+      alert("상대방 정보가 없습니다.");
       return;
     }
     createChat();
   };
   const exerciseStyle = [
-    { id: 'companionStyle', content: userProfile?.companionStyle },
-    { id: 'fitnessEagerness', content: userProfile?.fitnessEagerness },
-    { id: 'fitnessKind', content: userProfile?.fitnessKind },
-    { id: 'fitnessObjective', content: userProfile?.fitnessObjective },
+    { id: "companionStyle", content: userProfile?.companionStyle },
+    { id: "fitnessEagerness", content: userProfile?.fitnessEagerness },
+    { id: "fitnessKind", content: userProfile?.fitnessKind },
+    { id: "fitnessObjective", content: userProfile?.fitnessObjective },
   ];
 
   const exerciseTags = exerciseStyle.map((style) => {
@@ -69,19 +71,19 @@ const UserDataDefault = () => {
             src={
               userProfile?.profileImageUrl
                 ? userProfile?.profileImageUrl
-                : '/svg/default-profile-icon.svg'
+                : "/svg/default-profile-icon.svg"
             }
           />
           <S.Box className="column gap_8">
             <S.Box className="gap_8">
               <S.Text_1>{userProfile?.nickname}</S.Text_1>
               <TierTag
-                fitnessLevel={userProfile?.fitnessLevel || 'BEGINNER'}
+                fitnessLevel={userProfile?.fitnessLevel || "BEGINNER"}
                 tier={userProfile?.tier.tier || 0}
               />
             </S.Box>
             <S.Box>
-              <img src={'/svg/location-icon.svg'} />
+              <img src={"/svg/location-icon.svg"} />
               <S.Text_2>{location}</S.Text_2>
             </S.Box>
           </S.Box>

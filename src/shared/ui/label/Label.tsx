@@ -7,7 +7,6 @@ type LabelProps = {
   borderColor?: string;
   width: number;
   height: number;
-  onClick?: () => void;
 };
 
 export default function Label({
@@ -17,7 +16,6 @@ export default function Label({
   backgroundColor,
   width,
   height,
-  onClick,
 }: LabelProps) {
   return (
     <S.LabelContainer
@@ -26,8 +24,6 @@ export default function Label({
       radius="24px"
       width={width}
       height={height}
-      onClick={onClick}
-      $clickalbe={!!onClick}
     >
       <S.LabelText $fontColor={fontColor}>{text}</S.LabelText>
     </S.LabelContainer>

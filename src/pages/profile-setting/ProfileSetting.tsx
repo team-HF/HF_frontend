@@ -2,6 +2,7 @@ import * as S from './style';
 import Header from '../../widgets/post-register/header/Header';
 import PageForm from '../../shared/ui/page-form/PageForm';
 import { useForm } from 'react-hook-form';
+import { useProfileSettingStore } from '../../features/profile-setting/store/profile-setting-store';
 import { useEffect, useState } from 'react';
 import { getSgisLocationData } from '../../shared/api/getSgisLocationData';
 import { getSgisApiAccessToken } from '../../shared/api/getSgisApiAccessToken';
@@ -44,17 +45,24 @@ export default function ProfileSetting() {
     watch,
   } = useForm({ mode: 'onChange' });
 
-  const { data: myData, isLoading, isError } = useGetMyData();
+  const {
+    image,
+    setImage,
+    nickname,
+    setNickname,
+    cd1,
+    setCd1,
+    cd2,
+    setCd2,
+    cd3,
+    setCd3,
+    introduction,
+    setIntroduction,
+  } = useProfileSettingStore();
 
-  const [image, setImage] = useState<File>();
-  const [nickname, setNickname] = useState<string>('');
   const [selectedLocation, setSelectedLocation] = useState<string>('');
-  const [cd1, setCd1] = useState<string>(myData!.cd1);
-  const [cd2, setCd2] = useState<string>(myData!.cd2);
-  const [cd3, setCd3] = useState<string>(myData!.cd3);
   const [locationData, setLocationData] = useState<Location[]>([]);
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
-  const [introduction, setIntroduction] = useState<string | null>('');
   const [introductionContent, setIntroductionContent] = useState<string>('');
   const [exerciseStyles, setExerciseStyles] = useState<ExerciseStyleState>({
     companionStyle: '',
@@ -67,30 +75,34 @@ export default function ProfileSetting() {
   const [isNicknameValidated, setIsNicknameValidated] =
     useState<boolean>(false);
 
+  const { data: myData, isLoading, isError } = useGetMyData();
   const [location, setLocation] = useState<string>('');
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!myData) return;
-    setNickname(myData.nickname);
-    setIntroduction(myData.introduction);
-    setExerciseStyles({
-      companionStyle: myData.companionStyle || '',
-      fitnessEagerness: myData.fitnessEagerness || '',
-      fitnessObjective: myData.fitnessObjective || '',
-      fitnessKind: myData.fitnessKind || '',
-    });
-    const fetchLocation = async () => {
-      await getSgisApiAccessToken();
-      const result = await getSgisLocation(
-        `${myData.cd1}${myData.cd2}`,
-        `${myData.cd1}${myData.cd2}${myData.cd3}`
-      );
-      setLocation(result.full_addr);
-      setSelectedLocation(result.full_addr);
-    };
 
-    fetchLocation();
+  useEffect(() => {
+    const savedExerciseStyles = sessionStorage.getItem('exerciseStyles');
+    if (savedExerciseStyles) {
+      setExerciseStyles(JSON.parse(savedExerciseStyles));
+    } else if (myData) {
+      setExerciseStyles({
+        companionStyle: myData.companionStyle || '',
+        fitnessEagerness: myData.fitnessEagerness || '',
+        fitnessObjective: myData.fitnessObjective || '',
+        fitnessKind: myData.fitnessKind || '',
+      });
+    }
   }, [myData]);
+
+  useEffect(() => {
+    const clearSessionOnReload = () => {
+      sessionStorage.removeItem('exerciseStyles');
+    };
+    window.addEventListener('beforeunload', clearSessionOnReload);
+
+    return () => {
+      window.removeEventListener('beforeunload', clearSessionOnReload);
+    };
+  }, []);
 
   const defaultExerciseStyle = [
     getCompanionStyleText(
@@ -131,7 +143,6 @@ export default function ProfileSetting() {
     setCd1('');
     setCd2('');
     setCd3('');
-    setLocation('');
     setSelectedLocation('');
   };
 
@@ -147,10 +158,34 @@ export default function ProfileSetting() {
   const backNavigation = () => {
     navigate(-1);
   };
+  useEffect(() => {
+    if (nickname) setValue('nickname', nickname);
+    if (introduction) setValue('introduction', introduction);
+  }, [nickname, cd1, cd2, cd3, introduction, setValue]);
 
   const watchedNickname = watch('nickname');
-  const isLocationValid = Boolean(cd1 && cd2 && cd3);
-  const isAllSelected = Boolean(nickname && isLocationValid && introduction);
+  const watchedIntroduction = watch('introduction');
+  const isAllSelected = Boolean(
+    watchedNickname &&
+      cd1 &&
+      cd2 &&
+      cd3 &&
+      watchedIntroduction &&
+      isNicknameValidated
+  );
+
+  useEffect(() => {
+    (async () => {
+      if (myData) {
+        await getSgisApiAccessToken();
+        const result = await getSgisLocation(
+          `${myData?.cd1}${myData?.cd2}`,
+          `${myData?.cd1}${myData?.cd2}${myData?.cd3}`
+        );
+        setLocation(result.full_addr);
+      }
+    })();
+  }, [myData]);
 
   const locationCards = locationData.map((data) => (
     <S.LocationCard
@@ -190,19 +225,6 @@ export default function ProfileSetting() {
   }, [watchedNickname, myData, lastValidatedNickname]);
 
   const displayLocation = selectedLocation || location;
-
-  const {
-    onChange: nicknameOnChange,
-    onBlur: nicknameOnBlur,
-    name: nicknameName,
-    ref: nicknameRef,
-  } = register('nickname', {
-    required: '닉네임을 입력해주세요',
-    pattern: {
-      value: /^[a-zA-Z0-9가-힣]{1,8}$/,
-      message: '닉네임은 영문,숫자,한글만 포함 가능합니다.',
-    },
-  });
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
@@ -254,17 +276,23 @@ export default function ProfileSetting() {
               <S.Input
                 type="text"
                 placeholder="닉네임"
-                maxLength={8}
-                value={nickname}
-                name={nicknameName}
-                ref={nicknameRef}
+                {...register('nickname', {
+                  required: '닉네임을 입력해주세요',
+                  pattern: {
+                    value: /^[a-zA-Z0-9가-힣]{1,8}$/,
+                    message: '닉네임은 영문,숫자,한글만 포함 가능합니다.',
+                  },
+                  maxLength: {
+                    value: 8,
+                    message: '닉네임의 길이는 8글자 이하 입니다.',
+                  },
+                  onBlur: () => {
+                    clearErrors('nickname');
+                  },
+                })}
                 onChange={(e) => {
-                  nicknameOnChange(e);
                   setNickname(e.target.value);
                   setValue('nickname', e.target.value);
-                }}
-                onBlur={(e) => {
-                  nicknameOnBlur(e);
                 }}
               />
               <DuplicateNicknameButton
@@ -277,9 +305,18 @@ export default function ProfileSetting() {
             </div>
             {errors.nickname?.message ? (
               <S.ErrorMessage>{String(errors.nickname.message)}</S.ErrorMessage>
-            ) : !isNicknameValidated && watchedNickname ? (
-              <S.ErrorMessage>닉네임 중복검사를 완료해주세요.</S.ErrorMessage>
             ) : null}
+
+            {!errors.nickname?.message &&
+              !(!isNicknameValidated && watchedNickname) && (
+                <S.PlaceHolder>
+                  닉네임은 최대 8자까지 입력 가능합니다.
+                </S.PlaceHolder>
+              )}
+
+            {/* {!isNicknameValidated && watchedNickname && (
+              <S.ErrorMessage>닉네임 중복검사를 완료해주세요.</S.ErrorMessage>
+            )} */}
           </S.Field>
           <S.Field>
             <S.Label>운동 스타일</S.Label>
@@ -307,12 +344,9 @@ export default function ProfileSetting() {
             <S.Label>한줄 소개</S.Label>
             <S.IntroductionContent
               $filled={!!introduction}
-              onClick={() => {
-                setIntroductionContent(introduction || '');
-                setIntroductionModal(true);
-              }}
+              onClick={() => setIntroductionModal(true)}
             >
-              {introduction ? introduction : '한줄 소개를 입력해주세요.'}
+              {introduction ? introduction : '한줄 소개'}
             </S.IntroductionContent>
             <S.PlaceHolder>나를 소개할 한 줄을 작성해주세요.</S.PlaceHolder>
           </S.Field>

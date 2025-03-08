@@ -1,34 +1,15 @@
 import * as S from './chat-header-style.ts';
+import { useGetMyData } from '../../../shared/api/useGetMyData.ts';
 import LevelLabel from '../../../shared/ui/level-label/LevelLabel.tsx';
 import { useNavigate } from 'react-router-dom';
-import RequestMatchingLabel from './RequestMatchingLabel.tsx';
-import { useState } from 'react';
-import ChatMenuModal from './ChatMenuModal.tsx';
+import OnGoingMatchCard from '../../chat-lobby/ui/card/ui/OnGoingMatchCard.tsx';
 
-type ChatHeaderProps = {
-  chatroomId: string;
-  matchingUserNickname: string;
-  matchingUserTier: {
-    fitnessLevel: string;
-    tier: number;
-  };
-  matchingUserId: number;
-};
-
-export default function ChatHeader({
-  chatroomId,
-  matchingUserNickname,
-  matchingUserTier,
-  matchingUserId,
-}: ChatHeaderProps) {
+export default function ChatHeader() {
   const navigate = useNavigate();
   const onBackCluck = () => {
     navigate(-1);
   };
-  const [isOpen, setIsOpen] = useState(false);
-  const onClick = () => {
-    setIsOpen(true);
-  };
+  const { data: myData } = useGetMyData();
   return (
     <S.Container>
       <S.LeftWrapper>
@@ -39,21 +20,13 @@ export default function ChatHeader({
         />
       </S.LeftWrapper>
       <S.CenterWrapper>
-        <S.StyleName>{matchingUserNickname}</S.StyleName>
-        <LevelLabel matchingUserTier={matchingUserTier} />
+        <S.StyleName>{myData?.nickname}</S.StyleName>
+        <LevelLabel />
       </S.CenterWrapper>
       <S.RightWrapper>
-        <RequestMatchingLabel
-          chatroomId={chatroomId}
-          matchingUserId={matchingUserId}
-        />
-        <S.StyleMenu
-          src="/svg/menu-dot-col-icon.svg"
-          alt="menu-icon"
-          onClick={onClick}
-        />
+        <OnGoingMatchCard />
+        <S.StyleMenu src="/svg/menu-dot-col-icon.svg" alt="menu-icon" />
       </S.RightWrapper>
-      {isOpen && <ChatMenuModal onClose={() => setIsOpen(false)} />}
     </S.Container>
   );
 }

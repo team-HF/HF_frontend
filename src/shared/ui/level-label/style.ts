@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div<{ level?: string }>`
+export const Container = styled.div<{ level: string }>`
   width: 31px;
   height: 16px;
   border-radius: 8px;

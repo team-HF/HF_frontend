@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PartnerInfo from '../../entities/matching/ui/PartnerInfo';
 import MatchingButton from '../../features/matching/ui/MatchingButton';
 import ScheduleForm from '../../features/matching/ui/ScheduleForm';
@@ -6,8 +6,8 @@ import BackHeader from '../../shared/ui/back-header/BackHeader';
 import * as S from './style';
 
 export default function Matching() {
-  const { state } = useLocation();
-  const matchingUserId = state;
+  const { id } = useParams();
+  const matchingUserId = parseInt(id!, 10);
   return (
     <S.Container>
       <BackHeader text="매칭 신청" style={{ padding: '0px' }} />
