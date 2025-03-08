@@ -4,6 +4,7 @@ import FooterNav from "../footer-nav/FooterNav";
 import { useAccountExpiresStore } from "../../store/account-expires-store";
 import Alert from "../alert/Alert";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../footer/Footer";
 
 type TChildren = {
   isGNB: boolean;

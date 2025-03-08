@@ -1,31 +1,32 @@
-import { Routes, Route, Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { theme } from './app/theme';
-import { ThemeProvider } from 'styled-components';
-import MyPage from './pages/my-page/MyPage';
-import ExerciseOption from './pages/exercise-option/ExerciseOption';
-import ProfileSetting from './pages/profile-setting/ProfileSetting';
-import Profile from './pages/profile/Profile';
-import Login from './pages/login/Login';
-import Introduction from './pages/introduction/Introduction';
-import Community from './pages/community/Community';
-import ChatLobby from './pages/chat-lobby/ChatLobby';
-import PostRegister from './pages/post-register/PostRegister';
-import PostDetail from './pages/post-detail/PostDetail';
-import ExerciseStyle from './pages/exercise-style/ExerciseStyle';
-import Matching from './pages/matching/Matching';
-import MatchingReview from './pages/matching-review/MatchingReview';
-import UserProfile from './pages/user-profile/UserProfile';
-import ProfileSearch from './pages/profile-serch/ProfileSearch';
-import { Chat } from './pages/chat/Chat';
-import { SocketProvider } from './app/providers/SocketProvider';
-import { SubscriptionProvider } from './app/providers/SubscriptionProvider';
-import { useGetMyData } from './shared/api/useGetMyData';
-import SearchResult from './pages/search-result/SearchResult';
-import NotFound from './pages/not-found/NotFound';
-import Cookies from 'js-cookie';
-import { useEffect } from 'react';
-import { useNotificationStore } from './shared/store/alarm-store';
-import Footer from './shared/footer/Footer';
+import { Routes, Route, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { theme } from "./app/theme";
+import { ThemeProvider } from "styled-components";
+import MyPage from "./pages/my-page/MyPage";
+import ExerciseOption from "./pages/exercise-option/ExerciseOption";
+import ProfileSetting from "./pages/profile-setting/ProfileSetting";
+import Profile from "./pages/profile/Profile";
+import Login from "./pages/login/Login";
+import Introduction from "./pages/introduction/Introduction";
+import Community from "./pages/community/Community";
+import ChatLobby from "./pages/chat-lobby/ChatLobby";
+import PostRegister from "./pages/post-register/PostRegister";
+import PostDetail from "./pages/post-detail/PostDetail";
+import ExerciseStyle from "./pages/exercise-style/ExerciseStyle";
+import Matching from "./pages/matching/Matching";
+import MatchingReview from "./pages/matching-review/MatchingReview";
+import UserProfile from "./pages/user-profile/UserProfile";
+import ProfileSearch from "./pages/profile-serch/ProfileSearch";
+import { Chat } from "./pages/chat/Chat";
+import { SocketProvider } from "./app/providers/SocketProvider";
+import { SubscriptionProvider } from "./app/providers/SubscriptionProvider";
+import { useGetMyData } from "./shared/api/useGetMyData";
+import SearchResult from "./pages/search-result/SearchResult";
+import NotFound from "./pages/not-found/NotFound";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
+import { useNotificationStore } from "./shared/store/alarm-store";
+import Footer from "./shared/footer/Footer";
+import Agreement from "./pages/agreement/Agreement";
 
 interface LoginLayoutProps {
   myData: { memberId: number };
@@ -45,23 +46,23 @@ const LoginLayout = ({ myData }: LoginLayoutProps) => {
     const handleAlarmEvent = (event: MessageEvent) => {
       try {
         const trimmedData = event.data.trim();
-        if (trimmedData.startsWith('{') && trimmedData.endsWith('}')) {
+        if (trimmedData.startsWith("{") && trimmedData.endsWith("}")) {
           const eventData = JSON.parse(trimmedData);
           addNotification(eventData);
         }
       } catch (error) {
-        console.error('Failed to parse event data:', error, event.data);
+        console.error("Failed to parse event data:", error, event.data);
       }
     };
 
-    eventSource.addEventListener('alarm', handleAlarmEvent);
+    eventSource.addEventListener("alarm", handleAlarmEvent);
 
     eventSource.onerror = () => {
       eventSource.close();
     };
 
     return () => {
-      eventSource.removeEventListener('alarm', handleAlarmEvent);
+      eventSource.removeEventListener("alarm", handleAlarmEvent);
       eventSource.close();
     };
   }, [myData.memberId, addNotification]);
@@ -81,7 +82,7 @@ const LoginLayout = ({ myData }: LoginLayoutProps) => {
 
 function App() {
   const { data: myData, isLoading } = useGetMyData();
-  const accessToken = Cookies.get('access_token');
+  const accessToken = Cookies.get("access_token");
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -91,6 +92,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/agreement" element={<Agreement />} />
         <Route path="/register/exercise-style" element={<ExerciseOption />} />
         <Route path="/register/profile" element={<Profile />} />
         <Route path="/community" element={<Community />} />
