@@ -10,10 +10,11 @@ import { useSearchValueStore } from "../../shared/store/search-value-store";
 import { FitnessLevel } from "../../shared/constants/fitness-category";
 import { useNavigate } from "react-router-dom";
 import { useLocationStore } from "../../shared/store/location-store";
+import { TCategory } from "../../entities/community/filter-data";
 
 // ❕추후에 타입 통일 필요
 type TPost = {
-  category: string;
+  category: TCategory;
   commentCount: number;
   content: string;
   creationTime: string;
