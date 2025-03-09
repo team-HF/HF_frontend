@@ -23,8 +23,6 @@ import { useGetMyData } from "./shared/api/useGetMyData";
 import SearchResult from "./pages/search-result/SearchResult";
 import NotFound from "./pages/not-found/NotFound";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
-import { useNotificationStore } from "./shared/store/alarm-store";
 import Footer from "./shared/footer/Footer";
 import Agreement from "./pages/agreement/Agreement";
 
@@ -34,38 +32,6 @@ interface LoginLayoutProps {
 
 const LoginLayout = ({ myData }: LoginLayoutProps) => {
   const navigate = useNavigate();
-  const { addNotification } = useNotificationStore();
-
-  useEffect(() => {
-    if (!myData?.memberId) return;
-
-    const eventSource = new EventSource(
-      `http://localhost:8080/hf/connect/sse?memberId=${myData.memberId}`
-    );
-
-    const handleAlarmEvent = (event: MessageEvent) => {
-      try {
-        const trimmedData = event.data.trim();
-        if (trimmedData.startsWith("{") && trimmedData.endsWith("}")) {
-          const eventData = JSON.parse(trimmedData);
-          addNotification(eventData);
-        }
-      } catch (error) {
-        console.error("Failed to parse event data:", error, event.data);
-      }
-    };
-
-    eventSource.addEventListener("alarm", handleAlarmEvent);
-
-    eventSource.onerror = () => {
-      eventSource.close();
-    };
-
-    return () => {
-      eventSource.removeEventListener("alarm", handleAlarmEvent);
-      eventSource.close();
-    };
-  }, [myData.memberId, addNotification]);
 
   return (
     <SocketProvider memberId={myData.memberId}>

@@ -7,11 +7,14 @@ interface commentListProps {
 }
 
 const CommentList = ({ comments }: commentListProps) => {
-  const commentList = comments?.map((data, idx) => (
-    <CommentCard key={`post_comment_${idx}`} {...data} />
-  ));
+  const commentList = () => {
+    if (!comments) return [];
+    return comments.map((data, idx) => (
+      <CommentCard key={`post_comment_${idx}`} {...data} />
+    ));
+  };
 
-  return <S.Container>{commentList}</S.Container>;
+  return <S.Container>{commentList()}</S.Container>;
 };
 
 export default CommentList;

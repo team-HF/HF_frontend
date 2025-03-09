@@ -31,12 +31,18 @@ const ReplyCard = ({ data, parentTag, setOpenInput }: ReplyProps) => {
 
   const updateDone = async () => {
     if (updateValue) {
-      await updateComment(data.commentId, updateValue);
+      const response = await updateComment(data.commentId, updateValue);
+      if (response.status === 200) {
+        window.location.reload();
+      }
     }
   };
 
   const deleteReply = async () => {
-    await deleteComment(data.commentId);
+    const response = await deleteComment(data.commentId);
+    if (response.status === 200) {
+      window.location.reload();
+    }
   };
 
   const changeLike = async () => {
@@ -80,13 +86,13 @@ const ReplyCard = ({ data, parentTag, setOpenInput }: ReplyProps) => {
           <S.profileBox>
             <S.ProfileImage
               src={
-                data.writerProfileUrl
-                  ? data.writerProfileUrl
+                data.writerProfileImageUrl
+                  ? data.writerProfileImageUrl
                   : "/svg/default-profile-icon.svg"
               }
               alt="profile_image"
             />
-            <S.InfoText>{data.writerName}</S.InfoText>
+            <S.InfoText>{data.writerNickname}</S.InfoText>
             <S.LevelLabel
               $fitnessLevel={data?.writerTier.fitnessLevel === "ADVANCED"}
             >
@@ -123,7 +129,7 @@ const ReplyCard = ({ data, parentTag, setOpenInput }: ReplyProps) => {
           <S.Comment>{data.content}</S.Comment>
         )}
         <S.InfoBox_1>
-          <S.CommentButton onClick={() => setOpenInput(data.writerName)}>
+          <S.CommentButton onClick={() => setOpenInput(data.writerNickname)}>
             답글 쓰기
           </S.CommentButton>
           <S.FavoriteBtn
