@@ -10,15 +10,22 @@ type CommunityStore = {
   setCategorySelected: (option: TCategoryId) => void;
   setFilterSelected: (option: TFilter) => void;
   setLabelSelected: (option: TLabel) => void;
+  reset: () => void;
 };
 
 export const useCommunityStore = create<CommunityStore>((set) => ({
-  categorySelected: useGetParams("postCategory") as TCategoryId,
-  filterSelected: useGetParams("fitnessLevel") as TFilter,
+  categorySelected: (useGetParams("postCategory") as TCategoryId) || "ALL",
+  filterSelected: (useGetParams("fitnessLevel") as TFilter) || "ALL",
   labelSelected: useGetParams("fitnessLevel")
     ? (useGetParams("fitnessLevel") as TLabel)
     : "WEEKEND",
   setCategorySelected: (option) => set({ categorySelected: option }),
   setFilterSelected: (option) => set({ filterSelected: option }),
   setLabelSelected: (option) => set({ labelSelected: option }),
+  reset: () =>
+    set({
+      categorySelected: "ALL",
+      filterSelected: "ALL",
+      labelSelected: "WEEKEND",
+    }),
 }));

@@ -11,9 +11,8 @@ export const getPostList = async (currentPage: number) => {
   const params = {
     page: currentPage,
     size: 5,
-    ...((postCategory === "FREE_COMMUNITY" ||
-      postCategory === "COUNSELING") && { postCategory }),
-    ...(fitnessLevel && { fitnessLevel }),
+    ...((postCategory === "FREE_COMMUNITY" || postCategory === "COUNSELING") && { postCategory }),
+    ...(fitnessLevel && fitnessLevel !== "ALL" && { fitnessLevel }),
   };
 
   try {

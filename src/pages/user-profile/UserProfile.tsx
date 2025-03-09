@@ -1,5 +1,4 @@
 import * as S from "./style";
-import LogoHeader from "../../shared/ui/logo-header/Header";
 import Career from "../../widgets/user-profile/career/Career";
 import PageForm from "../../shared/ui/page-form/PageForm";
 import UserDataDefault from "../../widgets/user-profile/user-data-default/UserDataDefault";
@@ -10,6 +9,7 @@ import { useUserProfileStore } from "../../shared/store/user-profile-store";
 import { useGetUserData as getUserData } from "../../shared/api/useGetUserData";
 import { useGetUserDetail as getUserDetail } from "./api/useGetUserDetail";
 import Review from "../../widgets/user-profile/review/Review";
+import NewHeader from "../../shared/ui/new-header/NewHeader";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -30,7 +30,7 @@ const UserProfile = () => {
   return (
     <PageForm isGNB={true}>
       <S.Container>
-        <LogoHeader backBtn={true} />
+        <NewHeader isBackBtn={true} logo={true} isAlarmBtn={true} />
         <UserDataDefault />
         {userDetail && userDetail.specs[0] && <Career />}
         <Review />

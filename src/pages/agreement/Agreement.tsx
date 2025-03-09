@@ -72,6 +72,8 @@ const Agreement = () => {
     const isNewMember = Cookies.get("is_new_member");
     if (isNewMember === "false") {
       navigate("/");
+    } else if (isNewMember !== "true") {
+      navigate("/not-found");
     }
   }, []);
 

@@ -21,8 +21,8 @@ export const StyleH1 = styled.h1`
 
 export const SelectorContainer = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
-  height: 100%;
   gap: 0.5rem;
 `;
 
