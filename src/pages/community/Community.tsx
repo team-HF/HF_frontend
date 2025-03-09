@@ -19,7 +19,6 @@ const Community = () => {
   const [ref, inView] = useInView();
   const { categorySelected, filterSelected, labelSelected } =
     useCommunityStore();
-
   const { data, hasNextPage, fetchNextPage, isLoading } = useInfiniteQuery({
     queryKey: [
       "postList",

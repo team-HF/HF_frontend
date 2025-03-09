@@ -1,9 +1,6 @@
 import { create } from "zustand";
 import { TCategoryId } from "../../../entities/community/contents-type-data";
-import {
-  TFilter,
-  TLabel,
-} from "../../../entities/community/filter-data";
+import { TFilter, TLabel } from "../../../entities/community/filter-data";
 import { useGetParams } from "../../../shared/utils/useGetParams";
 
 type CommunityStore = {
@@ -13,6 +10,7 @@ type CommunityStore = {
   setCategorySelected: (option: TCategoryId) => void;
   setFilterSelected: (option: TFilter) => void;
   setLabelSelected: (option: TLabel) => void;
+  reset: () => void;
 };
 
 export const useCommunityStore = create<CommunityStore>((set) => ({
@@ -24,4 +22,10 @@ export const useCommunityStore = create<CommunityStore>((set) => ({
   setCategorySelected: (option) => set({ categorySelected: option }),
   setFilterSelected: (option) => set({ filterSelected: option }),
   setLabelSelected: (option) => set({ labelSelected: option }),
+  reset: () =>
+    set({
+      categorySelected: "ALL",
+      filterSelected: "ALL",
+      labelSelected: "WEEKEND",
+    }),
 }));

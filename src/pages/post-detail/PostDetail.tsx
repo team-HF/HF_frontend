@@ -14,6 +14,7 @@ import { postDeleteAlert } from "./contants/text";
 import { useMyProfileStore } from "../../shared/store/my-profile-store";
 import { useGetMyData } from "../../shared/api/useGetMyData";
 import NewHeader from "../../shared/ui/new-header/NewHeader";
+import { useCommunityStore } from "../community/store/community-store";
 
 const PostDetail = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const PostDetail = () => {
   const postId = Number(id);
   const { data: myData } = useGetMyData();
   const { setMyProfile } = useMyProfileStore();
+  const { reset } = useCommunityStore();
 
   const [postData, setPostData] = useState<TPost | null>(null);
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
@@ -29,14 +31,20 @@ const PostDetail = () => {
   const deleteCurrentPost = async () => {
     const response = await deletePost(postId);
     if (response.statusCode === 200) {
-      navigate("/community?postCategory=ALL&fitnessLevel=ADVANCED");
+      reset();
+      navigate("/community");
     }
   };
 
   const headerNavigation = () => {
     const previousPath = location.state?.from;
-    if (previousPath === "/community/post-register") {
-      navigate("/community?postCategory=ALL&fitnessLevel=ADVANCED");
+    console.log(previousPath);
+    if (
+      previousPath === "/community/post-register" ||
+      previousPath === `/community/post-update/${postId}`
+    ) {
+      reset();
+      navigate("/community");
     } else {
       navigate(previousPath);
     }
