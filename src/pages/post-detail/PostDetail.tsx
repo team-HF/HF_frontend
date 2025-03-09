@@ -26,7 +26,6 @@ const PostDetail = () => {
   const { reset } = useCommunityStore();
 
   const [postData, setPostData] = useState<TPost | null>(null);
-  console.log(postData);
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
 
   const deleteCurrentPost = async () => {

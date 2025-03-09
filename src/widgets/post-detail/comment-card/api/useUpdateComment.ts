@@ -8,7 +8,6 @@ export const useUpdateComment = async (commentId: number, content: string) => {
       content,
     });
 
-    console.log("수정 성공:", response);
     return response;
   } catch (error) {
     if (axios.isAxiosError(error)) {
