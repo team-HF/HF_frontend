@@ -59,8 +59,8 @@ export default function ExerciseOption() {
 
   useEffect(() => {
     const isNewMember = Cookies.get("is_new_member");
-    if (isNewMember === "false") {
-      navigate("/");
+    if (isNewMember !== "true") {
+      navigate("/not-found");
     }
   }, []);
 

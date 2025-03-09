@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import LocationSelectBar from "../../shared/ui/location-select-bar/LocationSelectBar";
 import { useLocationStore } from "../../shared/store/location-store";
 import NewHeader from "../../shared/ui/new-header/NewHeader";
+import Cookies from "js-cookie";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -96,6 +97,14 @@ export default function Profile() {
       document.body.style.overflow = "";
     };
   }, [introductionModal]);
+
+  useEffect(() => {
+    const isNewMember = Cookies.get("is_new_member");
+    console.log(isNewMember);
+    if (isNewMember !== "true") {
+      navigate("/not-found");
+    }
+  }, []);
 
   return (
     <PageForm isGNB={false}>

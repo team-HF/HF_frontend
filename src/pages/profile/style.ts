@@ -217,6 +217,9 @@ export const IntroductionContent = styled.span<{ $filled: boolean }>`
   letter-spacing: -0.0096rem;
   color: ${({ $filled }) => ($filled ? theme.colors.black : "#8E8E8E")};
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const InputContainer = styled.div`
