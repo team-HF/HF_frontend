@@ -67,7 +67,9 @@ const PostRegister = () => {
   useEffect(() => {
     (async () => {
       if (postId) {
-        const postDetailResponse = await getPostDetail(postId);
+        const postDetailResponse = await getPostDetail(postId, () =>
+          navigate("/not-found")
+        );
         const postDetail = postDetailResponse.content;
         setPostCategory(
           postDetail.postCategory === "FREE_COMMUNITY"
