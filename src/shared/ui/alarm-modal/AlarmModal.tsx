@@ -35,23 +35,27 @@ const AlarmModal = ({ closeModal }: AlarmModalProps) => {
     }
   };
 
-  const notificationListData = data?.pages.flatMap((item) =>
-    item?.notificationList.map((post) => post)
-  );
+  const notificationListData = () => {
+    if (!data) return [];
+
+    return data.pages.flatMap((item) =>
+      item ? item.notificationList.map((post) => post) : []
+    );
+  };
 
   const filteredList = () => {
     if (filter === "match") {
-      return notificationListData?.filter((alarm) => alarm.type in MATCH_MAP);
+      return notificationListData().filter((alarm) => alarm.type in MATCH_MAP);
     } else if (filter === "community") {
-      return notificationListData?.filter(
+      return notificationListData().filter(
         (alarm) => alarm.type in COMMUNITY_MAP
       );
     } else {
-      return notificationListData;
+      return notificationListData();
     }
   };
 
-  const alarmList = filteredList()?.map((alarm, idx) => (
+  const alarmList = filteredList().map((alarm, idx) => (
     <AlarmMessage key={`${idx}번째 알림`} alarm={alarm} />
   ));
 

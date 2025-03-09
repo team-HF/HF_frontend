@@ -27,7 +27,7 @@ const AlarmMessage = ({ alarm }: AlarmProps) => {
 
   return (
     <S.Container>
-      <S.Time>{getDate(alarm.time)}</S.Time>
+      <S.Time>{getDate(alarm.time || "")}</S.Time>
       <S.Box className="align_center gap_8">
         <S.LogoImg src="/svg/logo-image.svg" />
         <S.Box className="column gap_4">
