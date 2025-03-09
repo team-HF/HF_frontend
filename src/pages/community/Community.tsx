@@ -38,11 +38,12 @@ const Community = () => {
     },
   });
 
-  const postListData = data?.pages.flatMap((item) =>
-    item.newPostList.map((post) => post)
-  );
+  const postListData = () => {
+    if (!data) return [];
+    return data?.pages.flatMap((item) => item.newPostList.map((post) => post));
+  };
 
-  const postList = postListData?.map((data, idx) => (
+  const postList = postListData()?.map((data, idx) => (
     <PostPreviewList key={`community_post_${idx}`} {...data} />
   ));
 

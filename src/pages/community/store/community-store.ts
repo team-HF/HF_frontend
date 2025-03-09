@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { TCategoryId } from "../../../entities/community/contents-type-data";
-import { TFilter, TLabel } from "../../../entities/community/filter-data";
+import {
+  TFilter,
+  TLabel,
+} from "../../../entities/community/filter-data";
 import { useGetParams } from "../../../shared/utils/useGetParams";
 
 type CommunityStore = {
@@ -13,8 +16,8 @@ type CommunityStore = {
 };
 
 export const useCommunityStore = create<CommunityStore>((set) => ({
-  categorySelected: useGetParams("postCategory") as TCategoryId,
-  filterSelected: useGetParams("fitnessLevel") as TFilter,
+  categorySelected: (useGetParams("postCategory") as TCategoryId) || "ALL",
+  filterSelected: (useGetParams("fitnessLevel") as TFilter) || "ALL",
   labelSelected: useGetParams("fitnessLevel")
     ? (useGetParams("fitnessLevel") as TLabel)
     : "WEEKEND",

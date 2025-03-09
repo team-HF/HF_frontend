@@ -5,7 +5,8 @@ import { useAddParam as addParam } from "../../../shared/utils/useAddParam";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   filterData,
-  labelData,
+  getLabelText,
+  LABEL_MAP,
   TLabel,
 } from "../../../entities/community/filter-data";
 
@@ -30,14 +31,14 @@ const FilterBar = () => {
     }
   };
 
-  const LabelList = labelData.map((data) => {
+  const LabelList = Object.keys(LABEL_MAP).map((labelKey) => {
     return (
       <S.LabelBtn
-        key={`community_label_${data.name}`}
-        checked={data.id === labelSelected}
-        onClick={() => changeLabel(data.id)}
+        key={`community_label_${getLabelText(labelKey as TLabel)}`}
+        checked={labelKey === labelSelected}
+        onClick={() => changeLabel(labelKey as TLabel)}
       >
-        {data.name}
+        {getLabelText(labelKey as TLabel)}
       </S.LabelBtn>
     );
   });

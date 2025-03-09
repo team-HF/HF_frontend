@@ -37,7 +37,6 @@ const AlarmModal = ({ closeModal }: AlarmModalProps) => {
 
   const notificationListData = () => {
     if (!data) return [];
-
     return data.pages.flatMap((item) =>
       item ? item.notificationList.map((post) => post) : []
     );

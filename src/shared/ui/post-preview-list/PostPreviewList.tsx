@@ -1,10 +1,14 @@
+import {
+  getCategoryText,
+  TCategory,
+} from "../../../entities/community/filter-data";
 import { useGetDate } from "../../utils/useGetDate";
 import * as s from "./style";
 import { useNavigate } from "react-router-dom";
 
 export type PostData = {
   postId: number;
-  category: string;
+  category: TCategory;
   title: string;
   content: string;
   creationTime: string;
@@ -16,8 +20,7 @@ export type PostData = {
 
 export default function PostPreviewList(data: PostData) {
   const navigate = useNavigate();
-  const category =
-    data.category === "FREE_COMMUNITY" ? "자유게시판" : "고민/사연";
+  const category = getCategoryText(data.category);
   return (
     <s.PostPreviewContainer
       onClick={() =>
