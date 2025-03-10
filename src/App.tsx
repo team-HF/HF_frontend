@@ -79,7 +79,7 @@ function App() {
         <Route
           element={
             !accessToken || !myData?.memberId ? (
-              <Navigate to="/my-page" replace />
+              <Navigate to="/login" replace />
             ) : (
               <LoginLayout myData={myData} />
             )

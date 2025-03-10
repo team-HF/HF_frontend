@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import Alert from "../alert/Alert";
 import { useGetMyData as getMyData } from "../../api/useGetMyData";
+import { useDeleteRefreshToken as deleteRefreshToken } from "../../api/useDeleteRefreshToken";
 
 interface headerProps {
   logo?: boolean;
@@ -34,11 +35,7 @@ const NewHeader = (props: headerProps) => {
   };
 
   const logoutConfirm = () => {
-    Cookies.remove("access_token");
-    Cookies.remove("email");
-    Cookies.remove("refresh_token");
-    Cookies.remove("is_new_member");
-    Cookies.remove("name");
+    deleteRefreshToken();
     navigate("/login");
   };
 
