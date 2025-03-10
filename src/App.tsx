@@ -23,7 +23,6 @@ import { useGetMyData } from "./shared/api/useGetMyData";
 import SearchResult from "./pages/search-result/SearchResult";
 import NotFound from "./pages/not-found/NotFound";
 import Cookies from "js-cookie";
-import Footer from "./shared/footer/Footer";
 import Agreement from "./pages/agreement/Agreement";
 import { useAccountExpiresStore } from "./shared/store/account-expires-store";
 import Alert from "./shared/ui/alert/Alert";
@@ -102,7 +101,6 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer />
       {expiresModalOpen && (
         <Alert
           title="로그인"

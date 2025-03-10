@@ -66,6 +66,7 @@ const PostRegister = () => {
 
   useEffect(() => {
     (async () => {
+      window.scrollTo(0, 0);
       if (postId) {
         const postDetailResponse = await getPostDetail(postId, () =>
           navigate("/not-found")

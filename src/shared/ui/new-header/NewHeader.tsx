@@ -45,7 +45,8 @@ const NewHeader = (props: headerProps) => {
   useEffect(() => {
     if (!myData || !myData.memberId) return;
     const eventSource = new EventSource(
-      `http://localhost:8080/hf/connect/sse?memberId=${myData.memberId}`
+      `http://localhost:8080/hf/connect/sse?memberId=${myData.memberId}`,
+      { withCredentials: true }
     );
 
     const handleAlarmEvent = (event: MessageEvent) => {

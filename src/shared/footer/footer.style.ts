@@ -1,13 +1,19 @@
-import styled from 'styled-components';
+import styled, { css } from "styled-components";
 
-export const Container = styled.div`
+export const Container = styled.div<{ isGNB: boolean }>`
   width: 100%;
+  max-width: 48rem;
   display: flex;
   flex-direction: column;
   padding: 10px 20px;
   align-items: center;
   justify-self: center;
   background-color: #f1f3f5;
+  ${({ isGNB }) =>
+    isGNB &&
+    css`
+      margin-bottom: 3.5rem;
+    `}
 `;
 export const UpperWrapper = styled.div`
   display: flex;
@@ -43,7 +49,7 @@ export const UnderText = styled.span`
   font-size: 15px;
   line-height: 22.01px;
   letter-spacing: -0.96%;
-  color: '#000000';
+  color: "#000000";
 `;
 export const divider = styled.span`
   position: relative;
@@ -51,7 +57,7 @@ export const divider = styled.span`
   margin-top: 2px;
 
   .divider::after {
-    content: '';
+    content: "";
     position: absolute;
     right: 0;
     top: 50%;

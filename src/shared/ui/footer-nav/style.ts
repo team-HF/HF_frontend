@@ -3,6 +3,8 @@ import { theme } from "../../../app/theme";
 export const Container = styled.div`
   position: fixed;
   display: flex;
+  left : 50%;
+  transform : translate(-50%);
   width: 100%;
   bottom: 0;
   box-shadow: 7px 0px 11px 0px #00000026;
