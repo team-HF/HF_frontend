@@ -13,6 +13,7 @@ import {
 
 type ProfileBoxProps = {
   myData?: {
+    profileImageUrl?: string | null;
     nickname: string;
     introduction: string;
     tier: {
@@ -26,6 +27,7 @@ type ProfileBoxProps = {
     fitnessLevel: keyof typeof FITNESS_LEVEL_MAP;
   };
 };
+
 export default function ProfileBox({ myData }: ProfileBoxProps) {
   if (!myData) {
     return (
@@ -38,6 +40,7 @@ export default function ProfileBox({ myData }: ProfileBoxProps) {
   }
 
   const {
+    profileImageUrl,
     nickname,
     tier,
     introduction,
@@ -47,6 +50,7 @@ export default function ProfileBox({ myData }: ProfileBoxProps) {
     fitnessObjective,
     fitnessLevel,
   } = myData;
+
   const hashtags = [
     getCompanionStyleText(companionStyle as keyof typeof COMPANION_STYLE_MAP),
     getFitnessEagernessText(
@@ -57,13 +61,14 @@ export default function ProfileBox({ myData }: ProfileBoxProps) {
       fitnessObjective as keyof typeof FITNESS_OBJECTIVE_MAP
     ],
   ];
+
   return (
     <S.Container>
       <S.ProfileContainer>
         <S.ProfileIconContainer>
           <S.ProfileIconWrapper
-            src="/svg/default-profile-icon.svg"
-            alt="default-profile"
+            src={profileImageUrl || '/svg/default-profile-icon.svg'}
+            alt="user profile"
           />
         </S.ProfileIconContainer>
         <S.ProfileTextContainer>

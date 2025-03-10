@@ -14,6 +14,7 @@ export default function SaveList() {
 
   const memberId = myData?.memberId ?? 0;
   const { data: saveList, isLoading, error } = useGetMyWishList(size, memberId);
+  console.log(saveList);
   if (isLoadingMyData) {
     return <p>loading...</p>;
   }
@@ -33,13 +34,13 @@ export default function SaveList() {
     <S.Container>
       {allItems.length > 0 ? (
         allItems.map((user) => (
-          <S.ProfileWrapper key={user.wishId}>
+          <S.ProfileWrapper key={user.wisherId}>
             <S.IconContainer>
-              <S.ProfileIcon src={user.profileImage} alt="profile-icon" />
-              <S.HeartIcon src="/svg/profile-heart-icon.svg" alt="save-icon" />
+              {/* <S.ProfileIcon src={user.profileImage} alt="profile-icon" /> */}
+              {/* <S.HeartIcon src="/svg/profile-heart-icon.svg" alt="save-icon" /> */}
             </S.IconContainer>
             <S.TextWrapper>
-              <S.ProfileText>{user.nickname}</S.ProfileText>
+              {/* <S.ProfileText>{user.nickname}</S.ProfileText> */}
             </S.TextWrapper>
           </S.ProfileWrapper>
         ))
