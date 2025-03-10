@@ -64,7 +64,7 @@ const PostDetail = () => {
   }, []);
 
   return (
-    <PageForm isGNB={true}>
+    <PageForm isGNB={true} isFooter={true}>
       <S.Container>
         <NewHeader
           title="커뮤니티"

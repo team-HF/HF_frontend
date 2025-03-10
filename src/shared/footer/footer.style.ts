@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-export const Container = styled.div<{ isGNB: boolean }>`
+export const Container = styled.div<{ $isGNB: boolean }>`
   width: 100%;
   max-width: 48rem;
   display: flex;
@@ -9,8 +9,8 @@ export const Container = styled.div<{ isGNB: boolean }>`
   align-items: center;
   justify-self: center;
   background-color: #f1f3f5;
-  ${({ isGNB }) =>
-    isGNB &&
+  ${({ $isGNB }) =>
+    $isGNB &&
     css`
       margin-bottom: 3.5rem;
     `}

@@ -6,7 +6,7 @@ interface FooterProps {
 
 export default function Footer({ isGNB }: FooterProps) {
   return (
-    <S.Container isGNB={isGNB}>
+    <S.Container $isGNB={isGNB}>
       <S.UpperWrapper>
         <S.Logo>
           <span style={{ color: "#6541F2" }}>H</span>ealth

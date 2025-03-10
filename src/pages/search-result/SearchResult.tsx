@@ -59,7 +59,7 @@ const SearchResult = () => {
   }, [searchBarOpen]);
 
   return (
-    <PageForm isGNB={true}>
+    <PageForm isGNB={true} isFooter={true}>
       <S.Container>
         <S.Box className="search_bar">
           <S.IconBtn

@@ -53,7 +53,7 @@ const Community = () => {
   }, [inView, hasNextPage]);
 
   return (
-    <PageForm isGNB={true}>
+    <PageForm isGNB={true} isFooter={true}>
       <S.Container>
         <NewHeader title="커뮤니티" isLoginBtn={true} isAlarmBtn={true} />
         <CategoryBar />

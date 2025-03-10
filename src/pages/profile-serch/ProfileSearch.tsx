@@ -43,7 +43,7 @@ const ProfileSearch = () => {
   }, [searchBarOpen]);
 
   return (
-    <PageForm isGNB={true}>
+    <PageForm isGNB={true} isFooter={true}>
       <S.Container>
         <NewHeader logo={true} isAlarmBtn={true} isLoginBtn={true} />
         <S.InputContainer onClick={() => setSearchBarOpen(true)}>
