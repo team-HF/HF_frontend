@@ -43,7 +43,6 @@ export const FilterContainer = styled.div`
 `;
 export const UserContainer = styled.div`
   display: flex;
-  flex: 1;
   flex-wrap: wrap;
   gap: 1rem;
 `;

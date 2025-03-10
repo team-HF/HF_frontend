@@ -78,16 +78,14 @@ const ProfileSearch = () => {
             paramName="filter"
           />
         </S.FilterContainer>
-        <S.UserContainer>
-          {profiles && profiles.length ? (
-            <>
-              {profiles}
-              {isLoading ? <span>로딩중</span> : <div ref={ref} />}
-            </>
-          ) : (
-            <EmptyList isBtn={false}>검색 결과가 없습니다.</EmptyList>
-          )}
-        </S.UserContainer>
+        {profiles && profiles.length ? (
+          <S.UserContainer>
+            {profiles}
+            {isLoading ? <span>로딩중</span> : <div ref={ref} />}
+          </S.UserContainer>
+        ) : (
+          <EmptyList isBtn={false}>검색 결과가 없습니다.</EmptyList>
+        )}
       </S.Container>
       {searchBarOpen && <SearchModal closeModal={setSearchBarOpen} />}
     </PageForm>

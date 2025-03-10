@@ -58,7 +58,7 @@ const Community = () => {
         <NewHeader title="커뮤니티" isLoginBtn={true} isAlarmBtn={true} />
         <CategoryBar />
         <FilterBar />
-        <S.PostContainer id="이거시요!!">
+        <S.PostContainer>
           {postList && postList.length ? (
             <>
               {postList}
