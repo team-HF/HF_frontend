@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { useProfileStore } from '../store/profile-store';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 import { useGetParams } from '../../../shared/utils/useGetParams';
 import { useNavigate } from 'react-router-dom';
 import axios, { AxiosInstance } from 'axios';
@@ -73,7 +73,6 @@ const uploadImageFile = async (
 };
 
 export default function SaveButton({ disabled }: SaveButtonProps) {
-  const { axiosInstance } = useAxios();
   const navigate = useNavigate();
 
   const companionStyle = useGetParams('companionStyle');

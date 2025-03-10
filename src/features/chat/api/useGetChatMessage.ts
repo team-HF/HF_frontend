@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 
 type ChatRoomProps = {
   chatroomId: number;
@@ -31,7 +31,6 @@ export const useGetChatMessages = ({
   chatroomId,
   pageSize = 1000,
 }: ChatRoomProps) => {
-  const { axiosInstance } = useAxios();
 
   return useInfiniteQuery({
     queryKey: ['chatMessages', chatroomId, pageSize],

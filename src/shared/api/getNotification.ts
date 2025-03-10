@@ -1,7 +1,6 @@
-import { useAxios as Axios } from "../utils/useAxios";
+import axiosInstance from "../utils/useAxios";
 
 export const getNotification = async (currentPage: number) => {
-  const { axiosInstance } = Axios();
   try {
     const response = await axiosInstance.get("/hf/notification/list", {
       params: { page: currentPage, size: 10 },

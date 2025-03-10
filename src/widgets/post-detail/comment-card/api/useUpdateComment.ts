@@ -1,8 +1,7 @@
 import axios from "axios";
-import { useAxios as Axios } from "../../../../shared/utils/useAxios";
+import axiosInstance from "../../../../shared/utils/useAxios";
 
 export const useUpdateComment = async (commentId: number, content: string) => {
-  const { axiosInstance } = Axios();
   try {
     const response = await axiosInstance.patch(`/hf/comments/${commentId}`, {
       content,

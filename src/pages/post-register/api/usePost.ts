@@ -1,4 +1,4 @@
-import { useAxios as Axios } from "../../../shared/utils/useAxios";
+import axiosInstance from "../../../shared/utils/useAxios";
 
 interface PostProps {
   category: string;
@@ -8,7 +8,6 @@ interface PostProps {
 }
 
 const communityPostApi = async (postData: PostProps) => {
-  const { axiosInstance } = Axios();
 
   try {
     const response = await axiosInstance.post(

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 import { AxiosInstance } from 'axios';
 import {
   UpdateMyData,
@@ -16,7 +16,6 @@ const patchMyData = async (
 };
 
 export const usePatchMyData = (memberId: number) => {
-  const { axiosInstance } = useAxios();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: Partial<UpdateMyData>) =>

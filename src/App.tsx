@@ -25,6 +25,8 @@ import NotFound from "./pages/not-found/NotFound";
 import Cookies from "js-cookie";
 import Footer from "./shared/footer/Footer";
 import Agreement from "./pages/agreement/Agreement";
+import { useAccountExpiresStore } from "./shared/store/account-expires-store";
+import Alert from "./shared/ui/alert/Alert";
 
 interface LoginLayoutProps {
   myData: { memberId: number };
@@ -47,8 +49,16 @@ const LoginLayout = ({ myData }: LoginLayoutProps) => {
 };
 
 function App() {
+  const navigate = useNavigate();
+
   const { data: myData, isLoading } = useGetMyData();
   const accessToken = Cookies.get("access_token");
+  const { expiresModalOpen, setExpiresModalOpen } = useAccountExpiresStore();
+
+  const navigateLogin = () => {
+    setExpiresModalOpen(false);
+    navigate("/login");
+  };
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -93,6 +103,14 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
+      {expiresModalOpen && (
+        <Alert
+          title="로그인"
+          content={["인증 세션이 만료되었습니다.", "다시 로그인하세요."]}
+          confirm={navigateLogin}
+          cancelBtn={false}
+        />
+      )}
     </ThemeProvider>
   );
 }

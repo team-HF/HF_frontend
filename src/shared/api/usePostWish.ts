@@ -1,4 +1,4 @@
-import { useAxios as Axios } from "../utils/useAxios";
+import axiosInstance from "../utils/useAxios";
 
 interface PostWishProps {
   wisherId: number;
@@ -6,14 +6,12 @@ interface PostWishProps {
 }
 
 export const usePostWish = async ({ wisherId, wishedId }: PostWishProps) => {
-  const { axiosInstance } = Axios();
-  console.log("run");
   try {
     const result = await axiosInstance.post("/hf/wish", {
       wisherId: wisherId,
       wishedId: wishedId,
     });
-    console.log(result.data);
+    return result.data.content;
   } catch (error) {
     console.error("Error posting new wish", error);
     throw error;

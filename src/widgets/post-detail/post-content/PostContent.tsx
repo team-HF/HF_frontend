@@ -111,5 +111,3 @@ export default function PostContent({
     </S.Container>
   );
 }
-
-// export default PostContent;
