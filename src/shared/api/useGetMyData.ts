@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 
 const getMyData = async (axiosInstance: AxiosInstance): Promise<MyData> => {
   const accessToken = Cookies.get("access_token");
+
   const response = await axiosInstance.get("/oauth/token/me", {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -16,11 +17,11 @@ const getMyData = async (axiosInstance: AxiosInstance): Promise<MyData> => {
 
 export const useGetMyData = () => {
   const accessToken = Cookies.get("access_token");
+  const isNewMember = Cookies.get("is_new_member");
   return useQuery({
     queryKey: ["myData"],
     queryFn: () => getMyData(axiosInstance),
-    enabled: !!accessToken,
+    enabled: !!accessToken && isNewMember === "false",
     retry: false,
   });
 };
-

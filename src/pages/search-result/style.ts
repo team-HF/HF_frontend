@@ -11,7 +11,6 @@ export const Container = styled.div`
 `;
 export const Box = styled.div`
   display: flex;
-  width: 100%;
   &.search_bar {
     align-items: center;
     padding: 0.25rem 0;
