@@ -41,6 +41,8 @@ export interface User {
   fitnessObjective: FitnessObjective;
   matchedCount: number;
   tier: Tier;
+  wishCount: number;
+  reviewScore: number;
 }
 
 export interface Spec {

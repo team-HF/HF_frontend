@@ -3,6 +3,7 @@ import { theme } from "../../app/theme";
 
 export const Container = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   width: 20rem;
   @media (min-width: 768px) {
@@ -42,6 +43,7 @@ export const FilterContainer = styled.div`
 `;
 export const UserContainer = styled.div`
   display: flex;
+  flex: 1;
   flex-wrap: wrap;
   gap: 1rem;
 `;

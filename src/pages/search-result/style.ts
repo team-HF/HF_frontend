@@ -11,6 +11,7 @@ export const Container = styled.div`
 `;
 export const Box = styled.div`
   display: flex;
+  width: 100%;
   &.search_bar {
     align-items: center;
     padding: 0.25rem 0;
@@ -32,6 +33,9 @@ export const Box = styled.div`
   }
   &.gap_32 {
     gap: 2rem;
+  }
+  &.wrap {
+    flex-wrap: wrap;
   }
 `;
 export const IconBtn = styled.button`
@@ -107,6 +111,7 @@ export const EmptyList = styled.p`
   align-items: center;
   border: 1px dashed ${theme.colors.gray3};
   border-radius: 0.5rem;
+  width: 100%;
   height: 200px;
   font-size: 0.875rem;
   line-height: 1.334rem;

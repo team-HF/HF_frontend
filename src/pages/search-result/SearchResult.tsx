@@ -53,7 +53,7 @@ const SearchResult = () => {
     (async () => {
       if (!searchBarOpen) {
         const searchResult = await getSearchData(1);
-        setSearchResult(searchResult);
+        if (searchResult) setSearchResult(searchResult);
       }
     })();
   }, [searchBarOpen]);
@@ -65,7 +65,7 @@ const SearchResult = () => {
           <S.IconBtn
             onClick={() => {
               reset();
-              navigate("/?filter=matchedCount");
+              navigate("/");
             }}
           >
             <S.ArrowIcon className="back" src="/svg/arrow-down.svg" />
@@ -101,7 +101,7 @@ const SearchResult = () => {
                 </S.ShowAllBtn>
               )}
             </S.Box>
-            <S.Box className="column gap_16">
+            <S.Box className="wrap gap_16">
               {profiles.length ? (
                 profiles
               ) : (

@@ -36,8 +36,8 @@ const NewHeader = (props: headerProps) => {
   const logoutConfirm = () => {
     Cookies.remove("access_token");
     Cookies.remove("email");
-    Cookies.remove("is_new_member");
     Cookies.remove("refresh_token");
+    Cookies.remove("is_new_member");
     Cookies.remove("name");
     navigate("/login");
   };
