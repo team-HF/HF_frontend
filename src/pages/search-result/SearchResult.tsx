@@ -53,19 +53,19 @@ const SearchResult = () => {
     (async () => {
       if (!searchBarOpen) {
         const searchResult = await getSearchData(1);
-        setSearchResult(searchResult);
+        if (searchResult) setSearchResult(searchResult);
       }
     })();
   }, [searchBarOpen]);
 
   return (
-    <PageForm isGNB={true}>
+    <PageForm isGNB={true} isFooter={true}>
       <S.Container>
         <S.Box className="search_bar">
           <S.IconBtn
             onClick={() => {
               reset();
-              navigate("/?filter=matchedCount");
+              navigate("/");
             }}
           >
             <S.ArrowIcon className="back" src="/svg/arrow-down.svg" />
@@ -101,7 +101,7 @@ const SearchResult = () => {
                 </S.ShowAllBtn>
               )}
             </S.Box>
-            <S.Box className="column gap_16">
+            <S.Box className="wrap gap_16">
               {profiles.length ? (
                 profiles
               ) : (

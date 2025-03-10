@@ -1,10 +1,9 @@
-import { useAxios as Axios } from "../../../shared/utils/useAxios";
+import axiosInstance from "../../../shared/utils/useAxios";
 import { useGetParams as getParams } from "../../../shared/utils/useGetParams";
 
 export const getPostList = async (currentPage: number) => {
   const postCategory = getParams("postCategory");
   const fitnessLevel = getParams("fitnessLevel");
-  const { axiosInstance } = Axios();
 
   const URL = postCategory === "POPULAR" ? `/hf/popularList` : `/hf/list`;
 

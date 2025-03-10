@@ -1,4 +1,4 @@
-import { useAxios as Axios } from "../../../../shared/utils/useAxios";
+import axiosInstance from "../../../../shared/utils/useAxios";
 import Cookies from "js-cookie";
 
 interface usePostReplyProps {
@@ -14,14 +14,12 @@ export const usePostReply = async ({
   content,
   parentCommentId,
 }: usePostReplyProps) => {
-  const { axiosInstance } = Axios();
   const accessToken = Cookies.get("access_token");
   const requestData = {
     writerId,
     content,
     parentCommentId,
   };
-  console.log(postId, requestData);
   
   try {
     const response = await axiosInstance.post(
@@ -29,7 +27,6 @@ export const usePostReply = async ({
       requestData,
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error creating new reply", error);

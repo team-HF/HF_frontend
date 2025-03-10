@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 import { useQuery } from '@tanstack/react-query';
 
 const getMatchingUserInfo = async (
@@ -11,7 +11,6 @@ const getMatchingUserInfo = async (
 };
 
 export const useGetMatchingUserInfo = (memberId: number) => {
-  const { axiosInstance } = useAxios();
   return useQuery({
     queryKey: ['matchingUserInfo', memberId],
     queryFn: () => getMatchingUserInfo(axiosInstance, memberId),

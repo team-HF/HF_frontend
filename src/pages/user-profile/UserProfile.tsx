@@ -28,7 +28,7 @@ const UserProfile = () => {
   }, []);
 
   return (
-    <PageForm isGNB={true}>
+    <PageForm isGNB={true} isFooter={true}>
       <S.Container>
         <NewHeader isBackBtn={true} logo={true} isAlarmBtn={true} />
         <UserDataDefault />

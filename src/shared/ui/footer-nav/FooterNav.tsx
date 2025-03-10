@@ -11,7 +11,7 @@ const icons = [
   {
     name: "write",
     src: writeIcon,
-    path: "/community?postCategory=ALL&fitnessLevel=ADVANCED",
+    path: "/community",
   },
 ];
 

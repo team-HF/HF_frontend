@@ -38,7 +38,6 @@ const PostDetail = () => {
 
   const headerNavigation = () => {
     const previousPath = location.state?.from;
-    console.log(previousPath);
     if (
       previousPath === "/community/post-register" ||
       previousPath === `/community/post-update/${postId}`
@@ -53,13 +52,19 @@ const PostDetail = () => {
   useEffect(() => {
     (async () => {
       setMyProfile(myData as User);
-      const postDetailResponse = await getPostDetail(postId);
-      setPostData(postDetailResponse.content);
+      const postDetailResponse = await getPostDetail(postId, () =>
+        navigate("/not-found")
+      );
+      setPostData(postDetailResponse);
     })();
   }, [myData]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <PageForm isGNB={true}>
+    <PageForm isGNB={true} isFooter={true}>
       <S.Container>
         <NewHeader
           title="커뮤니티"

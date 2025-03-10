@@ -1,7 +1,6 @@
-import { useAxios as Axios } from "../../../../shared/utils/useAxios";
+import axiosInstance from "../../../../shared/utils/useAxios";
 
 export const useGetCommentLike = async (commentId: number) => {
-  const { axiosInstance } = Axios();
   try {
     const response = await axiosInstance.get(`/hf/comments/${commentId}/likes`);
     return response.data;

@@ -81,12 +81,18 @@ const CommentCard = (data: TComment) => {
 
   const updateDone = async () => {
     if (updateValue) {
-      await updateComment(data.commentId, updateValue);
+      const response = await updateComment(data.commentId, updateValue);
+      if (response.status === 200) {
+        window.location.reload();
+      }
     }
   };
 
   const deleteCurrentComment = async () => {
-    await deleteComment(data.commentId);
+    const response = await deleteComment(data.commentId);
+    if (response.status === 200) {
+      window.location.reload();
+    }
   };
 
   useEffect(() => {
@@ -112,13 +118,13 @@ const CommentCard = (data: TComment) => {
         <S.profileBox>
           <S.ProfileImage
             src={
-              data.writerProfileUrl
-                ? data.writerProfileUrl
+              data.writerProfileImageUrl
+                ? data.writerProfileImageUrl
                 : "/svg/default-profile-icon.svg"
             }
             alt="profile_image"
           />
-          <S.InfoText>{data.writerName}</S.InfoText>
+          <S.InfoText>{data.writerNickname}</S.InfoText>
           <S.LevelLabel
             $fitnessLevel={data?.writerTier.fitnessLevel === "ADVANCED"}
           >
@@ -150,7 +156,7 @@ const CommentCard = (data: TComment) => {
         <S.Comment>{data.content}</S.Comment>
       )}
       <S.InfoBox_1>
-        <S.CommentButton onClick={() => changeReplyInput(data.writerName)}>
+        <S.CommentButton onClick={() => changeReplyInput(data.writerNickname)}>
           답글 쓰기
         </S.CommentButton>
         <S.FavoriteBtn

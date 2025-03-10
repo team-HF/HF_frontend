@@ -23,10 +23,9 @@ import { useGetMyData } from "./shared/api/useGetMyData";
 import SearchResult from "./pages/search-result/SearchResult";
 import NotFound from "./pages/not-found/NotFound";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
-import { useNotificationStore } from "./shared/store/alarm-store";
-import Footer from "./shared/footer/Footer";
 import Agreement from "./pages/agreement/Agreement";
+import { useAccountExpiresStore } from "./shared/store/account-expires-store";
+import Alert from "./shared/ui/alert/Alert";
 
 interface LoginLayoutProps {
   myData: { memberId: number };
@@ -34,38 +33,6 @@ interface LoginLayoutProps {
 
 const LoginLayout = ({ myData }: LoginLayoutProps) => {
   const navigate = useNavigate();
-  const { addNotification } = useNotificationStore();
-
-  useEffect(() => {
-    if (!myData?.memberId) return;
-
-    const eventSource = new EventSource(
-      `http://localhost:8080/hf/connect/sse?memberId=${myData.memberId}`
-    );
-
-    const handleAlarmEvent = (event: MessageEvent) => {
-      try {
-        const trimmedData = event.data.trim();
-        if (trimmedData.startsWith("{") && trimmedData.endsWith("}")) {
-          const eventData = JSON.parse(trimmedData);
-          addNotification(eventData);
-        }
-      } catch (error) {
-        console.error("Failed to parse event data:", error, event.data);
-      }
-    };
-
-    eventSource.addEventListener("alarm", handleAlarmEvent);
-
-    eventSource.onerror = () => {
-      eventSource.close();
-    };
-
-    return () => {
-      eventSource.removeEventListener("alarm", handleAlarmEvent);
-      eventSource.close();
-    };
-  }, [myData.memberId, addNotification]);
 
   return (
     <SocketProvider memberId={myData.memberId}>
@@ -81,8 +48,16 @@ const LoginLayout = ({ myData }: LoginLayoutProps) => {
 };
 
 function App() {
+  const navigate = useNavigate();
+
   const { data: myData, isLoading } = useGetMyData();
   const accessToken = Cookies.get("access_token");
+  const { expiresModalOpen, setExpiresModalOpen } = useAccountExpiresStore();
+
+  const navigateLogin = () => {
+    setExpiresModalOpen(false);
+    navigate("/login");
+  };
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -126,7 +101,14 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Footer />
+      {expiresModalOpen && (
+        <Alert
+          title="로그인"
+          content={["인증 세션이 만료되었습니다.", "다시 로그인하세요."]}
+          confirm={navigateLogin}
+          cancelBtn={false}
+        />
+      )}
     </ThemeProvider>
   );
 }

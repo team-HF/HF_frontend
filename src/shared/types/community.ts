@@ -5,8 +5,8 @@ export interface TReply {
   postId: number;
   parentWriterName: string;
   writerId: number;
-  writerName: string;
-  writerProfileUrl: string;
+  writerNickname: string;
+  writerProfileImageUrl: string | null;
   writerTier: { fitnessLevel: string; tier: number };
 }
 
@@ -25,7 +25,7 @@ export interface TPost {
   commentCount: number;
   comments: TComment[];
   writerNickname: string;
-  imagePath: string | null;
+  writerProfileImageUrl: string | null;
   writerId: number;
   writerTier: {
     fitnessLevel: string;

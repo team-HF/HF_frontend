@@ -8,6 +8,10 @@ import { usePostLike as postLike } from "./api/usePostLike";
 import { useGetLike as getPostLike } from "./api/useGetLike";
 import { useDeletePostLike as deletePostLike } from "./api/useDeletePostLike";
 import { useMyProfileStore } from "../../../shared/store/my-profile-store";
+import {
+  getCategoryText,
+  TCategory,
+} from "../../../entities/community/filter-data";
 
 interface postContentProps {
   setAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,12 +29,10 @@ export default function PostContent({
 
   const [likeId, setLikeId] = useState<number | null>(null);
 
-  const category =
-    postData?.postCategory === "FREE_COMMUNITY" ? "자유게시판" : "고민/사연";
+  const category = getCategoryText(postData?.postCategory as TCategory);
 
   const changeLike = async () => {
     if (likeId) {
-      console.log(likeId);
       const response = await deletePostLike(likeId);
       if (response.statusCode === 200) {
         setLikeId(response.content);
@@ -69,8 +71,8 @@ export default function PostContent({
         <S.InfoBox>
           <S.ProfileImage
             src={
-              postData?.imagePath
-                ? postData.imagePath
+              postData?.writerProfileImageUrl
+                ? postData.writerProfileImageUrl
                 : "/svg/default-profile-icon.svg"
             }
             alt="user_profile_image"
@@ -109,5 +111,3 @@ export default function PostContent({
     </S.Container>
   );
 }
-
-// export default PostContent;

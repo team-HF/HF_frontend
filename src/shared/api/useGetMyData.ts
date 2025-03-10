@@ -1,21 +1,26 @@
-import { useQuery } from '@tanstack/react-query';
-import { useAxios } from '../utils/useAxios';
-import { AxiosInstance } from 'axios';
-import { MyData, MyDataSchema } from '../schema/my-data';
-import Cookies from 'js-cookie';
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "../utils/useAxios";
+import { AxiosInstance } from "axios";
+import { MyData, MyDataSchema } from "../schema/my-data";
+import Cookies from "js-cookie";
 
 const getMyData = async (axiosInstance: AxiosInstance): Promise<MyData> => {
-  const response = await axiosInstance.get('/oauth/token/me');
+  const accessToken = Cookies.get("access_token");
+  const response = await axiosInstance.get("/oauth/token/me", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   return MyDataSchema.parse(response.data.content);
 };
 
 export const useGetMyData = () => {
-  const { axiosInstance } = useAxios();
-  const accessToken = Cookies.get('access_token');
+  const accessToken = Cookies.get("access_token");
   return useQuery({
-    queryKey: ['myData'],
+    queryKey: ["myData"],
     queryFn: () => getMyData(axiosInstance),
     enabled: !!accessToken,
     retry: false,
   });
 };
+

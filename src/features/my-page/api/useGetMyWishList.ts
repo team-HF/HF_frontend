@@ -3,7 +3,7 @@ import {
   WishListResponse,
   WishListResponseSchema,
 } from '../../../shared/schema/wish-list';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 const getMyWishList = async (
   axiosInstance: AxiosInstance,
@@ -23,7 +23,6 @@ const getMyWishList = async (
 };
 
 export const useGetMyWishList = (size: number, memberId: number) => {
-  const { axiosInstance } = useAxios();
 
   return useInfiniteQuery({
     queryKey: ['myWishList', memberId, size],

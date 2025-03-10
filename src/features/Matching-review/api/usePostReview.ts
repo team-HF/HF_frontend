@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 import { AxiosInstance } from 'axios';
 import { Review, ReviewSchema } from '../../../shared/schema/review';
 
@@ -22,7 +22,6 @@ const postReview = async (
 };
 
 export const usePostReview = () => {
-  const { axiosInstance } = useAxios();
   const queryClient = useQueryClient();
 
   return useMutation({

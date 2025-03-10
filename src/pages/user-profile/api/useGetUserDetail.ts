@@ -1,7 +1,6 @@
-import { useAxios as Axios } from "../../../shared/utils/useAxios";
+import axiosInstance from "../../../shared/utils/useAxios";
 
 export const useGetUserDetail = async (memberId: number) => {
-  const { axiosInstance } = Axios();
   try {
     const response = await axiosInstance.get(`/hf/members/${memberId}/profile`);
     return response.data.content;

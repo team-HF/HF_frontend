@@ -4,7 +4,7 @@ import {
   CouponResponse,
   CouponResponseSchema,
 } from '../../../shared/schema/coupon';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 
 const getMyCoupons = async (
   axiosInstance: AxiosInstance,
@@ -18,7 +18,6 @@ const getMyCoupons = async (
 };
 
 export const useGetMyCoupons = (memberId: number, filterType: string) => {
-  const { axiosInstance } = useAxios();
 
   const filterTypeMap: Record<
     string,

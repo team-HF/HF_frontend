@@ -100,7 +100,6 @@ export default function Profile() {
 
   useEffect(() => {
     const isNewMember = Cookies.get("is_new_member");
-    console.log(isNewMember);
     if (isNewMember !== "true") {
       navigate("/not-found");
     }

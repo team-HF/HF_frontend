@@ -1,4 +1,4 @@
-import { useAxios as Axios } from "../../../../shared/utils/useAxios";
+import axiosInstance from "../../../../shared/utils/useAxios";
 import Cookies from "js-cookie";
 
 interface PostDataProps {
@@ -12,7 +12,6 @@ const postComment = async ({
   postId,
   commentValue,
 }: PostDataProps) => {
-  const { axiosInstance } = Axios();
   const accessToken = Cookies.get("access_token");
   try {
     const response = await axiosInstance.post(

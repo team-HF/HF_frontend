@@ -5,6 +5,7 @@ import AlarmModal from "../alarm-modal/AlarmModal";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import Alert from "../alert/Alert";
+import { useGetMyData as getMyData } from "../../api/useGetMyData";
 
 interface headerProps {
   logo?: boolean;
@@ -16,11 +17,13 @@ interface headerProps {
 }
 
 const NewHeader = (props: headerProps) => {
+  const { data: myData } = getMyData();
   const navigate = useNavigate();
   const doneJoinMembership = Cookies.get("is_new_member");
   const accessToken = Cookies.get("access_token");
 
-  const { hasNewNotification, markAsRead } = useNotificationStore();
+  const { hasNewNotification, addNewNotification, markAsRead } =
+    useNotificationStore();
 
   const [alarmOpen, setAlarmOpen] = useState<boolean>(false);
   const [logoutAlert, setLogoutAlert] = useState<boolean>(false);
@@ -33,11 +36,41 @@ const NewHeader = (props: headerProps) => {
   const logoutConfirm = () => {
     Cookies.remove("access_token");
     Cookies.remove("email");
-    Cookies.remove("is_new_member");
     Cookies.remove("refresh_token");
+    Cookies.remove("is_new_member");
     Cookies.remove("name");
     navigate("/login");
   };
+
+  useEffect(() => {
+    if (!myData || !myData.memberId) return;
+    const eventSource = new EventSource(
+      `http://localhost:8080/hf/connect/sse?memberId=${myData.memberId}`,
+      { withCredentials: true }
+    );
+
+    const handleAlarmEvent = (event: MessageEvent) => {
+      try {
+        const trimmedData = event.data.trim();
+        if (trimmedData.startsWith("{") && trimmedData.endsWith("}")) {
+          addNewNotification();
+        }
+      } catch (error) {
+        console.error("Failed to parse event data:", error, event.data);
+      }
+    };
+
+    eventSource.addEventListener("alarm", handleAlarmEvent);
+
+    eventSource.onerror = () => {
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.removeEventListener("alarm", handleAlarmEvent);
+      eventSource.close();
+    };
+  }, []);
 
   useEffect(() => {
     if (alarmOpen) {
