@@ -5,6 +5,7 @@ import {
 } from '../../../shared/schema/wish-list';
 import { useAxios } from '../../../shared/utils/useAxios';
 import { useInfiniteQuery } from '@tanstack/react-query';
+
 const getMyWishList = async (
   axiosInstance: AxiosInstance,
   page: number,
@@ -18,7 +19,6 @@ const getMyWishList = async (
       memberId,
     },
   });
-
   return WishListResponseSchema.parse(response.data);
 };
 
@@ -31,10 +31,19 @@ export const useGetMyWishList = (size: number, memberId: number) => {
       getMyWishList(axiosInstance, pageParam, size, memberId),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
-      if (lastPage.page < lastPage.totalPageCount) {
-        return lastPage.page + 1;
+      if (
+        lastPage.page === undefined ||
+        lastPage.totalPageCount === undefined
+      ) {
+        return null;
       }
-      return null;
+      if (
+        lastPage.page >= lastPage.totalPageCount ||
+        lastPage.content.length === 0
+      ) {
+        return null;
+      }
+      return lastPage.page + 1;
     },
     staleTime: 5 * 60 * 1000,
   });
