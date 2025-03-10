@@ -1,10 +1,20 @@
 import * as S from './update-my-data-button';
-import { useProfileSettingStore } from '../store/profile-setting-store';
 import { usePatchMyData } from '../api/usePatchMyData';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
-type UpdateButtonProps = {
+import { useNavigate } from 'react-router-dom';
+
+export interface UpdateMyDataButtonProps {
   disabled: boolean;
-};
+  image?: File;
+  cd1?: string;
+  cd2?: string;
+  cd3?: string;
+  introduction?: string;
+  styleSelected: 'SMALL' | 'GROUP';
+  habitSelected: 'EAGER' | 'LAZY';
+  goalSelected: 'BULK_UP' | 'RUNNING';
+  exerciseSelected: 'HIGH_STRESS' | 'FUNCTIONAL';
+}
 
 interface UpdateMyDataRequest {
   profileImageFileExtension?: string | null;
@@ -20,43 +30,54 @@ interface UpdateMyDataRequest {
   fitnessKind?: 'HIGH_STRESS' | 'FUNCTIONAL';
 }
 
-export default function UpdateMyDataButton({ disabled }: UpdateButtonProps) {
+export default function UpdateMyDataButton({
+  disabled,
+  image,
+  cd1,
+  cd2,
+  cd3,
+  introduction,
+  styleSelected,
+  habitSelected,
+  goalSelected,
+  exerciseSelected,
+}: UpdateMyDataButtonProps) {
   const { data: myData, isLoading } = useGetMyData();
   const { mutate: uploadMyData } = usePatchMyData(myData?.memberId ?? 0);
-  const {
-    image,
-    cd1,
-    cd2,
-    cd3,
-    introduction,
-    styleSelected,
-    habitSelected,
-    goalSelected,
-    exerciseSelected,
-  } = useProfileSettingStore();
+  const navigate = useNavigate();
   const updateMyData = async () => {
     if (!myData?.memberId) {
       alert('회원 정보가 아직 로드되지 않았습니다.');
       return;
     }
 
-    const imageFileExtension = image?.type.split('/')[1] || null;
+    const imageFileExtension = image?.type.split('/')[1] || undefined;
+
+    const transformedCd2 =
+      myData && cd2 !== myData.cd2
+        ? cd2?.slice(cd2.length - myData.cd2.length)
+        : cd2;
+    const transformedCd3 =
+      myData && cd3 !== myData.cd3
+        ? cd3?.slice(cd3.length - myData.cd3.length)
+        : cd3;
 
     const requestData: UpdateMyDataRequest = {
       profileImageFileExtension: imageFileExtension,
       cd1: cd1 || undefined,
-      cd2: cd2?.slice(2) || undefined,
-      cd3: cd3?.slice(5) || undefined,
+      cd2: transformedCd2 || undefined,
+      cd3: transformedCd3 || undefined,
       introduction: introduction || undefined,
       fitnessLevel: 'BEGINNER',
-      companionStyle: styleSelected as 'SMALL' | 'GROUP',
-      fitnessEagerness: habitSelected as 'EAGER' | 'LAZY',
-      fitnessObjective: goalSelected as 'BULK_UP' | 'RUNNING',
-      fitnessKind: exerciseSelected as 'HIGH_STRESS' | 'FUNCTIONAL',
+      companionStyle: styleSelected,
+      fitnessEagerness: habitSelected,
+      fitnessObjective: goalSelected,
+      fitnessKind: exerciseSelected,
     };
+
     uploadMyData(requestData, {
       onSuccess: () => {
-        sessionStorage.removeItem('exerciseStyles');
+        navigate('/my-page');
       },
     });
   };
