@@ -12,7 +12,15 @@ export const useGetProfileList = async (currentPage: number) => {
         ...queryParams,
       },
     });
-    return response.data.content;
+    const content = response.data.content;
+
+    const totalPages =
+      content.memberList.length > 0 ? content.totalPageSize : currentPage;
+
+    return {
+      totalPages,
+      newProfileList: content.memberList,
+    };
   } catch (error) {
     console.error("Error searching", error);
     throw error;

@@ -34,7 +34,9 @@ const ProfileSearch = () => {
 
   const profileListData = () => {
     if (!data) return [];
-    return data?.pages.flatMap((item) => item.map((profile: User) => profile));
+    return data.pages.flatMap((item) =>
+      item.newProfileList.map((profile: User) => profile)
+    );
   };
 
   const profiles = profileListData()
