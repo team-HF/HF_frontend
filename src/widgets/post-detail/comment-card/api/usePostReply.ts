@@ -22,12 +22,10 @@ export const usePostReply = async ({
   };
 
   try {
-    const response = await axiosInstance.post(
-      `/hf/posts/${postId}/comments`,
-      requestData,
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
-    return response.data;
+    await axiosInstance.post(`/hf/posts/${postId}/comments`, requestData, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    window.location.reload();
   } catch (error) {
     console.error("Error creating new reply", error);
     throw error;

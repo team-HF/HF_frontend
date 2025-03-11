@@ -28,14 +28,6 @@ const PostDetail = () => {
   const [postData, setPostData] = useState<TPost | null>(null);
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
 
-  const deleteCurrentPost = async () => {
-    const response = await deletePost(postId);
-    if (response.statusCode === 200) {
-      reset();
-      navigate("/community");
-    }
-  };
-
   const headerNavigation = () => {
     const previousPath = location.state?.from;
     if (
@@ -46,6 +38,14 @@ const PostDetail = () => {
       navigate("/community");
     } else {
       navigate(previousPath);
+    }
+  };
+
+  const deleteCurrentPost = async () => {
+    const response = await deletePost(postId);
+    if (response.statusCode === 200) {
+      reset();
+      navigate("/community");
     }
   };
 

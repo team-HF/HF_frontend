@@ -4,10 +4,6 @@ import { useAccountExpiresStore } from "../store/account-expires-store";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${Cookies.get("access_token")}`,
-  },
   withCredentials: true,
 });
 
