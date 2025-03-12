@@ -15,6 +15,7 @@ import { useMyProfileStore } from "../../shared/store/my-profile-store";
 import { useGetMyData } from "../../shared/api/useGetMyData";
 import NewHeader from "../../shared/ui/new-header/NewHeader";
 import { useCommunityStore } from "../community/store/community-store";
+import { useQueryClient } from "@tanstack/react-query";
 
 const PostDetail = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const PostDetail = () => {
   const { data: myData } = useGetMyData();
   const { setMyProfile } = useMyProfileStore();
   const { reset } = useCommunityStore();
+  const queryClient = useQueryClient();
 
   const [postData, setPostData] = useState<TPost | null>(null);
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
@@ -45,6 +47,7 @@ const PostDetail = () => {
     const response = await deletePost(postId);
     if (response.statusCode === 200) {
       reset();
+      queryClient.invalidateQueries({ queryKey: ["postList"] });
       navigate("/community");
     }
   };
