@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import axiosInstance from "../../../shared/utils/useAxios";
 
 interface UpdateProps {
@@ -9,6 +10,7 @@ interface UpdateProps {
 }
 
 export const usePostUpdate = async (postData: UpdateProps) => {
+  const accessToken = Cookies.get("access_token");
   try {
     const response = await axiosInstance.patch(
       `/hf/posts/${postData.postId}`,
@@ -18,6 +20,7 @@ export const usePostUpdate = async (postData: UpdateProps) => {
         content: postData.content,
         writerId: postData.writerId,
       },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
     );
     return response.data;
   } catch (error) {

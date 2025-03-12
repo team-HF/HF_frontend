@@ -14,7 +14,7 @@ const postComment = async ({
 }: PostDataProps) => {
   const accessToken = Cookies.get("access_token");
   try {
-    const response = await axiosInstance.post(
+    await axiosInstance.post(
       `/hf/posts/${postId}/comments`,
       {
         writerId: writerId,
@@ -22,7 +22,7 @@ const postComment = async ({
       },
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    return response.data;
+    window.location.reload();
   } catch (error) {
     console.error("Error posing your comment", error);
     throw error;

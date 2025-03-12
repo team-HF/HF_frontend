@@ -36,22 +36,26 @@ const PostRegister = () => {
         content: postContent,
       };
       if (postId) {
-        await postUpdate({
+        const response = await postUpdate({
           ...postData,
           postId: postId,
           writerId: myData?.memberId,
         });
-        navigate(`/community/post-detail/${postId}`, {
-          state: { from: window.location.pathname },
-        });
+        if (response.statusCode === 200) {
+          navigate(`/community/post-detail/${postId}`, {
+            state: { from: window.location.pathname },
+          });
+        }
       } else {
         const response = await communityPostApi({
           ...postData,
           writerId: myData?.memberId,
         });
-        navigate(`/community/post-detail/${response.content}`, {
-          state: { from: window.location.pathname },
-        });
+        if (response.statusCode === 200) {
+          navigate(`/community/post-detail/${response.content}`, {
+            state: { from: window.location.pathname },
+          });
+        }
       }
     }
   };
@@ -71,7 +75,7 @@ const PostRegister = () => {
         const postDetailResponse = await getPostDetail(postId, () =>
           navigate("/not-found")
         );
-        const postDetail = postDetailResponse.content;
+        const postDetail = postDetailResponse;
         setPostCategory(
           postDetail.postCategory === "FREE_COMMUNITY"
             ? { id: "FREE_COMMUNITY", name: "자유게시판" }
