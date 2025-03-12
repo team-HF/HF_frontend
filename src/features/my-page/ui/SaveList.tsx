@@ -14,7 +14,6 @@ export default function SaveList() {
 
   const memberId = myData?.memberId ?? 0;
   const { data: saveList, isLoading, error } = useGetMyWishList(size, memberId);
-  console.log(saveList);
   if (isLoadingMyData) {
     return <p>loading...</p>;
   }
