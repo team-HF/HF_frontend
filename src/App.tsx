@@ -26,6 +26,8 @@ import Cookies from "js-cookie";
 import Agreement from "./pages/agreement/Agreement";
 import { useAccountExpiresStore } from "./shared/store/account-expires-store";
 import Alert from "./shared/ui/alert/Alert";
+import { useMyProfileStore } from "./shared/store/my-profile-store";
+import { useEffect } from "react";
 
 interface LoginLayoutProps {
   myData: { memberId: number };
@@ -51,6 +53,8 @@ function App() {
   const navigate = useNavigate();
 
   const { data: myData, isLoading } = useGetMyData();
+  const { setMyProfile } = useMyProfileStore();
+
   const accessToken = Cookies.get("access_token");
   const {
     expiresModalOpen,
@@ -61,12 +65,19 @@ function App() {
 
   const navigateLogin = () => {
     setExpiresModalOpen(false);
+    setRequireModalOpen(false);
     navigate("/login");
   };
 
   const closeAccountModal = () => {
     setRequireModalOpen(false);
   };
+
+  useEffect(() => {
+    if (myData) {
+      setMyProfile(myData);
+    }
+  }, [myData, setMyProfile]);
 
   if (isLoading) {
     return <p>Loading...</p>;

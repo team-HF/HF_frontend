@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { User } from "../types/user";
+import { MyData } from "../schema/my-data";
 
 type UserStore = {
-  myProfile: User | null;
-  setMyProfile: (user: User) => void;
+  myProfile: MyData | null;
+  setMyProfile: (user: MyData) => void;
 };
 
 export const useMyProfileStore = create<UserStore>((set) => ({

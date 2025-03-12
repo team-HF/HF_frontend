@@ -19,6 +19,30 @@ export interface Location {
   cd: string;
 }
 
+export interface MyProfile {
+  memberId: number;
+  loginId: string;
+  role: string;
+  name: string;
+  email: string;
+  creationTime: string;
+  nickname: string;
+  profileImageUrl: string | null;
+  cd1: string;
+  cd2: string;
+  cd3: string;
+  birthDate: string;
+  gender: "MALE" | "FEMALE";
+  introduction: string;
+  companionStyle: CompanionStyle;
+  fitnessEagerness: FitnessEagerness;
+  fitnessKind: FitnessKind;
+  fitnessLevel: FitnessLevel;
+  fitnessObjective: FitnessObjective;
+  matchedCount: number;
+  tier: Tier;
+}
+
 export interface User {
   memberId: number;
   loginId: string;
