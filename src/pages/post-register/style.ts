@@ -9,6 +9,10 @@ export const Container = styled.div`
     width: 40rem;
   }
 `;
+export const Box = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
 export const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -119,4 +123,11 @@ export const ContentInput = styled.textarea`
     color: #1d1d1d;
     background-color: ${theme.colors.sub};
   }
+`;
+export const ErrorMessage = styled.span`
+  margin-top: 0.25rem;
+  font-size: 0.688rem;
+  line-height: 1.273rem;
+  letter-spacing: -0.0031rem;
+  color: #ff0000;
 `;

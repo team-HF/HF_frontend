@@ -29,6 +29,7 @@ const SideFilter = ({
   };
   const postCategoryList = filterData.map((data) => (
     <S.Filter
+      type="button"
       key={`side_filter_${data.name}`}
       checked={value?.name === data.name}
       onClick={() => setValue(data)}
@@ -40,7 +41,7 @@ const SideFilter = ({
   useEffect(() => {
     setValue(category);
   }, [category]);
-  
+
   return open ? (
     <S.Container open={open}>
       <S.Divider_1 />
@@ -49,11 +50,13 @@ const SideFilter = ({
         <S.FiltersBox>{postCategoryList}</S.FiltersBox>
       </S.ContentsBox>
       <S.BtnBox>
-        <S.ResetBtnContainer>
+        <S.ResetBtnContainer type="button">
           <img src={"/svg/reset-icon.svg"} />
           <S.ResetText onClick={resetFilter}>초기화</S.ResetText>
         </S.ResetBtnContainer>
-        <S.DoneBtn onClick={sideFilterClose}>선택완료</S.DoneBtn>
+        <S.DoneBtn type="button" onClick={sideFilterClose}>
+          선택완료
+        </S.DoneBtn>
       </S.BtnBox>
     </S.Container>
   ) : null;
