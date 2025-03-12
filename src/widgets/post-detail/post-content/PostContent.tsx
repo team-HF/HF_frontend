@@ -12,6 +12,8 @@ import {
   getCategoryText,
   TCategory,
 } from "../../../entities/community/filter-data";
+import Cookies from "js-cookie";
+import useSetRequireModal from "../../../shared/utils/useSetRequireModal";
 
 interface postContentProps {
   setAlertOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,36 +26,42 @@ export default function PostContent({
   postData,
   postId,
 }: postContentProps) {
+  const accessToken = Cookies.get("access_token");
   const navigate = useNavigate();
   const { myProfile } = useMyProfileStore();
+  const setRequireModal = useSetRequireModal();
 
   const [likeId, setLikeId] = useState<number | null>(null);
 
   const category = getCategoryText(postData?.postCategory as TCategory);
 
-  const changeLike = async () => {
-    if (likeId) {
-      const response = await deletePostLike(likeId);
-      if (response.statusCode === 200) {
-        setLikeId(response.content);
+  const clickLikeIcon = () => {
+    const changeLike = async () => {
+      if (likeId) {
+        const response = await deletePostLike(likeId);
+        if (response.statusCode === 200) {
+          setLikeId(response.content);
+        }
+      } else {
+        const response = await postLike(postId, myProfile?.memberId);
+        if (response.statusCode === 201) {
+          setLikeId(response.content);
+        }
       }
-    } else {
-      const response = await postLike(postId, myProfile?.memberId);
-      if (response.statusCode === 201) {
-        setLikeId(response.content);
-      }
-    }
+    };
+    setRequireModal(changeLike);
   };
 
   const updateContent = () => navigate(`/community/post-update/${postId}`);
 
   useEffect(() => {
     (async () => {
-      const postLikeResponse = await getPostLike(postId, myProfile?.memberId);
-      if (postLikeResponse.content[0].likeId)
-        setLikeId(postLikeResponse.content[0].likeId);
+      if (accessToken && myProfile?.memberId) {
+        const postLikeResponse = await getPostLike(postId, myProfile?.memberId);
+        if (postLikeResponse.content) setLikeId(postLikeResponse.content);
+      }
     })();
-  }, []);
+  }, [myProfile]);
 
   return (
     <S.Container>
@@ -104,7 +112,7 @@ export default function PostContent({
           <S.FavoriteBtn
             src={likeId ? "/svg/heart-fill-icon.svg" : "/svg/heart-icon.svg"}
             $fill={likeId !== null}
-            onClick={changeLike}
+            onClick={clickLikeIcon}
           />
         </S.TagContainer>
       </S.ContentContainer>

@@ -10,7 +10,8 @@ export const getPostList = async (currentPage: number) => {
   const params = {
     page: currentPage,
     size: 5,
-    ...((postCategory === "FREE_COMMUNITY" || postCategory === "COUNSELING") && { postCategory }),
+    ...((postCategory === "FREE_COMMUNITY" ||
+      postCategory === "COUNSELING") && { postCategory }),
     ...(fitnessLevel && fitnessLevel !== "ALL" && { fitnessLevel }),
   };
 
@@ -23,7 +24,6 @@ export const getPostList = async (currentPage: number) => {
     if (!Array.isArray(content)) {
       throw new Error("Invalid data: 'content' is not an array.");
     }
-
     const totalPages =
       content.length > 0 ? content[0].totalPageSize : currentPage;
 

@@ -26,6 +26,8 @@ import Cookies from "js-cookie";
 import Agreement from "./pages/agreement/Agreement";
 import { useAccountExpiresStore } from "./shared/store/account-expires-store";
 import Alert from "./shared/ui/alert/Alert";
+import { useMyProfileStore } from "./shared/store/my-profile-store";
+import { useEffect } from "react";
 
 interface LoginLayoutProps {
   myData: { memberId: number };
@@ -51,13 +53,31 @@ function App() {
   const navigate = useNavigate();
 
   const { data: myData, isLoading } = useGetMyData();
+  const { setMyProfile } = useMyProfileStore();
+
   const accessToken = Cookies.get("access_token");
-  const { expiresModalOpen, setExpiresModalOpen } = useAccountExpiresStore();
+  const {
+    expiresModalOpen,
+    requireModalOpen,
+    setExpiresModalOpen,
+    setRequireModalOpen,
+  } = useAccountExpiresStore();
 
   const navigateLogin = () => {
     setExpiresModalOpen(false);
+    setRequireModalOpen(false);
     navigate("/login");
   };
+
+  const closeAccountModal = () => {
+    setRequireModalOpen(false);
+  };
+
+  useEffect(() => {
+    if (myData) {
+      setMyProfile(myData);
+    }
+  }, [myData, setMyProfile]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -75,7 +95,6 @@ function App() {
         <Route path="/member/:id/profile" element={<UserProfile />} />
         <Route path="/" element={<ProfileSearch />} />
         <Route path="/search-result" element={<SearchResult />} />
-
         <Route
           element={
             !accessToken || !myData?.memberId ? (
@@ -107,6 +126,18 @@ function App() {
           content={["인증 세션이 만료되었습니다.", "다시 로그인하세요."]}
           confirm={navigateLogin}
           cancelBtn={false}
+        />
+      )}
+      {requireModalOpen && (
+        <Alert
+          title="로그인"
+          content={[
+            "로그인 후 이용하실 수 있습니다.",
+            "로그인 페이지로 이동하시겠습니까?",
+          ]}
+          confirm={navigateLogin}
+          cancelBtn={true}
+          cancel={closeAccountModal}
         />
       )}
     </ThemeProvider>

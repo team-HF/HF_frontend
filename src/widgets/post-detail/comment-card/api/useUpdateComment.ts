@@ -3,11 +3,10 @@ import axiosInstance from "../../../../shared/utils/useAxios";
 
 export const useUpdateComment = async (commentId: number, content: string) => {
   try {
-    const response = await axiosInstance.patch(`/hf/comments/${commentId}`, {
+    await axiosInstance.patch(`/hf/comments/${commentId}`, {
       content,
     });
-
-    return response;
+    window.location.reload();
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Error Response:", error.response);
