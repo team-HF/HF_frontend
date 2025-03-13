@@ -1,17 +1,11 @@
 import axios from "axios";
 import axiosInstance from "../../../../shared/utils/useAxios";
-import Cookies from "js-cookie";
 
 export const useUpdateComment = async (commentId: number, content: string) => {
-  const accessToken = Cookies.get("access_token");
   try {
-    await axiosInstance.patch(
-      `/hf/comments/${commentId}`,
-      {
-        content,
-      },
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
+    await axiosInstance.patch(`/hf/comments/${commentId}`, {
+      content,
+    });
     window.location.reload();
   } catch (error) {
     if (axios.isAxiosError(error)) {

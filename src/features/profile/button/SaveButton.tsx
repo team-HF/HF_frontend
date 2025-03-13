@@ -1,12 +1,12 @@
-import Cookies from 'js-cookie';
-import { useProfileStore } from '../store/profile-store';
-import axiosInstance from '../../../shared/utils/useAxios';
-import { useGetParams } from '../../../shared/utils/useGetParams';
-import { useNavigate } from 'react-router-dom';
-import axios, { AxiosInstance } from 'axios';
-import styled from 'styled-components';
-import { theme } from '../../../app/theme';
-import { useLocationStore } from '../../../shared/store/location-store';
+import Cookies from "js-cookie";
+import { useProfileStore } from "../store/profile-store";
+import axiosInstance from "../../../shared/utils/useAxios";
+import { useGetParams } from "../../../shared/utils/useGetParams";
+import { useNavigate } from "react-router-dom";
+import axios, { AxiosInstance } from "axios";
+import styled from "styled-components";
+import { theme } from "../../../app/theme";
+import { useLocationStore } from "../../../shared/store/location-store";
 
 type SaveButtonProps = {
   disabled: boolean;
@@ -43,12 +43,10 @@ const postNewMember = async (
   axiosInstance: AxiosInstance,
   userData: TUserData
 ) => {
-  const accessToken = Cookies.get('access_token');
   try {
-    const response = await axiosInstance.post('/hf/members', userData, {
+    const response = await axiosInstance.post("/hf/members", userData, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
     return response.data;
@@ -62,11 +60,9 @@ const uploadImageFile = async (
   url: string,
   image: File
 ) => {
-  const accessToken = Cookies.get('access_token');
   const response = await axiosInstance.put(url, image, {
     headers: {
-      'Content-Type': image?.type,
-      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": image?.type,
     },
   });
   return response.data;
@@ -75,13 +71,13 @@ const uploadImageFile = async (
 export default function SaveButton({ disabled }: SaveButtonProps) {
   const navigate = useNavigate();
 
-  const companionStyle = useGetParams('companionStyle');
-  const fitnessEagerness = useGetParams('fitnessEagerness');
-  const fitnessObjective = useGetParams('fitnessObjective');
-  const fitnessKind = useGetParams('fitnessKind');
+  const companionStyle = useGetParams("companionStyle");
+  const fitnessEagerness = useGetParams("fitnessEagerness");
+  const fitnessObjective = useGetParams("fitnessObjective");
+  const fitnessKind = useGetParams("fitnessKind");
 
-  const id = Cookies.get('email') || '';
-  const name = Cookies.get('name') || '';
+  const id = Cookies.get("email") || "";
+  const name = Cookies.get("name") || "";
 
   const {
     image,
@@ -96,7 +92,7 @@ export default function SaveButton({ disabled }: SaveButtonProps) {
   const { cd1, cd2, cd3 } = useLocationStore();
 
   const joinMembership = async () => {
-    const imageFileExtension = image?.type.split('/')[1] || null;
+    const imageFileExtension = image?.type.split("/")[1] || null;
     const requestData: TUserData = {
       profileImageFileExtension: imageFileExtension,
       id,
@@ -108,7 +104,7 @@ export default function SaveButton({ disabled }: SaveButtonProps) {
       cd2: cd2?.slice(2) || null,
       cd3: cd3?.slice(5) || null,
       introduction,
-      fitnessLevel: 'BEGINNER',
+      fitnessLevel: "BEGINNER",
       companionStyle,
       fitnessEagerness,
       fitnessObjective,
@@ -124,13 +120,13 @@ export default function SaveButton({ disabled }: SaveButtonProps) {
           image
         );
       }
-      navigate('/');
+      navigate("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.data.errorCode === 201) {
-          console.error('This account is already exists.', error);
+          console.error("This account is already exists.", error);
         } else if (error.response?.data.errorCode === 101) {
-          console.error('This is an unauthorized access.', error);
+          console.error("This is an unauthorized access.", error);
         }
       }
     }

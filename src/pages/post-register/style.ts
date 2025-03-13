@@ -84,7 +84,7 @@ export const AlertText = styled.span`
 export const InputContainer = styled.div`
   padding: 0.5rem 0;
 `;
-export const TitleInput = styled.input`
+export const TitleInput = styled.input<{ $isError: boolean }>`
   padding: 0.625rem;
   width: 100%;
   border: 1px solid #ededed;

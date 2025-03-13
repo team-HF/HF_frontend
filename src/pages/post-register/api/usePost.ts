@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import axiosInstance from "../../../shared/utils/useAxios";
 
 interface PostProps {
@@ -9,13 +8,12 @@ interface PostProps {
 }
 
 const communityPostApi = async (postData: PostProps) => {
-  const accessToken = Cookies.get("access_token");
   try {
-    const response = await axiosInstance.post(
-      "/hf/posts",
-      { ...postData, writerId: postData.writerId, imagePath: null },
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
+    const response = await axiosInstance.post("/hf/posts", {
+      ...postData,
+      writerId: postData.writerId,
+      imagePath: null,
+    });
     return response.data;
   } catch (error) {
     console.error("Error posting data:", error);

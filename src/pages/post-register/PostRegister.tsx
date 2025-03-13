@@ -101,7 +101,7 @@ const PostRegister = () => {
       }
     })();
   }, []);
-  
+
   return (
     <PageForm isGNB={false}>
       <S.Container>
@@ -138,6 +138,7 @@ const PostRegister = () => {
           <S.InputContainer>
             <S.TitleInput
               placeholder="제목을 입력하세요"
+              $isError={errors.postTitle ? true : false}
               {...register("postTitle", {
                 required: "제목을 입력해주세요",
                 minLength: {

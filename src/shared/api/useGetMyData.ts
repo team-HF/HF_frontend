@@ -5,13 +5,7 @@ import { MyData, MyDataSchema } from "../schema/my-data";
 import Cookies from "js-cookie";
 
 const getMyData = async (axiosInstance: AxiosInstance): Promise<MyData> => {
-  const accessToken = Cookies.get("access_token");
-
-  const response = await axiosInstance.get("/oauth/token/me", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const response = await axiosInstance.get("/oauth/token/me");
   return MyDataSchema.parse(response.data.content);
 };
 
