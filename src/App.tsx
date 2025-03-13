@@ -28,6 +28,7 @@ import { useAccountExpiresStore } from "./shared/store/account-expires-store";
 import Alert from "./shared/ui/alert/Alert";
 import { useMyProfileStore } from "./shared/store/my-profile-store";
 import { useEffect } from "react";
+import Loader from "./shared/ui/loader/loader";
 
 interface LoginLayoutProps {
   myData: { memberId: number };
@@ -54,6 +55,7 @@ function App() {
 
   const { data: myData, isLoading } = useGetMyData();
   const { setMyProfile } = useMyProfileStore();
+  // const {isLoading} = useLoadingStore()
 
   const accessToken = Cookies.get("access_token");
   const {
@@ -64,8 +66,8 @@ function App() {
   } = useAccountExpiresStore();
 
   const navigateLogin = () => {
-    setExpiresModalOpen(false);
-    setRequireModalOpen(false);
+    if (expiresModalOpen) setExpiresModalOpen(false);
+    if (requireModalOpen) setRequireModalOpen(false);
     navigate("/login");
   };
 
@@ -80,7 +82,7 @@ function App() {
   }, [myData, setMyProfile]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   return (
