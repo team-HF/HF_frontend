@@ -28,7 +28,7 @@ import { useAccountExpiresStore } from "./shared/store/account-expires-store";
 import Alert from "./shared/ui/alert/Alert";
 import { useMyProfileStore } from "./shared/store/my-profile-store";
 import { useEffect } from "react";
-import Loader from "./shared/ui/loader/loader";
+import Loader from "./shared/ui/loader/Loader";
 
 interface LoginLayoutProps {
   myData: { memberId: number };
