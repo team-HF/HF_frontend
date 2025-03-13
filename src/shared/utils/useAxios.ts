@@ -6,6 +6,7 @@ import axios, {
 } from "axios";
 import Cookies from "js-cookie";
 import { useAccountExpiresStore } from "../store/account-expires-store";
+import { useDeleteRefreshToken as deleteRefreshToken } from "../api/useDeleteRefreshToken";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL as string,
@@ -77,6 +78,8 @@ axiosInstance.interceptors.response.use(
         };
         return axiosInstance(originalRequest);
       } catch (refreshError) {
+        Cookies.remove("access_token");
+        await deleteRefreshToken();
         useAccountExpiresStore.getState().setExpiresModalOpen(true);
         return Promise.reject(refreshError);
       } finally {
