@@ -55,7 +55,6 @@ function App() {
 
   const { data: myData, isLoading } = useGetMyData();
   const { setMyProfile } = useMyProfileStore();
-  // const {isLoading} = useLoadingStore()
 
   const accessToken = Cookies.get("access_token");
   const {
