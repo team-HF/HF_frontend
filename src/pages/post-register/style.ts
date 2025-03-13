@@ -9,6 +9,10 @@ export const Container = styled.div`
     width: 40rem;
   }
 `;
+export const Box = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
 export const ContentsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -80,7 +84,7 @@ export const AlertText = styled.span`
 export const InputContainer = styled.div`
   padding: 0.5rem 0;
 `;
-export const TitleInput = styled.input`
+export const TitleInput = styled.input<{ $isError: boolean }>`
   padding: 0.625rem;
   width: 100%;
   border: 1px solid #ededed;
@@ -119,4 +123,11 @@ export const ContentInput = styled.textarea`
     color: #1d1d1d;
     background-color: ${theme.colors.sub};
   }
+`;
+export const ErrorMessage = styled.span`
+  margin-top: 0.25rem;
+  font-size: 0.688rem;
+  line-height: 1.273rem;
+  letter-spacing: -0.0031rem;
+  color: #ff0000;
 `;

@@ -1,5 +1,4 @@
 import axiosInstance from "../../../../shared/utils/useAxios";
-import Cookies from "js-cookie";
 
 interface PostDataProps {
   writerId?: number;
@@ -12,17 +11,15 @@ const postComment = async ({
   postId,
   commentValue,
 }: PostDataProps) => {
-  const accessToken = Cookies.get("access_token");
   try {
-    const response = await axiosInstance.post(
+    await axiosInstance.post(
       `/hf/posts/${postId}/comments`,
       {
         writerId: writerId,
         content: commentValue,
       },
-      { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    return response.data;
+    window.location.reload();
   } catch (error) {
     console.error("Error posing your comment", error);
     throw error;

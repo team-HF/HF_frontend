@@ -7,8 +7,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { categoryData, TCategory } from "../../entities/community/filter-data";
 import { useGetPostDetail as getPostDetail } from "../post-detail/api/useGetPostDetail";
 import { usePostUpdate as postUpdate } from "./api/usePostUpdate";
-import { useGetMyData } from "../../shared/api/useGetMyData";
 import NewHeader from "../../shared/ui/new-header/NewHeader";
+import { useMyProfileStore } from "../../shared/store/my-profile-store";
+import { useForm } from "react-hook-form";
 
 export type TCategoryData = { name: string; id: TCategory };
 
@@ -16,12 +17,25 @@ const PostRegister = () => {
   const { id } = useParams();
   const postId = Number(id);
   const navigate = useNavigate();
-  const { data: myData } = useGetMyData();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      postTitle: "",
+      postContent: "",
+    },
+  });
+  const postTitle = watch("postTitle");
+  const postContent = watch("postContent");
+
+  const { myProfile } = useMyProfileStore();
 
   const [requestFill, setRequestFill] = useState<boolean>(false);
   const [postCategory, setPostCategory] = useState<TCategoryData | null>(null);
-  const [postTitle, setPostTitle] = useState<string>("");
-  const [postContent, setPostContent] = useState<string>("");
   const [sideFilterOpen, setSideFilterOpen] = useState<boolean>(false);
 
   const headerNavigate = () => navigate(-1);
@@ -36,22 +50,26 @@ const PostRegister = () => {
         content: postContent,
       };
       if (postId) {
-        await postUpdate({
+        const response = await postUpdate({
           ...postData,
           postId: postId,
-          writerId: myData?.memberId,
+          writerId: myProfile?.memberId,
         });
-        navigate(`/community/post-detail/${postId}`, {
-          state: { from: window.location.pathname },
-        });
+        if (response.statusCode === 200) {
+          navigate(`/community/post-detail/${postId}`, {
+            state: { from: window.location.pathname },
+          });
+        }
       } else {
         const response = await communityPostApi({
           ...postData,
-          writerId: myData?.memberId,
+          writerId: myProfile?.memberId,
         });
-        navigate(`/community/post-detail/${response.content}`, {
-          state: { from: window.location.pathname },
-        });
+        if (response.statusCode === 200) {
+          navigate(`/community/post-detail/${response.content}`, {
+            state: { from: window.location.pathname },
+          });
+        }
       }
     }
   };
@@ -71,17 +89,19 @@ const PostRegister = () => {
         const postDetailResponse = await getPostDetail(postId, () =>
           navigate("/not-found")
         );
-        const postDetail = postDetailResponse.content;
         setPostCategory(
-          postDetail.postCategory === "FREE_COMMUNITY"
+          postDetailResponse.postCategory === "FREE_COMMUNITY"
             ? { id: "FREE_COMMUNITY", name: "자유게시판" }
             : { id: "COUNSELING", name: "고민/사연" }
         );
-        setPostTitle(postDetail.title);
-        setPostContent(postDetail.content);
+        reset({
+          postTitle: postDetailResponse.title,
+          postContent: postDetailResponse.content,
+        });
       }
     })();
   }, []);
+
   return (
     <PageForm isGNB={false}>
       <S.Container>
@@ -90,13 +110,18 @@ const PostRegister = () => {
           isBackBtn={true}
           onClickBack={headerNavigate}
         />
-        <S.Container>
+        <S.Box
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(postRegister)();
+          }}
+        >
           <S.DoneBtnContainer>
-            <S.DoneBtn disabled={!requestFill} onClick={postRegister}>
+            <S.DoneBtn type="submit" disabled={!requestFill}>
               완료
             </S.DoneBtn>
           </S.DoneBtnContainer>
-          <S.PostCategoryBtn onClick={onOffSideFilter}>
+          <S.PostCategoryBtn type="button" onClick={onOffSideFilter}>
             {postCategory ? (
               <S.Label>{postCategory.name}</S.Label>
             ) : (
@@ -113,16 +138,42 @@ const PostRegister = () => {
           <S.InputContainer>
             <S.TitleInput
               placeholder="제목을 입력하세요"
-              value={postTitle}
-              onChange={(e) => setPostTitle(e.target.value)}
+              $isError={errors.postTitle ? true : false}
+              {...register("postTitle", {
+                required: "제목을 입력해주세요",
+                minLength: {
+                  value: 3,
+                  message: "최소 3자 이상 입력해주세요",
+                },
+                maxLength: {
+                  value: 10,
+                  message: "최대 10자까지 입력 가능합니다",
+                },
+              })}
             />
+            {errors.postTitle && (
+              <S.ErrorMessage>{errors.postTitle.message}</S.ErrorMessage>
+            )}
           </S.InputContainer>
           <S.InputContainer>
             <S.ContentInput
               placeholder="자유롭게 내용을 입력해주세요"
               value={postContent}
-              onChange={(e) => setPostContent(e.target.value)}
+              {...register("postContent", {
+                required: "내용을 입력해주세요",
+                minLength: {
+                  value: 10,
+                  message: "최소 10자 이상 입력해주세요",
+                },
+                maxLength: {
+                  value: 1000,
+                  message: "최대 1000자까지 입력 가능합니다",
+                },
+              })}
             />
+            {errors.postContent && (
+              <S.ErrorMessage>{errors.postContent.message}</S.ErrorMessage>
+            )}
           </S.InputContainer>
           <SideFilter
             title={"게시글 주제를 선택해주세요"}
@@ -132,7 +183,7 @@ const PostRegister = () => {
             category={postCategory}
             setCategory={setPostCategory}
           />
-        </S.Container>
+        </S.Box>
       </S.Container>
     </PageForm>
   );

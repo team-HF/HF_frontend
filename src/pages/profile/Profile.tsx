@@ -15,6 +15,7 @@ import LocationSelectBar from "../../shared/ui/location-select-bar/LocationSelec
 import { useLocationStore } from "../../shared/store/location-store";
 import NewHeader from "../../shared/ui/new-header/NewHeader";
 import Cookies from "js-cookie";
+import DuplicateNicknameButton from "../../features/profile-setting/ui/DuplicateNicknameButton";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -32,6 +33,8 @@ export default function Profile() {
     setImage,
     nickname,
     setNickname,
+    lastValidatedNickname,
+    setLastValidatedNickname,
     dateYear,
     setDateYear,
     dateMonth,
@@ -48,6 +51,8 @@ export default function Profile() {
 
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
   const [introductionContent, setIntroductionContent] = useState<string>("");
+  const [isNicknameValidated, setIsNicknameValidated] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (nickname) setValue("nickname", nickname);
@@ -74,6 +79,8 @@ export default function Profile() {
 
   const isAllSelected = Boolean(
     watchedNickname &&
+      isNicknameValidated &&
+      lastValidatedNickname &&
       watchedBirth &&
       watchedGender &&
       cd1 &&
@@ -86,6 +93,19 @@ export default function Profile() {
     setIntroduction(introductionContent);
     setIntroductionModal(false);
   };
+
+  const {
+    onChange: nicknameOnChange,
+    onBlur: nicknameOnBlur,
+    name: nicknameName,
+    ref: nicknameRef,
+  } = register("nickname", {
+    required: "닉네임을 입력해주세요",
+    pattern: {
+      value: /^[a-zA-Z0-9가-힣]{1,8}$/,
+      message: "닉네임은 영문,숫자,한글만 포함 가능합니다.",
+    },
+  });
 
   useEffect(() => {
     if (introductionModal) {
@@ -146,29 +166,51 @@ export default function Profile() {
         <S.FieldContainer>
           <S.Field>
             <S.Label>닉네임</S.Label>
-            <S.Input
-              type="text"
-              placeholder="닉네임"
-              {...register("nickname", {
-                required: "닉네임을 입력해주세요",
-                pattern: {
-                  value: /^[a-zA-Z0-9가-힣]{1,8}$/,
-                  message: "닉네임은 영문,숫자,한글만 포함 가능합니다.",
-                },
-                maxLength: {
-                  value: 8,
-                  message: "닉네임의 길이는 8글자 이하 입니다.",
-                },
-                onBlur: () => {
-                  clearErrors("nickname");
-                },
-              })}
-              onChange={(e) => setNickname(e.target.value)}
-            />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                whiteSpace: "nowrap",
+                alignItems: "center",
+                position: "relative",
+              }}
+            >
+              <S.Input
+                type="text"
+                placeholder="닉네임"
+                maxLength={8}
+                value={nickname}
+                name={nicknameName}
+                ref={nicknameRef}
+                onChange={(e) => {
+                  if (isNicknameValidated) {
+                    setIsNicknameValidated(false);
+                  }
+                  nicknameOnChange(e);
+                  setNickname(e.target.value);
+                  setValue("nickname", e.target.value);
+                }}
+                onBlur={(e) => {
+                  nicknameOnBlur(e);
+                }}
+              />
+              <DuplicateNicknameButton
+                nickname={nickname}
+                disabled={!!errors.nickname?.message}
+                onSuccess={(validatedName: string) => {
+                  setLastValidatedNickname(validatedName);
+                  setIsNicknameValidated(true);
+                }}
+              />
+            </div>
             {errors.nickname?.message ? (
-              typeof errors.nickname.message === "string" && (
-                <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
-              )
+              <S.ErrorMessage>{String(errors.nickname.message)}</S.ErrorMessage>
+            ) : watchedNickname && !isNicknameValidated ? (
+              <S.ErrorMessage>닉네임 중복검사를 완료해주세요.</S.ErrorMessage>
+            ) : isNicknameValidated ? (
+              <S.ErrorMessage className="valid">
+                닉네임 중복검사 완료
+              </S.ErrorMessage>
             ) : (
               <S.PlaceHolder>
                 닉네임은 최대 8자까지 입력 가능합니다.

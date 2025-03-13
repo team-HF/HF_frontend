@@ -10,15 +10,12 @@ interface UpdateProps {
 
 export const usePostUpdate = async (postData: UpdateProps) => {
   try {
-    const response = await axiosInstance.patch(
-      `/hf/posts/${postData.postId}`,
-      {
-        category: postData.category,
-        title: postData.title,
-        content: postData.content,
-        writerId: postData.writerId,
-      },
-    );
+    const response = await axiosInstance.patch(`/hf/posts/${postData.postId}`, {
+      category: postData.category,
+      title: postData.title,
+      content: postData.content,
+      writerId: postData.writerId,
+    });
     return response.data;
   } catch (error) {
     console.error("Error updating post", error);
