@@ -1,8 +1,8 @@
 import axiosInstance from "../utils/useAxios";
 
 interface PostWishProps {
-  wisherId: number;
-  wishedId: number;
+  wisherId: number | undefined;
+  wishedId: number | undefined;
 }
 
 export const usePostWish = async ({ wisherId, wishedId }: PostWishProps) => {
