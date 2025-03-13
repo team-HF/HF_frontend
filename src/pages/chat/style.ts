@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  width: 360px;
-  padding: 0 20px;
   display: flex;
   flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
+  height: 100vh;
+  width: 360px;
+  margin: 0 auto;
+  padding: 0 20px;
 
   @media (min-width: 768px) {
     width: 40rem;
@@ -14,12 +14,12 @@ export const Container = styled.div`
 `;
 
 export const MessageContainer = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 14px;
   overflow-x: hidden;
   overflow-y: auto;
-  height: 640px;
+  margin-top: 14px;
 `;
 
 export const MessageWrapper = styled.div<{ $isMine: boolean }>`
@@ -48,23 +48,21 @@ export const ChatTime = styled.div<{ $isMine: boolean }>`
   line-height: 14px;
   letter-spacing: -0.31%;
   color: #8e8e93;
-  /* 내가 보낸 메시지($isMine=true)는 왼쪽(DOM에서 먼저 배치) => 오른쪽에 마진
-     상대방 메시지($isMine=false)는 오른쪽(DOM에서 나중 배치) => 왼쪽에 마진 */
   margin-right: ${({ $isMine }) => ($isMine ? '8px' : '0')};
   margin-left: ${({ $isMine }) => ($isMine ? '0' : '8px')};
 `;
 
 export const InputWrapper = styled.div`
   display: flex;
+  align-items: center;
   margin-top: 16px;
   margin-bottom: 20px;
   height: 36px;
   gap: 10px;
-  border-radius: 8px;
-  border-width: 1px;
   padding: 10px;
-  background-color: #f8f8f8;
   border: 1px solid #ededed;
+  border-radius: 8px;
+  background-color: #f8f8f8;
 `;
 
 export const Input = styled.input`
@@ -73,10 +71,10 @@ export const Input = styled.input`
   height: 16px;
   flex: 1;
   &:focus {
-    border: none;
     outline: none;
   }
 `;
+
 export const SendButton = styled.img`
   cursor: pointer;
 `;
@@ -96,11 +94,9 @@ export const DateLine = styled.div`
     height: 1px;
     background: #ddd;
   }
-
   &::before {
     margin-right: 8px;
   }
-
   &::after {
     margin-left: 8px;
   }
