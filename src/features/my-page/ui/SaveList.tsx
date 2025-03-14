@@ -1,25 +1,27 @@
 import * as S from './save-list.style';
 import EmptyFavoriteListAndCouponList from './EmptyFavoriteListAndCouponList';
 import { useGetMyWishList } from '../api/useGetMyWishList';
-import { useGetMyData } from '../../../shared/api/useGetMyData';
+import { useNavigate } from 'react-router-dom';
+import { useMyProfileStore } from '../../../shared/store/my-profile-store';
+import { useDeleteWish } from '../api/useDeleteWish';
 
 export default function SaveList() {
   const size = 20;
 
-  const {
-    data: myData,
-    isLoading: isLoadingMyData,
-    error: errorMyData,
-  } = useGetMyData();
-
-  const memberId = myData?.memberId ?? 0;
+  const { myProfile } = useMyProfileStore();
+  const memberId = myProfile!.memberId;
   const { data: saveList, isLoading, error } = useGetMyWishList(size, memberId);
-  if (isLoadingMyData) {
-    return <p>loading...</p>;
-  }
-  if (errorMyData || !myData?.memberId) {
-    return <p>회원정보를 가져올 수 없습니다.</p>;
-  }
+  const { mutate: deleteMutate } = useDeleteWish();
+  console.log(saveList);
+  const navigate = useNavigate();
+
+  const onClickNavigateUserProfile = (wishedId: number) => {
+    navigate(`/member/${wishedId}/profile`);
+  };
+
+  const onClickDeleteWish = (wishedId: number) => {
+    deleteMutate(wishedId);
+  };
 
   if (isLoading) {
     return <p>loading...</p>;
@@ -33,13 +35,30 @@ export default function SaveList() {
     <S.Container>
       {allItems.length > 0 ? (
         allItems.map((user) => (
-          <S.ProfileWrapper key={user.wisherId}>
+          <S.ProfileWrapper key={user.wishedId}>
             <S.IconContainer>
-              {/* <S.ProfileIcon src={user.profileImage} alt="profile-icon" /> */}
-              {/* <S.HeartIcon src="/svg/profile-heart-icon.svg" alt="save-icon" /> */}
+              <S.ProfileIcon
+                src={
+                  user.imageUrl
+                    ? user.imageUrl
+                    : '/svg/default-profile-icon.svg'
+                }
+                alt="profile-icon"
+                onClick={() => onClickNavigateUserProfile(user.wishedId)}
+              />
+              {
+                <S.HeartIcon
+                  src="/svg/profile-heart-icon.svg"
+                  alt="save-icon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClickDeleteWish(user.wishedId);
+                  }}
+                />
+              }
             </S.IconContainer>
             <S.TextWrapper>
-              {/* <S.ProfileText>{user.nickname}</S.ProfileText> */}
+              <S.ProfileText>{user.wishedNickname}</S.ProfileText>
             </S.TextWrapper>
           </S.ProfileWrapper>
         ))

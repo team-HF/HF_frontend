@@ -13,23 +13,19 @@ export const Container = styled.div`
 `;
 
 export const ProfileWrapper = styled.div`
-  width: 5rem;
-  height: 6.9375rem;
-  @media (min-width: 768px) {
-    width: 40rem;
-  }
+  width: 80px;
+  height: 80px;
 `;
 export const IconContainer = styled.div`
-  width: 5rem;
-  height: 5rem;
+  width: 80px;
+  height: 80px;
   position: relative;
   margin-bottom: 16px;
-  @media (min-width: 768px) {
-    width: 40rem;
-  }
 `;
 export const ProfileIcon = styled.img`
   width: 100%;
+  cursor: pointer;
+  height: 100%;
   background-color: #f1f3f5;
   box-shadow: 0px 0px 1px 0px #00000014;
   box-shadow: 0px 1px 4px 0px #00000014;
@@ -40,9 +36,10 @@ export const ProfileIcon = styled.img`
 export const HeartIcon = styled.img`
   position: absolute;
   bottom: 0;
-  right: 0.625rem;
+  right: 0;
   width: 24px;
   height: 24px;
+  cursor: pointer;
 `;
 
 export const TextWrapper = styled.div`
