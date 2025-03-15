@@ -8,7 +8,7 @@ export function SocketProvider({
   memberId,
   children,
 }: {
-  memberId: number;
+  memberId?: number;
   children: React.ReactNode;
 }) {
   const [stompClient, setStompClient] = useState<Client | null>(null);
