@@ -53,7 +53,12 @@ export default function ChatHeader({
           onClick={onClick}
         />
       </S.RightWrapper>
-      {isOpen && <ChatMenuModal onClose={() => setIsOpen(false)} />}
+      {isOpen && (
+        <ChatMenuModal
+          matchingUserId={matchingUserId}
+          onClose={() => setIsOpen(false)}
+        />
+      )}
     </S.Container>
   );
 }
