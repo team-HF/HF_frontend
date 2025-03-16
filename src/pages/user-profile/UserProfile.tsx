@@ -21,7 +21,7 @@ const UserProfile = () => {
   useEffect(() => {
     (async () => {
       const userData_1 = await getUserData(memberId);
-      setUserProfile(userData_1);
+      if (userData_1) setUserProfile(userData_1);
       const userData_2 = await getUserDetail(memberId);
       if (userData_2) setUserDetail(userData_2);
     })();
