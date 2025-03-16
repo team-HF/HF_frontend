@@ -140,9 +140,14 @@ export const genderBtn = styled.button<{ selected: boolean }>`
 `;
 
 export const ErrorMessage = styled.span`
-  font-size: 0.75rem;
   margin-top: 0.25rem;
+  font-size: 0.688rem;
+  line-height: 1.273rem;
+  letter-spacing: -0.0031rem;
   color: #ff0000;
+  &.valid {
+    color: ${theme.colors.success};
+  }
 `;
 
 export const LocationContainer = styled.div`

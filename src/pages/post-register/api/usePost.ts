@@ -8,12 +8,12 @@ interface PostProps {
 }
 
 const communityPostApi = async (postData: PostProps) => {
-
   try {
-    const response = await axiosInstance.post(
-      "/hf/posts",
-      { ...postData, writerId: postData.writerId, imagePath: null },
-    );
+    const response = await axiosInstance.post("/hf/posts", {
+      ...postData,
+      writerId: postData.writerId,
+      imagePath: null,
+    });
     return response.data;
   } catch (error) {
     console.error("Error posting data:", error);

@@ -28,6 +28,7 @@ import { useGetMyData } from './shared/api/useGetMyData';
 import { useAccountExpiresStore } from './shared/store/account-expires-store';
 import Alert from './shared/ui/alert/Alert';
 import { useMyProfileStore } from './shared/store/my-profile-store';
+import Loader from './shared/ui/loader/Loader';
 
 function App() {
   const navigate = useNavigate();
@@ -42,8 +43,8 @@ function App() {
   } = useAccountExpiresStore();
 
   const navigateLogin = () => {
-    setExpiresModalOpen(false);
-    setRequireModalOpen(false);
+    if (expiresModalOpen) setExpiresModalOpen(false);
+    if (requireModalOpen) setRequireModalOpen(false);
     navigate('/login');
   };
 
@@ -58,7 +59,7 @@ function App() {
   }, [myData, setMyProfile]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   return (
