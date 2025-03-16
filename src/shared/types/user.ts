@@ -67,6 +67,7 @@ export interface User {
   tier: Tier;
   wishCount: number;
   reviewScore: number;
+  isWished: boolean;
 }
 
 export interface Spec {
