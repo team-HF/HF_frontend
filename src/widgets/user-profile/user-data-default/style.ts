@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { theme } from '../../../app/theme';
+import styled from "styled-components";
+import { theme } from "../../../app/theme";
 
 export const Container = styled.div`
   display: flex;
@@ -93,6 +93,7 @@ export const IconBtn = styled.button`
   border: 1px solid ${theme.colors.gray3};
   border-radius: 0.5rem;
   background-color: ${theme.colors.white};
+  cursor: pointer;
 `;
 export const Introduction = styled.p`
   font-size: 0.875rem;

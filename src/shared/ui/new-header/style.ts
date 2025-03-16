@@ -25,6 +25,7 @@ export const IconBtn = styled.button`
   height: 1.5rem;
   border: 0;
   background-color: ${theme.colors.white};
+  cursor: pointer;
 `;
 export const BackIcon = styled.img`
   transform: rotate(-90deg);
@@ -34,6 +35,7 @@ export const Title = styled.h2`
   line-height: 1.364rem;
   letter-spacing: -0.0194rem;
   font-weight: 700;
+  cursor: default;
 `;
 export const membershipBtn = styled.button`
   min-width: 3.625rem;
@@ -42,6 +44,7 @@ export const membershipBtn = styled.button`
   border-radius: 3rem;
   background-color: ${theme.colors.main};
   color: ${theme.colors.white};
+  cursor: pointer;
   &.logout {
     border: 1px solid ${theme.colors.main};
     background-color: ${theme.colors.white};

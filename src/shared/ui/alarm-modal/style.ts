@@ -42,6 +42,7 @@ export const IconBtn = styled.button`
   background-color: ${theme.colors.white};
   width: 1.125rem;
   height: 1.125rem;
+  cursor: pointer;
 `;
 export const CloseIcon = styled.img`
   width: 1.125rem;
@@ -66,6 +67,7 @@ export const CategoryTag = styled.button<{ $isValidValue: boolean }>`
   letter-spacing: -0.01rem;
   font-weight: 600;
   padding: 0.5rem 0.625rem;
+  cursor: pointer;
 `;
 export const MessageContainer = styled.div`
   display: flex;
