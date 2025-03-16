@@ -3,10 +3,10 @@ import axios, {
   AxiosError,
   AxiosResponse,
   type InternalAxiosRequestConfig,
-} from "axios";
-import Cookies from "js-cookie";
-import { useAccountExpiresStore } from "../store/account-expires-store";
-import { useDeleteRefreshToken as deleteRefreshToken } from "../api/useDeleteRefreshToken";
+} from 'axios';
+import Cookies from 'js-cookie';
+import { useAccountExpiresStore } from '../store/account-expires-store';
+import { useDeleteRefreshToken as deleteRefreshToken } from '../api/useDeleteRefreshToken';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL as string,
@@ -15,10 +15,10 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config: any): InternalAxiosRequestConfig => {
-    const token: string | undefined = Cookies.get("access_token");
+    const token: string | undefined = Cookies.get('access_token');
     config.headers = {
       ...config.headers,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
     return config;
@@ -66,9 +66,9 @@ axiosInstance.interceptors.response.use(
         const newAccessToken = data.content.accessToken;
 
         if (newAccessToken) {
-          Cookies.set("access_token", newAccessToken, {
+          Cookies.set('access_token', newAccessToken, {
             secure: true,
-            sameSite: "None",
+            sameSite: 'None',
           });
           onTokenRefreshed(newAccessToken);
         }
@@ -78,7 +78,7 @@ axiosInstance.interceptors.response.use(
         };
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        Cookies.remove("access_token");
+        Cookies.remove('access_token');
         await deleteRefreshToken();
         useAccountExpiresStore.getState().setExpiresModalOpen(true);
         return Promise.reject(refreshError);
