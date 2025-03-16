@@ -1,4 +1,3 @@
-// src/features/chat/useRequestChat.ts
 import { useContext, useCallback } from 'react';
 import { SocketContext } from '../../../app/providers/SocketProvider';
 
