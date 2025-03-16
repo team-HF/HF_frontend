@@ -10,10 +10,12 @@ import { useUserDetailStore } from '../../../pages/profile/store/user-detail-sto
 import { usePostWish as postWish } from '../../../shared/api/usePostWish';
 import { SocketContext } from '../../../app/providers/SocketProvider';
 import { useRequestChat } from '../../../features/matching/api/useRequestNewChat';
+import { useNavigate } from 'react-router-dom';
 
 const UserDataDefault = () => {
   const { userProfile } = useUserProfileStore();
   const { userDetail } = useUserDetailStore();
+  const navigate = useNavigate();
   const socket = useContext(SocketContext);
   const requesterId = socket?.memberId;
   const chatTargetId = userProfile?.memberId;
@@ -31,6 +33,8 @@ const UserDataDefault = () => {
     if (!userProfile?.memberId) {
       alert('상대방 정보가 없습니다.');
       return;
+    } else if (!requesterId) {
+      navigate('/login');
     }
     createChat();
   };
