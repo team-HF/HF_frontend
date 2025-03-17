@@ -3,30 +3,31 @@ import EmptyFavoriteListAndCouponList from './EmptyFavoriteListAndCouponList';
 import { useGetMyWishList } from '../api/useGetMyWishList';
 import { useNavigate } from 'react-router-dom';
 import { useMyProfileStore } from '../../../shared/store/my-profile-store';
-import { useDeleteWish } from '../api/useDeleteWish';
+import { useDeleteWish } from '../../../shared/api/useDeleteWish';
 
 export default function SaveList() {
   const size = 20;
-
   const { myProfile } = useMyProfileStore();
   const memberId = myProfile!.memberId;
   const { data: saveList, isLoading, error } = useGetMyWishList(size, memberId);
-  const { mutate: deleteMutate } = useDeleteWish();
-  console.log(saveList);
+  const { mutate: deleteWish } = useDeleteWish();
   const navigate = useNavigate();
 
   const onClickNavigateUserProfile = (wishedId: number) => {
     navigate(`/member/${wishedId}/profile`);
   };
 
-  const onClickDeleteWish = (wishedId: number) => {
-    deleteMutate(wishedId);
+  const onClickDeleteWish = async (wishedId: number) => {
+    const data = {
+      wisherId: memberId,
+      wishedId: wishedId,
+    };
+    deleteWish(data);
   };
 
   if (isLoading) {
     return <p>loading...</p>;
   }
-
   if (error) {
     return <p>error</p>;
   }
@@ -46,16 +47,14 @@ export default function SaveList() {
                 alt="profile-icon"
                 onClick={() => onClickNavigateUserProfile(user.wishedId)}
               />
-              {
-                <S.HeartIcon
-                  src="/svg/profile-heart-icon.svg"
-                  alt="save-icon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onClickDeleteWish(user.wishedId);
-                  }}
-                />
-              }
+              <S.HeartIcon
+                src="/svg/profile-heart-icon.svg"
+                alt="save-icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClickDeleteWish(user.wishedId);
+                }}
+              />
             </S.IconContainer>
             <S.TextWrapper>
               <S.ProfileText>{user.wishedNickname}</S.ProfileText>
