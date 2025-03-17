@@ -11,7 +11,7 @@ import { usePostWish as postWish } from '../../../shared/api/usePostWish';
 import { SocketContext } from '../../../app/providers/SocketProvider';
 import { useRequestChat } from '../../../features/matching/api/useRequestNewChat';
 import { useMyProfileStore } from '../../../shared/store/my-profile-store';
-import { useDeleteWish as deleteWish } from '../../../shared/api/useDeleteWish';
+import { useDeleteWish } from '../../../shared/api/useDeleteWish';
 import useSetRequireModal from '../../../shared/utils/useSetRequireModal';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ const UserDataDefault = () => {
   const { myProfile } = useMyProfileStore();
   const { requestChat } = useRequestChat();
   const setRequireModal = useSetRequireModal();
-
+  const { mutate: deleteWish } = useDeleteWish();
   const [location, setLocation] = useState<string>('');
   const [wishState, setWishState] = useState<boolean>(false);
 
@@ -64,7 +64,7 @@ const UserDataDefault = () => {
           wishedId: userProfile?.memberId,
         };
         if (userProfile?.isWished) {
-          await deleteWish(data);
+          deleteWish(data);
           setWishState(false);
         } else {
           await postWish(data);
