@@ -18,13 +18,14 @@ export const LabelBtn = styled.button<{ checked: boolean }>`
   align-items: center;
   box-sizing: border-box;
   text-align: center;
-  padding : 0 0.625rem;
+  padding: 0 0.625rem;
   height: 2.125rem;
   border-radius: 2.125rem;
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1rem;
   letter-spacing: -0.01rem;
+  cursor: pointer;
   ${({ checked }) =>
     checked
       ? css`

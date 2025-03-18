@@ -20,6 +20,7 @@ export const InputContainer = styled.button`
   border-bottom: 1px solid ${theme.colors.gray3};
   background-color: ${theme.colors.white};
   gap: 0.25rem;
+  cursor: pointer;
 `;
 export const IconBox = styled.div`
   display: flex;

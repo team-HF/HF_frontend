@@ -42,6 +42,7 @@ export const ResetBtn = styled.button`
   border-radius: 0.5rem;
   background-color: ${theme.colors.white};
   font-size: 0.75rem;
+  cursor: pointer;
 `;
 
 export const LocationList = styled.div`
@@ -64,6 +65,7 @@ export const LocationCard = styled.button`
   line-height: 1.467rem;
   letter-spacing: -0.0096rem;
   background-color: ${theme.colors.white};
+  cursor: pointer;
   @media (min-width: 768px) {
     width: 9.625rem;
   }

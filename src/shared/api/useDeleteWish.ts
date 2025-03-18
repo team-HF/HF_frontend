@@ -11,8 +11,7 @@ export const useDeleteWish = async ({ wisherId, wishedId }: PostWishProps) => {
     wishedId: wishedId,
   };
   try {
-    const response = await axiosInstance.delete("/hf/wish", { data });
-    console.log("삭제 성공:", response.data);
+    await axiosInstance.delete("/hf/wish", { data });
   } catch (error) {
     console.error("삭제 실패:", error);
   }
