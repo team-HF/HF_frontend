@@ -324,19 +324,21 @@ export default function ProfileSetting() {
             <S.PlaceHolder>나를 소개할 한 줄을 작성해주세요.</S.PlaceHolder>
           </S.Field>
         </S.FieldContainer>
-        <UpdateMyDataButton
-          nickname={nickname!}
-          disabled={!isAllSelected}
-          image={image}
-          cd1={cd1 || ''}
-          cd2={cd2 || ''}
-          cd3={cd3 || ''}
-          introduction={introduction!}
-          styleSelected={styleSelected as 'SMALL' | 'GROUP'}
-          habitSelected={habitSelected as 'EAGER' | 'LAZY'}
-          goalSelected={goalSelected as 'BULK_UP' | 'RUNNING'}
-          exerciseSelected={exerciseSelected as 'HIGH_STRESS' | 'FUNCTIONAL'}
-        />
+        <S.UpdateButtonWrapper>
+          <UpdateMyDataButton
+            nickname={nickname!}
+            disabled={!isAllSelected}
+            image={image}
+            cd1={cd1 || ''}
+            cd2={cd2 || ''}
+            cd3={cd3 || ''}
+            introduction={introduction!}
+            styleSelected={styleSelected as 'SMALL' | 'GROUP'}
+            habitSelected={habitSelected as 'EAGER' | 'LAZY'}
+            goalSelected={goalSelected as 'BULK_UP' | 'RUNNING'}
+            exerciseSelected={exerciseSelected as 'HIGH_STRESS' | 'FUNCTIONAL'}
+          />
+        </S.UpdateButtonWrapper>
       </S.Container>
       {introductionModal && (
         <S.IntroductionModal>

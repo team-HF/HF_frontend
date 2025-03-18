@@ -5,7 +5,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 20rem;
-  height: auto;
+  height: 100vh;
+  box-sizing: border-box;
   @media (min-width: 768px) {
     width: 40rem;
   }
@@ -233,7 +234,7 @@ export const InputContainer = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 100vh;
 `;
 
 export const IntroductionInput = styled.textarea`
@@ -255,6 +256,12 @@ export const IntroductionInput = styled.textarea`
   }
 `;
 
+export const UpdateButtonWrapper = styled.div`
+  margin-top: auto;
+  width: 100%;
+  padding: 16px;
+`;
+
 export const LengthChecker = styled.span`
   position: absolute;
   right: 1rem;
@@ -267,7 +274,7 @@ export const LengthChecker = styled.span`
 
 export const StoreBtn = styled.button`
   width: 100%;
-  padding: 1rem;
+  padding: 16px;
   border: 0;
   border-radius: 0.5rem;
   color: ${theme.colors.white};
