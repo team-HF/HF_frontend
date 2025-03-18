@@ -1,5 +1,11 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
+
+const ephemeralStorage = {
+  getItem: () => null,
+  setItem: () => Promise.resolve(),
+  removeItem: () => Promise.resolve(),
+};
 
 type ProfileEditStore = {
   image: File | null;
@@ -105,6 +111,7 @@ export const useProfileEditStore = create(
     }),
     {
       name: 'profile-edit-store',
+      storage: createJSONStorage(() => ephemeralStorage),
     }
   )
 );
