@@ -5,10 +5,11 @@ export const PostPreviewContainer = styled.div`
   width: 100%;
   gap: 1rem;
   padding: 1rem 0;
-  border-bottom: 1px solid #DEE2E6;
+  border-bottom: 1px solid #dee2e6;
   flex-direction: column;
+  cursor: pointer;
   &:first-child {
-    border-top: 1px solid #DEE2E6;
+    border-top: 1px solid #dee2e6;
   }
 `;
 

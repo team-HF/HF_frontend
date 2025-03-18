@@ -83,12 +83,14 @@ const Agreement = () => {
         <S.Title>이용약관 동의</S.Title>
         <S.ContentContainer>
           <S.AgreementItemContainer className="gap_8">
-            <img
-              src={
-                allAgreed ? "/svg/check-icon.svg" : "/svg/select-box-Icon.svg"
-              }
-              onClick={changeAllState}
-            />
+            <S.IconBtn onClick={changeAllState}>
+              <img
+                alt="check-box-icon"
+                src={
+                  allAgreed ? "/svg/check-icon.svg" : "/svg/select-box-Icon.svg"
+                }
+              />
+            </S.IconBtn>
             <S.AgreeAllCheckText>모두 확인, 동의합니다</S.AgreeAllCheckText>
           </S.AgreementItemContainer>
           <S.Divider />
@@ -99,14 +101,16 @@ const Agreement = () => {
                 className="space_between"
               >
                 <S.AgreementItemContainer className="gap_8">
-                  <img
-                    src={
-                      agreements[idx].value
-                        ? "/svg/check-icon.svg"
-                        : "/svg/select-box-Icon.svg"
-                    }
-                    onClick={() => toggleAgreement(idx)}
-                  />
+                  <S.IconBtn onClick={() => toggleAgreement(idx)}>
+                    <img
+                      alt="check-box-icon"
+                      src={
+                        agreements[idx].value
+                          ? "/svg/check-icon.svg"
+                          : "/svg/select-box-Icon.svg"
+                      }
+                    />
+                  </S.IconBtn>
                   <S.TermContentText>{term.content}</S.TermContentText>
                   <S.TermContentText className="require_text">
                     (필수)
