@@ -21,7 +21,6 @@ import DuplicateNicknameButton from '../../features/profile-setting/ui/Duplicate
 import { getSgisLocation } from '../../shared/api/getSgisLocation';
 import NewHeader from '../../shared/ui/new-header/NewHeader';
 import { useProfileEditStore } from '../../features/profile-setting/store/profile-edit-store';
-import { useResetProfileEditStoreOnExit } from '../../features/my-page/hooks/ useResetProfileEditStoreOnExit';
 
 interface Location {
   addr_name: string;
@@ -36,7 +35,6 @@ export default function ProfileSetting() {
     register,
     formState: { errors },
     clearErrors,
-    setValue,
     watch,
   } = useForm({ mode: 'onChange' });
   const { data: myData, isLoading, isError } = useGetMyData();
@@ -46,11 +44,16 @@ export default function ProfileSetting() {
   const [locationData, setLocationData] = useState<Location[]>([]);
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
   const [introductionContent, setIntroductionContent] = useState<string>('');
-  const [isNicknameValidated, setIsNicknameValidated] =
-    useState<boolean>(false);
+
+  const [localNickname, setLocalNickname] = useState('');
+  const [isNicknameValidated, setIsNicknameValidated] = useState<boolean>(true);
   const [selectedLocation, setSelectedLocation] = useState<string>('');
 
   const initialNicknameValidate = myData?.nickname === watch('nickname');
+  const isNicknameFormatValid = !errors.nickname;
+  const isNicknameValid =
+    (initialNicknameValidate || isNicknameValidated) && isNicknameFormatValid;
+
   const {
     nickname,
     setNickname,
@@ -74,8 +77,16 @@ export default function ProfileSetting() {
 
   useEffect(() => {
     if (!myData) return;
-    if (nickname === null) setNickname(myData.nickname);
-    if (introduction === null) setIntroduction(myData.introduction);
+
+    if (!nickname || nickname === '') {
+      setNickname(myData.nickname);
+    }
+    if (!localNickname || localNickname === '') {
+      setLocalNickname(myData.nickname);
+    }
+    if (!introduction || introduction === '') {
+      setIntroduction(myData.introduction);
+    }
     if (styleSelected === null)
       setStyleSelected(myData.companionStyle || 'SMALL');
     if (habitSelected === null)
@@ -140,11 +151,12 @@ export default function ProfileSetting() {
 
   const watchedNickname = watch('nickname');
   const isLocationValid = Boolean(cd1 && cd2 && cd3);
-  const isAllSelected = Boolean(nickname && isLocationValid && introduction);
+  const isAllSelected = Boolean(
+    nickname && isLocationValid && introduction && isNicknameValid
+  );
 
   const displayLocation =
     selectedLocation || [cd1, cd2, cd3].filter(Boolean).join(' ');
-
   const locationCards = locationData.map((data) => (
     <S.LocationCard
       key={`locationBtn_cd${data.cd}`}
@@ -158,7 +170,6 @@ export default function ProfileSetting() {
     setIntroduction(introductionContent);
     setIntroductionModal(false);
   };
-
   useEffect(() => {
     if (introductionModal) {
       document.body.style.overflow = 'hidden';
@@ -187,7 +198,6 @@ export default function ProfileSetting() {
     navigate('/my-page');
   };
 
-  useResetProfileEditStoreOnExit();
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error</p>;
 
@@ -242,13 +252,13 @@ export default function ProfileSetting() {
                 type="text"
                 placeholder="닉네임"
                 maxLength={8}
-                value={nickname || ''}
+                value={localNickname}
                 name={nicknameName}
                 ref={nicknameRef}
                 onChange={(e) => {
                   nicknameOnChange(e);
-                  setNickname(e.target.value);
-                  setValue('nickname', e.target.value);
+                  setLocalNickname(e.target.value);
+
                   setIsNicknameValidated(false);
                 }}
                 onBlur={(e) => {
@@ -256,9 +266,10 @@ export default function ProfileSetting() {
                 }}
               />
               <DuplicateNicknameButton
-                nickname={nickname || ''}
+                nickname={localNickname}
                 disabled={!!errors.nickname?.message}
                 onSuccess={() => {
+                  setNickname(localNickname);
                   setIsNicknameValidated(true);
                 }}
               />
@@ -295,7 +306,9 @@ export default function ProfileSetting() {
               />
               <S.ResetBtn onClick={onClickReset}>초기화</S.ResetBtn>
             </S.LocationContainer>
-            <S.LocationList>{locationCards}</S.LocationList>
+            {(cd1 === null || cd2 === null || cd3 === null) && (
+              <S.LocationList>{locationCards}</S.LocationList>
+            )}
           </S.Field>
           <S.Field>
             <S.Label>한줄 소개</S.Label>
@@ -312,6 +325,7 @@ export default function ProfileSetting() {
           </S.Field>
         </S.FieldContainer>
         <UpdateMyDataButton
+          nickname={nickname!}
           disabled={!isAllSelected}
           image={image}
           cd1={cd1 || ''}
