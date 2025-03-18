@@ -8,7 +8,6 @@ import ExerciseOption from './pages/exercise-option/ExerciseOption';
 import ProfileSetting from './pages/profile-setting/ProfileSetting';
 import Profile from './pages/profile/Profile';
 import Login from './pages/login/Login';
-import Introduction from './pages/introduction/Introduction';
 import Community from './pages/community/Community';
 import ChatLobby from './pages/chat-lobby/ChatLobby';
 import PostRegister from './pages/post-register/PostRegister';
@@ -29,6 +28,7 @@ import { useAccountExpiresStore } from './shared/store/account-expires-store';
 import Alert from './shared/ui/alert/Alert';
 import { useMyProfileStore } from './shared/store/my-profile-store';
 import Loader from './shared/ui/loader/Loader';
+import ResetProfileEditStoreOnExit from './features/my-page/providers/ useResetProfileEditStoreOnExit';
 
 function App() {
   const navigate = useNavigate();
@@ -65,6 +65,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <SocketProvider memberId={myData?.memberId}>
+        <ResetProfileEditStoreOnExit />
         <Routes>
           {/* 로그인 없이 접근 가능한 공개 라우트 */}
           <Route path="/login" element={<Login />} />
@@ -97,7 +98,6 @@ function App() {
             <Route path="/profile-setting">
               <Route index element={<ProfileSetting />} />
               <Route path="exercise-style" element={<ExerciseStyle />} />
-              <Route path="introduction" element={<Introduction />} />
             </Route>
             <Route path="/chat-lobby" element={<ChatLobby />} />
             <Route path="/chat/:chatRoomId" element={<Chat />} />
