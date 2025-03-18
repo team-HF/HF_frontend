@@ -4,6 +4,7 @@ import { useGetMyData } from '../../../shared/api/useGetMyData';
 import { useNavigate } from 'react-router-dom';
 
 export interface UpdateMyDataButtonProps {
+  nickname: string;
   disabled: boolean;
   image?: File;
   cd1?: string;
@@ -17,6 +18,7 @@ export interface UpdateMyDataButtonProps {
 }
 
 interface UpdateMyDataRequest {
+  nickname?: string;
   profileImageFileExtension?: string | null;
   name?: string;
   cd1?: string;
@@ -31,6 +33,7 @@ interface UpdateMyDataRequest {
 }
 
 export default function UpdateMyDataButton({
+  nickname,
   disabled,
   image,
   cd1,
@@ -63,6 +66,7 @@ export default function UpdateMyDataButton({
         : cd3;
 
     const requestData: UpdateMyDataRequest = {
+      nickname: nickname,
       profileImageFileExtension: imageFileExtension,
       cd1: cd1 || undefined,
       cd2: transformedCd2 || undefined,
