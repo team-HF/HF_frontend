@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axiosInstance from '../utils/useAxios';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axiosInstance from "../utils/useAxios";
 
 interface PostWishProps {
   wisherId: number | undefined;
@@ -8,7 +8,7 @@ interface PostWishProps {
 
 const deleteWish = async ({ wisherId, wishedId }: PostWishProps) => {
   const data = { wisherId, wishedId };
-  const response = await axiosInstance.delete('/hf/wish', { data });
+  const response = await axiosInstance.delete("/hf/wish", { data });
   return response.data;
 };
 
@@ -18,6 +18,7 @@ export const useDeleteWish = () => {
   return useMutation({
     mutationFn: deleteWish,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['myWishList'] });
+      queryClient.invalidateQueries({ queryKey: ["myWishList"] });
     },
   });
+};
