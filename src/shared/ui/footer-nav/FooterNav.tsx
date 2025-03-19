@@ -5,13 +5,13 @@ import profileIcon from "/svg/gnb-profile-icon.svg";
 import writeIcon from "/svg/gnb-write-icon.svg";
 
 const icons = [
-  { name: "chat", src: chatIcon, path: "/" },
+  { name: "chat", src: chatIcon, path: "/chat-lobby" },
   { name: "home", src: homeIcon, path: "/" },
-  { name: "profile", src: profileIcon, path: "/" },
+  { name: "profile", src: profileIcon, path: "/my-page" },
   {
     name: "write",
     src: writeIcon,
-    path: "/community?postCategory=ALL&fitnessLevel=ADVANCED",
+    path: "/community",
   },
 ];
 
@@ -21,7 +21,7 @@ export default function FooterNav() {
       <S.Icon
         src={item.src}
         alt={`${item.name}_icon`}
-        onClick={() => window.location.href = item.path}
+        onClick={() => (window.location.href = item.path)}
       />
     </S.NavBtn>
   ));

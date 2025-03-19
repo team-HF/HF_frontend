@@ -6,14 +6,10 @@ export const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   background-color: #f8f9fa;
-  padding: 0 10px;
-
-  @media (min-width: 768px) and (max-width: 991px) {
+  padding: 0 20px;
+  width: 340px;
+  @media (min-width: 768px) {
     width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    width: 67.5rem;
   }
 `;
 
@@ -24,6 +20,7 @@ export const StyleSpan = styled.span`
   letter-spacing: -0.0025em;
   text-align: center;
   color: #adb5bd;
+  white-space: nowrap;
 `;
 export const MiddleWrapper = styled.div`
   position: relative;

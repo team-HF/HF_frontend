@@ -1,26 +1,32 @@
 import { create } from "zustand";
+import {
+  TCommunityNotification,
+  TMatchNotification,
+} from "../types/notification";
+import { persist } from "zustand/middleware";
 
 export interface Notification {
-  id: string;
-  title: string;
   message: string;
-  timestamp: string;
+  type: TCommunityNotification | TMatchNotification;
+  time: string;
+  targetId: number;
 }
 
 interface NotificationStore {
-  notifications: Notification[];
   hasNewNotification: boolean;
-  addNotification: (notification: Notification) => void;
+  addNewNotification: () => void;
   markAsRead: () => void;
 }
-
-export const useNotificationStore = create<NotificationStore>((set) => ({
-  notifications: [],
-  hasNewNotification: false,
-  addNotification: (notification) =>
-    set((state) => ({
-      notifications: [notification, ...state.notifications],
-      hasNewNotification: true,
-    })),
-  markAsRead: () => set({ hasNewNotification: false }),
-}));
+export const useNotificationStore = create<NotificationStore>()(
+  persist(
+    (set) => ({
+      hasNewNotification: false,
+      addNewNotification: () => set({ hasNewNotification: true }),
+      markAsRead: () => set({ hasNewNotification: false }),
+    }),
+    {
+      name: "notification-storage",
+      getStorage: () => localStorage,
+    }
+  )
+);

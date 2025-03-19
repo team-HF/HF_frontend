@@ -1,19 +1,18 @@
-import { useAxios as Axios } from "../../../shared/utils/useAxios";
+import axiosInstance from "../../../shared/utils/useAxios";
 import { useGetParams as getParams } from "../../../shared/utils/useGetParams";
 
 export const getPostList = async (currentPage: number) => {
   const postCategory = getParams("postCategory");
   const fitnessLevel = getParams("fitnessLevel");
-  const { axiosInstance } = Axios();
 
   const URL = postCategory === "POPULAR" ? `/hf/popularList` : `/hf/list`;
 
   const params = {
     page: currentPage,
-    size: 5,
+    size: 10,
     ...((postCategory === "FREE_COMMUNITY" ||
       postCategory === "COUNSELING") && { postCategory }),
-    ...(fitnessLevel && { fitnessLevel }),
+    ...(fitnessLevel && fitnessLevel !== "ALL" && { fitnessLevel }),
   };
 
   try {
@@ -22,16 +21,15 @@ export const getPostList = async (currentPage: number) => {
     });
 
     const content = response.data.content;
-    if (!Array.isArray(content)) {
+    if (!Array.isArray(content.postList)) {
       throw new Error("Invalid data: 'content' is not an array.");
     }
-
     const totalPages =
-      content.length > 0 ? content[0].totalPageSize : currentPage;
+      content.postList.length > 0 ? content.totalPageSize : currentPage;
 
     return {
       totalPages,
-      newPostList: content,
+      newPostList: content.postList,
     };
   } catch (error) {
     console.error("Error fetching post list:", error);

@@ -4,7 +4,7 @@ import {
   CouponResponse,
   CouponResponseSchema,
 } from '../../../shared/schema/coupon';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 
 const getMyCoupons = async (
   axiosInstance: AxiosInstance,
@@ -18,16 +18,15 @@ const getMyCoupons = async (
 };
 
 export const useGetMyCoupons = (memberId: number, filterType: string) => {
-  const { axiosInstance } = useAxios();
 
   const filterTypeMap: Record<
     string,
     'ALL' | 'AVAILABLE' | 'USED' | 'EXPIRED'
   > = {
     전체: 'ALL',
-    사용가능: 'AVAILABLE',
-    사용완료: 'USED',
-    만료: 'EXPIRED',
+    '사용 가능 쿠폰': 'AVAILABLE',
+    '사용 완료 쿠폰': 'USED',
+    '만료 쿠폰': 'EXPIRED',
   };
 
   return useQuery({
@@ -35,5 +34,6 @@ export const useGetMyCoupons = (memberId: number, filterType: string) => {
     queryFn: () =>
       getMyCoupons(axiosInstance, memberId, filterTypeMap[filterType] || 'ALL'),
     staleTime: 5 * 60 * 1000,
+    retry: 3,
   });
 };

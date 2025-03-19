@@ -1,4 +1,3 @@
-// src/features/chat/useRequestChat.ts
 import { useContext, useCallback } from 'react';
 import { SocketContext } from '../../../app/providers/SocketProvider';
 
@@ -20,7 +19,6 @@ export function useRequestChat() {
   const requestChat = useCallback(
     (payload: ChatParticipationRequestDto) => {
       if (!stompClient) {
-        console.warn('STOMP client not ready');
         return;
       }
       stompClient.publish({

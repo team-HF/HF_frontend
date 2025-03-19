@@ -2,18 +2,23 @@ import { styled } from 'styled-components';
 
 export const Container = styled.div`
   width: 360px;
-  box-sizing: border-box;
   display: flex;
-  justify-self: center;
   flex-direction: column;
-  max-height: 100vh;
+  height: 100vh;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
   @media (min-width: 768px) {
-    width: 640px;
+    width: 40rem;
   }
+`;
 
-  @media (min-width: 1200px) {
-    width: 1080px;
-  }
+export const Content = styled.div`
+  width: 100%;
+  flex: 1;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const DetailDiv = styled.div`
@@ -34,20 +39,13 @@ export const DetailDiv = styled.div`
   letter-spacing: -0.01em;
   color: #ffffff;
   align-items: center;
-
   @media (min-width: 768px) {
-    width: 640px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 1080px;
+    width: 40rem;
   }
 `;
 
 export const BottomWrapper = styled.div`
-  margin-top: auto;
+  flex-shrink: 0;
   width: 100%;
-  display: flex;
-  margin-bottom: 40px;
-  margin-top: -40px;
+  padding: 16px;
 `;

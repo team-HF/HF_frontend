@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div<{ type: string }>`
   width: 320px;
-  height: 118px;
+  height: 100vh;
   border: 1px solid #e8e3fd;
   border-radius: 8px;
   background: ${(props) => (props.type === 'EXPIRED' ? '#DEE2E6' : '#ffffff')};
@@ -12,10 +12,6 @@ export const Container = styled.div<{ type: string }>`
   flex-direction: column;
   @media (min-width: 768px) {
     width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    width: 67.5rem;
   }
 `;
 export const CouponTitleWrapper = styled.div`
@@ -61,6 +57,10 @@ export const FilterContainer = styled.div`
   display: flex;
   position: relative;
   margin-left: auto;
+  margin-right: 20px;
+  @media (min-width: 768px) {
+    margin-right: 0px;
+  }
 `;
 
 export const FilterButton = styled.div`
@@ -75,6 +75,8 @@ export const FilterButton = styled.div`
   align-items: center;
   font-size: 14px;
   color: #000000;
+  box-sizing: border-box;
+  margin-top: -10px;
 
   &:hover {
     background-color: #e9e4fc;
@@ -85,10 +87,10 @@ export const Dropdown = styled.div`
   position: absolute;
   box-shadow: 4px 4px 8px 0px #00000040;
   z-index: 101;
-  top: 120%;
+  top: calc(100% + 8px);
   border: 1px solid #cfc4fb;
   width: 140px;
-  height: 96px;
+  height: 136px;
   border-radius: 8px;
   background-color: #fff;
   display: flex;

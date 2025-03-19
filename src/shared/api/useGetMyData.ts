@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAxios } from "../utils/useAxios";
+import axiosInstance from "../utils/useAxios";
 import { AxiosInstance } from "axios";
 import { MyData, MyDataSchema } from "../schema/my-data";
+import Cookies from "js-cookie";
 
 const getMyData = async (axiosInstance: AxiosInstance): Promise<MyData> => {
   const response = await axiosInstance.get("/oauth/token/me");
@@ -9,9 +10,12 @@ const getMyData = async (axiosInstance: AxiosInstance): Promise<MyData> => {
 };
 
 export const useGetMyData = () => {
-  const { axiosInstance } = useAxios();
+  const accessToken = Cookies.get("access_token");
+  const isNewMember = Cookies.get("is_new_member");
   return useQuery({
     queryKey: ["myData"],
     queryFn: () => getMyData(axiosInstance),
+    enabled: !!accessToken && isNewMember === "false",
+    retry: false,
   });
 };

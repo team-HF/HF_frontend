@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 import { useQuery } from '@tanstack/react-query';
 
 const duplicateNickname = async (
@@ -16,7 +16,6 @@ const duplicateNickname = async (
 };
 
 export const useGetDuplicateNickname = (nickname: string | null) => {
-  const { axiosInstance } = useAxios();
   return useQuery({
     queryKey: ['nickname', nickname],
     queryFn: () => {
@@ -25,6 +24,6 @@ export const useGetDuplicateNickname = (nickname: string | null) => {
       }
       return duplicateNickname(axiosInstance, nickname);
     },
-    enabled: !!nickname,
+    enabled: false,
   });
 };

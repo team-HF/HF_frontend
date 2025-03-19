@@ -15,6 +15,7 @@ export type TSpec = {
 type ProfileStore = {
   image: File | null;
   nickname: string;
+  lastValidatedNickname: string;
   dateYear: string | null;
   dateMonth: string | null;
   dateDay: string | null;
@@ -26,6 +27,7 @@ type ProfileStore = {
   specs: TSpec[];
   setImage: (option: File) => void;
   setNickname: (option: string) => void;
+  setLastValidatedNickname: (option: string) => void;
   setDateYear: (option: string) => void;
   setDateMonth: (option: string) => void;
   setDateDay: (option: string) => void;
@@ -41,6 +43,7 @@ type ProfileStore = {
 export const useProfileStore = create<ProfileStore>((set) => ({
   image: null,
   nickname: "",
+  lastValidatedNickname: "",
   dateYear: null,
   dateMonth: null,
   dateDay: null,
@@ -52,6 +55,7 @@ export const useProfileStore = create<ProfileStore>((set) => ({
   specs: [],
   setImage: (option) => set({ image: option }),
   setNickname: (option) => set({ nickname: option }),
+  setLastValidatedNickname: (option) => set({ lastValidatedNickname: option }),
   setDateYear: (option) => set({ dateYear: option }),
   setDateMonth: (option) => set({ dateMonth: option }),
   setDateDay: (option) => set({ dateDay: option }),

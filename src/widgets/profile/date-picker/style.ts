@@ -48,6 +48,7 @@ export const Option = styled.button`
   border-bottom: 1px solid #dee2e6;
   background-color: white;
   padding: 0.5rem;
+  cursor: pointer;
   &:last-child {
     border-bottom: 0;
   }

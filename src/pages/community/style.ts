@@ -4,12 +4,14 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 20rem;
-  height: auto;
+  flex: 1;
   @media (min-width: 768px) {
     width: 40rem;
   }
 `;
 export const PostContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 100%;
+  flex: 1;
 `;

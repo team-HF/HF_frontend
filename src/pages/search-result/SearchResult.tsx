@@ -5,16 +5,16 @@ import PageForm from "../../shared/ui/page-form/PageForm";
 import SearchModal from "../../widgets/profile-search/search-modal/SearchModal";
 import UserProfileCard from "../../shared/ui/user-profile-card/UserProfileCard";
 import PostPreviewList from "../../shared/ui/post-preview-list/PostPreviewList";
-import { FitnessLevel } from "../../shared/types/user";
-import {
-  CompanionStyle,
-  FitnessEagerness,
-  FitnessKind,
-  FitnessObjective,
-} from "../../shared/constants/fitness-category";
+import { User } from "../../shared/types/user";
+import { useSearchValueStore } from "../../shared/store/search-value-store";
+import { FitnessLevel } from "../../shared/constants/fitness-category";
+import { useNavigate } from "react-router-dom";
+import { useLocationStore } from "../../shared/store/location-store";
+import { TCategory } from "../../entities/community/filter-data";
 
+// ❕추후에 타입 통일 필요
 type TPost = {
-  category: string;
+  category: TCategory;
   commentCount: number;
   content: string;
   creationTime: string;
@@ -27,33 +27,25 @@ type TPost = {
   viewCount: number;
 };
 
-export type TProfile = {
-  companionStyle: CompanionStyle;
-  fitnessEagerness: FitnessEagerness;
-  fitnessKind: FitnessKind;
-  fitnessLevel: FitnessLevel;
-  fitnessObjective: FitnessObjective;
-  introduction: string;
-  matchedCount: number;
-  nickname: string;
-  profileImageUrl: string | null;
-  wishCount: number;
-  memberId: number;
-};
-
 const SearchResult = () => {
+  const navigate = useNavigate();
+  const { reset } = useLocationStore();
+
   const [searchResult, setSearchResult] = useState({
     postList: [],
     postListSize: 0,
     profileList: [],
     profileListSize: 0,
   });
-  console.log(searchResult);
   const [searchBarOpen, setSearchBarOpen] = useState<boolean>(false);
 
-  const profiles = searchResult.profileList.map((profile: TProfile, idx) => {
-    return <UserProfileCard key={`user_${idx}`} {...profile} />;
-  });
+  const { keyword } = useSearchValueStore();
+
+  const profiles = searchResult.profileList.map(
+    (profile: User, idx) => {
+      return <UserProfileCard key={`user_${idx}`} {...profile} />;
+    }
+  );
 
   const posts = searchResult.postList.map((post: TPost, idx) => {
     return <PostPreviewList key={`community_post_${idx}`} {...post} />;
@@ -61,20 +53,29 @@ const SearchResult = () => {
 
   useEffect(() => {
     (async () => {
-      const searchResult = await getSearchData();
-      setSearchResult(searchResult);
+      if (!searchBarOpen) {
+        const searchResult = await getSearchData(1);
+        if (searchResult) setSearchResult(searchResult);
+      }
     })();
-  }, []);
+  }, [searchBarOpen]);
 
   return (
-    <PageForm isGNB={true}>
+    <PageForm isGNB={true} isFooter={true}>
       <S.Container>
         <S.Box className="search_bar">
-          <S.IconBtn>
+          <S.IconBtn
+            onClick={() => {
+              reset();
+              navigate("/");
+            }}
+          >
             <S.ArrowIcon className="back" src="/svg/arrow-down.svg" />
           </S.IconBtn>
           <S.InputContainer onClick={() => setSearchBarOpen(true)}>
-            <S.SearchInput>검색 키워드</S.SearchInput>
+            <S.SearchInput value={keyword}>
+              {keyword ? keyword : "운동 스타일, 키워드로 검색"}
+            </S.SearchInput>
             <S.IconBox>
               <img src="/svg/search-icon.svg" />
             </S.IconBox>
@@ -90,13 +91,19 @@ const SearchResult = () => {
                 </S.ResultTile>
               </S.Box>
               {profiles.length > 5 && (
-                <S.ShowAllBtn>
+                <S.ShowAllBtn
+                  onClick={() => {
+                    navigate(
+                      `/?filter=matchedCount` + `&${window.location.search}`
+                    );
+                  }}
+                >
                   모두 보기
                   <S.ArrowIcon className="front" src="/svg/arrow-down.svg" />
                 </S.ShowAllBtn>
               )}
             </S.Box>
-            <S.Box className="column gap_16">
+            <S.Box className="wrap gap_16">
               {profiles.length ? (
                 profiles
               ) : (

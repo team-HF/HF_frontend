@@ -20,7 +20,14 @@ const LocationSelectBar = () => {
 
   const getLocationData = async () => {
     const result = await getSgisLocationData(cd3 || cd2 || cd1);
-    setLocationData(result);
+
+    if (!result) {
+      await getSgisApiAccessToken();
+      const reloadResult = await getSgisLocationData(cd3 || cd2 || cd1);
+      setLocationData(reloadResult);
+    } else {
+      setLocationData(result);
+    }
   };
 
   const onClickLocationCard = (cd: string, full_addr: string) => {
@@ -31,17 +38,44 @@ const LocationSelectBar = () => {
   };
 
   const onClickReset = () => {
-    reset();
     setUserLocation("");
+    reset();
   };
 
   useEffect(() => {
-    getSgisApiAccessToken();
-  }, []);
+    const sgisToken = sessionStorage.getItem("sgisAccessToken");
+    if (!sgisToken) {
+      getSgisApiAccessToken().then(() => getLocationData());
+    } else {
+      getLocationData();
+    }
+  }, [cd1, cd2, cd3]);
 
   useEffect(() => {
-    getLocationData();
-  }, [cd1, cd2, cd3]);
+    (async () => {
+      if (cd3) {
+        const result = await getSgisLocationData(cd2);
+        const locName = result.filter(
+          (loc: { cd: string }) => loc.cd === cd3
+        )[0].full_addr;
+        setUserLocation(locName);
+      } else if (cd2) {
+        const result = await getSgisLocationData(cd1);
+        const locName = result.filter(
+          (loc: { cd: string }) => loc.cd === cd2
+        )[0].full_addr;
+        setUserLocation(locName);
+      } else if (cd1) {
+        const result = await getSgisLocationData(null);
+        const locName = result.filter(
+          (loc: { cd: string }) => loc.cd === cd1
+        )[0].full_addr;
+        setUserLocation(locName);
+      } else {
+        return;
+      }
+    })();
+  }, []);
 
   const locationCards = locationData.map((data) => (
     <S.LocationCard

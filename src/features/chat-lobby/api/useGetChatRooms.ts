@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { ChatContent, MatchingStatus } from '../model/chat-lobby.types';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 import { useQuery } from '@tanstack/react-query';
 
 type ChatRoomProps = {
@@ -38,7 +38,6 @@ export const useGetChatRooms = ({
   page = 1,
   pageSize = 10,
 }: ChatRoomProps) => {
-  const { axiosInstance } = useAxios();
 
   return useQuery<ChatContent[]>({
     queryKey: [

@@ -21,8 +21,8 @@ const CategoryBar = () => {
       setLabelSelected("WEEKEND");
       navigate(`/community?postCategory=${id}`);
     } else {
-      setFilterSelected("ADVANCED");
-      navigate(`/community?postCategory=${id}&fitnessLevel=ADVANCED`);
+      setFilterSelected("ALL");
+      navigate(`/community?postCategory=${id}`);
     }
   };
   const filterList = categoryData.map((data) => (

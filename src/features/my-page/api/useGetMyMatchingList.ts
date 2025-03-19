@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import {
   MatchingResponse,
@@ -32,7 +32,6 @@ export const useGetMyMatchingList = (
   memberId: number,
   filterStatus: string
 ) => {
-  const { axiosInstance } = useAxios();
 
   const filterStatusMap: Record<string, string> = {
     전체: 'ALL',

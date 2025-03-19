@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { useProfileStore } from "../store/profile-store";
-import { useAxios } from "../../../shared/utils/useAxios";
+import axiosInstance from "../../../shared/utils/useAxios";
 import { useGetParams } from "../../../shared/utils/useGetParams";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosInstance } from "axios";
@@ -43,11 +43,9 @@ const postNewMember = async (
   axiosInstance: AxiosInstance,
   userData: TUserData
 ) => {
-  const accessToken = Cookies.get("access_token");
   try {
     const response = await axiosInstance.post("/hf/members", userData, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -62,18 +60,15 @@ const uploadImageFile = async (
   url: string,
   image: File
 ) => {
-  const accessToken = Cookies.get("access_token");
   const response = await axiosInstance.put(url, image, {
     headers: {
       "Content-Type": image?.type,
-      Authorization: `Bearer ${accessToken}`,
     },
   });
   return response.data;
 };
 
 export default function SaveButton({ disabled }: SaveButtonProps) {
-  const { axiosInstance } = useAxios();
   const navigate = useNavigate();
 
   const companionStyle = useGetParams("companionStyle");

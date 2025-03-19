@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { TProfile } from "../../../pages/search-result/SearchResult";
 import {
   getCompanionStyleText,
   getFITNESS_OBJECTIVE_MAP,
@@ -9,8 +8,9 @@ import {
 import ExerciseTag from "../exercise-tag/ExerciseTag";
 import TierTag from "../tier-tag/TierTag";
 import * as S from "./style";
+import { User } from "../../types/user";
 
-const UserProfileCard = (profile: TProfile) => {
+const UserProfileCard = (profile: User) => {
   const navigate = useNavigate();
   return (
     <S.Container
@@ -19,7 +19,13 @@ const UserProfileCard = (profile: TProfile) => {
       }}
     >
       <S.profileContainer>
-        <S.ProfileImage src={"/svg/default-profile-icon.svg"} />
+        <S.ProfileImage
+          src={
+            profile?.profileImageUrl
+              ? `http://localhost:8080/${profile?.profileImageUrl}`
+              : "/svg/default-profile-icon.svg"
+          }
+        />
         <S.Box className="gap_8 column">
           <S.Box className="align-items-center gap_8">
             <S.Nickname>{profile.nickname}</S.Nickname>

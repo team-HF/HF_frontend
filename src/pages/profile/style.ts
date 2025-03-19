@@ -25,6 +25,7 @@ export const ProfileImageLabel = styled.label`
   align-items: center;
   width: 7.5rem;
   height: 7.5rem;
+  cursor: pointer;
 `;
 
 export const DefaultUserImage = styled.img`
@@ -137,12 +138,18 @@ export const genderBtn = styled.button<{ selected: boolean }>`
   font-size: 0.938rem;
   line-height: 1.467rem;
   letter-spacing: -0.0096rem;
+  cursor: pointer;
 `;
 
 export const ErrorMessage = styled.span`
-  font-size: 0.75rem;
   margin-top: 0.25rem;
+  font-size: 0.688rem;
+  line-height: 1.273rem;
+  letter-spacing: -0.0031rem;
   color: #ff0000;
+  &.valid {
+    color: ${theme.colors.success};
+  }
 `;
 
 export const LocationContainer = styled.div`
@@ -207,7 +214,7 @@ export const Header = styled.div`
   padding: 0.5rem 0;
 `;
 
-export const IntroductionContent = styled.span<{ filled: boolean }>`
+export const IntroductionContent = styled.span<{ $filled: boolean }>`
   padding: 0.625rem;
   width: 100%;
   border: 0;
@@ -215,8 +222,11 @@ export const IntroductionContent = styled.span<{ filled: boolean }>`
   font-size: 0.938rem;
   line-height: 1.467rem;
   letter-spacing: -0.0096rem;
-  color: ${({ filled }) => (filled ? theme.colors.black : "#8E8E8E")};
+  color: ${({ $filled }) => ($filled ? theme.colors.black : "#8E8E8E")};
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const InputContainer = styled.div`
@@ -263,9 +273,10 @@ export const StoreBtn = styled.button`
   color: ${theme.colors.white};
   background-color: ${theme.colors.main};
   margin-top: auto;
-  margin: 40px 0;
+  margin: 2.5rem 0;
   font-size: 1rem;
   line-height: 1rem;
   letter-spacing: -0.031rem;
   font-weight: 600;
+  cursor: pointer;
 `;

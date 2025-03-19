@@ -6,19 +6,8 @@ export const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
 
-  @media (min-width: 768px) and (max-width: 991px) {
-    /* 태블릿 세로 방향 */
+  @media (min-width: 768px) {
     width: 40rem;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    /* 태블릿 가로 방향 */
-    width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 67.5rem;
   }
 `;
 export const HeaderWrapper = styled.div`
@@ -44,4 +33,72 @@ export const NoMatchingChatSubText = styled.span`
   font-weight: 400;
   font: ${theme.fontSize.cation_1};
   color: #8e8e93;
+`;
+
+export const FilterContainer = styled.div`
+  display: flex;
+  position: relative;
+  margin-top: 8px;
+`;
+
+export const FilterButton = styled.div`
+  display: flex;
+  width: 140px;
+  height: 32px;
+  padding: 8px 16px;
+  background-color: #fff;
+  border: 1px solid #cfc4fb;
+  border-radius: 8px;
+  cursor: pointer;
+  align-items: center;
+  font-size: 14px;
+  color: #000000;
+  margin-left: auto;
+  margin-right: 20px;
+
+  &:hover {
+    background-color: #e9e4fc;
+  }
+`;
+
+export const Dropdown = styled.div`
+  position: absolute;
+  box-shadow: 4px 4px 8px 0px #00000040;
+  z-index: 101;
+  top: 120%;
+  right: 20px;
+  border: 1px solid #cfc4fb;
+  width: 140px;
+  height: 136px;
+  border-radius: 8px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
+
+export const DropdownItem = styled.div`
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 22.01px;
+  font-weight: 400;
+  color: #000000;
+  background-color: #fff;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e9e4fc;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #cfc4fb;
+  }
+`;
+
+export const DropdownArrowWrapper = styled.div`
+  display: flex;
+  margin-left: auto;
 `;

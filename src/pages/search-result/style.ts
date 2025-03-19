@@ -33,6 +33,9 @@ export const Box = styled.div`
   &.gap_32 {
     gap: 2rem;
   }
+  &.wrap {
+    flex-wrap: wrap;
+  }
 `;
 export const IconBtn = styled.button`
   background-color: white;
@@ -69,13 +72,13 @@ export const IconBox = styled.div`
   width: 1.5rem;
   height: 1.5rem;
 `;
-export const SearchInput = styled.span`
+export const SearchInput = styled.span<{ value: string }>`
   border: 0;
   font-size: 1rem;
   line-height: 1.25rem;
   letter-spacing: 0.021rem;
   font-weight: 600;
-  color: ${theme.colors.gray4};
+  color: ${({ value }) => (value ? "black" : theme.colors.gray4)};
 `;
 export const ProfileContainer = styled.div`
   display: flex;
@@ -107,6 +110,7 @@ export const EmptyList = styled.p`
   align-items: center;
   border: 1px dashed ${theme.colors.gray3};
   border-radius: 0.5rem;
+  width: 100%;
   height: 200px;
   font-size: 0.875rem;
   line-height: 1.334rem;

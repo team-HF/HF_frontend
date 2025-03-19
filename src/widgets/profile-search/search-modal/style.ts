@@ -93,6 +93,7 @@ export const GenderBtn = styled.button<{ selected: boolean }>`
   border-radius: 2.125rem;
   color: ${theme.colors.gray5};
   flex: 1;
+  cursor: pointer;
   ${({ selected }) =>
     selected &&
     css`
@@ -111,6 +112,7 @@ export const ExerciseTag = styled.button<{ selected: boolean }>`
   background-color: ${theme.colors.white};
   border-radius: 2.125rem;
   color: ${theme.colors.gray5};
+  cursor: pointer;
   ${({ selected }) =>
     selected &&
     css`

@@ -7,14 +7,9 @@ export const Container = styled.div`
   width: 22.5rem;
   margin-left: auto;
   margin-right: auto;
+  min-height: 100vh;
   @media (min-width: 768px) {
-    /* 태블릿 세로 방향 */
     width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 67.5rem;
   }
 `;
 
@@ -35,13 +30,7 @@ export const MatchingContainer = styled.div`
   align-items: center;
   gap: 11px;
   @media (min-width: 768px) {
-    /* 태블릿 세로 방향 */
     width: 40rem;
-  }
-
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 67.5rem;
   }
 `;
 

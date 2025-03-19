@@ -1,3 +1,4 @@
+
 import * as S from './style';
 import TierTag from '../../../shared/ui/tier-tag/TierTag';
 import ExerciseTag from '../../../shared/ui/exercise-tag/ExerciseTag';
@@ -10,38 +11,71 @@ import { useUserDetailStore } from '../../../pages/profile/store/user-detail-sto
 import { usePostWish as postWish } from '../../../shared/api/usePostWish';
 import { SocketContext } from '../../../app/providers/SocketProvider';
 import { useRequestChat } from '../../../features/matching/api/useRequestNewChat';
+import { useMyProfileStore } from '../../../shared/store/my-profile-store';
+import { useDeleteWish } from '../../../shared/api/useDeleteWish';
+import useSetRequireModal from '../../../shared/utils/useSetRequireModal';
+import { useNavigate } from 'react-router-dom';
 
 const UserDataDefault = () => {
   const { userProfile } = useUserProfileStore();
   const { userDetail } = useUserDetailStore();
+  const { myProfile } = useMyProfileStore();
+  const { requestChat } = useRequestChat();
+  const setRequireModal = useSetRequireModal();
+
+  const { mutate: deleteWish } = useDeleteWish();
+  const [location, setLocation] = useState<string>('');
+  const [wishState, setWishState] = useState<boolean>(false);
+
   const socket = useContext(SocketContext);
   const requesterId = socket?.memberId;
   const chatTargetId = userProfile?.memberId;
-  const [location, setLocation] = useState<string>('');
-  const { requestChat } = useRequestChat();
-  // const [wished, setWished] = useState<boolean>(false);
-  const createChat = () => {
-    if (requesterId && chatTargetId) {
-      requestChat({ requesterId, chatTargetId });
-    } else {
-      alert('채팅방 생성에 실패하였습니다.');
-    }
-    // navigate('/chat');
-    console.log('채팅방 생성 성공');
-  };
-  const handleFriendRequest = () => {
-    if (!userProfile?.memberId) {
-      alert("상대방 정보가 없습니다.");
-      return;
-    }
-    createChat();
-  };
+  const navigate = useNavigate();
   const exerciseStyle = [
     { id: "companionStyle", content: userProfile?.companionStyle },
     { id: "fitnessEagerness", content: userProfile?.fitnessEagerness },
     { id: "fitnessKind", content: userProfile?.fitnessKind },
     { id: "fitnessObjective", content: userProfile?.fitnessObjective },
   ];
+
+  const createChat = () => {
+    if (requesterId && chatTargetId) {
+      requestChat({ requesterId, chatTargetId });
+    } else {
+      alert("채팅방 생성에 실패하였습니다.");
+    }
+  };
+
+  const handleFriendRequest = () => {
+    if (!userProfile?.memberId) {
+      alert("상대방 정보가 없습니다.");
+      return;
+    } else if (!requesterId) {
+      alert("로그인 후 이용해주세요.");
+      navigate("/login");
+      return;
+    }
+    createChat();
+  };
+
+  const clickWishBtn = () => {
+    const handleWish = async () => {
+      if (myProfile && userProfile) {
+        const data = {
+          wisherId: myProfile?.memberId,
+          wishedId: userProfile?.memberId,
+        };
+        if (userProfile?.isWished) {
+          deleteWish(data);
+          setWishState(false);
+        } else {
+          await postWish(data);
+          setWishState(true);
+        }
+      }
+    };
+    setRequireModal(handleWish);
+  };
 
   const exerciseTags = exerciseStyle.map((style) => {
     if (style.content) {
@@ -53,6 +87,7 @@ const UserDataDefault = () => {
   useEffect(() => {
     (async () => {
       if (userProfile) {
+        setWishState(userProfile.isWished);
         await getSgisApiAccessToken();
         const result = await getSgisLocation(
           `${userProfile?.cd1}${userProfile?.cd2}`,
@@ -114,8 +149,10 @@ const UserDataDefault = () => {
         <S.SignUpBtn onClick={handleFriendRequest}>
           헬스 프렌즈 신청하기
         </S.SignUpBtn>
-        <S.IconBtn onClick={() => postWish({ wishedId: 2, wisherId: 1 })}>
-          <img src="/svg/heart-icon.svg" />
+        <S.IconBtn onClick={clickWishBtn}>
+          <img
+            src={wishState ? "/svg/wish-true-icon.svg" : "/svg/heart-icon.svg"}
+          />
         </S.IconBtn>
       </S.Box>
       <S.Box className="padding_24">

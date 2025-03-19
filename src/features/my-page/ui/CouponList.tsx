@@ -28,7 +28,7 @@ export default function CouponList() {
     });
   };
 
-  const { data, isLoading, isError } = useGetMyCoupons(memberId, filterStatus);
+  const { data } = useGetMyCoupons(memberId, filterStatus);
   const coupons = data?.content ?? [];
 
   function formatPeriod(grantTime: string, expirationTime: string) {
@@ -42,9 +42,6 @@ export default function CouponList() {
 
     return `${format(grantTime)}~${format(expirationTime)}`;
   }
-
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error</p>;
 
   return (
     <>

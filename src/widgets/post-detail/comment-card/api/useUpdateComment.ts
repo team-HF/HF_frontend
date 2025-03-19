@@ -1,15 +1,12 @@
 import axios from "axios";
-import { useAxios as Axios } from "../../../../shared/utils/useAxios";
+import axiosInstance from "../../../../shared/utils/useAxios";
 
 export const useUpdateComment = async (commentId: number, content: string) => {
-  const { axiosInstance } = Axios();
   try {
-    const response = await axiosInstance.patch(`/hf/comments/${commentId}`, {
+    await axiosInstance.patch(`/hf/comments/${commentId}`, {
       content,
     });
-
-    console.log("수정 성공:", response.data);
-    return response.data;
+    window.location.reload();
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Error Response:", error.response);

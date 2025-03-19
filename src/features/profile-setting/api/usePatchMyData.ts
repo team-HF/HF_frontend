@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAxios } from '../../../shared/utils/useAxios';
+import axiosInstance from '../../../shared/utils/useAxios';
 import { AxiosInstance } from 'axios';
 import {
   UpdateMyData,
@@ -16,7 +16,6 @@ const patchMyData = async (
 };
 
 export const usePatchMyData = (memberId: number) => {
-  const { axiosInstance } = useAxios();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: Partial<UpdateMyData>) =>
@@ -25,8 +24,8 @@ export const usePatchMyData = (memberId: number) => {
       queryClient.invalidateQueries({ queryKey: ['myData', memberId] });
       alert('회원 정보 수정이 완료되었습니다.');
     },
-    onError: (error) => {
-      console.error('Error Response:', error.message);
+    onError: () => {
+      alert('회원 정보 수정에 실패하였습니다.');
     },
   });
 };

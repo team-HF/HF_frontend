@@ -43,10 +43,6 @@ export const Level = styled.div<{ $fitnessLevel: string; $isActive: boolean }>`
     width: 126px;
   }
 
-  @media (min-width: 1200px) {
-    /* 데스크톱 */
-    width: 215px;
-  }
   &:first-child {
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;

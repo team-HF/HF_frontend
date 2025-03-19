@@ -27,7 +27,7 @@ export const Container = styled.div`
 export const TitleContainer = styled.div`
   display: flex;
   padding: 1rem;
-
+  height: 2.875rem;
   justify-content: space-between;
   align-items: center;
 `;
@@ -42,6 +42,7 @@ export const IconBtn = styled.button`
   background-color: ${theme.colors.white};
   width: 1.125rem;
   height: 1.125rem;
+  cursor: pointer;
 `;
 export const CloseIcon = styled.img`
   width: 1.125rem;
@@ -53,17 +54,20 @@ export const CategoryContainer = styled.div`
   margin-bottom: 1rem;
   gap: 0.375rem;
 `;
-export const CategoryTag = styled.button`
+export const CategoryTag = styled.button<{ $isValidValue: boolean }>`
   display: flex;
   border: 1px solid ${theme.colors.gray3};
   border-radius: 2rem;
-  background-color: ${theme.colors.white};
-  color: ${theme.colors.gray5};
+  background-color: ${({ $isValidValue }) =>
+    $isValidValue ? theme.colors.main : theme.colors.white};
+  color: ${({ $isValidValue }) =>
+    $isValidValue ? theme.colors.white : theme.colors.gray5};
   font-size: 0.875rem;
   line-height: 1rem;
   letter-spacing: -0.01rem;
   font-weight: 600;
   padding: 0.5rem 0.625rem;
+  cursor: pointer;
 `;
 export const MessageContainer = styled.div`
   display: flex;

@@ -11,6 +11,7 @@ import { useDeleteComment as deleteComment } from "./api/useDeleteComment";
 import { useGetCommentLike as getCommentLike } from "./api/useGetCommentLike";
 import { useDeletePostLike as deletePostLike } from "../post-content/api/useDeletePostLike";
 import { usePostCommentLike as postCommentLike } from "./api/usePostCommentLike";
+import useSetRequireModal from "../../../shared/utils/useSetRequireModal";
 
 interface ReplyProps {
   data: TReply;
@@ -20,54 +21,69 @@ interface ReplyProps {
 
 const ReplyCard = ({ data, parentTag, setOpenInput }: ReplyProps) => {
   const { myProfile } = useMyProfileStore();
+  const setRequireModal = useSetRequireModal();
+
   const [likeStatus, setLikeStatus] = useState<TLike | null>(null);
   const [commentUpdate, setCommentUpdate] = useState<boolean>(false);
   const [updateValue, setUpdateValue] = useState<string>(data.content);
 
-  const updateReply = () => {
+  const clickLikeIcon = () => {
+    const changeLike = async () => {
+      if (likeStatus) {
+        if (typeof likeStatus !== "number") {
+          const response = await deletePostLike(likeStatus.likeId);
+          if (response.statusCode === 200) {
+            setLikeStatus(null);
+          }
+        }
+      } else {
+        const response = await postCommentLike(
+          data.commentId,
+          myProfile?.memberId
+        );
+        if (response.statusCode === 201) {
+          const likeData = {
+            commentId: data.commentId,
+            likeId: response.content as number,
+            memberId: myProfile?.memberId as number,
+          };
+          setLikeStatus(likeData);
+        }
+      }
+    };
+    setRequireModal(changeLike);
+  };
+
+  const updateReplyState = () => {
     setUpdateValue(data.content);
     setCommentUpdate(true);
   };
 
-  const updateDone = async () => {
-    if (updateValue) {
-      await updateComment(data.commentId, updateValue);
-    }
+  const clickUpdateDoneBtn = () => {
+    const updateDone = async () => {
+      if (updateValue) {
+        await updateComment(data.commentId, updateValue);
+      }
+    };
+    setRequireModal(updateDone);
   };
 
-  const deleteReply = async () => {
-    await deleteComment(data.commentId);
-  };
-
-  const changeLike = async () => {
-    if (likeStatus) {
-      if (typeof likeStatus !== "number") {
-        const response = await deletePostLike(likeStatus.likeId);
-        if (response.statusCode === 200) {
-          setLikeStatus(null);
-        }
-      }
-    } else {
-      const response = await postCommentLike(
-        data.commentId,
-        myProfile?.memberId
-      );
-      if (response.statusCode === 201) {
-        const likeData = {
-          commentId: data.commentId,
-          likeId: response.content as number,
-          memberId: myProfile?.memberId as number,
-        };
-        setLikeStatus(likeData);
-      }
-    }
+  const clickDeleteBtn = () => {
+    const deleteCurrentReply = async () => {
+      await deleteComment(data.commentId);
+    };
+    setRequireModal(deleteCurrentReply);
   };
 
   useEffect(() => {
     (async () => {
       const likeResponse = await getCommentLike(data.commentId);
-      if (likeResponse.content.length) {
-        setLikeStatus(likeResponse.content[0]);
+      const isLike = likeResponse.content.filter(
+        (likeData: { memberId: number }) =>
+          likeData.memberId === myProfile?.memberId
+      );
+      if (isLike[0]) {
+        setLikeStatus(isLike[0]);
       }
     })();
   }, []);
@@ -80,13 +96,13 @@ const ReplyCard = ({ data, parentTag, setOpenInput }: ReplyProps) => {
           <S.profileBox>
             <S.ProfileImage
               src={
-                data.writerProfileUrl
-                  ? data.writerProfileUrl
+                data.writerProfileImageUrl
+                  ? data.writerProfileImageUrl
                   : "/svg/default-profile-icon.svg"
               }
               alt="profile_image"
             />
-            <S.InfoText>{data.writerName}</S.InfoText>
+            <S.InfoText>{data.writerNickname}</S.InfoText>
             <S.LevelLabel
               $fitnessLevel={data?.writerTier.fitnessLevel === "ADVANCED"}
             >
@@ -96,8 +112,8 @@ const ReplyCard = ({ data, parentTag, setOpenInput }: ReplyProps) => {
           </S.profileBox>
           {myProfile?.memberId === data.writerId && !commentUpdate ? (
             <EditButton
-              updateContent={updateReply}
-              deleteContent={deleteReply}
+              updateContent={updateReplyState}
+              deleteContent={clickDeleteBtn}
             />
           ) : commentUpdate ? (
             <S.Button onClick={() => setCommentUpdate(false)}>취소</S.Button>
@@ -111,7 +127,7 @@ const ReplyCard = ({ data, parentTag, setOpenInput }: ReplyProps) => {
               tagName={parentTag ? `@${data.parentWriterName}` : null}
               commentValue={updateValue}
               setCommentValue={setUpdateValue}
-              sendComment={updateDone}
+              sendComment={clickUpdateDoneBtn}
             />
           </S.UpdateBox>
         ) : parentTag ? (
@@ -123,7 +139,7 @@ const ReplyCard = ({ data, parentTag, setOpenInput }: ReplyProps) => {
           <S.Comment>{data.content}</S.Comment>
         )}
         <S.InfoBox_1>
-          <S.CommentButton onClick={() => setOpenInput(data.writerName)}>
+          <S.CommentButton onClick={() => setOpenInput(data.writerNickname)}>
             답글 쓰기
           </S.CommentButton>
           <S.FavoriteBtn
@@ -131,7 +147,7 @@ const ReplyCard = ({ data, parentTag, setOpenInput }: ReplyProps) => {
               likeStatus ? "/svg/heart-fill-icon.svg" : "/svg/heart-icon.svg"
             }
             $fill={likeStatus !== null}
-            onClick={changeLike}
+            onClick={clickLikeIcon}
           />
         </S.InfoBox_1>
       </S.ReplyContainer>

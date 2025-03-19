@@ -1,14 +1,15 @@
-import { useAxios as Axios } from "../utils/useAxios";
+import axiosInstance from "../utils/useAxios";
 
-export const useGetSearchData = async () => {
-  const { axiosInstance } = Axios();
+export const useGetSearchData = async (currentPage: number) => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const queryParams = Object.fromEntries(urlParams.entries());
 
   try {
     const response = await axiosInstance.get("/hf/search", {
       params: {
+        page: currentPage,
         size: 5,
-        companionStyles: "SMALL",
-        keyword: "안녕",
+        ...queryParams,
       },
     });
     return response.data.content;

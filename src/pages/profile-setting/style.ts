@@ -5,7 +5,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 20rem;
-  height: auto;
+  height: 100vh;
+  box-sizing: border-box;
   @media (min-width: 768px) {
     width: 40rem;
   }
@@ -145,8 +146,10 @@ export const genderBtn = styled.button<{
 `;
 
 export const ErrorMessage = styled.span`
-  font-size: 0.75rem;
+  font-size: 0.688rem;
   margin-top: 0.25rem;
+  letter-spacing: -0.0031rem;
+  line-height: 1.273rem;
   color: #ff0000;
 `;
 
@@ -163,10 +166,12 @@ export const ResetBtn = styled.button`
   top: 50%;
   transform: translateY(-50%);
   padding: 0.25rem;
-  border: 1px solid #cccccc;
+  background-color: #ffffff;
+  border: 1px solid #868e96;
   border-radius: 0.5rem;
-  background-color: ${theme.colors.white};
+  color: #868e96;
   font-size: 0.75rem;
+  cursor: pointer;
 `;
 
 export const LocationList = styled.div`
@@ -229,7 +234,7 @@ export const InputContainer = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 100vh;
 `;
 
 export const IntroductionInput = styled.textarea`
@@ -251,6 +256,12 @@ export const IntroductionInput = styled.textarea`
   }
 `;
 
+export const UpdateButtonWrapper = styled.div`
+  margin-top: auto;
+  width: 100%;
+  padding: 16px;
+`;
+
 export const LengthChecker = styled.span`
   position: absolute;
   right: 1rem;
@@ -263,7 +274,7 @@ export const LengthChecker = styled.span`
 
 export const StoreBtn = styled.button`
   width: 100%;
-  padding: 1rem;
+  padding: 16px;
   border: 0;
   border-radius: 0.5rem;
   color: ${theme.colors.white};

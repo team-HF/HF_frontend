@@ -21,6 +21,7 @@ const Filter = <T,>({
   const currentFilter = filterData.filter(
     (item) => item.id === selectedFilter
   )[0].name;
+
   const [open, setOpen] = useState<boolean>(false);
 
   const openFilter = () => setOpen(!open);

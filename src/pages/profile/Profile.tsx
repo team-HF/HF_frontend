@@ -1,5 +1,4 @@
 import * as S from "./style";
-import Header from "../../widgets/post-register/header/Header";
 import PageForm from "../../shared/ui/page-form/PageForm";
 import SaveButton from "../../features/profile/button/SaveButton";
 import DatePicker from "../../widgets/profile/date-picker/DatePicker";
@@ -14,6 +13,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import LocationSelectBar from "../../shared/ui/location-select-bar/LocationSelectBar";
 import { useLocationStore } from "../../shared/store/location-store";
+import NewHeader from "../../shared/ui/new-header/NewHeader";
+import Cookies from "js-cookie";
+import DuplicateNicknameButton from "../../features/profile-setting/ui/DuplicateNicknameButton";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -31,6 +33,8 @@ export default function Profile() {
     setImage,
     nickname,
     setNickname,
+    lastValidatedNickname,
+    setLastValidatedNickname,
     dateYear,
     setDateYear,
     dateMonth,
@@ -47,8 +51,9 @@ export default function Profile() {
 
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
   const [introductionContent, setIntroductionContent] = useState<string>("");
+  const [isNicknameValidated, setIsNicknameValidated] =
+    useState<boolean>(false);
 
-  // 스토어 값이 변경될 때 폼에도 저장
   useEffect(() => {
     if (nickname) setValue("nickname", nickname);
     if (dateYear) setValue("birth", dateYear);
@@ -67,15 +72,15 @@ export default function Profile() {
     setValue,
   ]);
 
-  // 필드 watch로 감시하여 값들을 확인
   const watchedNickname = watch("nickname");
   const watchedBirth = watch("birth");
   const watchedGender = watch("gender");
   const watchedIntroduction = watch("introduction");
 
-  // 전부 입력 되었을때만 버튼 활성화
   const isAllSelected = Boolean(
     watchedNickname &&
+      isNicknameValidated &&
+      lastValidatedNickname &&
       watchedBirth &&
       watchedGender &&
       cd1 &&
@@ -89,6 +94,19 @@ export default function Profile() {
     setIntroductionModal(false);
   };
 
+  const {
+    onChange: nicknameOnChange,
+    onBlur: nicknameOnBlur,
+    name: nicknameName,
+    ref: nicknameRef,
+  } = register("nickname", {
+    required: "닉네임을 입력해주세요",
+    pattern: {
+      value: /^[a-zA-Z0-9가-힣]{1,8}$/,
+      message: "닉네임은 영문,숫자,한글만 포함 가능합니다.",
+    },
+  });
+
   useEffect(() => {
     if (introductionModal) {
       document.body.style.overflow = "hidden";
@@ -100,10 +118,21 @@ export default function Profile() {
     };
   }, [introductionModal]);
 
+  useEffect(() => {
+    const isNewMember = Cookies.get("is_new_member");
+    if (isNewMember !== "true") {
+      navigate("/not-found");
+    }
+  }, []);
+
   return (
     <PageForm isGNB={false}>
       <S.Container>
-        <Header title={"프로필 입력"} navigate={() => navigate(-1)} />
+        <NewHeader
+          title="프로필 입력"
+          isBackBtn={true}
+          onClickBack={() => navigate(-1)}
+        />
 
         <S.ImageContainer>
           {image ? (
@@ -137,29 +166,51 @@ export default function Profile() {
         <S.FieldContainer>
           <S.Field>
             <S.Label>닉네임</S.Label>
-            <S.Input
-              type="text"
-              placeholder="닉네임"
-              {...register("nickname", {
-                required: "닉네임을 입력해주세요",
-                pattern: {
-                  value: /^[a-zA-Z0-9가-힣]{1,8}$/,
-                  message: "닉네임은 영문,숫자,한글만 포함 가능합니다.",
-                },
-                maxLength: {
-                  value: 8,
-                  message: "닉네임의 길이는 8글자 이하 입니다.",
-                },
-                onBlur: () => {
-                  clearErrors("nickname");
-                },
-              })}
-              onChange={(e) => setNickname(e.target.value)}
-            />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                whiteSpace: "nowrap",
+                alignItems: "center",
+                position: "relative",
+              }}
+            >
+              <S.Input
+                type="text"
+                placeholder="닉네임"
+                maxLength={8}
+                value={nickname}
+                name={nicknameName}
+                ref={nicknameRef}
+                onChange={(e) => {
+                  if (isNicknameValidated) {
+                    setIsNicknameValidated(false);
+                  }
+                  nicknameOnChange(e);
+                  setNickname(e.target.value);
+                  setValue("nickname", e.target.value);
+                }}
+                onBlur={(e) => {
+                  nicknameOnBlur(e);
+                }}
+              />
+              <DuplicateNicknameButton
+                nickname={nickname}
+                disabled={!!errors.nickname?.message}
+                onSuccess={(validatedName: string) => {
+                  setLastValidatedNickname(validatedName);
+                  setIsNicknameValidated(true);
+                }}
+              />
+            </div>
             {errors.nickname?.message ? (
-              typeof errors.nickname.message === "string" && (
-                <S.ErrorMessage>{errors.nickname.message}</S.ErrorMessage>
-              )
+              <S.ErrorMessage>{String(errors.nickname.message)}</S.ErrorMessage>
+            ) : watchedNickname && !isNicknameValidated ? (
+              <S.ErrorMessage>닉네임 중복검사를 완료해주세요.</S.ErrorMessage>
+            ) : isNicknameValidated ? (
+              <S.ErrorMessage className="valid">
+                닉네임 중복검사 완료
+              </S.ErrorMessage>
             ) : (
               <S.PlaceHolder>
                 닉네임은 최대 8자까지 입력 가능합니다.
@@ -223,7 +274,7 @@ export default function Profile() {
           <S.Field>
             <S.Label>한줄 소개</S.Label>
             <S.IntroductionContent
-              filled={Boolean(introduction)}
+              $filled={Boolean(introduction)}
               onClick={() => setIntroductionModal(true)}
             >
               {introduction ? introduction : "한줄 소개"}
@@ -237,12 +288,10 @@ export default function Profile() {
       {introductionModal && (
         <S.IntroductionModal>
           <S.Container>
-            <S.Header>
-              <img
-                src={"/svg/left-arrow-icon.svg"}
-                onClick={() => setIntroductionModal(false)}
-              />
-            </S.Header>
+            <NewHeader
+              isBackBtn={true}
+              onClickBack={() => setIntroductionModal(false)}
+            />
             <S.InputContainer>
               <S.IntroductionInput
                 placeholder="나를 소개할 한줄을 작성해주세요."

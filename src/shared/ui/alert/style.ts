@@ -33,6 +33,7 @@ export const Title = styled.h3`
   letter-spacing: -0.0057rem;
 `;
 export const Contents = styled.p`
+  text-align: center;
   font-size: 0.875rem;
   line-height: 1.334rem;
   letter-spacing: -0.0025rem;

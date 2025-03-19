@@ -27,6 +27,9 @@ export const CommentInput = styled.textarea`
     color: #4d4d4d;
     background-color: ${theme.colors.sub};
   }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 export const SendBtn = styled.button`
   position: absolute;

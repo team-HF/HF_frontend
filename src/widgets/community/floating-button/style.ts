@@ -13,6 +13,7 @@ export const Container = styled.button`
   border-radius: 3.5rem;
   box-shadow: 0 0.375rem 12px rgba(0, 0, 0, 0.12),
     0 0.25rem 8px rgba(0, 0, 0, 0.08), 0 0 4px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
 `;
 export const PencilIcon = styled.img`
   width: 24px;

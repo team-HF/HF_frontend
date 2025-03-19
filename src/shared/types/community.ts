@@ -5,13 +5,26 @@ export interface TReply {
   postId: number;
   parentWriterName: string;
   writerId: number;
-  writerName: string;
-  writerProfileUrl: string;
+  writerNickname: string;
+  writerProfileImageUrl: string | null;
   writerTier: { fitnessLevel: string; tier: number };
 }
 
 export interface TComment extends TReply {
   replies: TReply[];
+}
+
+export interface PostPreview {
+  category: string;
+  commentCount: number;
+  content: string;
+  creationTime: string;
+  fitnessLevel: string;
+  likeCount: number;
+  postId: number;
+  title: string;
+  viewCount: number;
+  writerProfileImageUrl: string;
 }
 
 export interface TPost {
@@ -25,7 +38,7 @@ export interface TPost {
   commentCount: number;
   comments: TComment[];
   writerNickname: string;
-  imagePath: string | null;
+  writerProfileImageUrl: string | null;
   writerId: number;
   writerTier: {
     fitnessLevel: string;

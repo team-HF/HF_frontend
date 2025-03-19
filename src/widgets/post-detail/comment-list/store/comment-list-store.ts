@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { TComment } from "../../../../shared/types/community";
+import { create } from 'zustand';
+import { TComment } from '../../../../shared/types/community';
 
 type UserStore = {
   commentDataList: TComment[] | null;

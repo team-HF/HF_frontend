@@ -21,8 +21,8 @@ export const StyleH1 = styled.h1`
 
 export const SelectorContainer = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
-  height: 100%;
   gap: 0.5rem;
 `;
 
@@ -33,6 +33,7 @@ export const NextBtn = styled.button`
   margin-top: 3rem;
   color: ${theme.colors.white};
   background-color: ${theme.colors.main};
+  cursor: pointer;
   &:disabled {
     background-color: #d9d9d9;
   }

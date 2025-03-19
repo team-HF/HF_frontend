@@ -9,10 +9,6 @@ export const Container = styled.div`
   @media (min-width: 768px) {
     width: 40rem;
   }
-
-  @media (min-width: 1200px) {
-    width: 67.5rem;
-  }
 `;
 
 export const UserImageWrapper = styled.div`

@@ -3,6 +3,7 @@ import { theme } from "../../app/theme";
 
 export const Container = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   width: 20rem;
   @media (min-width: 768px) {
@@ -19,6 +20,7 @@ export const InputContainer = styled.button`
   border-bottom: 1px solid ${theme.colors.gray3};
   background-color: ${theme.colors.white};
   gap: 0.25rem;
+  cursor: pointer;
 `;
 export const IconBox = styled.div`
   display: flex;

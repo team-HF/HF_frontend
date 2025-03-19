@@ -1,12 +1,14 @@
-import { useAxios as Axios } from "../../../shared/utils/useAxios";
+import axiosInstance from "../../../shared/utils/useAxios";
 
-export const useGetPostDetail = async (postId: number) => {
-  const { axiosInstance } = Axios();
+export const useGetPostDetail = async (postId: number, onError: () => void) => {
   try {
     const response = await axiosInstance.get(`/hf/posts/${postId}`);
-    return response.data;
+    return response.data.content;
   } catch (error) {
-    console.error("Error getting Post detail", error);
+    const err = error as { status: number };
+    if (err.status === 404) {
+      onError();
+    }
     throw error;
   }
 };
