@@ -1,19 +1,20 @@
-import * as S from "./style";
-import TierTag from "../../../shared/ui/tier-tag/TierTag";
-import ExerciseTag from "../../../shared/ui/exercise-tag/ExerciseTag";
-import { useUserProfileStore } from "../../../shared/store/user-profile-store";
-import { useContext, useEffect, useState } from "react";
-import { getSgisApiAccessToken } from "../../../shared/api/getSgisApiAccessToken";
-import { getSgisLocation } from "../../../shared/api/getSgisLocation";
-import { useGetTagName as getTagName } from "../../../shared/utils/useGetTagName";
-import { useUserDetailStore } from "../../../pages/profile/store/user-detail-store";
-import { usePostWish as postWish } from "../../../shared/api/usePostWish";
-import { SocketContext } from "../../../app/providers/SocketProvider";
-import { useRequestChat } from "../../../features/matching/api/useRequestNewChat";
-import { useMyProfileStore } from "../../../shared/store/my-profile-store";
-import { useDeleteWish as deleteWish } from "../../../shared/api/useDeleteWish";
-import useSetRequireModal from "../../../shared/utils/useSetRequireModal";
-import { useNavigate } from "react-router-dom";
+
+import * as S from './style';
+import TierTag from '../../../shared/ui/tier-tag/TierTag';
+import ExerciseTag from '../../../shared/ui/exercise-tag/ExerciseTag';
+import { useUserProfileStore } from '../../../shared/store/user-profile-store';
+import { useContext, useEffect, useState } from 'react';
+import { getSgisApiAccessToken } from '../../../shared/api/getSgisApiAccessToken';
+import { getSgisLocation } from '../../../shared/api/getSgisLocation';
+import { useGetTagName as getTagName } from '../../../shared/utils/useGetTagName';
+import { useUserDetailStore } from '../../../pages/profile/store/user-detail-store';
+import { usePostWish as postWish } from '../../../shared/api/usePostWish';
+import { SocketContext } from '../../../app/providers/SocketProvider';
+import { useRequestChat } from '../../../features/matching/api/useRequestNewChat';
+import { useMyProfileStore } from '../../../shared/store/my-profile-store';
+import { useDeleteWish } from '../../../shared/api/useDeleteWish';
+import useSetRequireModal from '../../../shared/utils/useSetRequireModal';
+import { useNavigate } from 'react-router-dom';
 
 const UserDataDefault = () => {
   const { userProfile } = useUserProfileStore();
@@ -22,7 +23,8 @@ const UserDataDefault = () => {
   const { requestChat } = useRequestChat();
   const setRequireModal = useSetRequireModal();
 
-  const [location, setLocation] = useState<string>("");
+  const { mutate: deleteWish } = useDeleteWish();
+  const [location, setLocation] = useState<string>('');
   const [wishState, setWishState] = useState<boolean>(false);
 
   const socket = useContext(SocketContext);
@@ -63,8 +65,8 @@ const UserDataDefault = () => {
           wisherId: myProfile?.memberId,
           wishedId: userProfile?.memberId,
         };
-        if (wishState) {
-          await deleteWish(data);
+        if (userProfile?.isWished) {
+          deleteWish(data);
           setWishState(false);
         } else {
           await postWish(data);

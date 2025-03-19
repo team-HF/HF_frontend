@@ -24,6 +24,6 @@ export const useGetDuplicateNickname = (nickname: string | null) => {
       }
       return duplicateNickname(axiosInstance, nickname);
     },
-    enabled: !!nickname,
+    enabled: false,
   });
 };

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { theme } from "../../../app/theme";
+import styled from 'styled-components';
+import { theme } from '../../../app/theme';
 
 export const Container = styled.div`
   display: flex;
@@ -29,6 +29,7 @@ export const IconBtn = styled.button`
 `;
 export const BackIcon = styled.img`
   transform: rotate(-90deg);
+  cursor: pointer;
 `;
 export const Title = styled.h2`
   font-size: 1.375rem;

@@ -1,61 +1,52 @@
 import * as S from './style';
-import Header from '../../widgets/post-register/header/Header';
 import PageForm from '../../shared/ui/page-form/PageForm';
 import StyleSelector from '../../entities/exercise-option/ui/StyleSelector';
-import { useProfileSettingStore } from '../../features/profile-setting/store/profile-setting-store';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import NewHeader from '../../shared/ui/new-header/NewHeader';
+import { useProfileEditStore } from '../../features/profile-setting/store/profile-edit-store';
+import { useState } from 'react';
 
 export default function ExerciseOption() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const isEditMode = location.state?.isEditMode;
+  const profileEditStore = useProfileEditStore();
 
-  const {
-    styleSelected,
-    setStyleSelected,
-    habitSelected,
-    setHabitSelected,
-    goalSelected,
-    setGoalSelected,
-    exerciseSelected,
-    setExerciseSelected,
-  } = useProfileSettingStore();
-
-  useEffect(() => {
-    if (isEditMode) {
-      sessionStorage.setItem(
-        'exerciseStyles',
-        JSON.stringify({
-          companionStyle: styleSelected,
-          fitnessEagerness: habitSelected,
-          fitnessObjective: goalSelected,
-          fitnessKind: exerciseSelected,
-        })
-      );
-    }
-  }, [
-    styleSelected,
-    habitSelected,
-    goalSelected,
-    exerciseSelected,
-    isEditMode,
-  ]);
+  const [localStyle, setLocalStyle] = useState(profileEditStore.styleSelected);
+  const [localHabit, setLocalHabit] = useState(profileEditStore.habitSelected);
+  const [localGoal, setLocalGoal] = useState(profileEditStore.goalSelected);
+  const [localExercise, setLocalExercise] = useState(
+    profileEditStore.exerciseSelected
+  );
 
   const allSelected = Boolean(
-    styleSelected && habitSelected && goalSelected && exerciseSelected
+    localStyle && localHabit && localGoal && localExercise
   );
 
   const handleSubmit = () => {
-    if (isEditMode) {
-      navigate('/profile-setting', { state: { isEditMode } });
+    if (allSelected) {
+      if (localStyle) {
+        profileEditStore.setStyleSelected(localStyle);
+      }
+      if (localHabit) {
+        profileEditStore.setHabitSelected(localHabit);
+      }
+      if (localGoal) {
+        profileEditStore.setGoalSelected(localGoal);
+      }
+      if (localExercise) {
+        profileEditStore.setExerciseSelected(localExercise);
+      }
+      navigate('/profile-setting');
     }
+  };
+
+  const onClickBack = () => {
+    navigate(-1);
   };
 
   return (
     <PageForm isGNB={false}>
       <S.Container>
-        <Header title={'프로필 입력'} />
+        <NewHeader title="프로필 입력" onClickBack={onClickBack} isBackBtn />
         <S.StyleH1>나의 운동 스타일을 골라주세요</S.StyleH1>
         <S.SelectorContainer>
           <StyleSelector
@@ -64,7 +55,7 @@ export default function ExerciseOption() {
               {
                 label: '소규모형',
                 src:
-                  styleSelected === 'SMALL'
+                  localStyle === 'SMALL'
                     ? '/svg/companionStyle_small_white.svg'
                     : '/svg/companionStyle_small_main.svg',
                 value: 'SMALL',
@@ -72,14 +63,16 @@ export default function ExerciseOption() {
               {
                 label: '그룹형',
                 src:
-                  styleSelected === 'GROUP'
+                  localStyle === 'GROUP'
                     ? '/svg/companionStyle_group_white.svg'
                     : '/svg/companionStyle_group_main.svg',
                 value: 'GROUP',
               },
             ]}
-            selectedOption={styleSelected}
-            setSelectedOption={setStyleSelected}
+            selectedOption={localStyle}
+            setSelectedOption={(option: string) =>
+              setLocalStyle(option as 'SMALL' | 'GROUP' | null)
+            }
           />
 
           <StyleSelector
@@ -88,7 +81,7 @@ export default function ExerciseOption() {
               {
                 label: '의욕만렙형',
                 src:
-                  habitSelected === 'EAGER'
+                  localHabit === 'EAGER'
                     ? '/svg/fitnessEagerness_eager_white.svg'
                     : '/svg/fitnessEagerness_eager_main.svg',
                 value: 'EAGER',
@@ -96,14 +89,16 @@ export default function ExerciseOption() {
               {
                 label: '귀차니즘형',
                 src:
-                  habitSelected === 'LAZY'
+                  localHabit === 'LAZY'
                     ? '/svg/fitnessEagerness_lazy_white.svg'
                     : '/svg/fitnessEagerness_lazy_main.svg',
                 value: 'LAZY',
               },
             ]}
-            selectedOption={habitSelected}
-            setSelectedOption={setHabitSelected}
+            selectedOption={localHabit}
+            setSelectedOption={(option: string) =>
+              setLocalHabit(option as 'EAGER' | 'LAZY' | null)
+            }
           />
 
           <StyleSelector
@@ -112,7 +107,7 @@ export default function ExerciseOption() {
               {
                 label: '헬스헬스 벌크업',
                 src:
-                  goalSelected === 'BULK_UP'
+                  localGoal === 'BULK_UP'
                     ? '/svg/fitnessObjective_bulkUp_white.svg'
                     : '/svg/fitnessObjective_bulkUp_main.svg',
                 value: 'BULK_UP',
@@ -120,14 +115,16 @@ export default function ExerciseOption() {
               {
                 label: '러닝러닝 유산소',
                 src:
-                  goalSelected === 'RUNNING'
+                  localGoal === 'RUNNING'
                     ? '/svg/fitnessObjective_jogging_white.svg'
                     : '/svg/fitnessObjective_jogging_main.svg',
                 value: 'RUNNING',
               },
             ]}
-            selectedOption={goalSelected}
-            setSelectedOption={setGoalSelected}
+            selectedOption={localGoal}
+            setSelectedOption={(option: string) =>
+              setLocalGoal(option as 'BULK_UP' | 'RUNNING' | null)
+            }
           />
 
           <StyleSelector
@@ -136,7 +133,7 @@ export default function ExerciseOption() {
               {
                 label: '고강도 운동 위주',
                 src:
-                  exerciseSelected === 'HIGH_STRESS'
+                  localExercise === 'HIGH_STRESS'
                     ? '/svg/fitnessKind_highStress_white.svg'
                     : '/svg/fitnessKind_highStress_main.svg',
                 value: 'HIGH_STRESS',
@@ -144,18 +141,20 @@ export default function ExerciseOption() {
               {
                 label: '기능성 피트니스 위주',
                 src:
-                  exerciseSelected === 'FUNCTIONAL'
+                  localExercise === 'FUNCTIONAL'
                     ? '/svg/fitnessKind_functional_white.svg'
                     : '/svg/fitnessKind_functional_main.svg',
                 value: 'FUNCTIONAL',
               },
             ]}
-            selectedOption={exerciseSelected}
-            setSelectedOption={setExerciseSelected}
+            selectedOption={localExercise}
+            setSelectedOption={(option: string) =>
+              setLocalExercise(option as 'HIGH_STRESS' | 'FUNCTIONAL' | null)
+            }
           />
         </S.SelectorContainer>
         <S.NextBtn disabled={!allSelected} onClick={handleSubmit}>
-          {isEditMode ? '수정완료' : '다음'}
+          저장
         </S.NextBtn>
       </S.Container>
     </PageForm>

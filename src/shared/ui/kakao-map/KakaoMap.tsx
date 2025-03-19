@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import * as S from './style';
+import { loadKakaoMapScript } from '../../api/kakomapLoader';
 
 declare global {
   interface Window {
@@ -14,7 +15,6 @@ type MapModalProps = {
 };
 
 export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
-  const { kakao } = window;
   const mapRef = useRef<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
   const [places, setPlaces] = useState<any[]>([]);
@@ -22,29 +22,37 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
   const [viewList, setViewList] = useState(true);
   const pinnedOverlayRef = useRef<any>(null);
   const activeOverlayRef = useRef<any>(null);
+
   const resetKeyword = () => {
     setKeyword('');
   };
+
   useEffect(() => {
-    const container = document.getElementById('map');
-    if (!container || !kakao) return;
-    const options = {
-      center: new kakao.maps.LatLng(37.5385167, 127.1237667), // 현재 기본 위치 값 강동구 천호역
-      level: 3,
-    };
-    mapRef.current = new kakao.maps.Map(container, options);
+    loadKakaoMapScript()
+      .then((kakao) => {
+        const container = document.getElementById('map');
+        if (!container) {
+          return;
+        }
+        const options = {
+          center: new kakao.maps.LatLng(37.5385167, 127.1237667),
+          level: 3,
+        };
+        mapRef.current = new kakao.maps.Map(container, options);
 
-    kakao.maps.event.addListener(mapRef.current, 'click', () => {
-      if (pinnedOverlayRef.current) {
-        pinnedOverlayRef.current.setMap(null);
-        pinnedOverlayRef.current = null;
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        kakao.maps.event.addListener(mapRef.current, 'click', () => {
+          if (pinnedOverlayRef.current) {
+            pinnedOverlayRef.current.setMap(null);
+            pinnedOverlayRef.current = null;
+          }
+        });
+      })
+      .catch(() => {
+        alert('카카오맵 로드 에러:');
+      });
   }, []);
-
   const handleSearch = () => {
-    if (!mapRef.current || !kakao) return;
+    if (!mapRef.current || !window.kakao) return;
     if (!keyword.trim()) {
       alert('검색어를 입력하세요.');
       return;
@@ -54,11 +62,11 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
     setMarkers([]);
     setPlaces([]); // 기존 검색 결과 제거
 
-    const ps = new kakao.maps.services.Places(mapRef.current);
+    const ps = new window.kakao.maps.services.Places(mapRef.current);
     ps.keywordSearch(
       keyword,
       (data: any, status: any) => {
-        if (status === kakao.maps.services.Status.OK) {
+        if (status === window.kakao.maps.services.Status.OK) {
           displayMarkers(data);
         } else {
           alert('검색 결과가 없습니다.');
@@ -67,12 +75,11 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
       {
         location: mapRef.current.getCenter(),
         radius: 3000,
-        sort: kakao.maps.services.SortBy.DISTANCE,
+        sort: window.kakao.maps.services.SortBy.DISTANCE,
       }
     );
   };
 
-  // 마커 위 말풍선 스타일
   const createCustomOverlay = (place: any, marker: any) => {
     const content = document.createElement('div');
     content.style.padding = '6px 10px';
@@ -87,7 +94,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
       <div style="font-weight:600; margin-bottom:6px;">이 위치 전송</div>
       <div style="font-size:12px; color:grey">${place.place_name}</div>
     `;
-    const overlay = new kakao.maps.CustomOverlay({
+    const overlay = new window.kakao.maps.CustomOverlay({
       content: content,
       position: marker.getPosition(),
       yAnchor: 1.8,
@@ -95,34 +102,29 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
     });
     content.addEventListener('click', (e) => {
       e.stopPropagation();
-      console.log('클릭');
       onSelectLocation(place.place_name);
       onClose();
     });
-
     return overlay;
   };
 
   const displayMarkers = (placesData: any[]) => {
-    const { kakao } = window;
-    if (!mapRef.current || !kakao) return;
+    if (!mapRef.current || !window.kakao) return;
 
-    const bounds = new kakao.maps.LatLngBounds();
+    const bounds = new window.kakao.maps.LatLngBounds();
     const newMarkers: any[] = [];
 
     placesData.forEach((place) => {
-      const position = new kakao.maps.LatLng(place.y, place.x);
-      const marker = new kakao.maps.Marker({
+      const position = new window.kakao.maps.LatLng(place.y, place.x);
+      const marker = new window.kakao.maps.Marker({
         position,
         map: mapRef.current,
       });
       newMarkers.push(marker);
-      console.log('places:', placesData);
-      // 마커 오버레이 생성
+
       const overlay = createCustomOverlay(place, marker);
 
-      // 마우스 오버 이벤트
-      kakao.maps.event.addListener(marker, 'mouseover', () => {
+      window.kakao.maps.event.addListener(marker, 'mouseover', () => {
         if (!pinnedOverlayRef.current) {
           if (activeOverlayRef.current) {
             activeOverlayRef.current.setMap(null);
@@ -132,16 +134,14 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
         }
       });
 
-      // 마우스 아웃 이벤트
-      kakao.maps.event.addListener(marker, 'mouseout', () => {
+      window.kakao.maps.event.addListener(marker, 'mouseout', () => {
         if (!pinnedOverlayRef.current && activeOverlayRef.current === overlay) {
           overlay.setMap(null);
           activeOverlayRef.current = null;
         }
       });
 
-      // 클릭 이벤트 (이때는 마커가 고정)
-      kakao.maps.event.addListener(marker, 'click', () => {
+      window.kakao.maps.event.addListener(marker, 'click', () => {
         if (pinnedOverlayRef.current && pinnedOverlayRef.current !== overlay) {
           pinnedOverlayRef.current.setMap(null);
           pinnedOverlayRef.current = null;
@@ -175,15 +175,13 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
     mapRef.current.setLevel(mapRef.current.getLevel() + 1);
   };
 
-  // 리스트 항목 클릭 시 동작
   const handleSelectPlace = (place: any) => {
-    if (!mapRef.current || !kakao) return;
+    if (!mapRef.current || !window.kakao) return;
 
-    const position = new kakao.maps.LatLng(place.y, place.x);
+    const position = new window.kakao.maps.LatLng(place.y, place.x);
     mapRef.current.setCenter(position);
-    mapRef.current.setLevel(3); // 원하는 줌 레벨로 설정
+    mapRef.current.setLevel(3);
 
-    // 해당 장소의 마커 찾기
     const selectedMarker = markers.find(
       (marker: any) =>
         marker.getPosition().getLat() === parseFloat(place.y) &&
@@ -191,17 +189,15 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
     );
 
     if (selectedMarker) {
-      // 기존 오버레이 제거
       if (activeOverlayRef.current) {
         activeOverlayRef.current.setMap(null);
       }
-
-      // 선택된 마커의 오버레이 표시
       const overlay = createCustomOverlay(place, selectedMarker);
       overlay.setMap(mapRef.current);
       activeOverlayRef.current = overlay;
     }
   };
+
   const controlPlaceList = () => {
     setViewList((prev) => !prev);
   };
@@ -212,6 +208,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
       document.body.style.overflow = '';
     };
   }, [places]);
+
   return (
     <S.Container>
       <S.ModalContainer>
@@ -263,7 +260,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
             ...(viewList ? { top: 0 } : { bottom: 0 }),
           }}
         >
-          {places.length > 0 ? (
+          {places.length > 0 && (
             <>
               <S.ResultsHeaderWrapper>
                 <S.ResultHeaderText>검색 결과</S.ResultHeaderText>
@@ -286,7 +283,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
                 ))}
               </S.PlaceWrapper>
             </>
-          ) : null}
+          )}
         </S.ResultsContainer>
       </S.ModalContainer>
     </S.Container>
