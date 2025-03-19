@@ -34,16 +34,14 @@ const SearchResult = () => {
   const [searchResult, setSearchResult] = useState({
     postList: [],
     postListSize: 0,
-    profileList: {
-      memberList: [],
-    },
+    profileList: [],
     profileListSize: 0,
   });
   const [searchBarOpen, setSearchBarOpen] = useState<boolean>(false);
 
   const { keyword } = useSearchValueStore();
 
-  const profiles = searchResult.profileList.memberList.map(
+  const profiles = searchResult.profileList.map(
     (profile: User, idx) => {
       return <UserProfileCard key={`user_${idx}`} {...profile} />;
     }
