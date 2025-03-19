@@ -14,6 +14,19 @@ export interface TComment extends TReply {
   replies: TReply[];
 }
 
+export interface PostPreview {
+  category: string;
+  commentCount: number;
+  content: string;
+  creationTime: string;
+  fitnessLevel: string;
+  likeCount: number;
+  postId: number;
+  title: string;
+  viewCount: number;
+  writerProfileImageUrl: string;
+}
+
 export interface TPost {
   postId: number;
   postCategory: string;
