@@ -25,7 +25,10 @@ export function SubscriptionProvider({
     const chatReqSub = stompClient.subscribe(
       `/hf/user/${memberId}/chat/request`,
       (message: any) => {
+        console.log('[SubscriptionProvider] raw STOMP frame:', message);
+        console.log('[SubscriptionProvider] message.body:', message.body);
         const data = JSON.parse(message.body);
+        console.log('[SubscriptionProvider] parsed payload:', data);
         if (data) {
           onNewChatroom(data.newChatroomId);
         }
