@@ -8,6 +8,7 @@ import ExerciseOption from './pages/exercise-option/ExerciseOption';
 import ProfileSetting from './pages/profile-setting/ProfileSetting';
 import Profile from './pages/profile/Profile';
 import Login from './pages/login/Login';
+import Introduction from './pages/introduction/Introduction';
 import Community from './pages/community/Community';
 import ChatLobby from './pages/chat-lobby/ChatLobby';
 import PostRegister from './pages/post-register/PostRegister';
@@ -35,6 +36,9 @@ function App() {
   const { data: myData, isLoading } = useGetMyData();
   const { setMyProfile } = useMyProfileStore();
   const accessToken = Cookies.get('access_token');
+
+  const isLoggedIn = Boolean(accessToken && myData?.memberId);
+
   const {
     expiresModalOpen,
     requireModalOpen,
@@ -64,26 +68,12 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <SocketProvider memberId={myData?.memberId}>
-        <ResetProfileEditStoreOnExit />
-        <Routes>
-          {/* 로그인 없이 접근 가능한 공개 라우트 */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/agreement" element={<Agreement />} />
-          <Route path="/register/exercise-style" element={<ExerciseOption />} />
-          <Route path="/register/profile" element={<Profile />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/community/post-detail/:id" element={<PostDetail />} />
-          <Route path="/member/:id/profile" element={<UserProfile />} />
-          <Route path="/" element={<ProfileSearch />} />
-          <Route path="/search-result" element={<SearchResult />} />
-
-          {/* 로그인 상태 */}
-          <Route
-            element={
-              !accessToken || !myData?.memberId ? (
-                <Navigate to="/login" replace />
-              ) : (
+      <Routes>
+        {/* 비로그인 및 로그인 상태 모두 접근 가능한 경로 */}
+        <Route
+          element={
+            isLoggedIn ? (
+              <SocketProvider memberId={myData!.memberId}>
                 <SubscriptionProvider
                   onNewChatroom={(newChatroomId: number) => {
                     navigate(`/chat/${newChatroomId}`);
@@ -91,28 +81,61 @@ function App() {
                 >
                   <Outlet />
                 </SubscriptionProvider>
-              )
-            }
-          >
-            <Route path="/my-page" element={<MyPage />} />
-            <Route path="/profile-setting">
-              <Route index element={<ProfileSetting />} />
-              <Route path="exercise-style" element={<ExerciseStyle />} />
-            </Route>
-            <Route path="/chat-lobby" element={<ChatLobby />} />
-            <Route path="/chat/:chatRoomId" element={<Chat />} />
-            <Route path="/community/post-register" element={<PostRegister />} />
-            <Route
-              path="/community/post-update/:id"
-              element={<PostRegister />}
-            />
-            <Route path="/matching/:id" element={<Matching />} />
-            <Route path="/matching-review" element={<MatchingReview />} />
-          </Route>
+              </SocketProvider>
+            ) : (
+              <Outlet />
+            )
+          }
+        >
+          <Route path="/agreement" element={<Agreement />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/community/post-detail/:id" element={<PostDetail />} />
+          <Route path="/member/:id/profile" element={<UserProfile />} />
+          <Route path="/" element={<ProfileSearch />} />
+          <Route path="/search-result" element={<SearchResult />} />
+        </Route>
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </SocketProvider>
+        {/* 로그인 상태에서만 접근 가능한 경로 */}
+        <Route
+          element={
+            isLoggedIn ? (
+              <SocketProvider memberId={myData!.memberId}>
+                <SubscriptionProvider
+                  onNewChatroom={(newChatroomId: number) => {
+                    navigate(`/chat/${newChatroomId}`);
+                  }}
+                >
+                  <Outlet />
+                </SubscriptionProvider>
+              </SocketProvider>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        >
+          <Route path="/my-page" element={<MyPage />} />
+          <Route path="/profile-setting">
+            <Route index element={<ProfileSetting />} />
+            <Route path="exercise-style" element={<ExerciseStyle />} />
+            <Route path="introduction" element={<Introduction />} />
+          </Route>
+          <Route path="/chat-lobby" element={<ChatLobby />} />
+          <Route path="/chat/:chatRoomId" element={<Chat />} />
+          <Route path="/community/post-register" element={<PostRegister />} />
+          <Route path="/community/post-update/:id" element={<PostRegister />} />
+          <Route path="/matching/:id" element={<Matching />} />
+          <Route path="/matching-review" element={<MatchingReview />} />
+        </Route>
+
+        {/* 비로그인 상태에서만 접근 가능한 경로 */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register/exercise-style" element={<ExerciseOption />} />
+        <Route path="/register/profile" element={<Profile />} />
+
+        {/* 404 페이지 */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <ResetProfileEditStoreOnExit />
 
       {expiresModalOpen && (
         <Alert
