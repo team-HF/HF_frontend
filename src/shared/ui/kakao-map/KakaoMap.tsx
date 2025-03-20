@@ -51,6 +51,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
         alert('카카오맵 로드 에러:');
       });
   }, []);
+
   const handleSearch = () => {
     if (!mapRef.current || !window.kakao) return;
     if (!keyword.trim()) {
@@ -74,7 +75,8 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
       },
       {
         location: mapRef.current.getCenter(),
-        radius: 3000,
+        //반경 20km 이내에서 검색
+        radius: 20000,
         sort: window.kakao.maps.services.SortBy.DISTANCE,
       }
     );
@@ -88,7 +90,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
     content.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
     content.style.cursor = 'pointer';
     content.style.pointerEvents = 'auto';
-    content.style.zIndex = '9999';
+    content.style.zIndex = '10004';
 
     content.innerHTML = `
       <div style="font-weight:600; margin-bottom:6px;">이 위치 전송</div>
@@ -98,7 +100,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
       content: content,
       position: marker.getPosition(),
       yAnchor: 1.8,
-      zIndex: 9999,
+      zIndex: 10004,
     });
     content.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -124,6 +126,7 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
 
       const overlay = createCustomOverlay(place, marker);
 
+      // 마우스 오버 시 오버레이를 보여주도록 함 (단, 선택은 오버레이 클릭 시)
       window.kakao.maps.event.addListener(marker, 'mouseover', () => {
         if (!pinnedOverlayRef.current) {
           if (activeOverlayRef.current) {
@@ -141,20 +144,27 @@ export default function KakaoMap({ onClose, onSelectLocation }: MapModalProps) {
         }
       });
 
+      // 수정된 부분: 마커 클릭 시 오버레이를 보여주고 곧바로 해당 오버레이의 클릭 이벤트를 강제로 발생시켜 선택하도록 함
       window.kakao.maps.event.addListener(marker, 'click', () => {
+        // 다른 오버레이가 고정되어 있다면 제거
         if (pinnedOverlayRef.current && pinnedOverlayRef.current !== overlay) {
           pinnedOverlayRef.current.setMap(null);
           pinnedOverlayRef.current = null;
         }
+        // 오버레이를 지도에 표시하고 고정 상태로 지정
+        overlay.setMap(mapRef.current);
+        pinnedOverlayRef.current = overlay;
+        activeOverlayRef.current = null;
 
-        if (pinnedOverlayRef.current === overlay) {
-          overlay.setMap(null);
-          pinnedOverlayRef.current = null;
-        } else {
-          overlay.setMap(mapRef.current);
-          pinnedOverlayRef.current = overlay;
-          activeOverlayRef.current = null;
-        }
+        // 오버레이가 렌더링된 후 강제로 클릭 이벤트를 발생시킴
+        setTimeout(() => {
+          const contentElement = overlay.getContent();
+          if (contentElement) {
+            contentElement.dispatchEvent(
+              new MouseEvent('click', { bubbles: true })
+            );
+          }
+        }, 0);
       });
 
       bounds.extend(position);
