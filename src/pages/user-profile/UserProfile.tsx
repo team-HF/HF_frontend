@@ -2,7 +2,7 @@ import * as S from "./style";
 import Career from "../../widgets/user-profile/career/Career";
 import PageForm from "../../shared/ui/page-form/PageForm";
 import UserDataDefault from "../../widgets/user-profile/user-data-default/UserDataDefault";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useUserDetailStore } from "../profile/store/user-detail-store";
 import { useUserProfileStore } from "../../shared/store/user-profile-store";
@@ -12,6 +12,7 @@ import Review from "../../widgets/user-profile/review/Review";
 import NewHeader from "../../shared/ui/new-header/NewHeader";
 
 const UserProfile = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const memberId = Number(id);
 
@@ -30,7 +31,12 @@ const UserProfile = () => {
   return (
     <PageForm isGNB={true} isFooter={true}>
       <S.Container>
-        <NewHeader isBackBtn={true} logo={true} isAlarmBtn={true} />
+        <NewHeader
+          isBackBtn={true}
+          onClickBack={() => navigate(-1)}
+          logo={true}
+          isAlarmBtn={true}
+        />
         <UserDataDefault />
         {userDetail && userDetail.specs[0] && <Career />}
         <Review />

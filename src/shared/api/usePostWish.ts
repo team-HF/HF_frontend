@@ -6,11 +6,12 @@ interface PostWishProps {
 }
 
 export const usePostWish = async ({ wisherId, wishedId }: PostWishProps) => {
+  const data = {
+    wisherId: wisherId,
+    wishedId: wishedId,
+  };
   try {
-    const result = await axiosInstance.post("/hf/wish", {
-      wisherId: wisherId,
-      wishedId: wishedId,
-    });
+    const result = await axiosInstance.post("/hf/wish", data);
     return result.data.content;
   } catch (error) {
     console.error("Error posting new wish", error);

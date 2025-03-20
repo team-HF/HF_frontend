@@ -38,34 +38,6 @@ const SearchModal = ({ closeModal }: SearchModalProps) => {
           $value={keyword}
           setKeyWord={setKeyWord}
         />
-       {/* <S.OptionContainer>
-          <S.TitleContainer>
-            <S.Title>최근 검색</S.Title>
-            <S.DeleteBtn onClick={() => {}}>전체 삭제</S.DeleteBtn>
-          </S.TitleContainer>
-          <S.TagContainer>
-            <S.WordTag>
-              검색단어1
-              <S.RemoveIcon src="public/svg/close-icon.svg" />
-            </S.WordTag>
-            <S.WordTag>
-              검색단어1
-              <S.RemoveIcon src="public/svg/close-icon.svg" />
-            </S.WordTag>
-            <S.WordTag>
-              검색단어1
-              <S.RemoveIcon src="public/svg/close-icon.svg" />
-            </S.WordTag>
-            <S.WordTag>
-              검색단어1
-              <S.RemoveIcon src="public/svg/close-icon.svg" />
-            </S.WordTag>
-            <S.WordTag>
-              검색단어1
-              <S.RemoveIcon src="public/svg/close-icon.svg" />
-            </S.WordTag>
-          </S.TagContainer>
-        </S.OptionContainer> */}
         <S.OptionContainer>
           <LocationSelectBar />
         </S.OptionContainer>

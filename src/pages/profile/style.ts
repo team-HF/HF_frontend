@@ -25,6 +25,7 @@ export const ProfileImageLabel = styled.label`
   align-items: center;
   width: 7.5rem;
   height: 7.5rem;
+  cursor: pointer;
 `;
 
 export const DefaultUserImage = styled.img`
@@ -137,6 +138,7 @@ export const genderBtn = styled.button<{ selected: boolean }>`
   font-size: 0.938rem;
   line-height: 1.467rem;
   letter-spacing: -0.0096rem;
+  cursor: pointer;
 `;
 
 export const ErrorMessage = styled.span`
@@ -271,9 +273,10 @@ export const StoreBtn = styled.button`
   color: ${theme.colors.white};
   background-color: ${theme.colors.main};
   margin-top: auto;
-  margin: 40px 0;
+  margin: 2.5rem 0;
   font-size: 1rem;
   line-height: 1rem;
   letter-spacing: -0.031rem;
   font-weight: 600;
+  cursor: pointer;
 `;

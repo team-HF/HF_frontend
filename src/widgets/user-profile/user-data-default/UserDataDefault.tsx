@@ -1,3 +1,4 @@
+
 import * as S from './style';
 import TierTag from '../../../shared/ui/tier-tag/TierTag';
 import ExerciseTag from '../../../shared/ui/exercise-tag/ExerciseTag';
@@ -21,6 +22,7 @@ const UserDataDefault = () => {
   const { myProfile } = useMyProfileStore();
   const { requestChat } = useRequestChat();
   const setRequireModal = useSetRequireModal();
+
   const { mutate: deleteWish } = useDeleteWish();
   const [location, setLocation] = useState<string>('');
   const [wishState, setWishState] = useState<boolean>(false);
@@ -30,27 +32,27 @@ const UserDataDefault = () => {
   const chatTargetId = userProfile?.memberId;
   const navigate = useNavigate();
   const exerciseStyle = [
-    { id: 'companionStyle', content: userProfile?.companionStyle },
-    { id: 'fitnessEagerness', content: userProfile?.fitnessEagerness },
-    { id: 'fitnessKind', content: userProfile?.fitnessKind },
-    { id: 'fitnessObjective', content: userProfile?.fitnessObjective },
+    { id: "companionStyle", content: userProfile?.companionStyle },
+    { id: "fitnessEagerness", content: userProfile?.fitnessEagerness },
+    { id: "fitnessKind", content: userProfile?.fitnessKind },
+    { id: "fitnessObjective", content: userProfile?.fitnessObjective },
   ];
 
   const createChat = () => {
     if (requesterId && chatTargetId) {
       requestChat({ requesterId, chatTargetId });
     } else {
-      alert('채팅방 생성에 실패하였습니다.');
+      alert("채팅방 생성에 실패하였습니다.");
     }
   };
 
   const handleFriendRequest = () => {
     if (!userProfile?.memberId) {
-      alert('상대방 정보가 없습니다.');
+      alert("상대방 정보가 없습니다.");
       return;
     } else if (!requesterId) {
-      alert('로그인 후 이용해주세요.');
-      navigate('/login');
+      alert("로그인 후 이용해주세요.");
+      navigate("/login");
       return;
     }
     createChat();
@@ -104,19 +106,19 @@ const UserDataDefault = () => {
             src={
               userProfile?.profileImageUrl
                 ? userProfile?.profileImageUrl
-                : '/svg/default-profile-icon.svg'
+                : "/svg/default-profile-icon.svg"
             }
           />
           <S.Box className="column gap_8">
             <S.Box className="gap_8">
               <S.Text_1>{userProfile?.nickname}</S.Text_1>
               <TierTag
-                fitnessLevel={userProfile?.fitnessLevel || 'BEGINNER'}
+                fitnessLevel={userProfile?.fitnessLevel || "BEGINNER"}
                 tier={userProfile?.tier.tier || 0}
               />
             </S.Box>
             <S.Box>
-              <img src={'/svg/location-icon.svg'} />
+              <img src={"/svg/location-icon.svg"} />
               <S.Text_2>{location}</S.Text_2>
             </S.Box>
           </S.Box>
@@ -149,7 +151,7 @@ const UserDataDefault = () => {
         </S.SignUpBtn>
         <S.IconBtn onClick={clickWishBtn}>
           <img
-            src={wishState ? '/svg/wish-true-icon.svg' : '/svg/heart-icon.svg'}
+            src={wishState ? "/svg/wish-true-icon.svg" : "/svg/heart-icon.svg"}
           />
         </S.IconBtn>
       </S.Box>

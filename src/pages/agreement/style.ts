@@ -31,12 +31,20 @@ export const ContentContainer = styled.div`
 `;
 export const AgreementItemContainer = styled.div`
   display: flex;
+  align-items: center;
   &.space_between {
     justify-content: space-between;
   }
   &.gap_8 {
     gap: 0.5rem;
   }
+`;
+export const IconBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  border: 0;
+  background-color: ${theme.colors.white};
+  cursor: pointer;
 `;
 export const AgreeAllCheckText = styled.span`
   font-size: 1rem;
@@ -60,6 +68,7 @@ export const MoreBtn = styled.button`
   letter-spacing: -0.0096rem;
   background-color: ${theme.colors.white};
   color: ${theme.colors.gray5};
+  cursor: pointer;
 `;
 export const CheckListContainer = styled.div`
   display: flex;
@@ -81,6 +90,7 @@ export const DoneBtn = styled.button`
   line-height: 1.5rem;
   letter-spacing: -0.03rem;
   font-size: bold;
+  cursor: pointer;
   &:disabled {
     background-color: ${theme.colors.gray3};
     color: ${theme.colors.gray5};

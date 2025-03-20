@@ -12,6 +12,7 @@ import { useGetParams } from "../../shared/utils/useGetParams";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCommunityStore } from "./store/community-store";
 import NewHeader from "../../shared/ui/new-header/NewHeader";
+import { PostPreview } from "../../shared/types/community";
 
 const Community = () => {
   const category = useGetParams("postCategory");
@@ -39,10 +40,12 @@ const Community = () => {
 
   const postListData = () => {
     if (!data) return [];
-    return data?.pages.flatMap((item) => item.newPostList.map((post) => post));
+    return data.pages.flatMap((item) =>
+      item.newPostList.map((post: PostPreview) => post)
+    );
   };
 
-  const postList = postListData()?.map((data, idx) => (
+  const postList = postListData().map((data, idx) => (
     <PostPreviewList key={`community_post_${idx}`} {...data} />
   ));
 
