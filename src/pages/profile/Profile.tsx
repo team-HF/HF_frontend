@@ -23,7 +23,6 @@ export default function Profile() {
   const {
     register,
     formState: { errors },
-    clearErrors,
     setValue,
     watch,
   } = useForm({ mode: "onChange" });
@@ -33,8 +32,6 @@ export default function Profile() {
     setImage,
     nickname,
     setNickname,
-    lastValidatedNickname,
-    setLastValidatedNickname,
     dateYear,
     setDateYear,
     dateMonth,
@@ -55,7 +52,7 @@ export default function Profile() {
     useState<boolean>(false);
 
   useEffect(() => {
-    if (nickname) setValue("nickname", nickname);
+    // if (nickname) setValue("nickname", nickname);
     if (dateYear) setValue("birth", dateYear);
     if (gender) setValue("gender", gender);
     if (introduction) setValue("introduction", introduction);
@@ -80,7 +77,7 @@ export default function Profile() {
   const isAllSelected = Boolean(
     watchedNickname &&
       isNicknameValidated &&
-      lastValidatedNickname &&
+      // lastValidatedNickname &&
       watchedBirth &&
       watchedGender &&
       cd1 &&
@@ -96,14 +93,13 @@ export default function Profile() {
 
   const {
     onChange: nicknameOnChange,
-    onBlur: nicknameOnBlur,
     name: nicknameName,
     ref: nicknameRef,
   } = register("nickname", {
     required: "닉네임을 입력해주세요",
     pattern: {
       value: /^[a-zA-Z0-9가-힣]{1,8}$/,
-      message: "닉네임은 영문,숫자,한글만 포함 가능합니다.",
+      message: "닉네임은 영문, 숫자, 한글만 포함 가능합니다.",
     },
   });
 
@@ -183,22 +179,15 @@ export default function Profile() {
                 name={nicknameName}
                 ref={nicknameRef}
                 onChange={(e) => {
-                  if (isNicknameValidated) {
-                    setIsNicknameValidated(false);
-                  }
+                  if (isNicknameValidated) setIsNicknameValidated(false);
                   nicknameOnChange(e);
                   setNickname(e.target.value);
-                  setValue("nickname", e.target.value);
-                }}
-                onBlur={(e) => {
-                  nicknameOnBlur(e);
                 }}
               />
               <DuplicateNicknameButton
                 nickname={nickname}
                 disabled={!!errors.nickname?.message}
-                onSuccess={(validatedName: string) => {
-                  setLastValidatedNickname(validatedName);
+                onSuccess={() => {
                   setIsNicknameValidated(true);
                 }}
               />
@@ -300,9 +289,6 @@ export default function Profile() {
                   maxLength: {
                     value: 500,
                     message: "최대 500자까지 작성할 수 있어요.",
-                  },
-                  onBlur: () => {
-                    clearErrors("introduction");
                   },
                 })}
                 maxLength={500}
