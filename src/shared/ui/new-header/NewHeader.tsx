@@ -42,7 +42,7 @@ const NewHeader = (props: headerProps) => {
   useEffect(() => {
     if (!myData || !myData.memberId) return;
     const eventSource = new EventSource(
-      `http://localhost:8080/hf/connect/sse?memberId=${myData.memberId}`,
+      `${import.meta.env.VITE_BASE_URL}/hf/connect/sse?memberId=${myData.memberId}`,
       { withCredentials: true }
     );
 
