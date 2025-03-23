@@ -15,15 +15,17 @@ export function SocketProvider({
   const [isConnected, setIsConnected] = useState<boolean>(false);
   useEffect(() => {
     if (!memberId) return;
-    const ws = new WebSocket(
-      `ws://localhost:8080/hf/portfolio?member-id=${memberId}`
-    );
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const host = import.meta.env.VITE_WS_URL || window.location.host;
+    const wsUrl = `${protocol}://${host}/hf/portfolio?member-id=${memberId}`;
+    const ws = new WebSocket(wsUrl);
     const client = Stomp.over(ws);
 
     client.reconnect_delay = 5000;
     client.connect({}, () => {
       setIsConnected(true);
     });
+    client.debug = () => {};
 
     setStompClient(client);
 
