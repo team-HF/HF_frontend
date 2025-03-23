@@ -60,6 +60,7 @@ const uploadImageFile = async (
   url: string,
   image: File
 ) => {
+  console.log(image.type);
   const response = await axiosInstance.put(url, image, {
     headers: {
       "Content-Type": image?.type,

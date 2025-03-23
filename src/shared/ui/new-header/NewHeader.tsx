@@ -34,15 +34,17 @@ const NewHeader = (props: headerProps) => {
     setAlarmOpen(false);
   };
 
-  const logoutConfirm = () => {
-    deleteRefreshToken();
+  const logoutConfirm = async () => {
+    await deleteRefreshToken();
     navigate("/login");
   };
 
   useEffect(() => {
     if (!myData || !myData.memberId) return;
     const eventSource = new EventSource(
-      `${import.meta.env.VITE_BASE_URL}/hf/connect/sse?memberId=${myData.memberId}`,
+      `${import.meta.env.VITE_BASE_URL}/hf/connect/sse?memberId=${
+        myData.memberId
+      }`,
       { withCredentials: true }
     );
 
