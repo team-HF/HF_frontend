@@ -21,13 +21,6 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const {
-    register,
-    formState: { errors },
-    setValue,
-    watch,
-  } = useForm({ mode: "onChange" });
-
-  const {
     image,
     setImage,
     nickname,
@@ -43,7 +36,6 @@ export default function Profile() {
     introduction,
     setIntroduction,
   } = useProfileStore();
-
   const { cd1, cd2, cd3 } = useLocationStore();
 
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
@@ -51,57 +43,58 @@ export default function Profile() {
   const [isNicknameValidated, setIsNicknameValidated] =
     useState<boolean>(false);
 
-  useEffect(() => {
-    // if (nickname) setValue("nickname", nickname);
-    if (dateYear) setValue("birth", dateYear);
-    if (gender) setValue("gender", gender);
-    if (introduction) setValue("introduction", introduction);
-  }, [
-    nickname,
-    dateYear,
-    dateMonth,
-    dateDay,
-    gender,
-    cd1,
-    cd2,
-    cd3,
-    introduction,
-    setValue,
-  ]);
+  const {
+    register,
+    formState: { errors },
+  } = useForm({ mode: "onChange" });
 
-  const watchedNickname = watch("nickname");
-  const watchedBirth = watch("birth");
-  const watchedGender = watch("gender");
-  const watchedIntroduction = watch("introduction");
-
-  const isAllSelected = Boolean(
-    watchedNickname &&
-      isNicknameValidated &&
-      // lastValidatedNickname &&
-      watchedBirth &&
-      watchedGender &&
-      cd1 &&
-      cd2 &&
-      cd3 &&
-      watchedIntroduction
+  const { name: nicknameName, onChange: nicknameOnChange } = register(
+    "nickname",
+    {
+      required: "닉네임을 입력해주세요",
+      pattern: {
+        value: /^[a-zA-Z0-9가-힣]{1,8}$/,
+        message: "닉네임은 영문, 숫자, 한글만 포함 가능합니다.",
+      },
+    }
   );
+
+  const storeImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      if (file.size > 1024 * 1024) {
+        alert(
+          "이미지 파일의 용량이 너무 큽니다. 1MB 이하의 이미지를 업로드해주세요."
+        );
+        return;
+      }
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const storeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isNicknameValidated) setIsNicknameValidated(false);
+    nicknameOnChange(e);
+    setNickname(e.target.value);
+  };
 
   const storeIntroduction = () => {
     setIntroduction(introductionContent);
     setIntroductionModal(false);
   };
 
-  const {
-    onChange: nicknameOnChange,
-    name: nicknameName,
-    ref: nicknameRef,
-  } = register("nickname", {
-    required: "닉네임을 입력해주세요",
-    pattern: {
-      value: /^[a-zA-Z0-9가-힣]{1,8}$/,
-      message: "닉네임은 영문, 숫자, 한글만 포함 가능합니다.",
-    },
-  });
+  const isAllSelected = Boolean(
+    nickname &&
+      isNicknameValidated &&
+      dateYear &&
+      dateMonth &&
+      dateDay &&
+      gender &&
+      cd1 &&
+      cd2 &&
+      cd3 &&
+      introduction
+  );
 
   useEffect(() => {
     if (introductionModal) {
@@ -148,53 +141,30 @@ export default function Profile() {
               <S.CameraIcon src="/svg/camera-icon.svg" />
             </S.ProfileImageLabel>
           )}
-          <S.ProfileImageInput
-            type="file"
-            id="profile_image_input"
-            onChange={(e) => {
-              if (e.target.files) {
-                setImage(e.target.files[0]);
-              }
-            }}
-          />
+          <S.ProfileImageInput type="file" onChange={storeImageFile} />
         </S.ImageContainer>
 
         <S.FieldContainer>
           <S.Field>
             <S.Label>닉네임</S.Label>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                whiteSpace: "nowrap",
-                alignItems: "center",
-                position: "relative",
-              }}
-            >
+            <S.LabelContainer>
               <S.Input
                 type="text"
                 placeholder="닉네임"
                 maxLength={8}
                 value={nickname}
                 name={nicknameName}
-                ref={nicknameRef}
-                onChange={(e) => {
-                  if (isNicknameValidated) setIsNicknameValidated(false);
-                  nicknameOnChange(e);
-                  setNickname(e.target.value);
-                }}
+                onChange={storeNickname}
               />
               <DuplicateNicknameButton
                 nickname={nickname}
                 disabled={!!errors.nickname?.message}
-                onSuccess={() => {
-                  setIsNicknameValidated(true);
-                }}
+                onSuccess={() => setIsNicknameValidated(true)}
               />
-            </div>
+            </S.LabelContainer>
             {errors.nickname?.message ? (
               <S.ErrorMessage>{String(errors.nickname.message)}</S.ErrorMessage>
-            ) : watchedNickname && !isNicknameValidated ? (
+            ) : nickname && !isNicknameValidated ? (
               <S.ErrorMessage>닉네임 중복검사를 완료해주세요.</S.ErrorMessage>
             ) : isNicknameValidated ? (
               <S.ErrorMessage className="valid">
@@ -250,10 +220,6 @@ export default function Profile() {
                 여자
               </S.genderBtn>
             </S.SexContainer>
-            {errors.gender?.message &&
-              typeof errors.gender.message === "string" && (
-                <S.ErrorMessage>{errors.gender.message}</S.ErrorMessage>
-              )}
           </S.Field>
 
           <S.Field>
@@ -284,13 +250,6 @@ export default function Profile() {
             <S.InputContainer>
               <S.IntroductionInput
                 placeholder="나를 소개할 한줄을 작성해주세요."
-                {...register("introduction", {
-                  required: "한줄 소개를 작성해주세요.",
-                  maxLength: {
-                    value: 500,
-                    message: "최대 500자까지 작성할 수 있어요.",
-                  },
-                })}
                 maxLength={500}
                 onChange={(e) => setIntroductionContent(e.target.value)}
               />
