@@ -10,9 +10,15 @@ type Time = {
   minute: number;
 };
 
-export default function TimeStamp() {
+type TimeStampProps = {
+  selectedTime: Time | null;
+  setSelectedTime: (time: Time | null) => void;
+};
+export default function TimeStamp({
+  selectedTime,
+  setSelectedTime,
+}: TimeStampProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedTime, setSelectedTime] = useState<Time | null>(null);
 
   const defaultTime = { period: '오전', hour: 1, minute: 0 };
 
