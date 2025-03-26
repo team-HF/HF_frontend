@@ -48,18 +48,20 @@ export default function Profile() {
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const { name: nicknameName, onChange: nicknameOnChange } = register(
-    "nickname",
-    {
-      required: "닉네임을 입력해주세요",
-      pattern: {
-        value: /^[a-zA-Z0-9가-힣]{1,8}$/,
-        message: "닉네임은 영문, 숫자, 한글만 포함 가능합니다.",
-      },
-    }
-  );
+  const {
+    name: nicknameName,
+    ref: nicknameRef,
+    onChange: nicknameOnChange,
+  } = register("nickname", {
+    required: "닉네임을 입력해주세요",
+    pattern: {
+      value: /^[a-zA-Z0-9가-힣]{1,8}$/,
+      message: "닉네임은 영문, 숫자, 한글만 포함 가능합니다.",
+    },
+  });
 
   const storeImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("run");
     if (e.target.files) {
       const file = e.target.files[0];
       if (file.size > 1024 * 1024) {
@@ -141,7 +143,11 @@ export default function Profile() {
               <S.CameraIcon src="/svg/camera-icon.svg" />
             </S.ProfileImageLabel>
           )}
-          <S.ProfileImageInput type="file" onChange={storeImageFile} />
+          <S.ProfileImageInput
+            type="file"
+            id="profile_image_input"
+            onChange={storeImageFile}
+          />
         </S.ImageContainer>
 
         <S.FieldContainer>
@@ -154,6 +160,7 @@ export default function Profile() {
                 maxLength={8}
                 value={nickname}
                 name={nicknameName}
+                ref={nicknameRef}
                 onChange={storeNickname}
               />
               <DuplicateNicknameButton
