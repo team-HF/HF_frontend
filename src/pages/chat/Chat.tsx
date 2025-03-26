@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import * as S from './style';
 import ChatHeader from '../../features/chat/ui/ChatHeader';
 import { SocketContext } from '../../app/providers/SocketProvider';
@@ -8,9 +8,11 @@ import { useGetChatMessages } from '../../features/chat/api/useGetChatMessage';
 import { Virtuoso } from 'react-virtuoso';
 import ChatWarningMessage from '../../shared/ui/chat-warning-message/ChatWarningMessage';
 import { useGetMatchingUserInfo } from '../../features/matching/api/useGetMatchingUserInfo';
+import ChatRequestBubble from '../../features/chat/ui/ChatRequestBubble';
 
-// creationTime 파싱 함수
-function parseCreationTime(creationTime: string): Date {
+// creationTime이 undefined면 빈 문자열로 처리
+function parseCreationTime(creationTime: string = ''): Date {
+  if (!creationTime) return new Date(0); // 또는 new Date()로 기본값 설정 가능
   const trimmed = creationTime.replace(/(\.\d{3})\d+/, '$1');
   let withZ = trimmed;
   if (!withZ.endsWith('Z')) {
@@ -19,8 +21,9 @@ function parseCreationTime(creationTime: string): Date {
   return new Date(withZ);
 }
 
-// AM/PM 시간 포멧 함수
-function formatAMPM(creationTime: string): string {
+// AMPM 형식으로 시간 변환
+function formatAMPM(creationTime: string = ''): string {
+  if (!creationTime) return '';
   const date = parseCreationTime(creationTime);
   if (isNaN(date.getTime())) {
     return '';
@@ -34,8 +37,7 @@ function formatAMPM(creationTime: string): string {
   return `${ampm} ${hours}:${mm}`;
 }
 
-// 두 Date가 같은 날인지 확인
-function isSameDay(d1: Date, d2: Date) {
+function isSameDay(d1: Date, d2: Date): boolean {
   return (
     d1.getFullYear() === d2.getFullYear() &&
     d1.getMonth() === d2.getMonth() &&
@@ -43,7 +45,6 @@ function isSameDay(d1: Date, d2: Date) {
   );
 }
 
-// 날짜를 "YYYY년 M월 D일 (요일)" 형식으로 변환
 function formatDateLine(creationTime: string): string {
   const dateObj = parseCreationTime(creationTime);
   const year = dateObj.getFullYear();
@@ -54,12 +55,11 @@ function formatDateLine(creationTime: string): string {
   return `${year}년 ${month}월 ${day}일 ${dayOfWeek}요일`;
 }
 
-// 시간 표시 함수
 function shouldShowTime(currentMsg: any, nextMsg: any | undefined): boolean {
   if (!nextMsg) return true;
   const sameSender = currentMsg.senderId === nextMsg.senderId;
-  const currentDate = parseCreationTime(currentMsg.creationTime);
-  const nextDate = parseCreationTime(nextMsg.creationTime);
+  const currentDate = parseCreationTime(currentMsg.creationTime || '');
+  const nextDate = parseCreationTime(nextMsg.creationTime || '');
   const isSameMinute =
     currentDate.getHours() === nextDate.getHours() &&
     currentDate.getMinutes() === nextDate.getMinutes();
@@ -67,6 +67,10 @@ function shouldShowTime(currentMsg: any, nextMsg: any | undefined): boolean {
 }
 
 export function Chat() {
+  const location = useLocation();
+  const routeState = location.state as { matchingMessage?: any } | undefined;
+  const matchingMessageFromRoute = routeState?.matchingMessage;
+
   const socketContext = useContext(SocketContext);
   if (!socketContext) {
     throw new Error('Socket 연결 실패');
@@ -86,6 +90,7 @@ export function Chat() {
     chatroomId: Number(chatRoomId),
     pageSize: 1000,
   });
+
   const allParticipantIds = data?.pages.flatMap((page) => page.participantIds);
   const matchingUserId = allParticipantIds?.filter((id) => id !== memberId)[0];
   const {
@@ -101,13 +106,35 @@ export function Chat() {
     return [...allMessages].reverse();
   }, [data]);
 
+  // 기존 메시지 배열과 실시간 메시지를 합침
   const messages = useMemo(() => {
     return [...fetchedMessages, ...realTimeMessages];
   }, [fetchedMessages, realTimeMessages]);
 
+  // Route state의 매칭 메시지가 있다면 메시지 배열에 병합하고, creationTime 기준 정렬
+  const mergedMessages = useMemo(() => {
+    const arr = [...messages];
+    if (matchingMessageFromRoute) {
+      if (
+        !arr.some(
+          (msg) =>
+            msg.chatMessageType === 'MATCHING_REQUEST' &&
+            msg.creationTime === matchingMessageFromRoute.creationTime
+        )
+      ) {
+        arr.push(matchingMessageFromRoute);
+      }
+    }
+    arr.sort(
+      (a, b) =>
+        new Date(a.creationTime || 0).getTime() -
+        new Date(b.creationTime || 0).getTime()
+    );
+    return arr;
+  }, [messages, matchingMessageFromRoute]);
+
   useEffect(() => {
     if (!stompClient || !isConnected || !chatRoomId) return;
-
     const subscription = stompClient.subscribe(
       `/hf/topic/chat/messages/${chatRoomId}`,
       (message: any) => {
@@ -115,13 +142,12 @@ export function Chat() {
         setRealTimeMessages((prev) => [...prev, newMessage]);
       }
     );
-
     return () => {
       subscription.unsubscribe();
     };
   }, [stompClient, isConnected, chatRoomId]);
 
-  // 메시지 전송 함수
+  //메시지 전송
   const publish = () => {
     if (!stompClient || !textInput.trim()) return;
     const messagePayload = {
@@ -138,6 +164,23 @@ export function Chat() {
     setTextInput('');
   };
 
+  const sendMatchingResponse = (matchingId: number, accepted: boolean) => {
+    if (!stompClient || !chatRoomId) return;
+    const payload = {
+      senderId: memberId,
+      chatMessageType: 'MATCHING_RESPONSE',
+      content: {
+        matchingResponseType: accepted ? 'ACCEPTED' : 'REJECTED',
+        matchingId,
+        cancelMessage: null,
+      },
+    };
+    stompClient.publish({
+      destination: `/hf/app/chat/messages/${chatRoomId}`,
+      body: JSON.stringify(payload),
+    });
+  };
+
   if (isLoading || !chatRoomId || matchingUserInfoLoading)
     return <p>Loading...</p>;
   if (error || matchingUserInfoError) return <p>Error</p>;
@@ -151,24 +194,23 @@ export function Chat() {
         matchingUserId={matchingUserId}
       />
       <S.MessageContainer>
-        {messages.length > 0 ? (
+        {mergedMessages.length > 0 ? (
           <Virtuoso
-            data={messages}
+            data={mergedMessages}
             startReached={() => {
               if (hasNextPage && !isFetchingNextPage) {
                 fetchNextPage();
               }
             }}
-            initialTopMostItemIndex={messages.length - 1}
+            initialTopMostItemIndex={mergedMessages.length - 1}
             components={{
               Scroller: S.CustomScroller,
             }}
             itemContent={(index, msg) => {
-              const prevMsg = messages[index - 1];
+              const prevMsg = mergedMessages[index - 1];
               const isFirstMessage = index === 0;
               let showDateBoundary = false;
               if (isFirstMessage) {
-                // 맨 처음 메시지는 무조건 날짜 표시
                 showDateBoundary = true;
               } else {
                 const prevDate = parseCreationTime(prevMsg.creationTime);
@@ -178,9 +220,41 @@ export function Chat() {
                 }
               }
               const isMine = msg.senderId === memberId;
-              const nextMsg = messages[index + 1];
+              const nextMsg = mergedMessages[index + 1];
               const showTime = shouldShowTime(msg, nextMsg);
               const formattedTime = formatAMPM(msg.creationTime);
+
+              if (msg.chatMessageType === 'MATCHING_REQUEST') {
+                return (
+                  <div key={msg.chatMessageId}>
+                    {showDateBoundary && (
+                      <S.DateLine>
+                        {formatDateLine(msg.creationTime)}
+                      </S.DateLine>
+                    )}
+                    <S.MessageWrapper $isMine={isMine}>
+                      <S.RowBox $isMine={isMine}>
+                        <ChatRequestBubble
+                          messagePayload={{
+                            chatMessageType: msg.chatMessageType,
+                            meetingTime: msg.content.meetingTime,
+                            meetingPlace: msg.content.meetingPlace,
+                            matchingId: msg.content.matchingId,
+                          }}
+                          onAccept={sendMatchingResponse}
+                          onReject={sendMatchingResponse}
+                        />
+
+                        {showTime && (
+                          <S.ChatTime $isMine={isMine}>
+                            {formattedTime}
+                          </S.ChatTime>
+                        )}
+                      </S.RowBox>
+                    </S.MessageWrapper>
+                  </div>
+                );
+              }
 
               return (
                 <div key={msg.chatMessageId}>
