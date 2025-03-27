@@ -61,7 +61,6 @@ export default function Profile() {
   });
 
   const storeImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("run");
     if (e.target.files) {
       const file = e.target.files[0];
       if (file.size > 1024 * 1024) {
