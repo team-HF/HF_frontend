@@ -81,7 +81,7 @@ const NewHeader = (props: headerProps) => {
       document.body.style.overflow = "";
     };
   }, [alarmOpen]);
-
+  
   return (
     <S.Container>
       <S.Box className="align_center gap_8">
@@ -96,7 +96,7 @@ const NewHeader = (props: headerProps) => {
       <S.Box className="align_center gap_8">
         {!props.isLoginBtn ? (
           <></>
-        ) : doneJoinMembership && accessToken ? (
+        ) : doneJoinMembership === "false" && accessToken ? (
           <S.membershipBtn
             className="logout"
             onClick={() => setLogoutAlert(true)}
