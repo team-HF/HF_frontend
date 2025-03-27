@@ -15,8 +15,9 @@ export function SocketProvider({
   const [isConnected, setIsConnected] = useState<boolean>(false);
   useEffect(() => {
     if (!memberId) return;
+    const rawHost = import.meta.env.VITE_WSS_URL;
+    const host = rawHost.replace(/^(https?:)?\/\//, '');
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const host = import.meta.env.VITE_WSS_URL;
     const wsUrl = `${protocol}://${host}/hf/portfolio?member-id=${memberId}`;
     const ws = new WebSocket(wsUrl);
     const client = Stomp.over(ws);

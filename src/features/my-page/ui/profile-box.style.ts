@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { theme } from '../../../app/theme';
 
 export const Container = styled.div`
   display: flex;
@@ -41,6 +42,7 @@ export const ProfileContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 1.75rem;
+  width: 100%;
 `;
 export const ProfileIconContainer = styled.div`
   width: 5rem;
@@ -52,6 +54,9 @@ export const ProfileIconContainer = styled.div`
 export const ProfileIconWrapper = styled.img`
   width: 5rem;
   height: 5rem;
+  border-radius: 50%;
+  box-shadow: ${theme.shadows.shadow2};
+  background-color: ${theme.colors.gray2};
 `;
 export const ProfileTextContainer = styled.div`
   display: flex;
