@@ -4,13 +4,13 @@ import MatchingList from '../../features/my-page/ui/MatchingList';
 import SaveList from '../../features/my-page/ui/SaveList';
 import ProfileBox from '../../features/my-page/ui/ProfileBox';
 import Tab from '../../entities/my-page/ui/Tab';
-import Header from '../../shared/ui/header/Header';
 import LargeButton from '../../shared/ui/large-button/LargeButton';
 import LevelProgressBar from '../../features/my-page/ui/LevelProgressBar';
 import * as S from './style';
 import { useGetMyData } from '../../shared/api/useGetMyData';
 import PageForm from '../../shared/ui/page-form/PageForm';
 import CouponList from '../../features/my-page/ui/CouponList';
+import NewHeader from '../../shared/ui/new-header/NewHeader';
 
 export default function MyPage() {
   const [tab, setTab] = useState('내 운동 매칭 List');
@@ -21,6 +21,9 @@ export default function MyPage() {
 
   const onClick = () => {
     navigate('/profile-setting');
+  };
+  const onClickBack = () => {
+    navigate(-1);
   };
 
   const tabContent = () => {
@@ -57,7 +60,7 @@ export default function MyPage() {
   return (
     <PageForm isGNB={true}>
       <S.Container>
-        <Header text="마이페이지" />
+        <NewHeader title="마이페이지" isBackBtn onClickBack={onClickBack} />
         <ProfileBox myData={myData} />
         <LevelProgressBar myData={myData} />
         <S.LargeButtonWrapper>
