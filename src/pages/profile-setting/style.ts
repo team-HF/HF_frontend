@@ -26,6 +26,8 @@ export const ProfileImageLabel = styled.label`
   align-items: center;
   width: 7.5rem;
   height: 7.5rem;
+  background-color: #f6f6f6;
+  border-radius: 50%;
 `;
 
 export const DefaultUserImage = styled.img`

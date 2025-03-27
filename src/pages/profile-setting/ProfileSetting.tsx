@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { getSgisLocationData } from '../../shared/api/getSgisLocationData';
 import { getSgisApiAccessToken } from '../../shared/api/getSgisApiAccessToken';
 import { useGetMyData } from '../../shared/api/useGetMyData';
+import UpdateMyDataButton from '../../features/profile-setting/ui/UpdateMyDataButton';
 import { useNavigate } from 'react-router-dom';
 import {
   CompanionStyle,
@@ -20,7 +21,6 @@ import DuplicateNicknameButton from '../../features/profile-setting/ui/Duplicate
 import { getSgisLocation } from '../../shared/api/getSgisLocation';
 import NewHeader from '../../shared/ui/new-header/NewHeader';
 import { useProfileEditStore } from '../../features/profile-setting/store/profile-edit-store';
-import { updateImageFile } from '../../features/profile-setting/api/usePutImage';
 
 interface Location {
   addr_name: string;
@@ -40,10 +40,10 @@ export default function ProfileSetting() {
   const { data: myData, isLoading, isError } = useGetMyData();
   const navigate = useNavigate();
 
-  const [image, setImage] = useState<File>();
   const [locationData, setLocationData] = useState<Location[]>([]);
   const [introductionModal, setIntroductionModal] = useState<boolean>(false);
   const [introductionContent, setIntroductionContent] = useState<string>('');
+
   const [localNickname, setLocalNickname] = useState('');
   const [isNicknameValidated, setIsNicknameValidated] = useState<boolean>(true);
   const [selectedLocation, setSelectedLocation] = useState<string>('');
@@ -54,6 +54,8 @@ export default function ProfileSetting() {
     (initialNicknameValidate || isNicknameValidated) && isNicknameFormatValid;
 
   const {
+    image,
+    setImage,
     nickname,
     setNickname,
     introduction,
@@ -76,6 +78,7 @@ export default function ProfileSetting() {
 
   useEffect(() => {
     if (!myData) return;
+
     if (!nickname || nickname === '') {
       setNickname(myData.nickname);
     }
@@ -106,8 +109,26 @@ export default function ProfileSetting() {
       );
       if (!selectedLocation) setSelectedLocation(result.full_addr);
     };
+
     fetchLocation();
   }, [myData]);
+
+  const storeImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      if (file.size > 1024 * 1024) {
+        alert(
+          '이미지 파일의 용량이 너무 큽니다. 1MB 이하의 이미지를 업로드해주세요.'
+        );
+        return;
+      }
+      if (file.type === 'image/svg+xml') {
+        alert('PNG 또는 JPG 파일을 사용해주세요.');
+        return;
+      }
+      setImage(file);
+    }
+  };
 
   const defaultExerciseStyle = [
     getCompanionStyleText(styleSelected as CompanionStyle),
@@ -167,7 +188,6 @@ export default function ProfileSetting() {
     setIntroduction(introductionContent);
     setIntroductionModal(false);
   };
-
   useEffect(() => {
     if (introductionModal) {
       document.body.style.overflow = 'hidden';
@@ -194,34 +214,6 @@ export default function ProfileSetting() {
 
   const onClickBack = () => {
     navigate('/my-page');
-  };
-
-  const handleUpdateProfile = async () => {
-    const imageFileExtension = image?.type.split('/')[1] || null;
-    const requestData = {
-      profileImageFileExtension: imageFileExtension,
-      id: myData?.memberId || null,
-      name: myData?.name || null,
-      nickname,
-      birthDate: myData?.birthDate || null,
-      gender: myData?.gender || null,
-      cd1,
-      cd2,
-      cd3,
-      introduction,
-      fitnessLevel: myData?.fitnessLevel || 'BEGINNER',
-      companionStyle: myData?.companionStyle || null,
-      fitnessEagerness: myData?.fitnessEagerness || null,
-      fitnessObjective: myData?.fitnessObjective || null,
-      fitnessKind: myData?.fitnessKind || null,
-    };
-
-    try {
-      await updateImageFile(requestData, image);
-      navigate('/my-page');
-    } catch (error) {
-      console.error('프로필 업데이트 중 에러 발생', error);
-    }
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -255,11 +247,7 @@ export default function ProfileSetting() {
           <S.ProfileImageInput
             type="file"
             id="profile_image_input"
-            onChange={(e) => {
-              if (e.target.files) {
-                setImage(e.target.files[0]);
-              }
-            }}
+            onChange={storeImageFile}
           />
         </S.ImageContainer>
         <S.FieldContainer>
@@ -350,9 +338,19 @@ export default function ProfileSetting() {
           </S.Field>
         </S.FieldContainer>
         <S.UpdateButtonWrapper>
-          <button onClick={handleUpdateProfile} disabled={!isAllSelected}>
-            업데이트
-          </button>
+          <UpdateMyDataButton
+            image={image || undefined}
+            nickname={nickname!}
+            disabled={!isAllSelected}
+            cd1={cd1 || ''}
+            cd2={cd2 || ''}
+            cd3={cd3 || ''}
+            introduction={introduction!}
+            styleSelected={styleSelected as 'SMALL' | 'GROUP'}
+            habitSelected={habitSelected as 'EAGER' | 'LAZY'}
+            goalSelected={goalSelected as 'BULK_UP' | 'RUNNING'}
+            exerciseSelected={exerciseSelected as 'HIGH_STRESS' | 'FUNCTIONAL'}
+          />
         </S.UpdateButtonWrapper>
       </S.Container>
       {introductionModal && (
@@ -366,7 +364,7 @@ export default function ProfileSetting() {
             </S.Header>
             <S.InputContainer>
               <S.IntroductionInput
-                placeholder="나를 소개할한줄을 작성해주세요."
+                placeholder="나를 소개할 한줄을 작성해주세요."
                 {...register('introduction', {
                   required: '한줄 소개를 작성해주세요.',
                   maxLength: {
