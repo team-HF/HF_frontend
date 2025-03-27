@@ -37,7 +37,7 @@ export default function ScheduleForm({
         setSelectedTime={setSelectedTime}
       />
       <LocationSelect
-        selectedLocation={selectedLocation}
+        selectedLocation={selectedLocation ?? ''}
         setSelectedLocation={setSelectedLocation}
       />
     </S.Container>

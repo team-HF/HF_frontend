@@ -3,7 +3,7 @@ import * as S from './schedule-field-style';
 import KakaoMap from '../../../shared/ui/kakao-map/KakaoMap';
 
 type LocationSelectProps = {
-  selectedLocation: string | null;
+  selectedLocation: string;
   setSelectedLocation: (location: string) => void;
 };
 
