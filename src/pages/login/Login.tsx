@@ -5,11 +5,10 @@ const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
 const KAKAO_REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
 const KAKAO_AUTHORIZATION_CODE_URL = `${KAKAO_OAUTH_URL}/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&prompt=login`;
 
-// const GOOGLE_OAUTH_URL = import.meta.env.VITE_GOOGLE_OAUTH_URL;
+const GOOGLE_OAUTH_URL = import.meta.env.VITE_GOOGLE_OAUTH_URL;
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 const GOOGLE_REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
-// const GOOGLE_AUTHORIZATION_CODE_URL = `${GOOGLE_OAUTH_URL}&redirect_uri=${GOOGLE_REDIRECT_URI}&client_id=${GOOGLE_CLIENT_ID}`;
-const GOOGLE_AUTHORIZATION_CODE_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&scope=https://www.googleapis.com/auth/userinfo.email&response_type=code&prompt=consent&access_type=offline`;
+const GOOGLE_AUTHORIZATION_CODE_URL = `${GOOGLE_OAUTH_URL}&redirect_uri=${GOOGLE_REDIRECT_URI}&client_id=${GOOGLE_CLIENT_ID}`;
 
 const Login = () => {
   return (
