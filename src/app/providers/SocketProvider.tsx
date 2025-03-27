@@ -16,7 +16,7 @@ export function SocketProvider({
   useEffect(() => {
     if (!memberId) return;
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const host = import.meta.env.VITE_WSS_BACKEND_URL;
+    const host = import.meta.env.VITE_WSS_URL;
     const wsUrl = `${protocol}://${host}/hf/portfolio?member-id=${memberId}`;
     const ws = new WebSocket(wsUrl);
     const client = Stomp.over(ws);

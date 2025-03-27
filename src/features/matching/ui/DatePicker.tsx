@@ -2,19 +2,27 @@ import { useState } from 'react';
 import Calendar from '../../../shared/ui/calendar/Calendar';
 import * as S from './schedule-field-style';
 
-export default function DatePicker() {
-  const [date, setDate] = useState<Date | null>(null);
+type DatePickerProps = {
+  selectedDate: Date | null;
+  setSelectedDate: (date: Date | null) => void;
+};
 
+export default function DatePicker({
+  selectedDate,
+  setSelectedDate,
+}: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const displayValue = selectedDate
+    ? selectedDate.toLocaleDateString('ko-KR')
+    : '';
 
   const handleDateChange = (newDate: Date | null) => {
-    setDate(newDate);
+    setSelectedDate(newDate);
     setIsOpen(false);
   };
   const handleCloseCalendar = () => {
     setIsOpen(false);
   };
-  const displayValue = date ? date.toLocaleDateString('ko-KR') : '';
 
   return (
     <S.Container>
@@ -36,7 +44,7 @@ export default function DatePicker() {
 
         {isOpen && (
           <Calendar
-            selectedDate={date}
+            selectedDate={selectedDate}
             onChange={handleDateChange}
             onClose={handleCloseCalendar}
           />

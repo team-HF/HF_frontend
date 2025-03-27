@@ -29,7 +29,7 @@ import { useAccountExpiresStore } from './shared/store/account-expires-store';
 import Alert from './shared/ui/alert/Alert';
 import { useMyProfileStore } from './shared/store/my-profile-store';
 import Loader from './shared/ui/loader/Loader';
-import ResetProfileEditStoreOnExit from './features/my-page/providers/ useResetProfileEditStoreOnExit';
+import ResetProfileEditStoreOnExit from './features/my-page/providers/useResetProfileEditStoreOnExit';
 
 function App() {
   const navigate = useNavigate();

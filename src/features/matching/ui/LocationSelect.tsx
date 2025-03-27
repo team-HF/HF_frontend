@@ -2,9 +2,16 @@ import { useState } from 'react';
 import * as S from './schedule-field-style';
 import KakaoMap from '../../../shared/ui/kakao-map/KakaoMap';
 
-export default function LocationSelect() {
+type LocationSelectProps = {
+  selectedLocation: string;
+  setSelectedLocation: (location: string) => void;
+};
+
+export default function LocationSelect({
+  selectedLocation,
+  setSelectedLocation,
+}: LocationSelectProps) {
   const [isMapOpen, setIsMapOpen] = useState(false);
-  const [location, setLocation] = useState<string | null>(null);
 
   const handleOpenMap = () => {
     setIsMapOpen(true);
@@ -15,16 +22,17 @@ export default function LocationSelect() {
   };
 
   const handleSelectLocation = (selected: string) => {
-    setLocation(selected);
+    setSelectedLocation(selected);
     setIsMapOpen(false);
   };
+
   return (
     <S.Container>
       <S.Title>위치</S.Title>
       <S.FieldWrapper>
         <S.FieldInput
           placeholder="위치를 선택하세요"
-          value={location ?? ''}
+          value={selectedLocation}
           readOnly
         />
         <S.Icon

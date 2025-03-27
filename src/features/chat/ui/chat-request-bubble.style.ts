@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  min-height: 100vh;
-  background-color: #f9fafb;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 0;
+  flex-direction: column;
+  border: 1px solid #cfc4fb;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  padding: 10px 24px;
+  width: 258px;
 `;
 
 export const Card = styled.div`
