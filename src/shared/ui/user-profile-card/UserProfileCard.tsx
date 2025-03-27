@@ -22,7 +22,7 @@ const UserProfileCard = (profile: User) => {
         <S.ProfileImage
           src={
             profile?.profileImageUrl
-              ? `http://localhost:8080/${profile?.profileImageUrl}`
+              ? `${profile?.profileImageUrl}`
               : "/svg/default-profile-icon.svg"
           }
         />
