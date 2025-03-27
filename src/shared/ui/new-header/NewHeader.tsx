@@ -96,7 +96,7 @@ const NewHeader = (props: headerProps) => {
       <S.Box className="align_center gap_8">
         {!props.isLoginBtn ? (
           <></>
-        ) : doneJoinMembership && accessToken ? (
+        ) : !doneJoinMembership && accessToken ? (
           <S.membershipBtn
             className="logout"
             onClick={() => setLogoutAlert(true)}

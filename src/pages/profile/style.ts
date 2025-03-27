@@ -280,3 +280,10 @@ export const StoreBtn = styled.button`
   font-weight: 600;
   cursor: pointer;
 `;
+export const LabelContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  white-space: nowrap;
+`;
