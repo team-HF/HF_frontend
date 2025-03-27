@@ -81,7 +81,7 @@ const NewHeader = (props: headerProps) => {
       document.body.style.overflow = "";
     };
   }, [alarmOpen]);
-  console.log(!doneJoinMembership && accessToken);
+  
   return (
     <S.Container>
       <S.Box className="align_center gap_8">
