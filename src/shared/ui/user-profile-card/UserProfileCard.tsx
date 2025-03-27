@@ -11,6 +11,7 @@ import * as S from "./style";
 import { User } from "../../types/user";
 
 const UserProfileCard = (profile: User) => {
+  console.log(profile);
   const navigate = useNavigate();
   return (
     <S.Container
@@ -29,7 +30,10 @@ const UserProfileCard = (profile: User) => {
         <S.Box className="gap_8 column">
           <S.Box className="align-items-center gap_8">
             <S.Nickname>{profile.nickname}</S.Nickname>
-            <TierTag fitnessLevel="BEGINNER" tier={1} />
+            <TierTag
+              fitnessLevel={profile.tier.fitnessLevel}
+              tier={profile.tier.tier}
+            />
           </S.Box>
           <S.TagContainer>
             <ExerciseTag tag={getCompanionStyleText(profile.companionStyle)} />
