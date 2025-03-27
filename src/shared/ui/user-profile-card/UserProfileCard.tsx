@@ -11,7 +11,6 @@ import * as S from "./style";
 import { User } from "../../types/user";
 
 const UserProfileCard = (profile: User) => {
-  console.log(profile);
   const navigate = useNavigate();
   return (
     <S.Container
