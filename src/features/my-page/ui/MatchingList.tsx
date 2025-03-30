@@ -37,7 +37,7 @@ export default function MatchingList() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetMyMatchingList(memberId ?? 0, filterStatus);
+  } = useGetMyMatchingList(memberId!, filterStatus);
   const allMatches =
     MatchingListData?.pages.flatMap((page) =>
       page.content.content.map((item) => ({
@@ -67,7 +67,7 @@ export default function MatchingList() {
     setFilterStatus(option);
     setIsOpenDropdownFilter(false);
     queryClient.invalidateQueries({
-      queryKey: ['myMatchingList', memberId, option].filter(Boolean),
+      queryKey: ['myMatchingList', memberId, option],
     });
   };
 
@@ -104,7 +104,7 @@ export default function MatchingList() {
         )}
       </S.FilterContainer>
       <S.Container>
-        {allMatches.length > 0 ? (
+        {allMatches.length > 0 || allMatches === undefined ? (
           <Virtuoso
             useWindowScroll
             data={allMatches}
