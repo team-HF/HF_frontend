@@ -37,11 +37,8 @@ export function SocketProvider({
   }, [memberId]);
 
   return (
-    console.log(stompClient, isConnected),
-    (
-      <SocketContext.Provider value={{ stompClient, isConnected, memberId }}>
-        {children}
-      </SocketContext.Provider>
-    )
+    <SocketContext.Provider value={{ stompClient, isConnected, memberId }}>
+      {children}
+    </SocketContext.Provider>
   );
 }
