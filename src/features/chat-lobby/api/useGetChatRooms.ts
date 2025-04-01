@@ -38,7 +38,6 @@ export const useGetChatRooms = ({
   page = 1,
   pageSize = 10,
 }: ChatRoomProps) => {
-
   return useQuery<ChatContent[]>({
     queryKey: [
       'chat-lobby-content',
@@ -47,7 +46,7 @@ export const useGetChatRooms = ({
       page,
       pageSize,
     ],
-    enabled: participantId !== undefined,
+    enabled: !!participantId,
     queryFn: () =>
       getChatRooms(
         { participantId: participantId!, searchCondition, page, pageSize },
