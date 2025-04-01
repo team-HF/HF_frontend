@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const WishListSchema = z.object({
   wishedId: z.number(),
-  imageUrl: z.string(),
+  imageUrl: z.string().nullable(),
   wishedNickname: z.string(),
 });
 
