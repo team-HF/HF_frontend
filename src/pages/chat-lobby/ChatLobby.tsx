@@ -9,6 +9,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import ChatWarningMessage from '../../shared/ui/chat-warning-message/ChatWarningMessage';
 import NewHeader from '../../shared/ui/new-header/NewHeader';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../shared/ui/loader/Loader';
 
 export default function ChatLobby() {
   const socketContext = useContext(SocketContext);
@@ -78,7 +79,9 @@ export default function ChatLobby() {
     navigate(-1);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+    return <Loader />;
+  }
   if (error) return <p>Error</p>;
   if (!chatData) return <p>데이터를 불러올 수 없습니다.</p>;
 

@@ -9,6 +9,7 @@ import { Virtuoso } from 'react-virtuoso';
 import ChatWarningMessage from '../../shared/ui/chat-warning-message/ChatWarningMessage';
 import { useGetMatchingUserInfo } from '../../features/matching/api/useGetMatchingUserInfo';
 import ChatRequestBubble from '../../features/chat/ui/ChatRequestBubble';
+import Loader from '../../shared/ui/loader/Loader';
 
 // creationTime이 undefined면 빈 문자열로 처리
 function parseCreationTime(creationTime: string = ''): Date {
@@ -182,8 +183,7 @@ export function Chat() {
     });
   };
 
-  if (isLoading || !chatRoomId || matchingUserInfoLoading)
-    return <p>Loading...</p>;
+  if (isLoading || !chatRoomId || matchingUserInfoLoading) return <Loader />;
   if (error || matchingUserInfoError) return <p>Error</p>;
 
   return (

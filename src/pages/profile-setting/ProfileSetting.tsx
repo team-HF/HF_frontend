@@ -21,6 +21,7 @@ import DuplicateNicknameButton from '../../features/profile-setting/ui/Duplicate
 import { getSgisLocation } from '../../shared/api/getSgisLocation';
 import NewHeader from '../../shared/ui/new-header/NewHeader';
 import { useProfileEditStore } from '../../features/profile-setting/store/profile-edit-store';
+import Loader from '../../shared/ui/loader/Loader';
 
 interface Location {
   addr_name: string;
@@ -216,7 +217,9 @@ export default function ProfileSetting() {
     navigate('/my-page');
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+    return <Loader />;
+  }
   if (isError) return <p>Error</p>;
 
   return (

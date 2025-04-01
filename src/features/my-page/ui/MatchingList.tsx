@@ -18,6 +18,7 @@ import {
   FitnessObjective,
 } from '../../../shared/constants/fitness-category';
 import EmptyMatchingList from './EmptyMatchingList';
+import Loader from '../../../shared/ui/loader/Loader';
 
 export default function MatchingList() {
   const [filterStatus, setFilterStatus] = useState<string>('전체');
@@ -72,7 +73,7 @@ export default function MatchingList() {
   };
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (isError) {

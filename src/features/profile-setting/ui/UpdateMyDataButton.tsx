@@ -3,6 +3,7 @@ import { usePatchMyData } from '../api/usePatchMyData';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../shared/utils/useAxios';
+import Loader from '../../../shared/ui/loader/Loader';
 
 export interface UpdateMyDataButtonProps {
   nickname: string;
@@ -121,7 +122,9 @@ export default function UpdateMyDataButton({
     });
   };
 
-  if (isLoading) return <p>로딩 중...</p>;
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <S.Btn disabled={disabled} onClick={updateMyData}>

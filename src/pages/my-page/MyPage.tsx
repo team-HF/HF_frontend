@@ -11,12 +11,15 @@ import { useGetMyData } from '../../shared/api/useGetMyData';
 import PageForm from '../../shared/ui/page-form/PageForm';
 import CouponList from '../../features/my-page/ui/CouponList';
 import NewHeader from '../../shared/ui/new-header/NewHeader';
+import Loader from '../../shared/ui/loader/Loader';
 
 export default function MyPage() {
   const [tab, setTab] = useState('내 운동 매칭 List');
   const navigate = useNavigate();
   const { data: myData, isLoading, isError } = useGetMyData();
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+    return <Loader />;
+  }
   if (isError) return <p>Error</p>;
 
   const onClick = () => {

@@ -4,6 +4,7 @@ import { useGetMyWishList } from '../api/useGetMyWishList';
 import { useNavigate } from 'react-router-dom';
 import { useMyProfileStore } from '../../../shared/store/my-profile-store';
 import { useDeleteWish } from '../../../shared/api/useDeleteWish';
+import Loader from '../../../shared/ui/loader/Loader';
 
 export default function SaveList() {
   const size = 20;
@@ -26,7 +27,7 @@ export default function SaveList() {
   };
 
   if (isLoading) {
-    return <p>loading...</p>;
+    return <Loader />;
   }
   if (error) {
     return <p>error</p>;
