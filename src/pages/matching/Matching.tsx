@@ -64,14 +64,13 @@ export default function Matching() {
         meetingPlaceAddress: '',
       },
     };
+    console.log(messagePayload);
     if (stompClient && chatRoomId) {
       stompClient.publish({
-        destination: `/hf/app/chat/request/${chatRoomId}`,
+        destination: `/hf/app/chat/messages/${chatRoomId}`,
         body: JSON.stringify(messagePayload),
       });
-      navigate(`/chat/${chatRoomId}`, {
-        state: { matchingMessage: messagePayload },
-      });
+      navigate(`/chat/${chatRoomId}`);
     } else {
       alert('매칭 요청에 실패했습니다.');
     }

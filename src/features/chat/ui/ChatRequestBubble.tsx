@@ -17,7 +17,6 @@ export default function ChatRequestBubble({
   onAccept,
   onReject,
 }: ChatRequestBubbleProps) {
-  console.log(messagePayload);
   const isoTime = messagePayload.meetingTime;
   const datePart = isoTime.split('T')[0];
   const timePart = isoTime.split('T')[1]?.split(':').slice(0, 2).join(':');
@@ -59,10 +58,7 @@ export default function ChatRequestBubble({
             </BubbleMessageButton>
           </div>
         ) : (
-          <BubbleMessageButton
-            variant="secondary"
-            onClick={() => onReject(messagePayload.matchingId, false)}
-          >
+          <BubbleMessageButton variant="secondary">
             매칭 조회
           </BubbleMessageButton>
         )}
