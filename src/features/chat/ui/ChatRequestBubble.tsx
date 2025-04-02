@@ -10,12 +10,14 @@ export type ChatRequestBubbleProps = {
   };
   onAccept: (matchingId: number, accepted: boolean) => void;
   onReject: (matchingId: number, accepted: boolean) => void;
+  isMine?: boolean;
 };
 
 export default function ChatRequestBubble({
   messagePayload,
   onAccept,
   onReject,
+  isMine = false,
 }: ChatRequestBubbleProps) {
   const isoTime = messagePayload.meetingTime;
   const datePart = isoTime.split('T')[0];
@@ -23,7 +25,7 @@ export default function ChatRequestBubble({
   const { meetingPlace } = messagePayload;
   const messageType = messagePayload.chatMessageType;
   return (
-    <S.Card>
+    <S.Card $isMine={isMine}>
       <S.HeaderWrapper>
         <S.Header>매칭 신청</S.Header>
       </S.HeaderWrapper>

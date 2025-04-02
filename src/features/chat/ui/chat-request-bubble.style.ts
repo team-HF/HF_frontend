@@ -10,7 +10,7 @@ export const Container = styled.div`
   width: 258px;
 `;
 
-export const Card = styled.div`
+export const Card = styled.div<{ $isMine: boolean }>`
   width: 258px;
   height: 172px;
   padding: 10px 24px;
@@ -19,6 +19,7 @@ export const Card = styled.div`
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
+  align-self: ${({ $isMine }) => ($isMine ? 'flex-end' : 'flex-start')};
 `;
 export const HeaderWrapper = styled.div`
   display: flex;
