@@ -243,6 +243,7 @@ export function Chat() {
                           }}
                           onAccept={sendMatchingResponse}
                           onReject={sendMatchingResponse}
+                          isMine={isMine}
                         />
                         {showTime && (
                           <S.ChatTime $isMine={isMine}>
