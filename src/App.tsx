@@ -37,6 +37,12 @@ function App() {
   const { setMyProfile } = useMyProfileStore();
   const accessToken = Cookies.get('access_token');
 
+  useEffect(() => {
+    if (myData) {
+      setMyProfile(myData);
+    }
+  }, [myData, setMyProfile]);
+
   const isLoggedIn = Boolean(accessToken && myData?.memberId);
 
   const {
@@ -56,12 +62,6 @@ function App() {
     setRequireModalOpen(false);
   };
 
-  useEffect(() => {
-    if (myData) {
-      setMyProfile(myData);
-    }
-  }, [myData, setMyProfile]);
-
   if (isLoading) {
     return <Loader />;
   }
@@ -73,7 +73,7 @@ function App() {
         <Route
           element={
             isLoggedIn ? (
-              <SocketProvider memberId={myData!.memberId}>
+              <SocketProvider>
                 <SubscriptionProvider
                   onNewChatroom={(newChatroomId: number) => {
                     navigate(`/chat/${newChatroomId}`);
@@ -99,7 +99,7 @@ function App() {
         <Route
           element={
             isLoggedIn ? (
-              <SocketProvider memberId={myData!.memberId}>
+              <SocketProvider>
                 <SubscriptionProvider
                   onNewChatroom={(newChatroomId: number) => {
                     navigate(`/chat/${newChatroomId}`);

@@ -1,16 +1,18 @@
 import { createContext, useEffect, useState } from 'react';
 import { Client, Stomp } from '@stomp/stompjs';
 import { SocketProps } from './socket.interface';
+import { useMyProfileStore } from '../../shared/store/my-profile-store';
 
 export const SocketContext = createContext<SocketProps | null>(null);
 
 export function SocketProvider({
-  memberId,
   children,
 }: {
   memberId?: number;
   children: React.ReactNode;
 }) {
+  const myProfile = useMyProfileStore();
+  const memberId = myProfile?.myProfile?.memberId;
   const [stompClient, setStompClient] = useState<Client | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(false);
   useEffect(() => {

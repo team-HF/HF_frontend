@@ -8,6 +8,7 @@ export const ListWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 24px;
+  cursor: pointer;
   @media (min-width: 768px) {
     width: 40rem;
   }

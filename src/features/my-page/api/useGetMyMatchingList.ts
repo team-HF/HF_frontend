@@ -32,7 +32,6 @@ export const useGetMyMatchingList = (
   memberId: number,
   filterStatus: string
 ) => {
-
   const filterStatusMap: Record<string, string> = {
     전체: 'ALL',
     '매칭 진행 중': 'IN_PROGRESS',
@@ -52,8 +51,9 @@ export const useGetMyMatchingList = (
       if (lastPage.content.page < lastPage.content.totalPageCount) {
         return lastPage.content.page + 1;
       }
-      return undefined;
+      return null;
     },
     staleTime: 5 * 60 * 1000,
+    enabled: !!memberId,
   });
 };

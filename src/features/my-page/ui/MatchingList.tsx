@@ -18,6 +18,16 @@ import {
   FitnessObjective,
 } from '../../../shared/constants/fitness-category';
 import EmptyMatchingList from './EmptyMatchingList';
+import Loader from '../../../shared/ui/loader/Loader';
+
+const formatDate = (isoDateString: string): string => {
+  const dateObj = new Date(isoDateString);
+  const year = dateObj.getFullYear();
+  const month = dateObj.getMonth() + 1;
+  const day = dateObj.getDate();
+
+  return `${year}년 ${month}월 ${day}일`;
+};
 
 export default function MatchingList() {
   const [filterStatus, setFilterStatus] = useState<string>('전체');
@@ -26,7 +36,6 @@ export default function MatchingList() {
 
   const filterOptions = ['전체', '매칭 진행 중', '매칭 종료', '매칭 중단'];
   const queryClient = useQueryClient();
-
   const { data: myData } = useGetMyData();
   const memberId = myData?.memberId;
 
@@ -37,7 +46,7 @@ export default function MatchingList() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetMyMatchingList(memberId ?? 0, filterStatus);
+  } = useGetMyMatchingList(memberId!, filterStatus);
   const allMatches =
     MatchingListData?.pages.flatMap((page) =>
       page.content.content.map((item) => ({
@@ -67,12 +76,12 @@ export default function MatchingList() {
     setFilterStatus(option);
     setIsOpenDropdownFilter(false);
     queryClient.invalidateQueries({
-      queryKey: ['myMatchingList', memberId, option].filter(Boolean),
+      queryKey: ['myMatchingList', memberId, option],
     });
   };
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   if (isError) {
@@ -104,7 +113,7 @@ export default function MatchingList() {
         )}
       </S.FilterContainer>
       <S.Container>
-        {allMatches.length > 0 ? (
+        {allMatches === undefined || allMatches.length > 0 ? (
           <Virtuoso
             useWindowScroll
             data={allMatches}
@@ -129,12 +138,20 @@ export default function MatchingList() {
                   </S.HashtagContainer>
                 </S.UpperContainer>
                 <S.MiddleContainer>
-                  <S.MiddleText>{user.matchCount}회 매칭됨</S.MiddleText>
-                  <S.MiddleText>{user.location}</S.MiddleText>
+                  <S.MiddleText>
+                    <img src="/svg/location-icon.svg" alt="location-icon" />
+                    <span style={{ marginLeft: '8px' }}>
+                      {user.matchCount}회 매칭됨
+                    </span>
+                  </S.MiddleText>
+                  <S.MiddleText style={{ marginTop: '4px' }}>
+                    <img src="/svg/location-icon.svg" alt="location-icon" />
+                    <span style={{ marginLeft: '8px' }}>{user.location}</span>
+                  </S.MiddleText>
                 </S.MiddleContainer>
                 <S.UnderContainer>
                   <S.DateWrapper>
-                    <S.DateText>{user.time}</S.DateText>
+                    <S.DateText>매칭 날짜 : {formatDate(user.time)}</S.DateText>
                   </S.DateWrapper>
                   <S.ButtonContainer>
                     {user.status === 'FINISHED' ? (

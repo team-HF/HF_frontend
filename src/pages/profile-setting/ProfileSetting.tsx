@@ -21,6 +21,7 @@ import DuplicateNicknameButton from '../../features/profile-setting/ui/Duplicate
 import { getSgisLocation } from '../../shared/api/getSgisLocation';
 import NewHeader from '../../shared/ui/new-header/NewHeader';
 import { useProfileEditStore } from '../../features/profile-setting/store/profile-edit-store';
+import Loader from '../../shared/ui/loader/Loader';
 
 interface Location {
   addr_name: string;
@@ -122,8 +123,9 @@ export default function ProfileSetting() {
         );
         return;
       }
-      if (file.type === 'image/svg+xml') {
-        alert('PNG 또는 JPG 파일을 사용해주세요.');
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('PNG 또는 JPG 파일만 사용해주세요.');
         return;
       }
       setImage(file);
@@ -216,7 +218,9 @@ export default function ProfileSetting() {
     navigate('/my-page');
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+    return <Loader />;
+  }
   if (isError) return <p>Error</p>;
 
   return (

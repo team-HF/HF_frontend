@@ -4,6 +4,7 @@ import { useGetMatchingUserInfo } from '../../../features/matching/api/useGetMat
 import { useEffect, useState } from 'react';
 import { getSgisApiAccessToken } from '../../../shared/api/getSgisApiAccessToken.ts';
 import { getSgisLocation } from '../../../shared/api/getSgisLocation.ts';
+import Loader from '../../../shared/ui/loader/Loader.tsx';
 
 export default function PartnerInfo({
   matchingUserId,
@@ -30,7 +31,7 @@ export default function PartnerInfo({
     })();
   }, [matchingUserData]);
   if (isLoading || !matchingUserData) {
-    return <div>로딩</div>;
+    return <Loader />;
   }
 
   if (error) return <div>error.</div>;

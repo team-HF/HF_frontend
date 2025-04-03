@@ -14,5 +14,6 @@ export const useGetMatchingUserInfo = (memberId: number) => {
   return useQuery({
     queryKey: ['matchingUserInfo', memberId],
     queryFn: () => getMatchingUserInfo(axiosInstance, memberId),
+    enabled: !!memberId,
   });
 };

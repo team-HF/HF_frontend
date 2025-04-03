@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const MatchingResponseSchema = z.object({
   statusCode: z.number(),
   statusCodeSeries: z.number(),
+  message: z.string().nullable(),
   content: z.object({
     page: z.number(),
     pageSize: z.number(),
@@ -23,7 +24,7 @@ export const MatchingResponseSchema = z.object({
           fitnessLevel: z.enum(['BEGINNER', 'ADVANCED']),
           companionStyle: z.enum(['SMALL', 'GROUP']),
           fitnessEagerness: z.enum(['EAGER', 'LAZY']),
-          fitnessObjective: z.enum(['BULK_UP', 'RUNNING']),
+          fitnessObjective: z.enum(['BULK_UP', 'RUNNING']).optional(),
           fitnessKind: z.enum(['HIGH_STRESS', 'FUNCTIONAL']),
           cd1: z.string(),
           cd2: z.string(),
