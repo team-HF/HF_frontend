@@ -13,8 +13,8 @@ export const Container = styled.div`
 
 export const CardContainer = styled.div<{ status: string }>`
   padding: 10px;
-  border: 1px solid #99999999;
-  border-radius: 0.3125rem;
+  border: 1px solid #e8e3fd;
+  border-radius: 8px;
   margin-bottom: 0.5rem;
   background-color: ${({ status }) =>
     status === 'FINISHED' ? '#E8E3FD' : 'transparent'};
