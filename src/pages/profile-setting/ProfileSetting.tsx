@@ -123,8 +123,9 @@ export default function ProfileSetting() {
         );
         return;
       }
-      if (file.type === 'image/svg+xml') {
-        alert('PNG 또는 JPG 파일을 사용해주세요.');
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('PNG 또는 JPG 파일만 사용해주세요.');
         return;
       }
       setImage(file);
