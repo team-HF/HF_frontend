@@ -113,7 +113,7 @@ export default function MatchingList() {
         )}
       </S.FilterContainer>
       <S.Container>
-        {allMatches.length > 0 || allMatches === undefined ? (
+        {allMatches === undefined || allMatches.length > 0 ? (
           <Virtuoso
             useWindowScroll
             data={allMatches}
