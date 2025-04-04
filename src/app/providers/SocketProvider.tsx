@@ -17,7 +17,7 @@ export function SocketProvider({
   const [isConnected, setIsConnected] = useState<boolean>(false);
   useEffect(() => {
     if (!memberId) return;
-    const wsUrl = `wss://healthfriend.site/hf/portfolio?member-id=${memberId}`;
+    const wsUrl = `wss://api.healthfriend.site/hf/portfolio?member-id=${memberId}`;
     const ws = new WebSocket(wsUrl);
     const client = Stomp.over(ws);
 
