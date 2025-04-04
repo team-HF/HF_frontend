@@ -28,30 +28,32 @@ const getMyMatchingList = async (
   return MatchingResponseSchema.parse(response.data);
 };
 
+const filterStatusMap: Record<string, string> = {
+  전체: 'ALL',
+  '매칭 진행 중': 'IN_PROGRESS',
+  '매칭 종료': 'FINISHED',
+  '매칭 중단': 'HALTED',
+};
+
 export const useGetMyMatchingList = (
   memberId: number,
   filterStatus: string
 ) => {
-  const filterStatusMap: Record<string, string> = {
-    전체: 'ALL',
-    '매칭 진행 중': 'IN_PROGRESS',
-    '매칭 종료': 'FINISHED',
-    '매칭 중단': 'HALTED',
-  };
+  const matchingStatusCondition = filterStatusMap[filterStatus] || 'ALL';
 
   return useInfiniteQuery({
     queryKey: ['myMatchingList', memberId, filterStatus],
     queryFn: ({ pageParam = 1 }) =>
       getMyMatchingList(axiosInstance, memberId, {
         pageParam,
-        matchingStatusCondition: filterStatusMap[filterStatus] || 'ALL',
+        matchingStatusCondition,
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.content.page < lastPage.content.totalPageCount) {
         return lastPage.content.page + 1;
       }
-      return null;
+      return undefined;
     },
     staleTime: 5 * 60 * 1000,
     enabled: !!memberId,
