@@ -17,7 +17,15 @@ export function SocketProvider({
   const [isConnected, setIsConnected] = useState<boolean>(false);
   useEffect(() => {
     if (!memberId) return;
-    const wsUrl = `wss://api.healthfriend.site/hf/portfolio?member-id=${memberId}`;
+
+    const isLocalEnvironment =
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
+
+    const wsUrl = isLocalEnvironment
+      ? `ws://localhost:8080/hf/portfolio?member-id=${memberId}`
+      : `wss://api.healthfriend.site/hf/portfolio?member-id=${memberId}`;
+
     const ws = new WebSocket(wsUrl);
     const client = Stomp.over(ws);
 
