@@ -18,7 +18,6 @@ const getMyCoupons = async (
 };
 
 export const useGetMyCoupons = (memberId: number, filterType: string) => {
-
   const filterTypeMap: Record<
     string,
     'ALL' | 'AVAILABLE' | 'USED' | 'EXPIRED'
@@ -35,5 +34,6 @@ export const useGetMyCoupons = (memberId: number, filterType: string) => {
       getMyCoupons(axiosInstance, memberId, filterTypeMap[filterType] || 'ALL'),
     staleTime: 5 * 60 * 1000,
     retry: 3,
+    enabled: !!memberId,
   });
 };
