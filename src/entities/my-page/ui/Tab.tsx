@@ -6,21 +6,17 @@ type TabProps = {
 };
 
 export default function Tab({ currentTab, setTab }: TabProps) {
+  const tabs = ['내 운동 매칭 List', '즐겨찾기', '선물함'];
+
   return (
     <S.Container>
       <S.TabContainer>
-        <S.Tab onClick={() => setTab('내 운동 매칭 List')}>
-          내 운동 매칭 List
-          {currentTab === '내 운동 매칭 List' && <S.TabIndicator />}
-        </S.Tab>
-        <S.Tab onClick={() => setTab('즐겨찾기')}>
-          즐겨찾기
-          {currentTab === '즐겨찾기' && <S.TabIndicator />}
-        </S.Tab>
-        <S.Tab onClick={() => setTab('선물함')}>
-          선물함
-          {currentTab === '선물함' && <S.TabIndicator />}
-        </S.Tab>
+        {tabs.map((tabName) => (
+          <S.Tab key={tabName} onClick={() => setTab(tabName)}>
+            {tabName}
+            {currentTab === tabName && <S.TabIndicator />}
+          </S.Tab>
+        ))}
       </S.TabContainer>
       <S.StyleHr />
     </S.Container>
