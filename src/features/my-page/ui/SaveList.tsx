@@ -9,10 +9,27 @@ import Loader from '../../../shared/ui/loader/Loader';
 export default function SaveList() {
   const size = 20;
   const { myProfile } = useMyProfileStore();
-  const memberId = myProfile!.memberId;
-  const { data: saveList, isLoading, error } = useGetMyWishList(size, memberId);
-  const { mutate: deleteWish } = useDeleteWish();
   const navigate = useNavigate();
+
+  const memberId = myProfile?.memberId;
+  const {
+    data: saveList,
+    isLoading,
+    error,
+  } = useGetMyWishList(size, memberId ?? 0);
+  const { mutate: deleteWish } = useDeleteWish();
+
+  if (!myProfile || !memberId) {
+    return <Loader />;
+  }
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <p>error</p>;
+  }
 
   const onClickNavigateUserProfile = (wishedId: number) => {
     navigate(`/member/${wishedId}/profile`);
@@ -26,12 +43,6 @@ export default function SaveList() {
     deleteWish(data);
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-  if (error) {
-    return <p>error</p>;
-  }
   const allItems = saveList?.pages.flatMap((page) => page.content) || [];
   return (
     <S.Container>
