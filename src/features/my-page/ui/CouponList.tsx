@@ -69,15 +69,16 @@ export default function CouponList() {
   const handleFilterChange = (option: string) => {
     setFilterStatus(option);
     setIsOpenDropdownFilter(false);
+
+    const filterParam = getFilterParamFromName(option);
+    const tabParam = searchParams.get('tab') || 'gift';
+    setSearchParams({ tab: tabParam, filter: filterParam });
+
     if (memberId) {
       queryClient.invalidateQueries({
         queryKey: ['myCoupons', memberId, option],
       });
     }
-
-    const filterParam = getFilterParamFromName(option);
-    const tabParam = searchParams.get('tab') || 'gift';
-    setSearchParams({ tab: tabParam, filter: filterParam });
   };
 
   const { data, isLoading, error } = useGetMyCoupons(
