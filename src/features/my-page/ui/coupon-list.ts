@@ -76,8 +76,6 @@ export const FilterButton = styled.div`
   font-size: 14px;
   color: #000000;
   box-sizing: border-box;
-  margin-top: -10px;
-
   &:hover {
     background-color: #e9e4fc;
   }

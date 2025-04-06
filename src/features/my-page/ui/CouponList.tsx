@@ -7,7 +7,6 @@ import EmptyFavoriteListAndCouponList from './EmptyFavoriteListAndCouponList';
 import Loader from '../../../shared/ui/loader/Loader';
 import { useSearchParams } from 'react-router-dom';
 
-//
 const getFilterNameFromParam = (param: string): string => {
   switch (param) {
     case 'all':
