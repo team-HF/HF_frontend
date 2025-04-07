@@ -1,12 +1,13 @@
 import * as S from './matching-list.style';
 import Hashtag from '../../../shared/ui/hashtag/Hashtag';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import ChatButton from './ChatButton';
 import ReviewButton from './ReviewButton';
 import { useGetMyMatchingList } from '../api/useGetMyMatchingList';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import {
   getCompanionStyleText,
   CompanionStyle,
@@ -29,15 +30,53 @@ const formatDate = (isoDateString: string): string => {
   return `${year}년 ${month}월 ${day}일`;
 };
 
+const getFilterNameFromParam = (param: string): string => {
+  switch (param) {
+    case 'all':
+      return '전체';
+    case 'in-progress':
+      return '매칭 진행 중';
+    case 'finished':
+      return '매칭 종료';
+    case 'halted':
+      return '매칭 중단';
+    default:
+      return '전체';
+  }
+};
+
+const getFilterParamFromName = (name: string): string => {
+  switch (name) {
+    case '전체':
+      return 'all';
+    case '매칭 진행 중':
+      return 'in-progress';
+    case '매칭 종료':
+      return 'finished';
+    case '매칭 중단':
+      return 'halted';
+    default:
+      return 'all';
+  }
+};
+
 export default function MatchingList() {
   const [filterStatus, setFilterStatus] = useState<string>('전체');
   const [isOpenDropdownFilter, setIsOpenDropdownFilter] =
     useState<boolean>(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const filterOptions = ['전체', '매칭 진행 중', '매칭 종료', '매칭 중단'];
   const queryClient = useQueryClient();
   const { data: myData } = useGetMyData();
   const memberId = myData?.memberId;
+
+  useEffect(() => {
+    const filterParam = searchParams.get('filter');
+    if (filterParam) {
+      setFilterStatus(getFilterNameFromParam(filterParam));
+    }
+  }, [searchParams]);
 
   const {
     data: MatchingListData,
@@ -51,7 +90,7 @@ export default function MatchingList() {
     MatchingListData?.pages.flatMap((page) =>
       page.content.content.map((item) => ({
         id: item.matchingId,
-        profileImage: item.opponentInfo.profileImageUrl || '',
+        profileImage: item.opponentInfo.profileImageUrl || null,
         nickname: item.opponentInfo.nickname,
         matchCount: item.opponentInfo.matchedCount,
         location: item.meetingPlace,
@@ -75,9 +114,16 @@ export default function MatchingList() {
   const handleFilterChange = (option: string) => {
     setFilterStatus(option);
     setIsOpenDropdownFilter(false);
-    queryClient.invalidateQueries({
-      queryKey: ['myMatchingList', memberId, option],
-    });
+
+    const filterParam = getFilterParamFromName(option);
+    const tabParam = searchParams.get('tab') || 'matching';
+    setSearchParams({ tab: tabParam, filter: filterParam });
+
+    if (memberId) {
+      queryClient.invalidateQueries({
+        queryKey: ['myMatchingList', memberId, option],
+      });
+    }
   };
 
   if (isLoading) {
@@ -126,7 +172,15 @@ export default function MatchingList() {
               <S.CardContainer key={user.id} status={user.status}>
                 <S.UpperContainer>
                   <S.ProfileIconContainer>
-                    <S.ProfileIcon src={user.profileImage} alt="Profile" />
+                    {!user.profileImage ? (
+                      <img
+                        src="/svg/default-profile-icon.svg"
+                        alt="Profile"
+                        style={{ width: '30px', height: '30px' }}
+                      />
+                    ) : (
+                      <S.ProfileIcon src={user.profileImage} alt="Profile" />
+                    )}
                   </S.ProfileIconContainer>
                   <S.ProfileTextContainer>
                     <S.UserName>{user.nickname}</S.UserName>

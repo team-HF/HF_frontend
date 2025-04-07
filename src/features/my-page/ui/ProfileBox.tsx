@@ -67,7 +67,15 @@ export default function ProfileBox({ myData }: ProfileBoxProps) {
       <S.ProfileContainer>
         <S.ProfileIconContainer>
           <S.ProfileIconWrapper
-            src={profileImageUrl || '/svg/default-profile-icon.svg'}
+            src={
+              profileImageUrl
+                ? profileImageUrl.startsWith('http')
+                  ? profileImageUrl
+                  : `${import.meta.env.VITE_BASE_URL}${
+                      profileImageUrl.startsWith('/') ? '' : '/'
+                    }${profileImageUrl}`
+                : '/svg/default-profile-icon.svg'
+            }
             alt="user profile"
           />
         </S.ProfileIconContainer>

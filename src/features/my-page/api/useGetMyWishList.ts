@@ -23,7 +23,6 @@ const getMyWishList = async (
 };
 
 export const useGetMyWishList = (size: number, memberId: number) => {
-
   return useInfiniteQuery({
     queryKey: ['myWishList', memberId, size],
     queryFn: ({ pageParam = 1 }) =>
@@ -45,5 +44,6 @@ export const useGetMyWishList = (size: number, memberId: number) => {
       return lastPage.page + 1;
     },
     staleTime: 5 * 60 * 1000,
+    enabled: !!memberId || memberId !== 0,
   });
 };

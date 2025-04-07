@@ -2,8 +2,8 @@ import * as S from './update-my-data-button';
 import { usePatchMyData } from '../api/usePatchMyData';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../../shared/utils/useAxios';
 import Loader from '../../../shared/ui/loader/Loader';
+import axios from 'axios';
 
 export interface UpdateMyDataButtonProps {
   nickname: string;
@@ -21,7 +21,6 @@ export interface UpdateMyDataButtonProps {
 
 interface UpdateMyDataRequest {
   profileImageFileExtension: string | null;
-  image?: File;
   nickname?: string;
   cd1?: string;
   cd2?: string;
@@ -36,15 +35,15 @@ interface UpdateMyDataRequest {
 
 const uploadImageFile = async (file: File, uploadUrl: string) => {
   try {
-    const response = await axiosInstance.put(uploadUrl, file, {
+    const response = await axios.put(uploadUrl, file, {
       headers: {
         'Content-Type': file.type,
       },
+      withCredentials: true,
     });
     return response.data;
-  } catch (error) {
-    console.error('Image upload failed:', error);
-    throw new Error('Image upload failed');
+  } catch {
+    throw new Error('이미지 업로드 실패');
   }
 };
 
@@ -73,25 +72,16 @@ export default function UpdateMyDataButton({
 
     let imageFileExtension: string | null = null;
     if (image) {
-      imageFileExtension = image.type.split('/')[1].replace('+xml', '') || null;
+      imageFileExtension = image.type.split('/')[1] || null;
     }
-
-    const transformedCd2 =
-      myData && cd2 !== myData.cd2
-        ? cd2?.slice(cd2.length - myData.cd2.length)
-        : cd2;
-    const transformedCd3 =
-      myData && cd3 !== myData.cd3
-        ? cd3?.slice(cd3.length - myData.cd3.length)
-        : cd3;
 
     const requestData: UpdateMyDataRequest = {
       profileImageFileExtension: imageFileExtension,
       nickname,
-      cd1: cd1 || undefined,
-      cd2: transformedCd2 || undefined,
-      cd3: transformedCd3 || undefined,
-      introduction: introduction || undefined,
+      cd1,
+      cd2: cd2 || undefined,
+      cd3: cd3 || undefined,
+      introduction,
       fitnessLevel: 'BEGINNER',
       companionStyle: styleSelected,
       fitnessEagerness: habitSelected,
@@ -99,27 +89,33 @@ export default function UpdateMyDataButton({
       fitnessKind: exerciseSelected,
     };
 
-    uploadMyData(requestData, {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onSuccess: async (responseData: any) => {
-        if (
-          image &&
-          responseData.content &&
-          responseData.content.profileImageUploadUrl
-        ) {
-          try {
-            await uploadImageFile(
-              image,
-              responseData.content.profileImageUploadUrl
-            );
-          } catch {
-            alert('이미지 업로드에 실패했습니다.');
-            return;
+    try {
+      uploadMyData(requestData, {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onSuccess: async (responseData: any) => {
+          const uploadUrl =
+            responseData.profileImageUploadUrl ||
+            (responseData.content &&
+              responseData.content.profileImageUploadUrl);
+
+          if (image && uploadUrl) {
+            try {
+              await uploadImageFile(image, uploadUrl);
+              navigate('/my-page');
+            } catch {
+              alert('이미지 업로드에 실패했습니다.');
+            }
+          } else {
+            navigate('/my-page');
           }
-        }
-        navigate('/my-page');
-      },
-    });
+        },
+        onError: () => {
+          alert('프로필 업데이트에 실패했습니다.');
+        },
+      });
+    } catch {
+      alert('요청을 처리할 수 없습니다.');
+    }
   };
 
   if (isLoading) {
