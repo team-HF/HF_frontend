@@ -90,7 +90,7 @@ export default function MatchingList() {
     MatchingListData?.pages.flatMap((page) =>
       page.content.content.map((item) => ({
         id: item.matchingId,
-        profileImage: item.opponentInfo.profileImageUrl || '',
+        profileImage: item.opponentInfo.profileImageUrl || null,
         nickname: item.opponentInfo.nickname,
         matchCount: item.opponentInfo.matchedCount,
         location: item.meetingPlace,
@@ -172,7 +172,15 @@ export default function MatchingList() {
               <S.CardContainer key={user.id} status={user.status}>
                 <S.UpperContainer>
                   <S.ProfileIconContainer>
-                    <S.ProfileIcon src={user.profileImage} alt="Profile" />
+                    {!user.profileImage ? (
+                      <img
+                        src="/svg/default-profile-icon.svg"
+                        alt="Profile"
+                        style={{ width: '30px', height: '30px' }}
+                      />
+                    ) : (
+                      <S.ProfileIcon src={user.profileImage} alt="Profile" />
+                    )}
                   </S.ProfileIconContainer>
                   <S.ProfileTextContainer>
                     <S.UserName>{user.nickname}</S.UserName>
