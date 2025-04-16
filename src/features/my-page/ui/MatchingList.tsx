@@ -8,6 +8,7 @@ import { useGetMyMatchingList } from '../api/useGetMyMatchingList';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
+
 import {
   getCompanionStyleText,
   CompanionStyle,
@@ -163,6 +164,8 @@ export default function MatchingList() {
           <Virtuoso
             useWindowScroll
             data={allMatches}
+            fixedItemHeight={150}
+            overscan={300}
             endReached={() => {
               if (hasNextPage && !isFetchingNextPage) {
                 fetchNextPage();
@@ -176,7 +179,7 @@ export default function MatchingList() {
                       <img
                         src="/svg/default-profile-icon.svg"
                         alt="Profile"
-                        style={{ width: '30px', height: '30px' }}
+                        style={{ width: '24px', height: '24px' }}
                       />
                     ) : (
                       <S.ProfileIcon src={user.profileImage} alt="Profile" />
@@ -193,13 +196,29 @@ export default function MatchingList() {
                 </S.UpperContainer>
                 <S.MiddleContainer>
                   <S.MiddleText>
-                    <img src="/svg/location-icon.svg" alt="location-icon" />
+                    <img
+                      src="/svg/location-icon.svg"
+                      alt="location-icon"
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                        marginRight: '8px',
+                      }}
+                    />
                     <span style={{ marginLeft: '8px' }}>
                       {user.matchCount}회 매칭됨
                     </span>
                   </S.MiddleText>
                   <S.MiddleText style={{ marginTop: '4px' }}>
-                    <img src="/svg/location-icon.svg" alt="location-icon" />
+                    <img
+                      src="/svg/location-icon.svg"
+                      alt="location-icon"
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                        marginRight: '8px',
+                      }}
+                    />
                     <span style={{ marginLeft: '8px' }}>{user.location}</span>
                   </S.MiddleText>
                 </S.MiddleContainer>
