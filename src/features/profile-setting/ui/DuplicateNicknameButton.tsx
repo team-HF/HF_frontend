@@ -14,8 +14,8 @@ export default function DuplicateNicknameButton({
 }: DuplicateNicknameButtonProps) {
   const { refetch } = useGetDuplicateNickname(nickname);
   const onClick = async () => {
-    const result = await refetch();
     if (disabled) return;
+    const result = await refetch();
     if (result.data?.content === true) {
       alert('이미 사용중인 닉네임입니다.');
     } else {
