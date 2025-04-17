@@ -65,6 +65,7 @@ export default function UpdateMyDataButton({
   const navigate = useNavigate();
 
   const updateMyData = async () => {
+    if (disabled) return;
     if (!myData?.memberId) {
       alert('회원 정보가 아직 로드되지 않았습니다.');
       return;
