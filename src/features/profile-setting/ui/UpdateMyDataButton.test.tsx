@@ -45,10 +45,6 @@ const setup = (props = {}) => {
 };
 describe('UpdateMyDataButton', () => {
   beforeEach(() => {
-    mockUseGetMyData.mockReset();
-    mockMutate.mockClear();
-    mockNavigate.mockClear();
-
     mockUseGetMyData.mockReturnValue({
       data: { memberId: 1 },
       isLoading: false,
