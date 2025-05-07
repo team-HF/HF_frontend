@@ -2,7 +2,7 @@ import { describe, expect, test, vi } from 'vitest';
 import { createTestQueryClient } from '../../../__test__/createTestQueryClient';
 import { render, screen } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import DuplicateNicknameButton from './DuplicateNicknameButton';
+import DuplicateNicknameButton from '../ui/DuplicateNicknameButton';
 import userEvent from '@testing-library/user-event';
 
 const defaultProps = {

@@ -1,3 +1,4 @@
+import { ButtonHTMLAttributes } from 'react';
 import * as S from './style';
 
 type buttonShape = 'square' | 'around' | 'semi-around';
@@ -10,7 +11,8 @@ type buttonStyle =
   | 'style_5'
   | 'style_6';
 
-export interface minButtonProps {
+export interface minButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   name?: string;
   button_shape: buttonShape;
   button_style: buttonStyle;

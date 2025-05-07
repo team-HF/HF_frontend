@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import UpdateMyDataButton from './UpdateMyDataButton';
+import UpdateMyDataButton from '../ui/UpdateMyDataButton';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { createTestQueryClient } from '../../../__test__/createTestQueryClient';
 
