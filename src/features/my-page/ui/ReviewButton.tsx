@@ -5,6 +5,7 @@ export default function ReviewButton() {
       name="후기 작성"
       button_shape="semi-around"
       button_style="style_4"
+      data-testid="review-button"
     />
   );
 }

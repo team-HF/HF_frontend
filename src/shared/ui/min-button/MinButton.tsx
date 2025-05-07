@@ -22,12 +22,14 @@ const MinButton = ({
   button_shape,
   button_style,
   onClick,
+  ...rest
 }: minButtonProps) => {
   return (
     <S.Container
       button_shape={button_shape}
       button_style={button_style}
       onClick={onClick}
+      {...rest}
     >
       {name}
     </S.Container>

@@ -125,7 +125,7 @@ export default function MatchingList() {
           </S.Dropdown>
         )}
       </S.FilterContainer>
-      <S.Container>
+      <S.Container role="list">
         {allMatches === undefined || allMatches.length > 0 ? (
           <Virtuoso
             useWindowScroll
@@ -138,7 +138,11 @@ export default function MatchingList() {
               }
             }}
             itemContent={(_, user) => (
-              <S.CardContainer key={user.id} status={user.status}>
+              <S.CardContainer
+                key={user.id}
+                status={user.status}
+                role="listitem"
+              >
                 <S.UpperContainer>
                   <S.ProfileIconContainer>
                     {!user.profileImage ? (

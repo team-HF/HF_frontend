@@ -6,6 +6,7 @@ export default function ChatButton() {
       name="1:1 채팅하기"
       button_shape="semi-around"
       button_style="style_4"
+      data-testid="chat-button"
     />
   );
 }
