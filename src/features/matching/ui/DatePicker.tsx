@@ -34,6 +34,7 @@ export default function DatePicker({
           value={displayValue}
           readOnly
           onClick={() => setIsOpen(true)}
+          aria-label="날짜"
         />
 
         <S.Icon

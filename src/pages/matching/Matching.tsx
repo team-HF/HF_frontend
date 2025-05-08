@@ -64,7 +64,6 @@ export default function Matching() {
         meetingPlaceAddress: '',
       },
     };
-    console.log(messagePayload);
     if (stompClient && chatRoomId) {
       stompClient.publish({
         destination: `/hf/app/chat/messages/${chatRoomId}`,

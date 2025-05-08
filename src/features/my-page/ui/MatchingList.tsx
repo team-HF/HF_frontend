@@ -8,6 +8,7 @@ import { useGetMyMatchingList } from '../api/useGetMyMatchingList';
 import { useGetMyData } from '../../../shared/api/useGetMyData';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
+
 import {
   getCompanionStyleText,
   CompanionStyle,
@@ -20,45 +21,11 @@ import {
 } from '../../../shared/constants/fitness-category';
 import EmptyMatchingList from './EmptyMatchingList';
 import Loader from '../../../shared/ui/loader/Loader';
-
-const formatDate = (isoDateString: string): string => {
-  const dateObj = new Date(isoDateString);
-  const year = dateObj.getFullYear();
-  const month = dateObj.getMonth() + 1;
-  const day = dateObj.getDate();
-
-  return `${year}년 ${month}월 ${day}일`;
-};
-
-const getFilterNameFromParam = (param: string): string => {
-  switch (param) {
-    case 'all':
-      return '전체';
-    case 'in-progress':
-      return '매칭 진행 중';
-    case 'finished':
-      return '매칭 종료';
-    case 'halted':
-      return '매칭 중단';
-    default:
-      return '전체';
-  }
-};
-
-const getFilterParamFromName = (name: string): string => {
-  switch (name) {
-    case '전체':
-      return 'all';
-    case '매칭 진행 중':
-      return 'in-progress';
-    case '매칭 종료':
-      return 'finished';
-    case '매칭 중단':
-      return 'halted';
-    default:
-      return 'all';
-  }
-};
+import {
+  formatDate,
+  getFilterNameFromParam,
+  getFilterParamFromName,
+} from '../utils/matching-list';
 
 export default function MatchingList() {
   const [filterStatus, setFilterStatus] = useState<string>('전체');
@@ -158,25 +125,31 @@ export default function MatchingList() {
           </S.Dropdown>
         )}
       </S.FilterContainer>
-      <S.Container>
+      <S.Container role="list">
         {allMatches === undefined || allMatches.length > 0 ? (
           <Virtuoso
             useWindowScroll
             data={allMatches}
+            fixedItemHeight={150}
+            overscan={300}
             endReached={() => {
               if (hasNextPage && !isFetchingNextPage) {
                 fetchNextPage();
               }
             }}
             itemContent={(_, user) => (
-              <S.CardContainer key={user.id} status={user.status}>
+              <S.CardContainer
+                key={user.id}
+                status={user.status}
+                role="listitem"
+              >
                 <S.UpperContainer>
                   <S.ProfileIconContainer>
                     {!user.profileImage ? (
                       <img
                         src="/svg/default-profile-icon.svg"
                         alt="Profile"
-                        style={{ width: '30px', height: '30px' }}
+                        style={{ width: '24px', height: '24px' }}
                       />
                     ) : (
                       <S.ProfileIcon src={user.profileImage} alt="Profile" />
@@ -193,13 +166,29 @@ export default function MatchingList() {
                 </S.UpperContainer>
                 <S.MiddleContainer>
                   <S.MiddleText>
-                    <img src="/svg/location-icon.svg" alt="location-icon" />
+                    <img
+                      src="/svg/location-icon.svg"
+                      alt="location-icon"
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                        marginRight: '8px',
+                      }}
+                    />
                     <span style={{ marginLeft: '8px' }}>
                       {user.matchCount}회 매칭됨
                     </span>
                   </S.MiddleText>
                   <S.MiddleText style={{ marginTop: '4px' }}>
-                    <img src="/svg/location-icon.svg" alt="location-icon" />
+                    <img
+                      src="/svg/location-icon.svg"
+                      alt="location-icon"
+                      style={{
+                        width: '16px',
+                        height: '16px',
+                        marginRight: '8px',
+                      }}
+                    />
                     <span style={{ marginLeft: '8px' }}>{user.location}</span>
                   </S.MiddleText>
                 </S.MiddleContainer>

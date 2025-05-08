@@ -30,11 +30,15 @@ export default function PartnerInfo({
       }
     })();
   }, [matchingUserData]);
-  if (isLoading || !matchingUserData) {
+  if (isLoading) {
     return <Loader />;
   }
-
-  if (error) return <div>error.</div>;
+  if (error) {
+    return <div>error.</div>;
+  }
+  if (!matchingUserData) {
+    return <div>프로필 정보를 불러올 수 없습니다.</div>;
+  }
 
   return (
     <S.Container>

@@ -9,6 +9,7 @@ export const Container = styled.button<buttonProps>`
   font-weight: 600;
   border: 0px;
   width: 100%;
+  white-space: nowrap;
   cursor: pointer;
   border-radius: ${(props) =>
     props.button_shape === 'square'

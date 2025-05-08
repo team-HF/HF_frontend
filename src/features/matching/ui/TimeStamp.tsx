@@ -46,6 +46,7 @@ export default function TimeStamp({
           placeholder="시간을 선택하세요"
           readOnly
           value={timeString}
+          aria-label="시간"
         />
         <S.Icon
           src="/svg/under-arrow-icon.svg"

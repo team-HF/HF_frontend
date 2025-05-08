@@ -34,6 +34,7 @@ export default function LocationSelect({
           placeholder="위치를 선택하세요"
           value={selectedLocation}
           readOnly
+          aria-label="장소"
         />
         <S.Icon
           src="/svg/location-icon.svg"
