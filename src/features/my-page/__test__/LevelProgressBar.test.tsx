@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, expect } from 'vitest';
 import { screen } from '@testing-library/react';
 import LevelProgressBar from '../ui/LevelProgressBar';

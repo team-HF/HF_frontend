@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, beforeAll, test, expect } from 'vitest';
 import { screen } from '@testing-library/react';
 import ProfileBox from '../ui/ProfileBox';
